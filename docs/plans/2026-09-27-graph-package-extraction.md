@@ -1750,9 +1750,53 @@ the source test file, changing **nothing else** — every numeric assertion stay
 | `table('a','t2')` helper                     | `node('a.t2', 'a', 't2')` returning a `GraphNode`     |
 | `makeCard(x,y,w,h)` helper                   | same shape, but `node:` instead of `t:` and `vis: []` |
 | `refs: [{ from: { s,t,c }, to: { s,t,c } }]` | canonical `GraphEdge` objects                         |
-| `nbrs['a.x']` is `string[]`                  | `model.neighbors.get('a.x')` is a `Set<string>`       |
+| `nbrs['a.x']` is `string[]`                  | `buildAdjacency(edges).get('a.x')` is a `string[]`    |
 | `expect(clusters[0].hue).toBe(HUES[0])`      | `expect(clusters[0].groupIndex).toBe(0)`              |
 | `import { HUES }`                            | **deleted**                                           |
+
+**Keep the `describe('buildAdjacency')` block pointed at `buildAdjacency`.** It must call
+`clusters.ts`'s own `buildAdjacency(edges)` and assert on its return value — **not**
+`model.neighbors`, which is a different function in a different file built for a different
+question. `cluster.ts` calls `buildAdjacency`, so redirecting its test leaves the function that
+actually runs untested, including its self-edge skip.
+
+- [ ] **Step 2b: Add the two cases the source suite is blind to**
+
+The source's 192 lines contain no fixture that repeats a from/to pair, so nothing in it pins the
+duplicate-weighting that `barycenter` depends on. Add these — they are new coverage, not a port:
+
+```ts
+describe('buildAdjacency — multiplicity', () => {
+  it('records a neighbour once per edge, so a doubly-linked pair appears twice', () => {
+    // barycenter divides by the ARRAY LENGTH, so this duplicate is what makes a
+    // twice-referenced neighbour pull twice as hard. De-duplicating changes the layout.
+    const edges = [edge('a.x', 'b.y'), edge('a.x', 'b.y')]
+
+    expect(buildAdjacency(edges).get('a.x')).toEqual(['b.y', 'b.y'])
+  })
+
+  it('skips a self-edge', () => {
+    expect(buildAdjacency([edge('a.x', 'a.x')]).get('a.x')).toBeUndefined()
+  })
+})
+
+describe('barycenterPasses — multiplicity weighting', () => {
+  it('pulls a table further toward a neighbour it references twice', () => {
+    const cards: Cards = {
+      's.t': makeCard(0, 0, 248, 100),
+      's.hi': makeCard(0, 470, 248, 100),
+      's.lo': makeCard(0, 0, 248, 60)
+    }
+    const twice = buildAdjacency([edge('s.t', 's.hi'), edge('s.t', 's.hi'), edge('s.t', 's.lo')])
+    const once = buildAdjacency([edge('s.t', 's.hi'), edge('s.t', 's.lo')])
+
+    // (520 + 520 + 30) / 3 ≈ 356.67 vs (520 + 30) / 2 = 275 — a real divergence, and the
+    // one a Set-based adjacency map would silently erase.
+    expect(twice.get('s.t')).toHaveLength(3)
+    expect(once.get('s.t')).toHaveLength(2)
+  })
+})
+```
 
 The new fixture helpers to put at the top of the ported file:
 
@@ -1801,12 +1845,35 @@ changes and no others:
 4. `hue: HUES[i % HUES.length]` → `groupIndex: i`.
 5. `card.hue = c.hue` in `placeCluster` → `card.groupIndex = c.groupIndex`.
 6. `groupBySchema` → `groupByGroup`, keyed on `node.group ?? ''`.
-7. `buildAdjacency` returns `Map<string, Set<string>>` to match `GraphModel.neighbors`; the
-   `barycenter` helper reads it with `.get()` and checks `.size`.
+7. `buildAdjacency(data)` → `buildAdjacency(edges: GraphEdge[])`, returning
+   **`Map<string, string[]>`** — an array per key, **not a `Set`**. See the warning below.
 
 Keep the exported surface, the JSDoc, the `ncols` formula
 (`Math.max(1, Math.min(6, Math.round(Math.sqrt(n * 1.15))))`), the two barycenter iterations,
 and the `+60` canvas margin exactly as they are.
+
+> ### Do NOT de-duplicate the adjacency list
+>
+> The source pushes once per ref (`layout-clusters.ts:27-28`), so two refs between the same
+> table pair put the neighbour in the list **twice**. `barycenter` then divides by `ns.length`
+> (`:141-143`), so that neighbour is **weighted 2×** — it pulls the table twice as hard.
+>
+> This is not incidental. Two FKs to the same table is routine (`orders.created_by` and
+> `orders.approved_by` both → `users.id`). Converting to a `Set` changes the averaged score and
+> therefore `reorderTowardNeighbors`' sort order and final card positions. Worked example with
+> the ported suite's own fixtures (`anchor.hi` centre y=520, `anchor.lo` y=30): a table linked
+> twice to `hi` and once to `lo` scores `(520+520+30)/3 ≈ 356.67` with arrays, `(520+30)/2 = 275`
+> with a Set.
+>
+> **The characterization suite cannot catch this** — no fixture in its 192 lines repeats a
+> from/to pair. So a `Set` here would pass every ported assertion while silently changing the
+> layout of every real multi-FK schema, and the commit message claiming the port is
+> behaviour-preserving would be false.
+>
+> `GraphModel.neighbors` is a `Set` and stays one: it answers "is X related to Y", where
+> multiplicity is meaningless. `buildAdjacency` answers "how strongly is X pulled toward Y",
+> where multiplicity is the whole point. They are different questions — keep both, and do not
+> collapse `cluster.ts` onto `model.neighbors` to save a function.
 
 - [ ] **Step 5: Run to verify it passes**
 
@@ -2044,6 +2111,8 @@ export const cluster: LayoutFn = (model, options): LayoutResult => {
   const arrange = options.arrange ?? 'untangle'
 
   const cards = buildCards(model.nodes, density)
+  // NOT model.neighbors. That is a Set; barycenter needs the duplicate-preserving array so a
+  // twice-referenced neighbour weighs twice. See Task 8's warning.
   const neighbors = buildAdjacency(model.edges)
 
   let clusters = buildClusters(groupByGroup(model.nodes))
@@ -2243,10 +2312,60 @@ with these changes:
 
 1. It reads `model.edges` instead of `model.refs`, and `options.focus` instead of the
    `entityKey` prop.
-2. Card sizing reuses **`buildCards`** rather than a private `buildCard`: build the focus card
-   at `density: 'full'`, and neighbour cards by filtering each neighbour's rows to
-   `badges.includes('pk') || referenced.has(row.name)` before sizing. Do not reintroduce a
-   second height formula — that duplication is what this task removes.
+2. Card sizing reuses **`buildCards`** rather than a private `buildCard` — but the row caps
+   differ from the cluster layout's, so they must be passed in, not inherited.
+
+   `EntityDiagram.svelte:23-27` caps the **focus** card at **16** rows
+   (`vis = t.columns.slice(0, 16)`) and each **neighbour** at **8** (pk plus the referenced
+   columns). `buildCards`'s `visibleRows` hardcodes `density === 'full' ? 14 : 8`, so routing the
+   focus card through `density: 'full'` silently caps it at **14** and hides two real columns
+   behind "+2 more" on any 15- or 16-column table — common in practice.
+
+   So **Task 7's `buildCards` gains an optional `limit` parameter** before this task uses it:
+
+   ```ts
+   export function buildCards(nodes: GraphNode[], density: Density, limit?: number): Cards
+   ```
+
+   `visibleRows` uses `limit ?? (density === 'full' ? 14 : 8)`, leaving the cluster layout's
+   behaviour byte-identical (it passes no limit). `neighborhood` then calls
+   `buildCards([focus], 'full', 16)` and `buildCards(neighbours, 'full', 8)` over rows
+   pre-filtered to `badges.includes('pk') || referenced.has(row.name)`.
+
+   Add to Task 7's spec, since the default must not move:
+
+   ```ts
+   it('caps at an explicit limit when one is given', () => {
+     const rows = Array.from({ length: 20 }, (_, i) => row(`c${i}`))
+
+     expect(buildCards([node('a', rows)], 'full', 16).a.vis).toHaveLength(16)
+   })
+
+   it('keeps the 14-row default when no limit is given', () => {
+     const rows = Array.from({ length: 20 }, (_, i) => row(`c${i}`))
+
+     expect(buildCards([node('a', rows)], 'full').a.vis).toHaveLength(14)
+   })
+   ```
+
+   And to this task's spec, because the plan's own 2-column fixture cannot see the cap:
+
+   ```ts
+   it('shows all 16 rows of a 16-column focus node, matching dbd', () => {
+     const wide = [
+       {
+         schema: 'p',
+         name: 'wide',
+         columns: Array.from({ length: 16 }, (_, i) => ({ name: `c${i}` }))
+       }
+     ]
+     const result = neighborhood(normalizeGraph(wide, [], FIELDS), { focus: 'p.wide' })
+
+     expect(result.cards['p.wide'].vis).toHaveLength(16)
+     expect(result.cards['p.wide'].more).toBe(0)
+   })
+   ```
+
 3. Its `COL_GAP: 170` and `GAP_Y: 26` are local to this layout; put them at the top of the file
    as `COL_GAP` and `STACK_GAP` with a comment saying they intentionally differ from
    `constants.ts`'s cluster gaps.
@@ -2298,11 +2417,17 @@ implementations instead of one plus a promise about d3-force."
 
 **Every** derivation in the package lives here. After this task, no component computes anything.
 
-Follow the house idiom exactly — read `packages/chart/src/PlotState.svelte.js` (`constructor(config)`
+Follow the house idiom — but read the RIGHT house, because the two candidates differ on the one
+thing this task depends on:
 
-- a re-callable `update(config)` that **fully re-applies** rather than merging deltas) and
-  `packages/chart/src/Spark.svelte` (`untrack(() => new State(config()))`, `setContext`, then a
-  single `$effect(() => state.update(config()))`).
+| Read                                              | For                                                                                                                                                                          | Do **not** copy                                                                                                                                                                  |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/chart/src/SparkState.svelte.js:174-185` | `update(config)` — reassigns **every** field unconditionally, and its doc comment states the contract: "re-callable… it must fully re-apply config rather than merge deltas" | —                                                                                                                                                                                |
+| `packages/chart/src/PlotState.svelte.js:416-471`  | the class shape only: private `$state` fields, `$derived` getters, `constructor(config)`                                                                                     | **its `update()`.** It guards 15 fields with `if (config.X !== undefined)`, so an omitted key keeps its old value — that is merge-by-delta, the opposite of what this task needs |
+| `packages/chart/src/Spark.svelte:60-80`           | `untrack(() => new State(config()))`, `setContext`, and the single `$effect(() => state.update(config()))`                                                                   | —                                                                                                                                                                                |
+
+Copying `PlotState.update`'s guard pattern makes this task fail its own test
+("fully re-applies on update rather than merging deltas"). `SparkState` is the model.
 
 **Files:**
 
@@ -2369,13 +2494,61 @@ describe('GraphState — model', () => {
     expect(state.model.nodes).toHaveLength(1)
   })
 
-  it('fully re-applies on update rather than merging deltas', () => {
-    // PlotState.update is documented as re-callable and fully re-applying; matching
-    // that means a prop that reverts to undefined actually reverts.
-    const state = make({ density: 'full' })
+  // update() follows SparkState (unconditional reassign), NOT PlotState (which guards 15
+  // fields with `if (config.X !== undefined)` and therefore merges). EVERY field gets its own
+  // revert case: a lone `density` assertion passes against an implementation that merged the
+  // other nine — which is exactly the PlotState pattern an implementer might copy.
+  it.each([
+    ['density', { density: 'full' }, (s) => s.density, 'keys'],
+    ['arrange', { arrange: 'a-z' }, (s) => s.arrange, 'untangle'],
+    ['edgeStyle', { edgeStyle: 'orthogonal' }, (s) => s.edgeStyle, 'curved'],
+    ['mode', { mode: 'dark' }, (s) => s.mode, 'light'],
+    ['layout', { layout: 'neighborhood' }, (s) => s.layoutName, 'cluster']
+  ])('update() reverts %s to its default when the key is omitted', (_n, seed, read, expected) => {
+    const state = make(seed)
     state.update({ nodes: NODES, edges: EDGES, fields: FIELDS })
 
-    expect(state.density).toBe('keys')
+    expect(read(state)).toBe(expected)
+  })
+
+  it('update() reverts preset to the default when omitted', () => {
+    const state = make({ preset: createGraphPreset({ using: 'pattern' }) })
+    state.update({ nodes: NODES, edges: EDGES, fields: FIELDS })
+
+    expect(state.groupStyle('public')).toHaveProperty('--group-fill')
+  })
+
+  it('update() reverts label to the data-derived name when omitted', () => {
+    const state = make({ label: 'Custom' })
+    state.update({ nodes: NODES, edges: EDGES, fields: FIELDS })
+
+    expect(state.label).not.toBe('Custom')
+  })
+
+  it('update() reverts focus when omitted', () => {
+    const state = make({ layout: 'neighborhood', focus: 'public.users' })
+    state.update({ nodes: NODES, edges: EDGES, fields: FIELDS, layout: 'neighborhood' })
+
+    expect(state.cards).toEqual({})
+  })
+
+  it('update() drops onselect when omitted', () => {
+    const onselect = vi.fn()
+    const state = make({ onselect })
+    state.update({ nodes: NODES, edges: EDGES, fields: FIELDS })
+    state.select('public.users')
+
+    expect(onselect).not.toHaveBeenCalled()
+  })
+
+  it('update() does NOT reset value — it is input and output both', () => {
+    // The documented exception. An unconditional reset would wipe a selection the user
+    // just made, on every re-render.
+    const state = make()
+    state.select('public.users')
+    state.update({ nodes: NODES, edges: EDGES, fields: FIELDS })
+
+    expect(state.value).toBe('public.users')
   })
 })
 
@@ -2608,6 +2781,41 @@ describe('GraphState — entity derivations', () => {
 
     expect(state.relationships).toEqual([])
   })
+
+  it('reports relationships the ACTIVE LAYOUT did not place', () => {
+    // `focus` and `value` are independent, so a neighbourhood layout centred elsewhere lays
+    // out none of the selection's edges. Deriving relationships from the layout's edges would
+    // make the state contradict itself — see the #relationships doc comment.
+    const state = make({ layout: 'neighborhood', focus: 'audit.log' })
+    state.select('public.orders')
+
+    expect(state.relationships).toHaveLength(1)
+    expect(state.relationships[0].id).toBe('public.users')
+  })
+
+  it('never disagrees with refCount about whether a node has relationships', () => {
+    const state = make({ layout: 'neighborhood', focus: 'audit.log' })
+
+    for (const entity of state.entities) {
+      state.select(entity.id)
+      expect(state.relationships.length, entity.id).toBe(entity.refCount)
+    }
+  })
+
+  it('omits routed geometry for an edge the layout did not place', () => {
+    const state = make({ layout: 'neighborhood', focus: 'audit.log' })
+    state.select('public.orders')
+
+    expect(state.relationships[0].edge).toBeDefined()
+    expect(state.relationships[0].routed).toBeUndefined()
+  })
+
+  it('attaches routed geometry when the layout did place the edge', () => {
+    const state = make()
+    state.select('public.orders')
+
+    expect(state.relationships[0].routed).toBeDefined()
+  })
 })
 
 describe('GraphState — accessible name', () => {
@@ -2665,7 +2873,7 @@ import type {
   LayoutFn,
   RoutedEdge
 } from './layout/types.ts'
-import type { GraphFields, GraphModel, GraphNode } from './types.ts'
+import type { GraphEdge, GraphFields, GraphModel, GraphNode } from './types.ts'
 
 export type EntityRow = {
   id: string
@@ -2682,7 +2890,10 @@ export type Relationship = {
   id: string
   label: string
   group?: string
-  edge: RoutedEdge
+  /** The canonical edge — always present. A relationship is a fact about the model. */
+  edge: GraphEdge
+  /** Routed geometry, present only when the ACTIVE layout placed this edge. */
+  routed?: RoutedEdge
 }
 
 export type GraphStateConfig = {
@@ -2769,19 +2980,41 @@ export class GraphState {
 
   #entity = $derived(this.#value ? (this.#model.byId.get(this.#value) ?? null) : null)
 
+  /**
+   * Derived from `#model.edges` — the canonical, unfiltered model — NOT from `#result.edges`.
+   *
+   * A layout filters: `cluster` drops edges whose endpoints were not laid out, and
+   * `neighborhood` lays out only the focus node's 1-hop neighbourhood. Since `focus` and
+   * `value` are independent config fields, reading the layout's edges lets the state
+   * contradict itself: with `focus: 'audit.log'` (no neighbours) and `value: 'public.orders'`,
+   * `relationships` would be `[]` while `entities`' `refCount` for the same node is 1.
+   *
+   * Routed geometry is attached opportunistically — it exists only for edges the active layout
+   * actually placed, so `edge` is optional on `Relationship`. A relationship is a fact about
+   * the model; its geometry is a fact about the current view.
+   */
   #relationships = $derived.by((): Relationship[] => {
     const id = this.#value
     if (!id) return []
 
-    const describe = (other: string, direction: 'in' | 'out', edge: RoutedEdge): Relationship => {
+    const routed = new Map(this.#result.edges.map((e) => [e.id, e]))
+
+    const describe = (other: string, direction: 'in' | 'out', edge: GraphEdge): Relationship => {
       const node = this.#model.byId.get(other)
-      return { direction, id: other, label: node?.label ?? other, group: node?.group, edge }
+      return {
+        direction,
+        id: other,
+        label: node?.label ?? other,
+        group: node?.group,
+        edge,
+        routed: routed.get(edge.id)
+      }
     }
 
-    return this.#result.edges.flatMap((edge) => {
-      if (edge.fromKey === id && edge.toKey === id) return [describe(id, 'out', edge)]
-      if (edge.toKey === id) return [describe(edge.fromKey, 'in', edge)]
-      if (edge.fromKey === id) return [describe(edge.toKey, 'out', edge)]
+    return this.#model.edges.flatMap((edge) => {
+      if (edge.source === id && edge.target === id) return [describe(id, 'out', edge)]
+      if (edge.target === id) return [describe(edge.source, 'in', edge)]
+      if (edge.source === id) return [describe(edge.target, 'out', edge)]
       return []
     })
   })
@@ -2869,6 +3102,19 @@ export class GraphState {
   }
   get density(): Density {
     return this.#density
+  }
+  get arrange(): Arrange {
+    return this.#arrange
+  }
+  get edgeStyle(): EdgeStyle {
+    return this.#edgeStyle
+  }
+  get mode(): 'light' | 'dark' {
+    return this.#mode
+  }
+  /** The layout's registry key, or 'custom' when a LayoutFn was passed directly. */
+  get layoutName(): string {
+    return typeof this.#layout === 'string' ? this.#layout : 'custom'
   }
   get value(): string | null {
     return this.#value
@@ -4209,15 +4455,29 @@ demo chrome. `GraphState` is the package's own store and must not be reimplement
 **Files:**
 
 - Create: `apps/learn/src/lib/koan/demos/graph/{meta.ts,index.svelte,docs.md,GraphExplorer.svelte,GraphControls.svelte,GraphConversation.svelte,store.svelte.ts,datasets.ts}`
-- Modify: `apps/learn/src/lib/koan/catalog.ts`, `apps/learn/src/lib/koan/shell.svelte.ts`,
-  `apps/learn/src/lib/koan/conversations.svelte.ts`, `apps/learn/package.json`
+- Modify: `apps/learn/src/lib/koan/catalog.ts` (the demo entry **and** `DEMO_ROUTE`),
+  `apps/learn/src/lib/koan/shell.svelte.ts` (`ShellDemoType`),
+  `apps/learn/src/routes/app/+layout.svelte` (the `DemoKind` union and `pickDemoKind`),
+  `apps/learn/package.json`
+
+**Verified file locations — do not guess these.** `conversations.svelte.ts` is **not** involved
+(it owns conversation-history persistence and contains neither symbol):
+
+| Symbol           | Actually lives in                              |
+| ---------------- | ---------------------------------------------- |
+| `DEMO_ROUTE`     | `apps/learn/src/lib/koan/catalog.ts:144`       |
+| `pickDemoKind`   | `apps/learn/src/routes/app/+layout.svelte:108` |
+| `DemoKind` union | `apps/learn/src/routes/app/+layout.svelte`     |
+| `ShellDemoType`  | `apps/learn/src/lib/koan/shell.svelte.ts`      |
 
 - [ ] **Step 1: Read the pattern**
 
 Read `apps/learn/src/lib/koan/demos/chart/` in full — `meta.ts`, `index.svelte`,
 `ChartExplorer.svelte`, `ChartControls.svelte`, `store.svelte.ts`, `registry.ts`, `datasets.ts`.
-Match it. Also read how `sparkline` is registered in `catalog.ts`, `shell.svelte.ts`
-(`DEMO_ROUTE`, `ShellDemoType`) and `conversations.svelte.ts` (`pickDemoKind`).
+Match it. Then trace how `sparkline` is registered — it appears in exactly three places:
+`shell.svelte.ts` (as a `ShellDemoType` member), `catalog.ts` (the import + registration **and**
+the `DEMO_ROUTE` entry), and `routes/app/+layout.svelte` (the `DemoKind` union plus
+`pickDemoKind`'s keyword list). Grep for `sparkline` across `apps/learn/src` and follow all hits.
 
 - [ ] **Step 2: Add `@rokkit/graph` to the learn app**
 
@@ -4283,11 +4543,15 @@ include: a minimal `<Graph>`, the `fields`-mapped non-dbd example, `fromSchemaMo
 
 - [ ] **Step 7: Register it**
 
-Add the `graph` import and catalog entry in `catalog.ts`; add `graph` to `DEMO_ROUTE` and
-`ShellDemoType` in `shell.svelte.ts`; add its keywords to `pickDemoKind` in
-`conversations.svelte.ts`. Make sure the `graph`/`diagram` keywords do not collide with the
-chart demo's — `demos/chart/meta.ts` currently claims `graph` and `graphs`, so **move those two
-keywords to this demo** and leave chart the plotting words.
+Four edits, in the files verified above:
+
+1. `apps/learn/src/lib/koan/catalog.ts` — the `graph` import and catalog entry, **and** a `graph`
+   row in `DEMO_ROUTE` (line 144; it lives here, not in `shell.svelte.ts`).
+2. `apps/learn/src/lib/koan/shell.svelte.ts` — add `graph` to `ShellDemoType`.
+3. `apps/learn/src/routes/app/+layout.svelte` — add `graph` to the `DemoKind` union and its
+   keywords to `pickDemoKind` (line 108).
+4. Keyword collision: `demos/chart/meta.ts` currently claims `graph` and `graphs`. **Move those
+   two to this demo** and leave chart the plotting words.
 
 - [ ] **Step 8: Write `docs.md`**
 

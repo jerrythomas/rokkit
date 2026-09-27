@@ -157,10 +157,23 @@ Three layers, each testable alone — the `sensei:ui-state-pattern` shape, and t
 `@rokkit/graph` is a library, not a screen, so the **load** layer belongs to the consumer: the
 package's contract is `nodes`/`edges`/`fields` and it never fetches.
 
-`GraphState` follows `PlotState`'s idiom — private `$state` inputs, `$derived` outputs, explicit
-getters, named methods for every transition, and an `update(config)` that is re-callable and
-**fully re-applies** rather than merging deltas. It publishes on `setContext('graph-state', …)`,
-so a view composed inside a `<Graph>` needs no prop, mirroring how a geom resolves `'plot-state'`.
+`GraphState` follows the house idiom — private `$state` inputs, `$derived` outputs, explicit
+getters, named methods for every transition.
+
+**`update(config)` follows `SparkState`, not `PlotState`.** The two differ, and the difference
+matters: `SparkState.update` (`packages/chart/src/SparkState.svelte.js:174-185`) reassigns every
+field unconditionally and documents itself as "re-callable… it must fully re-apply config rather
+than merge deltas". `PlotState.update` guards 15 of its fields with
+`if (config.X !== undefined)`, so an omitted key keeps its old value — that is merge-by-delta.
+`GraphState` wants the `SparkState` contract, because `Graph.svelte` calls `update()` from an
+`$effect` on every prop change and a prop reverting to undefined must actually revert.
+
+It publishes on `setContext('graph-state', …)`, so a view composed inside a `<Graph>` needs no
+prop, mirroring how a geom resolves `'plot-state'`. **The published instance must have stable
+identity for the component's lifetime** — `setContext` runs once at init and captures the value,
+so swapping which `GraphState` object is passed in after mount would leave nested views reading
+the old one. `PlotState`/`SparkState` hold the same discipline: reactivity flows through mutating
+one object, never through replacing which object is in context.
 
 ### The rule that makes this worth doing
 
