@@ -41,10 +41,13 @@ The monorepo already separates by _abstraction_, not by "is it visual" — `form
 
 `@rokkit/graph`, two entry points:
 
-| Entry      | Contents                                                                                  |
-| ---------- | ----------------------------------------------------------------------------------------- |
-| `.`        | Canonical model, normalizer, layout interface, `Graph` canvas, edge routing, pan/zoom     |
-| `./schema` | ER views: `EntityDiagram`, `EntityView`, `EntitiesView`, `fromSchemaModel`, key/FK badges |
+| Entry      | Contents                                                                                                 |
+| ---------- | -------------------------------------------------------------------------------------------------------- |
+| `.`        | Canonical model, normalizer, layout interface + built-in layouts, `Graph` canvas, edge routing, pan/zoom |
+| `./schema` | ER views: `EntityView`, `EntitiesView`, `NoteBlocks`, `fromSchemaModel`, key/FK badges                   |
+
+The entity-centric diagram is **not** a `./schema` component — it is the `neighborhood` layout
+under `.`, rendered by the same `Graph` canvas. See _Layout interface_.
 
 - **Workspace dependencies:** `@rokkit/core`, `@rokkit/ui`
 - **Peer:** `svelte` (`^5.0.0`) — never a hard dependency; see
@@ -155,21 +158,34 @@ type LayoutOptions = {
   density?: 'names' | 'keys' | 'full' // the compact option
   arrange?: 'untangle' | 'a-z'
   edgeStyle?: 'curved' | 'orthogonal'
+  focus?: string | null // `neighborhood` only — the node the view centres on
 }
 
 type LayoutResult = {
-  clusters: PositionedCluster[]
-  cards: Record<string, PositionedCard>
+  clusters: Cluster[] // empty for an ungrouped layout such as `neighborhood`
+  cards: Record<string, Card>
   edges: RoutedEdge[]
   size: { w: number; h: number }
 }
 ```
 
-Slice 1 ports **`cluster`** — `layout-cards.ts`, `layout-clusters.ts`, `layout-edges.ts`,
-`layout-types.ts` — with both existing test suites (`layout-clusters.test.ts` 192 lines,
-`layout-edges.test.ts` 152 lines) running against the canonical types.
+Slice 1 ships **two** layouts:
 
-`force` is slice 2: a second `LayoutFn` behind the same interface, adding `d3-force` to
+| Layout         | Source                                                                        | Notes                                                                                                                       |
+| -------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `cluster`      | `layout-cards.ts`, `layout-clusters.ts`, `layout-edges.ts`, `layout-types.ts` | Both existing test suites (`layout-clusters.test.ts` 192 lines, `layout-edges.test.ts` 152) run against the canonical types |
+| `neighborhood` | `EntityDiagram.svelte`'s geometry                                             | Focus node centred, inbound neighbours left, outbound right                                                                 |
+
+**Why `neighborhood` is in slice 1 and costs nothing.** `EntityDiagram.svelte` carries its own
+`C` constants, `buildCard`, `anchorY` and `path` — roughly 100 lines duplicating `layout-cards.ts`
+and `layout-edges.ts` with slightly different numbers. Expressed as a `LayoutFn` it reuses both
+instead, so porting it this way **removes** the duplication rather than carrying it. It is
+cheaper than porting `EntityDiagram` as a component, not dearer.
+
+The side benefit is real: the layout interface is validated by two independent implementations
+inside slice 1, rather than by one plus a promise about `d3-force`.
+
+`force` remains slice 2: a third `LayoutFn` behind the same interface, adding `d3-force` to
 `@rokkit/graph` alone. No change to the core.
 
 ---
@@ -377,12 +393,12 @@ theming section, and it is what a consumer reads to write an override rule.
 | `density`        | Switch `names` / `keys` / `full` and watch cards resize                                                                      |
 | `arrange`        | Switch `untangle` / `a-z` and see edge-crossing change                                                                       |
 | `edgeStyle`      | Switch `curved` / `orthogonal`                                                                                               |
-| `layout`         | Switch layouts — one entry in slice 1, proving the seam is real rather than notional                                         |
+| `layout`         | Switch `cluster` / `neighborhood` — two real implementations, so the seam is exercised, not just declared                    |
 | `data-node-kind` | Data covering every kind, so each kind's colour is visible at once                                                           |
 | `using`          | Switch `color` / `pattern` / `symbol` — the colour-blind-safe path is verified, not assumed                                  |
 | Group preset     | Multi-schema data, so the `groups` ramp assigns and wraps visibly                                                            |
 | Override         | A documented snippet showing a one-rule `[data-node-kind=…]` override actually taking effect                                 |
-| Views            | `EntityDiagram`, `EntityView` and `EntitiesView` each reachable                                                              |
+| Views            | The `Graph` canvas, `EntityView` and `EntitiesView` each reachable                                                           |
 | Field mapping    | At least one non-dbd-shaped dataset, mapped via `fields` — proving the contract is general and not a SchemaModel in disguise |
 
 The last row matters most. The whole justification for mapped-input-canonical-internals is that
@@ -394,8 +410,8 @@ leave that untested.
 ## Slice boundaries
 
 **Slice 1 — ER on a pluggable layout.** Package scaffold, canonical model + normalizer, layout
-interface, `cluster` layout ported with its tests, `Graph` canvas, `EntityDiagram`,
-`EntityView`, `EntitiesView`, the palette move to core, `base` + `rokkit` theme files, **the
+interface, the `cluster` layout ported with its tests and the `neighborhood` layout,
+`Graph` canvas, `EntityView`, `EntitiesView`, the palette move to core, `base` + `rokkit` theme files, **the
 learn demo and its examples**, dbd consuming it.
 
 **Slice 2 — force-directed / call graph.** A second `LayoutFn` plus `d3-force`, validated
