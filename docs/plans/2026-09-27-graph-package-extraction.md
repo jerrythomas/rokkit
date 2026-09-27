@@ -4562,10 +4562,24 @@ plainly that `SchemaModel` stays in the consuming app.
 - [ ] **Step 9: Verify both routes render**
 
 Run: `cd apps/learn && bun run build`
-Expected: build succeeds; `/components/graph` prerenders.
+Expected: build succeeds; `/components/graph` prerenders. This command exits.
 
-Run: `cd apps/learn && bun run dev`, then open `/app/graph` and exercise **every** control.
-Expected: each control visibly changes the render; no console errors.
+**Do not run `bun run dev` as a plan step.** It is a long-running Vite server with no timeout; an
+unattended executor never gets a prompt back and the whole plan stalls here, 3 tasks short of the
+end. The automated coverage for "each control changes the render" is Task 20's Playwright spec,
+which does exit.
+
+If you want a smoke check that the route serves, bound it:
+
+```bash
+cd apps/learn && (bun run preview &) && sleep 4 && \
+  curl -sS -o /dev/null -w '%{http_code}\n' http://localhost:4173/app/graph && pkill -f 'vite preview'
+```
+
+Expected: `200`.
+
+Exercising every control by hand is a **human, non-blocking** checklist item — valuable, but not a
+step an executor waits on.
 
 - [ ] **Step 10: Commit**
 
@@ -4811,80 +4825,172 @@ is validated by two real implementations rather than one plus a promise."
 **This task is in a different repository** (`~/Developer/dbd`) and must be a separate PR. It is
 the acceptance proof for slice 1 — do not call the slice done without it.
 
-- [ ] **Step 1: Wait for the npm release**
+> ### Safety preconditions — all three, before touching anything
+>
+> This task deletes 16 files in a repo that is not the one you have been working in, and the
+> global Git Safety rules apply: never `git checkout --`/`git restore` over uncommitted work,
+> stage one concern at a time, and confirm with `git diff --cached --stat` before committing.
+>
+> **The order below is deliberate: verify BEFORE deleting.** The original ordering deleted first
+> and verified fifth, which left no sanctioned recovery path if verification failed.
 
-`@rokkit/graph` must be published before dbd can depend on it. Either release from Rokkit
-(`bun run bump`, per the release checklist in the global instructions) or link the workspace
-locally for the port and switch to the published range before merging dbd's PR.
-
-- [ ] **Step 2: Install and replace**
-
-In `~/Developer/dbd/site`:
+- [ ] **Step 1: Confirm dbd is clean and branch**
 
 ```bash
-bun add @rokkit/graph
+cd ~/Developer/dbd
+git status --porcelain
 ```
+
+**If that prints anything, STOP.** Do not proceed, do not `git rm -f`, do not restore. Report the
+dirty paths and ask — there is uncommitted work here that is not yours.
+
+With a clean tree:
+
+```bash
+git checkout -b graph-slice-1
+```
+
+- [ ] **Step 2: Use a linked workspace, not a published package**
+
+**Do not publish `@rokkit/graph` yet.** Publishing is irreversible — a version cannot be reused,
+so a publish that precedes this verification burns the number if the exports map or the
+`svelte-package` output turns out to be wrong.
+
+Link instead:
+
+```bash
+cd ~/Developer/rokkit/packages/graph && bun link
+cd ~/Developer/dbd/site && bun link @rokkit/graph
+```
+
+Publication happens **after** Step 6 passes, as a separate action gated on the release checklist.
+
+- [ ] **Step 3: Rewrite the consuming routes**
 
 Rewrite `site/src/routes/diagram/+page.svelte` and `site/src/routes/projects/+page.svelte` to
 import `Graph` from `@rokkit/graph` and `EntityView`/`EntitiesView`/`fromSchemaModel` from
 `@rokkit/graph/schema`.
 
-- [ ] **Step 3: Delete what moved**
+- [ ] **Step 4: Port the orphaned route test**
+
+`site/src/lib/design/diagram.page.test.ts` renders `../../routes/diagram/+page.svelte` and asserts
+`container.querySelectorAll('[data-card]')`. The new package emits no `data-card` — the vocabulary
+is `data-graph-node`/`data-graph-cluster`. **This test will fail, and that failure is expected at
+this point and is not one of the two intended visual differences below.**
+
+Port its assertions to the new attributes (`[data-graph-node]` for the card count). Do **not**
+delete it to get a green suite — it is the only dbd-side test that the route still renders.
+
+- [ ] **Step 5: Verify BEFORE deleting anything**
+
+The old files are still present, so a failure here costs nothing:
+
+```bash
+cd ~/Developer/dbd/site && bun run test && bun run build
+```
+
+Both must pass. `bun run build` exits; **do not run `bun run preview` or `bun run dev` here** —
+they are long-running Vite servers with no timeout and will hang an unattended run. For a visual
+check, use a bounded probe instead:
+
+```bash
+cd ~/Developer/dbd/site && (bun run preview &) && sleep 4 && curl -sS -o /dev/null -w '%{http_code}\n' http://localhost:4173/diagram && pkill -f 'vite preview'
+```
+
+Expected: `200`. Any side-by-side visual comparison against `main` is an explicitly **human**,
+non-blocking step — not a gate the executor waits on.
+
+Two **intended** differences from `main`, both contrast fixes: column types and fk icons are
+`ink-mute` rather than `ink-soft`, and the selected card uses `primary`/`on-primary` rather than
+baked-hex `accent`.
+
+- [ ] **Step 6: Now delete what moved**
+
+Only once Step 5 is green:
 
 ```bash
 cd ~/Developer/dbd
-git rm site/src/lib/design/{model,layout,layout-cards,layout-clusters,layout-edges,layout-types,md}.ts
+git rm site/src/lib/design/{layout,layout-cards,layout-clusters,layout-edges,layout-types,md}.ts
 git rm site/src/lib/design/{EntityDiagram,EntityView,EntitiesView,DiagramView,Icon}.svelte
-git rm site/src/lib/design/{layout,layout-clusters,layout-edges,model}.test.ts
+git rm site/src/lib/design/{layout,layout-clusters,layout-edges}.test.ts
 ```
 
-**Keep** `model.ts` if `SchemaModel`/`validateModel` still have callers — check first:
+Note `model.ts` and `model.test.ts` are **not** in those lists. Check their callers first:
 
 ```bash
 rg --no-ignore -g '!node_modules' "validateModel|SchemaModel" site/src
 ```
 
-If they do, reduce `model.ts` to just those two and keep `model.test.ts`'s cases for them.
+`SchemaModel`/`validateModel` stay in dbd by design, so expect hits. Reduce `model.ts` to just
+those two plus their types, drop `toLayoutData`/`neighborsOf`/`nodeId` (now in the package), and
+keep the `model.test.ts` cases that cover what remains.
 
 **Keep** `Header.svelte`, `store.ts`, `fragment.ts`, `data.ts`, `ProjectsView.svelte`,
-`SchemaSnapshot.svelte`, `Tabs.svelte`, `ContentHeader.svelte`, `Sidebar.svelte`.
+`SchemaSnapshot.svelte`, `Tabs.svelte`, `ContentHeader.svelte`, `Sidebar.svelte`,
+`diagram.page.test.ts`.
 
-- [ ] **Step 4: Strip the superseded CSS**
+- [ ] **Step 7: Strip the superseded CSS**
 
 From `site/src/lib/design/styles.css`, delete the `DIAGRAM` block (`.dg-*`, lines ~144-232) and
 the `.dbd-app` scoped preflight if nothing else in the subtree needs it. **Keep** the
-`SCHEMA SNAPSHOT THUMBNAIL` block — `SchemaSnapshot.svelte` stays.
+`SCHEMA SNAPSHOT THUMBNAIL` block — `SchemaSnapshot.svelte` stays, and so do its six hue rules.
 
-- [ ] **Step 5: Verify against the original**
-
-Run dbd's own suite and compare the rendered diagram with `main` side by side:
+- [ ] **Step 8: Re-run the suite after deletion**
 
 ```bash
-cd ~/Developer/dbd/site && bun run test && bun run build && bun run preview
+cd ~/Developer/dbd/site && bun run test && bun run build
 ```
 
-Expected: the diagram, entity view and entity table render equivalently. Two **intended**
-differences: column types and fk icons are now `ink-mute` rather than `ink-soft` (a contrast
-fix), and the selected card uses `primary`/`on-primary` rather than baked-hex `accent`.
+Both must pass again. A failure here means a deleted file still had a caller — recover with
+`git checkout graph-slice-1 -- <path>` (safe: the branch has the file staged for deletion, and
+nothing else is uncommitted because Step 1 verified that).
 
-- [ ] **Step 6: Commit in dbd and close the issue**
+- [ ] **Step 9: Commit, scoped**
 
 ```bash
 cd ~/Developer/dbd
-git add -A
+git add site/src/lib/design site/src/routes/diagram site/src/routes/projects site/package.json
+git diff --cached --stat
+```
+
+**Read that stat output.** It must contain only the paths this task touched — no unrelated file.
+`git add -A` is deliberately not used here, per the stage-one-concern-at-a-time rule.
+
+```bash
 git commit -m "refactor(site): consume @rokkit/graph for the schema viewer
 
-Deletes 1,170 lines of viewer source and ~400 of tests, now shared with sensei
-via @rokkit/graph. SchemaModel stays here — the package speaks its own
-canonical model, so the hand-written mirror of schema_model.rs is not
-duplicated into a third place.
+Deletes the viewer source and its layout tests, now shared with sensei via
+@rokkit/graph. SchemaModel stays here — the package speaks its own canonical
+model, so the hand-written mirror of schema_model.rs is not duplicated into a
+third place.
+
+diagram.page.test.ts is ported rather than deleted: its [data-card] assertions
+become [data-graph-node], since it is the only dbd-side test that the route
+still renders at all.
 
 Two intended visual changes, both contrast fixes: column types and fk icons
 move off ink-soft (which cannot carry an interactive control's text) onto
 ink-mute, and the selected card uses primary/on-primary instead of accent,
 whose on-colour was a build-time-baked hex that could not react to a skin."
-gh issue comment 159 --body "Slice 1 shipped — see rokkit docs/design/23-graph.md. Slices 2 (force-directed) and 3 (dbd#24 v2 model) remain."
 ```
+
+- [ ] **Step 10: Publish, then switch off the link**
+
+Only now, and only after the Rokkit-side release checklist passes: `bun run bump` in Rokkit, then
+in dbd replace the link with the published range and re-run Step 8's gate.
+
+- [ ] **Step 11: Close the loop on the issue**
+
+**Chained**, so the announcement cannot outrun the commit:
+
+```bash
+cd ~/Developer/dbd && git log --oneline -1 && \
+  gh issue comment 159 --repo jerrythomas/rokkit \
+    --body "Slice 1 shipped — see docs/design/23-graph.md. dbd now consumes @rokkit/graph. Slices 2 (force-directed) and 3 (dbd#24 v2 model) remain."
+```
+
+Confirm the `git log` line is the commit from Step 9 before the comment posts. An unchained
+sequence would announce "Slice 1 shipped" publicly even if the commit had failed.
 
 ---
 
