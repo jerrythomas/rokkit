@@ -117,6 +117,18 @@ packages/graph/
       EntityView.spec.ts
 ```
 
+### Import-specifier convention
+
+Every file in this package is authored in TypeScript, but **relative imports use a `.js`
+specifier**, matching every existing package: `packages/ui/src/index.ts:68` imports the
+TS-authored `markdown-plugin.ts` as `from './markdown-plugin.js'`. A `.ts` specifier does compile
+here (`allowImportingTsExtensions` is on in the root tsconfig), which is why it is worth stating
+explicitly — it would work while making this the only package in the monorepo written the other
+way.
+
+The one filename that keeps a visible double extension is `GraphState.svelte.ts`, because
+`.svelte.ts` is what marks a runes module. It is still imported as `GraphState.svelte.js`.
+
 ### Layer separation
 
 Three layers, each testable alone — this is the `sensei:ui-state-pattern` shape, and it matches
@@ -180,6 +192,33 @@ describe('@rokkit/graph — manifest', () => {
     expect(thirdParty).toEqual([])
   })
 
+  it('keeps @rokkit/ui an OPTIONAL PEER, not a dependency', () => {
+    // A prefix-only check passes here either way, which is why it needs its own assertion.
+    // @rokkit/ui carries marked + dompurify + a shiki peer for MarkdownRenderer. As a flat
+    // dependency those reach every consumer — including one importing only `.` for the Graph
+    // canvas, which never touches Table. That is the exact cost this design rejects
+    // @rokkit/chart for.
+    expect(pkg.dependencies?.['@rokkit/ui']).toBeUndefined()
+    expect(pkg.peerDependencies['@rokkit/ui']).toBeDefined()
+    expect(pkg.peerDependenciesMeta['@rokkit/ui'].optional).toBe(true)
+  })
+
+  it('does not transitively re-introduce a markdown or sanitiser dependency', () => {
+    // Guards the class, not the instance: any future @rokkit/* dependency that itself
+    // carries marked/dompurify/shiki would undo the fix above silently.
+    const root = join(process.cwd(), 'packages')
+    const forbidden = ['marked', 'dompurify', 'shiki']
+
+    for (const dep of Object.keys(pkg.dependencies ?? {})) {
+      const name = dep.replace('@rokkit/', '')
+      const manifest = JSON.parse(readFileSync(join(root, name, 'package.json'), 'utf-8'))
+
+      for (const bad of forbidden) {
+        expect(manifest.dependencies?.[bad], `${dep} pulls in ${bad}`).toBeUndefined()
+      }
+    }
+  })
+
   it('exposes exactly the two designed entry points', () => {
     expect(Object.keys(pkg.exports).sort()).toEqual(['.', './package.json', './schema'])
   })
@@ -233,13 +272,19 @@ Expected: FAIL — no `graph` project exists yet ("No test files found").
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@rokkit/core": "workspace:*",
-    "@rokkit/ui": "workspace:*"
+    "@rokkit/core": "workspace:*"
   },
   "peerDependencies": {
+    "@rokkit/ui": "workspace:*",
     "svelte": "^5.0.0"
   },
+  "peerDependenciesMeta": {
+    "@rokkit/ui": {
+      "optional": true
+    }
+  },
   "devDependencies": {
+    "@rokkit/ui": "workspace:*",
     "@sveltejs/package": "^2.5.8",
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "svelte": "^5.55.7",
@@ -301,7 +346,7 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
 `packages/graph/src/index.ts` (placeholder barrel, filled by later tasks):
 
 ```ts
-export {} from './types.ts'
+export {} from './types.js'
 ```
 
 `packages/graph/README.md`:
@@ -387,8 +432,8 @@ Create `packages/core/spec/colors-categorical.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
-import { categoricalPalette, categoricalFamilies } from '../src/colors/brewer.ts'
-import { defaultColors } from '../src/colors/index.ts'
+import { categoricalPalette, categoricalFamilies } from '../src/colors/brewer.js'
+import { defaultColors } from '../src/colors/index.js'
 
 describe('categorical palette', () => {
   it('carries every family chart relied on', () => {
@@ -438,7 +483,7 @@ describe('categorical palette', () => {
 - [ ] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project core`
-Expected: FAIL — `Cannot find module '../src/colors/brewer.ts'`.
+Expected: FAIL — `Cannot find module '../src/colors/brewer.js'`.
 
 - [ ] **Step 3: Capture chart's current colours as a guard**
 
@@ -517,7 +562,7 @@ export const categoricalFamilies = Object.keys(categorical).sort()
 In `packages/core/src/colors/index.ts`, add the re-export at the end:
 
 ```ts
-export { categoricalPalette, categoricalFamilies } from './brewer.ts'
+export { categoricalPalette, categoricalFamilies } from './brewer.js'
 ```
 
 - [ ] **Step 5: Point chart at core**
@@ -591,7 +636,7 @@ Create `packages/graph/spec/path.spec.ts`:
 
 ```ts
 import { describe, it, expect } from 'vitest'
-import { readPath } from '../src/model/path.ts'
+import { readPath } from '../src/model/path.js'
 
 describe('readPath', () => {
   it('reads a top-level key', () => {
@@ -630,7 +675,7 @@ describe('readPath', () => {
 - [ ] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project graph`
-Expected: FAIL — `Cannot find module '../src/model/path.ts'`.
+Expected: FAIL — `Cannot find module '../src/model/path.js'`.
 
 - [ ] **Step 3: Implement**
 
@@ -782,7 +827,7 @@ Create `packages/graph/spec/normalize.spec.ts`:
 
 ```ts
 import { describe, it, expect } from 'vitest'
-import { normalizeGraph } from '../src/model/normalize.ts'
+import { normalizeGraph } from '../src/model/normalize.js'
 
 const TABLES = [
   {
@@ -1071,14 +1116,14 @@ describe('normalizeGraph', () => {
 - [ ] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project graph`
-Expected: FAIL — `Cannot find module '../src/model/normalize.ts'`.
+Expected: FAIL — `Cannot find module '../src/model/normalize.js'`.
 
 - [ ] **Step 3: Implement**
 
 Create `packages/graph/src/model/normalize.ts`:
 
 ```ts
-import { readPath } from './path.ts'
+import { readPath } from './path.js'
 import type {
   EdgeKind,
   GraphEdge,
@@ -1087,7 +1132,7 @@ import type {
   GraphNode,
   GraphRow,
   RowBadge
-} from '../types.ts'
+} from '../types.js'
 
 const BADGE_ORDER: RowBadge[] = ['pk', 'fk', 'uq', 'nn']
 
@@ -1323,7 +1368,7 @@ Create `packages/graph/spec/preset.spec.ts`:
 
 ```ts
 import { describe, it, expect } from 'vitest'
-import { createGraphPreset, defaultGraphPreset, resolveGroupStyles } from '../src/preset.ts'
+import { createGraphPreset, defaultGraphPreset, resolveGroupStyles } from '../src/preset.js'
 
 describe('createGraphPreset', () => {
   it('returns the defaults when given no overrides', () => {
@@ -1421,7 +1466,7 @@ describe('resolveGroupStyles', () => {
 - [ ] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project graph`
-Expected: FAIL — `Cannot find module '../src/preset.ts'`.
+Expected: FAIL — `Cannot find module '../src/preset.js'`.
 
 - [ ] **Step 3: Implement**
 
@@ -1594,7 +1639,7 @@ export const MAX_ROW_W = 2750
 `packages/graph/src/layout/types.ts`:
 
 ```ts
-import type { GraphModel, GraphNode, GraphRow } from '../types.ts'
+import type { GraphModel, GraphNode, GraphRow } from '../types.js'
 
 /** How much of each node's row list a card shows. */
 export type Density = 'names' | 'keys' | 'full'
@@ -1711,9 +1756,9 @@ Create `packages/graph/spec/layout/cards.spec.ts`:
 
 ```ts
 import { describe, it, expect } from 'vitest'
-import { buildCards } from '../../src/layout/cards.ts'
-import { CARD_W, HEAD_H, MORE_H, PAD_B, ROW_H } from '../../src/layout/constants.ts'
-import type { GraphNode, GraphRow } from '../../src/types.ts'
+import { buildCards } from '../../src/layout/cards.js'
+import { CARD_W, HEAD_H, MORE_H, PAD_B, ROW_H } from '../../src/layout/constants.js'
+import type { GraphNode, GraphRow } from '../../src/types.js'
 
 function row(name: string, badges: GraphRow['badges'] = []): GraphRow {
   return { name, type: 'text', badges }
@@ -1793,16 +1838,16 @@ describe('buildCards', () => {
 - [ ] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project graph`
-Expected: FAIL — `Cannot find module '../../src/layout/cards.ts'`.
+Expected: FAIL — `Cannot find module '../../src/layout/cards.js'`.
 
 - [ ] **Step 3: Implement**
 
 Create `packages/graph/src/layout/cards.ts`:
 
 ```ts
-import { CARD_W, HEAD_H, MORE_H, PAD_B, ROW_H } from './constants.ts'
-import type { Cards, Density } from './types.ts'
-import type { GraphNode, GraphRow } from '../types.ts'
+import { CARD_W, HEAD_H, MORE_H, PAD_B, ROW_H } from './constants.js'
+import type { Cards, Density } from './types.js'
+import type { GraphNode, GraphRow } from '../types.js'
 
 /** The rows a card shows at the given density (none at 'names'). */
 function visibleRows(node: GraphNode, density: Density): GraphRow[] {
@@ -1870,7 +1915,7 @@ the source test file, changing **nothing else** — every numeric assertion stay
 
 | Source                                       | Becomes                                               |
 | -------------------------------------------- | ----------------------------------------------------- |
-| `import … from './layout-clusters'`          | `import … from '../../src/layout/clusters.ts'`        |
+| `import … from './layout-clusters'`          | `import … from '../../src/layout/clusters.js'`        |
 | `groupBySchema`                              | `groupByGroup`                                        |
 | `LayoutData` fixtures (`{ tables, refs }`)   | a `GraphModel` from `normalizeGraph(...)`             |
 | `table('a','t2')` helper                     | `node('a.t2', 'a', 't2')` returning a `GraphNode`     |
@@ -1936,9 +1981,9 @@ import {
   groupByGroup,
   orderClusters,
   pack
-} from '../../src/layout/clusters.ts'
-import type { Card, Cards, Cluster } from '../../src/layout/types.ts'
-import type { GraphEdge, GraphNode } from '../../src/types.ts'
+} from '../../src/layout/clusters.js'
+import type { Card, Cards, Cluster } from '../../src/layout/types.js'
+import type { GraphEdge, GraphNode } from '../../src/types.js'
 
 function node(id: string, group: string, label: string): GraphNode {
   return { id, label, group, rows: [], meta: {} }
@@ -1956,7 +2001,7 @@ function edge(source: string, target: string): GraphEdge {
 - [ ] **Step 3: Run the ported suite to verify it fails**
 
 Run: `bun run test:ci --project graph`
-Expected: FAIL — `Cannot find module '../../src/layout/clusters.ts'`.
+Expected: FAIL — `Cannot find module '../../src/layout/clusters.js'`.
 
 - [ ] **Step 4: Implement**
 
@@ -2041,7 +2086,7 @@ string and every coordinate stays exactly as written**:
 
 | Source                                                              | Becomes                                                                                                 |
 | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `import … from './layout-edges'`                                    | `import … from '../../src/layout/edges.ts'`                                                             |
+| `import … from './layout-edges'`                                    | `import … from '../../src/layout/edges.js'`                                                             |
 | `col(name)` returning `LayoutColumn`                                | `row(name)` returning `GraphRow` (`{ name, type: 'text', badges: [] }`)                                 |
 | `makeCard(..., vis)` with `t:`                                      | same, with `node:`                                                                                      |
 | `data: LayoutData` with `refs`                                      | a plain `GraphEdge[]` passed straight to `buildEdges`                                                   |
@@ -2054,7 +2099,7 @@ skipped` case is load-bearing — it pins that a skipped edge does not shift lat
 - [ ] **Step 3: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
-Expected: FAIL — `Cannot find module '../../src/layout/edges.ts'`.
+Expected: FAIL — `Cannot find module '../../src/layout/edges.js'`.
 
 - [ ] **Step 4: Implement**
 
@@ -2105,8 +2150,8 @@ Create `packages/graph/spec/layout/cluster.spec.ts`:
 
 ```ts
 import { describe, it, expect } from 'vitest'
-import { cluster } from '../../src/layout/cluster.ts'
-import { normalizeGraph } from '../../src/model/normalize.ts'
+import { cluster } from '../../src/layout/cluster.js'
+import { normalizeGraph } from '../../src/model/normalize.js'
 
 const FIELDS = {
   label: 'name',
@@ -2204,7 +2249,7 @@ describe('cluster layout', () => {
 - [ ] **Step 2: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
-Expected: FAIL — `Cannot find module '../../src/layout/cluster.ts'`.
+Expected: FAIL — `Cannot find module '../../src/layout/cluster.js'`.
 
 - [ ] **Step 3: Implement**
 
@@ -2212,7 +2257,7 @@ Create `packages/graph/src/layout/cluster.ts`, porting `layout.ts`'s `compute` t
 signature:
 
 ```ts
-import { buildCards } from './cards.ts'
+import { buildCards } from './cards.js'
 import {
   barycenterPasses,
   buildAdjacency,
@@ -2221,9 +2266,9 @@ import {
   groupByGroup,
   orderClusters,
   pack
-} from './clusters.ts'
-import { buildEdges } from './edges.ts'
-import type { LayoutFn, LayoutResult } from './types.ts'
+} from './clusters.js'
+import { buildEdges } from './edges.js'
+import type { LayoutFn, LayoutResult } from './types.js'
 
 /**
  * Deterministic cluster layout: groups become clusters, clusters are ordered to
@@ -2297,8 +2342,8 @@ Create `packages/graph/spec/layout/neighborhood.spec.ts`:
 
 ```ts
 import { describe, it, expect } from 'vitest'
-import { neighborhood } from '../../src/layout/neighborhood.ts'
-import { normalizeGraph } from '../../src/model/normalize.ts'
+import { neighborhood } from '../../src/layout/neighborhood.js'
+import { normalizeGraph } from '../../src/model/normalize.js'
 
 const FIELDS = {
   label: 'name',
@@ -2433,7 +2478,7 @@ describe('neighborhood layout', () => {
 - [ ] **Step 3: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
-Expected: FAIL — `Cannot find module '../../src/layout/neighborhood.ts'`.
+Expected: FAIL — `Cannot find module '../../src/layout/neighborhood.js'`.
 
 - [ ] **Step 4: Implement**
 
@@ -2513,9 +2558,9 @@ Expected: PASS — 14 `neighborhood layout` tests.
 Create `packages/graph/src/layout/index.ts`:
 
 ```ts
-import { cluster } from './cluster.ts'
-import { neighborhood } from './neighborhood.ts'
-import type { LayoutFn } from './types.ts'
+import { cluster } from './cluster.js'
+import { neighborhood } from './neighborhood.js'
+import type { LayoutFn } from './types.js'
 
 /** Built-in layouts, addressable by name from `Graph`'s `layout` prop. */
 export const layouts: Record<string, LayoutFn> = { cluster, neighborhood }
@@ -2523,7 +2568,7 @@ export const layouts: Record<string, LayoutFn> = { cluster, neighborhood }
 export type LayoutName = keyof typeof layouts
 
 export { cluster, neighborhood }
-export * from './types.ts'
+export * from './types.js'
 ```
 
 - [ ] **Step 7: Commit**
@@ -2571,8 +2616,8 @@ whole point of the layer.
 
 ```ts
 import { describe, it, expect, vi } from 'vitest'
-import { GraphState } from '../src/GraphState.svelte.ts'
-import { createGraphPreset } from '../src/preset.ts'
+import { GraphState } from '../src/GraphState.svelte.js'
+import { createGraphPreset } from '../src/preset.js'
 
 const FIELDS = {
   label: 'name',
@@ -2982,7 +3027,7 @@ describe('GraphState — edges', () => {
 - [ ] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project graph`
-Expected: FAIL — `Cannot find module '../src/GraphState.svelte.ts'`.
+Expected: FAIL — `Cannot find module '../src/GraphState.svelte.js'`.
 
 - [ ] **Step 3: Implement**
 
@@ -2991,11 +3036,11 @@ outputs, explicit getters, named methods for every transition:
 
 ```ts
 import { SvelteSet } from 'svelte/reactivity'
-import { normalizeGraph } from './model/normalize.ts'
-import { layouts } from './layout/index.ts'
-import { edgePath } from './layout/edges.ts'
-import { defaultGraphPreset, resolveGroupStyles } from './preset.ts'
-import type { GraphPreset } from './preset.ts'
+import { normalizeGraph } from './model/normalize.js'
+import { layouts } from './layout/index.js'
+import { edgePath } from './layout/edges.js'
+import { defaultGraphPreset, resolveGroupStyles } from './preset.js'
+import type { GraphPreset } from './preset.js'
 import type {
   Arrange,
   Cards,
@@ -3004,8 +3049,8 @@ import type {
   EdgeStyle,
   LayoutFn,
   RoutedEdge
-} from './layout/types.ts'
-import type { GraphEdge, GraphFields, GraphModel, GraphNode } from './types.ts'
+} from './layout/types.js'
+import type { GraphEdge, GraphFields, GraphModel, GraphNode } from './types.js'
 
 export type EntityRow = {
   id: string
@@ -3263,8 +3308,8 @@ export class GraphState {
 Then add to `packages/graph/src/index.ts`:
 
 ```ts
-export { GraphState } from './GraphState.svelte.ts'
-export type { EntityRow, GraphStateConfig, Relationship } from './GraphState.svelte.ts'
+export { GraphState } from './GraphState.svelte.js'
+export type { EntityRow, GraphStateConfig, Relationship } from './GraphState.svelte.js'
 ```
 
 - [ ] **Step 4: Run to verify it passes**
@@ -3323,7 +3368,7 @@ Create `packages/graph/spec/Graph.spec.ts`:
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
 import Graph from '../src/Graph.svelte'
-import { GraphState } from '../src/GraphState.svelte.ts'
+import { GraphState } from '../src/GraphState.svelte.js'
 
 const FIELDS = {
   label: 'name',
@@ -3627,13 +3672,13 @@ Then add to `packages/graph/src/index.ts`:
 
 ```ts
 export { default as Graph } from './Graph.svelte'
-export { normalizeGraph } from './model/normalize.ts'
-export { readPath } from './model/path.ts'
-export { createGraphPreset, defaultGraphPreset, resolveGroupStyles } from './preset.ts'
-export { cluster, neighborhood, layouts } from './layout/index.ts'
-export type * from './types.ts'
-export type * from './layout/types.ts'
-export type { GraphChannel, GraphPreset, GraphShades } from './preset.ts'
+export { normalizeGraph } from './model/normalize.js'
+export { readPath } from './model/path.js'
+export { createGraphPreset, defaultGraphPreset, resolveGroupStyles } from './preset.js'
+export { cluster, neighborhood, layouts } from './layout/index.js'
+export type * from './types.js'
+export type * from './layout/types.js'
+export type { GraphChannel, GraphPreset, GraphShades } from './preset.js'
 ```
 
 - [ ] **Step 4: Run to verify it passes**
@@ -3685,7 +3730,7 @@ Create `packages/graph/spec/schema/notes.spec.ts`:
 
 ```ts
 import { describe, it, expect } from 'vitest'
-import { inlineSegs, noteBlocks } from '../../src/schema/notes.ts'
+import { inlineSegs, noteBlocks } from '../../src/schema/notes.js'
 
 describe('inlineSegs', () => {
   it('returns a single plain segment for text with no code', () => {
@@ -3774,7 +3819,7 @@ describe('noteBlocks', () => {
 - [ ] **Step 3: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
-Expected: FAIL — `Cannot find module '../../src/schema/notes.ts'`.
+Expected: FAIL — `Cannot find module '../../src/schema/notes.js'`.
 
 - [ ] **Step 4: Implement**
 
@@ -3786,7 +3831,7 @@ Create `packages/graph/src/schema/NoteBlocks.svelte`, extracting the `segs` snip
 
 ```svelte
 <script lang="ts">
-  import { noteBlocks } from './notes.ts'
+  import { noteBlocks } from './notes.js'
 
   let { note }: { note?: string } = $props()
 
@@ -3850,7 +3895,7 @@ Create `packages/graph/spec/schema/fromSchemaModel.spec.ts`:
 
 ```ts
 import { describe, it, expect } from 'vitest'
-import { SCHEMA_FIELDS, fromSchemaModel } from '../../src/schema/fromSchemaModel.ts'
+import { SCHEMA_FIELDS, fromSchemaModel } from '../../src/schema/fromSchemaModel.js'
 
 const MODEL = {
   project: { name: 'demo', db: 'postgres' },
@@ -3923,15 +3968,15 @@ describe('fromSchemaModel', () => {
 - [ ] **Step 2: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
-Expected: FAIL — `Cannot find module '../../src/schema/fromSchemaModel.ts'`.
+Expected: FAIL — `Cannot find module '../../src/schema/fromSchemaModel.js'`.
 
 - [ ] **Step 3: Implement**
 
 Create `packages/graph/src/schema/fromSchemaModel.ts`:
 
 ```ts
-import { normalizeGraph } from '../model/normalize.ts'
-import type { GraphFields, GraphModel } from '../types.ts'
+import { normalizeGraph } from '../model/normalize.js'
+import type { GraphFields, GraphModel } from '../types.js'
 
 /**
  * Field map from a dbd `SchemaModel` to the canonical model.
@@ -4016,8 +4061,8 @@ Create `packages/graph/spec/schema/EntitiesView.spec.ts`. DOM only — the count
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
 import EntitiesView from '../../src/schema/EntitiesView.svelte'
-import { GraphState } from '../../src/GraphState.svelte.ts'
-import { SCHEMA_FIELDS } from '../../src/schema/fromSchemaModel.ts'
+import { GraphState } from '../../src/GraphState.svelte.js'
+import { SCHEMA_FIELDS } from '../../src/schema/fromSchemaModel.js'
 
 const TABLES = [
   {
@@ -4232,8 +4277,8 @@ Create `packages/graph/spec/schema/EntityView.spec.ts`:
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
 import EntityView from '../../src/schema/EntityView.svelte'
-import { GraphState } from '../../src/GraphState.svelte.ts'
-import { SCHEMA_FIELDS } from '../../src/schema/fromSchemaModel.ts'
+import { GraphState } from '../../src/GraphState.svelte.js'
+import { SCHEMA_FIELDS } from '../../src/schema/fromSchemaModel.js'
 
 const TABLES = [
   {
@@ -4423,9 +4468,9 @@ Create `packages/graph/src/schema/index.ts`:
 export { default as EntityView } from './EntityView.svelte'
 export { default as EntitiesView } from './EntitiesView.svelte'
 export { default as NoteBlocks } from './NoteBlocks.svelte'
-export { SCHEMA_FIELDS, fromSchemaModel } from './fromSchemaModel.ts'
-export { inlineSegs, noteBlocks } from './notes.ts'
-export type { Block, Seg } from './notes.ts'
+export { SCHEMA_FIELDS, fromSchemaModel } from './fromSchemaModel.js'
+export { inlineSegs, noteBlocks } from './notes.js'
+export type { Block, Seg } from './notes.js'
 ```
 
 - [ ] **Step 5: Run to verify it passes**

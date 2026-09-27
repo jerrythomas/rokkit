@@ -49,10 +49,20 @@ The monorepo already separates by _abstraction_, not by "is it visual" — `form
 The entity-centric diagram is **not** a `./schema` component — it is the `neighborhood` layout
 under `.`, rendered by the same `Graph` canvas. See _Layout interface_.
 
-- **Workspace dependencies:** `@rokkit/core`, `@rokkit/ui`
+- **Dependency:** `@rokkit/core` only
+- **Optional peer:** `@rokkit/ui` — needed by `./schema` (`EntitiesView` composes its `Table`),
+  never by `.`
 - **Peer:** `svelte` (`^5.0.0`) — never a hard dependency; see
   `packages/core/spec/workspace-peers.spec.js`
 - **No third-party runtime dependencies.** `fflate` stays in dbd with `fragment.ts`.
+
+**Why `@rokkit/ui` is an optional peer and not a dependency.** It carries hard runtime deps on
+`marked` (^15) and `dompurify` (^3.4.13) for `MarkdownRenderer`, plus a `shiki` peer — none of
+which this package touches. `dependencies` is unconditional across both export entries, so a
+consumer importing only `.` for the `Graph` canvas would still pull a Markdown parser and an HTML
+sanitiser into their tree. That is precisely the cost this design rejects `@rokkit/chart` for
+three sections above; taking it here would be inconsistent. `@rokkit/blocks` already establishes
+the pattern with `peerDependenciesMeta.mermaid.optional`.
 
 **What crosses:** ~1,170 lines of source plus ~400 lines of existing tests. `Icon.svelte` (78)
 is not among them — see _Reuse instead of port_.
