@@ -465,6 +465,9 @@ describe('categorical palette', () => {
   it('gives every family the full 50-950 ladder', () => {
     const shades = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950']
 
+    // Guard the loop: on an empty families array the body never runs and this passes vacuously.
+    expect(categoricalFamilies.length).toBeGreaterThan(0)
+
     for (const family of categoricalFamilies) {
       expect(Object.keys(categoricalPalette[family]).sort(), family).toEqual(shades.sort())
     }
@@ -2240,8 +2243,31 @@ describe('cluster layout', () => {
     expect(result.edges).toEqual([])
   })
 
-  it('accepts arrange a-z as well as untangle', () => {
-    expect(() => cluster(model(), { arrange: 'a-z' })).not.toThrow()
+  it('threads arrange through to the cluster ordering, not just tolerating it', () => {
+    // `.not.toThrow()` alone would pass against `orderClusters(clusters, edges, 'untangle')`
+    // with the option ignored. The two strategies must produce observably different output.
+    const untangle = cluster(model(), { arrange: 'untangle' })
+    const alphabetical = cluster(model(), { arrange: 'a-z' })
+
+    const order = (r: typeof untangle) => r.clusters.map((c) => c.name).join(',')
+    const positions = (r: typeof untangle) =>
+      Object.entries(r.cards)
+        .map(([k, c]) => `${k}@${c.x},${c.y}`)
+        .sort()
+        .join('|')
+
+    // A 2-group fixture may legitimately agree on cluster ORDER, so compare placement too —
+    // at least one of the two must differ, or the option is not reaching the algorithm.
+    expect(
+      order(untangle) !== order(alphabetical) || positions(untangle) !== positions(alphabetical)
+    ).toBe(true)
+  })
+
+  it('orders clusters by descending area under a-z', () => {
+    const result = cluster(model(), { arrange: 'a-z' })
+    const areas = result.clusters.map((c) => (c.w ?? 0) * (c.h ?? 0))
+
+    expect([...areas].sort((a, b) => b - a)).toEqual(areas)
   })
 })
 ```
@@ -3696,23 +3722,23 @@ $effect(() => {
 
 **Attribute vocabulary** — every BEM class from the source becomes a data-attribute:
 
-| `DiagramView.svelte`               | `Graph.svelte`                                                      |
-| ---------------------------------- | ------------------------------------------------------------------- |
-| `.dg-viewport` + `.dg-dots`        | root, with `data-graph-paper` (**do not** port `.dg-dots`)          |
-| `.dg-world`                        | `data-graph-world`                                                  |
-| `.dg-cluster`                      | `data-graph-cluster` + `data-node-group` + `data-graph-group-index` |
-| `.dg-cluster-label`                | `data-graph-cluster-label`                                          |
-| `.dg-card`                         | `data-graph-node` + `data-node-kind` + `data-node-state`            |
-| `.dg-card.sel/.rel/.dim`           | `data-node-state="selected\|related\|dim"`                          |
-| `.dg-card.headonly`                | `data-node-headonly`                                                |
-| `.dg-card-head` / `.dg-card-title` | `data-graph-node-head` / `data-graph-node-title`                    |
-| `.dg-row` / `.dg-row.iskey`        | `data-graph-row` / `data-graph-row-key`                             |
-| `.cname` / `.ctype`                | `data-graph-row-name` / `data-graph-row-type`                       |
-| `.dg-more`                         | `data-graph-more`                                                   |
-| `.dg-keyicon` / `.dg-fkicon`       | one element with `data-row-badge="pk\|fk\|uq"`                      |
-| `g.dg-edge`                        | `data-graph-edge` + `data-edge-kind` + `data-edge-state`            |
-| `.dot-from` / `.dot-to`            | `data-graph-edge-dot="from\|to"`                                    |
-| `.tinted`                          | dropped — group colour is always on, via custom properties          |
+| `DiagramView.svelte`               | `Graph.svelte`                                             |
+| ---------------------------------- | ---------------------------------------------------------- |
+| `.dg-viewport` + `.dg-dots`        | root, with `data-graph-paper` (**do not** port `.dg-dots`) |
+| `.dg-world`                        | `data-graph-world`                                         |
+| `.dg-cluster`                      | `data-graph-cluster` + `data-node-group`                   |
+| `.dg-cluster-label`                | `data-graph-cluster-label`                                 |
+| `.dg-card`                         | `data-graph-node` + `data-node-kind` + `data-node-state`   |
+| `.dg-card.sel/.rel/.dim`           | `data-node-state="selected\|related\|dim"`                 |
+| `.dg-card.headonly`                | `data-node-headonly`                                       |
+| `.dg-card-head` / `.dg-card-title` | `data-graph-node-head` / `data-graph-node-title`           |
+| `.dg-row` / `.dg-row.iskey`        | `data-graph-row` / `data-graph-row-key`                    |
+| `.cname` / `.ctype`                | `data-graph-row-name` / `data-graph-row-type`              |
+| `.dg-more`                         | `data-graph-more`                                          |
+| `.dg-keyicon` / `.dg-fkicon`       | one element with `data-row-badge="pk\|fk\|uq"`             |
+| `g.dg-edge`                        | `data-graph-edge` + `data-edge-kind` + `data-edge-state`   |
+| `.dot-from` / `.dot-to`            | `data-graph-edge-dot="from\|to"`                           |
+| `.tinted`                          | dropped — group colour is always on, via custom properties |
 
 Also:
 
@@ -4914,10 +4940,59 @@ Include a `data-graph-explorer` marker element for the smoke gate.
 Follow `demos/chart/meta.ts` exactly. `id: 'graph'`, `category: 'data'`, keywords covering
 `graph`, `diagram`, `er-diagram`, `schema`, `entity`, `nodes`, `edges`, `call-graph`,
 `dependency`, `force-directed`. The `api.attrs` list must publish **every** data-attribute from
-`base/graph.css` — it is the consumer's override contract, not decoration. `snippets` must
-include: a minimal `<Graph>`, the `fields`-mapped non-dbd example, `fromSchemaModel` sugar, a
-`createGraphPreset` override, and a **one-rule CSS override** showing
-`[data-node-kind='table'] { --node-accent: var(--primary) }` taking effect.
+**both** `base/graph.css` and `rokkit/graph.css` — it is the consumer's override contract, not
+decoration.
+
+Sourcing it from `base/graph.css` alone would omit exactly the attributes a consumer comes for:
+`data-node-kind`, `data-node-state`, `data-node-group`, `data-edge-kind`, `data-edge-state` are
+colour-keyed, so by the headless-base rule they appear only in `rokkit/graph.css`. The list must
+be the union.
+
+`snippets` must include: a minimal `<Graph>`, the `fields`-mapped non-dbd example,
+`fromSchemaModel` sugar, a `createGraphPreset` override, and a **one-rule CSS override** showing
+`[data-node-kind='table'] { --node-accent: var(--primary) }`.
+
+Add a spec that pins the union, so the list cannot silently fall behind the CSS:
+
+```ts
+// apps/learn/spec/koan/graph-meta.spec.ts
+import { describe, it, expect } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import meta from '../../src/lib/koan/demos/graph/meta'
+
+const css = ['base', 'rokkit']
+  .map((style) =>
+    readFileSync(join(process.cwd(), `../../packages/themes/src/${style}/graph.css`), 'utf-8')
+  )
+  .join('\n')
+
+describe('graph demo meta', () => {
+  it('publishes every data-attribute the theme CSS targets', () => {
+    const inCss = new Set([...css.matchAll(/\[data-([a-z-]+)/g)].map((m) => `data-${m[1]}`))
+    const documented = new Set(
+      meta.api.attrs.flatMap((a) => [...a.selector.matchAll(/data-[a-z-]+/g)].map((m) => m[0]))
+    )
+
+    expect([...inCss].filter((a) => !documented.has(a))).toEqual([])
+  })
+
+  it('documents the theming attributes specifically, not just the structural ones', () => {
+    const documented = meta.api.attrs.map((a) => a.selector).join(' ')
+
+    for (const attr of [
+      'data-node-kind',
+      'data-node-state',
+      'data-node-group',
+      'data-edge-kind',
+      'data-edge-state',
+      'data-row-badge'
+    ]) {
+      expect(documented, attr).toContain(attr)
+    }
+  })
+})
+```
 
 - [ ] **Step 7: Register it**
 
@@ -5061,6 +5136,42 @@ test.describe('graph demo', () => {
     await expect(page.locator('[data-edge-state="highlight"]').first()).toBeVisible()
   })
 
+  test('switching arrange visibly changes the layout', async ({ page }) => {
+    const positions = async () =>
+      page
+        .locator('[data-graph-node]')
+        .evaluateAll((els) =>
+          els
+            .map((el) => `${(el as HTMLElement).style.left},${(el as HTMLElement).style.top}`)
+            .join('|')
+        )
+
+    await page.getByLabel('Arrange').selectOption('untangle')
+    const untangled = await positions()
+
+    await page.getByLabel('Arrange').selectOption('a-z')
+    expect(await positions()).not.toBe(untangled)
+  })
+
+  test('a one-rule data-node-kind override actually changes the rendered colour', async ({
+    page
+  }) => {
+    // The design's verification table claims the override is demonstrated. A snippet in the
+    // docs demonstrates the SYNTAX; this proves the mechanism.
+    const table = page.locator('[data-node-kind="table"]').first()
+    const before = await table.evaluate((el) =>
+      getComputedStyle(el).getPropertyValue('--node-accent')
+    )
+
+    await page.addStyleTag({ content: "[data-node-kind='table'] { --node-accent: rgb(1 2 3); }" })
+    const after = await table.evaluate((el) =>
+      getComputedStyle(el).getPropertyValue('--node-accent')
+    )
+
+    expect(after.trim()).toBe('rgb(1 2 3)')
+    expect(after).not.toBe(before)
+  })
+
   test('the entity table reaches every row from the keyboard', async ({ page }) => {
     await page.getByLabel('View').selectOption('entities')
     await page.locator('[data-graph-entity-row]').first().focus()
@@ -5074,7 +5185,7 @@ test.describe('graph demo', () => {
 - [ ] **Step 4: Run the e2e suite**
 
 Run: `cd apps/learn && npx playwright test graph.e2e.ts`
-Expected: 8 tests pass.
+Expected: 10 tests pass.
 
 - [ ] **Step 5: Run the gates**
 
