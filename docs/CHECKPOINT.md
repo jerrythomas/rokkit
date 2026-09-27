@@ -1,37 +1,40 @@
 # CHECKPOINT
 
-**Slice:** post-v1.4.2 burn-down — **RELEASED v1.6.0** (2026-09-16). Backlog empty; develop and main at the release commit; all 14 packages live on npm.
-
-## Released in v1.6.0
-
-Three breaking changes, held until they could ship together:
-
-- **`snippets` prop** (`12563bdd`) — replaces the open `[key: string]: unknown`
-  index signature, so misspelled prop names are type errors, not silent no-ops.
-- **svelte as a peer** (`a5103514`) — `states`/`data` shipped it as a *hard* dep,
-  putting a second svelte runtime in consumers' trees.
-- **unocss as a peer** (`2da23978`) — same shape, plus a guard
-  (`packages/core/spec/workspace-peers.spec.js`) so the class can't return.
-- **Table per-column snippets** (`6632295a`) — its docs promised these while the
-  component never read `column.snippet`. Not breaking; additive.
-
-## Verified on the shipped artifacts
-
-Not "CI is green" — the exact repros that failed on 1.5.0, re-run against npm:
-
-| Repro | 1.5.0 | 1.6.0 |
-| --- | --- | --- |
-| consumer on svelte 5.40.0 + `@rokkit/ui` | 3 svelte copies | **1** |
-| consumer on unocss 66.0.0 + `@rokkit/unocss` | 2 engines | **1** |
-| `{ itemcontnt: … }` against `ListProps` | compiled | **type error** |
+**Slice:** #159 — extract dbd's ER-diagram viewer into a new **`@rokkit/graph`**.
+Design agreed and committed (`0b023faa`): `docs/design/23-graph.md` +
+`docs/backlog/2026-09-27-graph-package-extraction.md`. **No code yet.**
 
 ## Remains
 
-**TypeScript 7** — waiting on upstream: svelte-check 4.7.6 (latest) still caps TS
-at <= 6.0. Dual-install workaround verified but not worth two compilers in six
-packages. Trigger + steps in the backlog. Only open item.
+1. Slice-1 plan → `docs/plans/2026-09-27-graph-package-extraction.md`
+2. Slice 1: normalizer → `cluster` layout → components → theme → learn demo → dbd consumes it
+3. Slice 2: force-directed (sensei's call graph) · Slice 3: dbd#24 v2 model
 
-## Known-broken
+**Next command:** write the slice-1 plan, TDD-ordered. Port from `~/Developer/dbd/site/src/lib/design/`.
 
-Nothing. lint 0/0 · check:types + check:build + check:svelte 0/0 · build:apps 0 ·
-test:ci 6465/407 · learn e2e 70/70 · bun audit 0. (Sensei daemon down — this is the record.)
+## Decisions locked — do not relitigate
+
+New package, **not** `@rokkit/chart` (chart is scales/channels/marks; `d3-force` must not reach
+bar-chart consumers). Entry points `.` + `./schema`. Contract = **mapped input, canonical
+internals** (`nodes`/`edges`/`fields`, normalized once). Viewer core only — app-shell and
+`SchemaModel` stay in dbd. Theming splits by vocabulary: `data-node-kind` in CSS for the closed
+set, a brewer preset for open-ended groups. `base` + `rokkit` themes only. `LayoutFn` interface
+now, `cluster` only. **Learn examples ship in slice 1** — they are the verification surface.
+
+## Findings the plan must honour
+
+- `chart/src/lib/palette.json` + categorical `preset.js` + `brewing/patterns.js` → `@rokkit/core`;
+  safe (absent from chart's `exports`, zero imports, no d3). Ship as a distinct
+  `categoricalPalette`, **not** merged — core's `tailwind.json` is a different palette, so merging
+  would move chart baselines.
+- `[data-graph-paper]` already exists and **is** the dotted canvas — delete `.dg-dots`.
+  `Icon.svelte` does not port (icons-as-CSS-classes, 2026-02).
+- **Two live defects to fix, not carry:** `styles.css:194,201` put `.ctype`/`.dg-fkicon` on
+  `ink-soft` inside a `<button>` (forbidden → `ink-mute`); `styles.css:174` uses `accent`, whose
+  on-color bakes a hex and can't react to a skin (→ `primary`/`on-primary`).
+- Contrast sweep must use a **non-default** skin — default maps primary _and_ accent to `shu`.
+
+## Open questions / known-broken
+
+None blocking; nothing broken; `check:types` clean. Deferred: dbd adopting `createGraphPreset` for
+`SchemaSnapshot`'s six hue rules. Other open repo item: TypeScript 7 (needs svelte-check > TS 6).
