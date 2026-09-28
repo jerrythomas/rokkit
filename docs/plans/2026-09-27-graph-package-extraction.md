@@ -873,7 +873,7 @@ delivering `fk`/`uq` natively becomes a change to this file alone.
 
 - Create: `packages/graph/src/model/normalize.ts`, `packages/graph/spec/normalize.spec.ts`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/graph/spec/normalize.spec.ts`:
 
@@ -1165,12 +1165,12 @@ describe('normalizeGraph', () => {
 })
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../src/model/normalize.js'`.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `packages/graph/src/model/normalize.ts`:
 
@@ -1387,12 +1387,12 @@ export function normalizeGraph(
 }
 ```
 
-- [ ] **Step 4: Run to verify it passes**
+- [x] **Step 4: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 15 `normalizeGraph` tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/graph/src/model/normalize.ts packages/graph/spec/normalize.spec.ts

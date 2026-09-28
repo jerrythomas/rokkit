@@ -9015,3 +9015,33 @@ code, then added the `Object.hasOwn` guard.
 graph suite 13 tests (5 manifest + 8 path), lint, check:types, check:svelte all
 green. `check` still warns "no svelte input files" — expected until Task 13.
 Commit `d0d9aa6a`.
+
+## Issue #159 Task 4: `normalizeGraph`, the single mapping seam
+
+`src/model/normalize.ts` — resolves `nodes`/`edges`/`fields` into canonical
+types **once**, so no field mapping leaks into layouts or components. dbd's
+per-column `fk` derivation moves here, which is what makes dbd#24 shipping `fk`
+natively a change to this one file. Endpoint resolution has exactly two
+strategies (raw value is already a node id; `${group}.${raw}` from a *declared*
+group path) and deliberately no "sweep the siblings for a match" third — that
+shape would attach a `staging.orders` edge to `legacy.orders` and draw a
+relationship between two entities that have none.
+
+**Three corrections to the plan.** Its expected edge id omitted the `kind:`
+prefix its own implementation adds; the implementation carries the rationale, so
+the stale literal was fixed rather than the code (the design doc does not pin
+the format). Its implementation tripped three lint warnings — `resolveEndpoint`
+at 5 params, `buildEdge` at 39 lines and complexity 10 — decomposed into an
+`EndpointSpec`, `resolveEndpoints` and `uniqueEdgeId` rather than disabled. And
+six paths had no coverage against the package's 100% threshold: absent/non-array
+rows, a nameless node or row (`String(undefined)` would render the literal text
+"undefined" and key a node by it), a non-object source, an explicit mapped id, a
+missing endpoint field, and an unknown endpoint with no group path left.
+
+One of those new tests was wrong on first write: I asserted that dropping every
+group path would drop the edge, but with no group mapped the node ids *are* the
+bare labels, so the endpoint resolves directly. Corrected to the real contract
+and split into the two branches it was conflating.
+
+40 tests, 100% statements/branches/functions, lint and check:types green.
+Commit `a36c7b36`.
