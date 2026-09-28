@@ -200,6 +200,26 @@ test.describe('graph demo', () => {
 		await expect(page.locator('[data-node-group="commerce"]').first()).toBeAttached()
 	})
 
+	test('a neighbourhood re-centres on the neighbour you click, so you can keep walking', async ({
+		page
+	}) => {
+		// The interaction a call-graph reader actually performs: centre a symbol, look at what
+		// calls it, step onto one of those, repeat. It works because `focus` defaults to the
+		// selection — but nothing pinned it, so a future change to that default could quietly
+		// turn the view into a dead end.
+		await page.locator('[data-graph-node]').first().click()
+		await openControls(page)
+		await setControl(page, 'Layout', 'neighborhood')
+
+		const focused = () => page.locator('[data-node-state="selected"]').getAttribute('data-graph-node')
+		const before = await focused()
+
+		await page.locator('[data-graph-node]:not([data-node-state="selected"])').first().click()
+
+		expect(await focused()).not.toBe(before)
+		await expect(page.locator('[data-graph-node]').first()).toBeVisible()
+	})
+
 	test('switching edge style changes the drawn path', async ({ page }) => {
 		const firstPath = () =>
 			page.locator('[data-graph-edge] path').first().getAttribute('d')

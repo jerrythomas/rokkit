@@ -533,3 +533,60 @@ its own. Plus `SchemaModel`/`validateModel`, the Rust mirror.
 
 `Sidebar` and `Tabs` are deliberately **not** promoted: they overlap `@rokkit/ui`'s `Tree` and
 `Tabs`, and shipping near-duplicates to save a port is the wrong trade.
+
+---
+
+## Slice 2 — the world view (designed, not built)
+
+Studied against `~/Downloads/Sensei/Sensei Schema and Call Graph v3.dc.html`, which drives
+**1.18M nodes / 4.08M edges**. Two views, and the repo's own numbers make the gap concrete.
+
+### What already matches
+
+The reference's **Neighbourhood** view — *"what calls this symbol, and what it calls — read
+left to right. Centre on any neighbour to keep walking"* — is the `neighborhood` LayoutFn
+shipped in slice 1, including the walk: clicking a neighbour re-centres because `focus`
+defaults to the selection. That behaviour is now pinned by an e2e test.
+
+Its header reads *"one symbol at a time"*, which is the whole scaling story for that view:
+the 1-hop neighbourhood of one node is small no matter how large the graph is.
+
+### What does not
+
+The reference's **World** view is *"each bubble is sized by its declarations and holds what it
+contains"* — and the technique that makes it survive 1.18M nodes is one `points` does not use:
+
+1. **Only two levels are materialised at a time.** `shallow(focus, 0)` walks `d < 2`, so the
+   render is one level plus its children — never the whole tree.
+2. **Drill-down is the navigation.** A stack (`wStack`) of focused containers, with
+   breadcrumbs back out. Zoom changes detail; drilling changes *scope*.
+3. **Containment, not grouping.** A bubble *holds* its children — package → module → symbol —
+   and a node's size is its subtree's summed declaration count.
+4. **A single-child container is folded away**, because a wrapper is not a level.
+5. **Shading is a second channel** over the same geometry: unresolved share, test share, docs
+   share — "where the graph knows least".
+6. **Status reads on the border**: indexing dashed, queued dotted, failed accent.
+
+`points` (slice 1) is flat and single-level: it packs every node of every group into one
+spiral. Measured, that is the difference between usable and not — 1000 nodes render at 0.603
+fit; 1.18M would not render at all, because the cost is in materialising the nodes rather
+than in the geometry.
+
+### What slice 2 needs
+
+- **A containment relation in the canonical model.** `GraphFields` has `group`, a single flat
+  key. Hierarchy needs `parent` (or `path`), and `normalizeGraph` needs to build the tree.
+  This is the real prerequisite and it is a model change, not a layout change.
+- **A `world` LayoutFn** doing circle packing over two materialised levels. `d3-hierarchy`'s
+  `pack` is the obvious tool and `@rokkit/chart` already carries d3 packages, so the
+  dependency question is about whether `@rokkit/graph` should take `d3-hierarchy` as its
+  first third-party runtime dependency — today it has none, and `dependencies.spec.js`
+  enforces that. Deliberate decision, not an accident to drift into.
+- **Drill state on `GraphState`** — a focus stack with `drillInto`/`drillOut`, exposed as
+  breadcrumbs. This is state, so it stays testable without a renderer.
+- **A `value` field** for node weight, so a bubble is sized by declarations rather than by
+  degree as `points` does today.
+
+Slice 1 deliberately stops short of all of this. `points` answers "what does a dense flat
+graph look like"; the world view answers "what does a 1M-node hierarchy look like", and they
+are different questions with different models underneath.
