@@ -20,6 +20,8 @@ describe('@rokkit/core', () => {
 			'syntaxColors',
 			'shades',
 			'defaultPalette',
+			'categoricalPalette',
+			'categoricalFamilies',
 			'DATA_IMAGE_REGEX',
 			'ITEM_SNIPPET',
 			'GROUP_SNIPPET',

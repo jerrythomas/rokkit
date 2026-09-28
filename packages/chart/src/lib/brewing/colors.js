@@ -1,7 +1,7 @@
 import { scaleSequential, scaleDiverging } from 'd3-scale'
 import { extent } from 'd3-array'
 import * as chromatic from 'd3-scale-chromatic'
-import masterPalette from '../palette.json'
+import { categoricalPalette as masterPalette } from '@rokkit/core'
 import { defaultPreset } from '../preset.js'
 
 /**

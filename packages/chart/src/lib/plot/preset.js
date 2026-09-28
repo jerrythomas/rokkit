@@ -1,4 +1,4 @@
-import masterPalette from '../palette.json'
+import { categoricalPalette as masterPalette } from '@rokkit/core'
 import { defaultPreset } from '../preset.js'
 import { PATTERN_ORDER } from '../brewing/patterns.js'
 import { SYMBOL_ORDER } from '../brewing/symbols.js'

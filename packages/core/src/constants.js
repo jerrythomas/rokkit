@@ -1,4 +1,11 @@
-export { defaultColors, syntaxColors, shades, defaultPalette } from './colors/index'
+export {
+	defaultColors,
+	syntaxColors,
+	shades,
+	defaultPalette,
+	categoricalPalette,
+	categoricalFamilies
+} from './colors/index'
 export const DATA_IMAGE_REGEX = /^data:image\/(jpeg|png|gif|bmp|webp|svg\+xml)/i
 
 // ─── Snippet names ────────────────────────────────────────────────────────────

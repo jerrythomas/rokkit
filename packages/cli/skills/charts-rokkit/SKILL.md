@@ -119,7 +119,8 @@ Every categorical encoding is driven by a **preset** (`packages/chart/src/lib/pr
 
 Each list is **names into a registry**, cycled across your data's distinct values:
 
-- `colors` → palette names in **`lib/palette.json`** (each name → 11 shades `50–950`).
+- `colors` → palette names in **`@rokkit/core`'s `categoricalPalette`** (each name → 11 shades
+  `50–950`).
   `assignColors(values, mode, preset)` picks `palette[name][shades[mode].fill|stroke]` — so a chart
   re-colours correctly for light/dark automatically.
 - `patterns` → names in **`patterns/patterns.js`** (`PATTERNS`, the SVG mark defs).
@@ -134,7 +135,7 @@ and share it via `ChartProvider`:
 <script>
   import { ChartProvider, createChartPreset, BarChart, LineChart } from '@rokkit/chart'
   const preset = createChartPreset({
-    colors: ['teal', 'orange', 'rose'],   // subset/reorder of palette.json names
+    colors: ['teal', 'orange', 'rose'],   // subset/reorder of categoricalPalette names
     patterns: ['dots', 'hatch'],
     shades: { dark: { fill: '400' } }      // partial shade override (merges)
   })
@@ -157,7 +158,8 @@ and share it via `ChartProvider`:
 
 ### Add a NEW colour palette
 
-1. Add an 11-shade entry to `packages/chart/src/lib/palette.json` (shades `50`→`950`, light→dark):
+1. Add an 11-shade entry to `packages/core/src/colors/categorical.json` (shades `50`→`950`,
+   light→dark). It lives in core because `@rokkit/chart` and `@rokkit/graph` both consume it:
 
    ```json
    "brand": { "50": "#f4f7ff", "100": "…", "300": "#93b4ff", "500": "#3b6cff",

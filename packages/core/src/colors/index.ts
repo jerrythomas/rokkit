@@ -23,3 +23,5 @@ export const defaultColors: PresetMiniColors & typeof extraColors = {
 	...colors,
 	...extraColors
 }
+
+export { categoricalPalette, categoricalFamilies } from './brewer.js'

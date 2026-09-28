@@ -39,7 +39,8 @@ the vocabulary — cite it, don't restate it.
   Colours/patterns/symbols come from `createChartPreset()` shared via `<ChartProvider>` (nest to
   scope a subtree); named presets (`default`/`accessible`/`print`, or `helpers.presets`) go through
   `spec.preset`. Adding a *new* colour/pattern/symbol means extending a registry
-  (`lib/palette.json` / `patterns/patterns.js` `PATTERNS` / `lib/brewing/marks/points.js`
+  (`@rokkit/core` `categoricalPalette` / `patterns/patterns.js` `PATTERNS` /
+  `lib/brewing/marks/points.js`
   `SYMBOL_NAMES`+`SYMBOL_TYPES`) then naming it in a preset — never inlining scattered raw colours.
 - **Colour follows the theme.** Preset shades resolve per light/dark mode; a chart should reskin
   from the preset/skin, not from hardcoded per-mark hex. Token-literal fills are fine when
@@ -81,7 +82,8 @@ results than blind grep. Fall back to Grep/Glob only if a tool errors or returns
    root, `opacity=` on a chart, `stack\b` as a boolean prop, `palette=` / `preset=` on a chart,
    raw `#[0-9a-fA-F]{3,8}`/`oklch(`/`rgb(` inside chart props. Map each hit to the correct
    channel/preset fix.
-4. If a new palette/pattern/symbol was added, verify it's in the right registry (`palette.json` /
+4. If a new palette/pattern/symbol was added, verify it's in the right registry
+   (`categoricalPalette` /
    `PATTERNS` / `SYMBOL_*`) with the right shape, and referenced by name in a preset. Run
    `rokkit doctor` if available and fold in its advisories.
 

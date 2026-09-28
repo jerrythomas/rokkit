@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { assignColors, distinct, isLiteralColor, buildSequentialScale, buildDivergingScale } from '../../src/lib/brewing/colors.js'
 import { defaultPreset, createChartPreset } from '../../src/lib/preset.js'
-import masterPalette from '../../src/lib/palette.json'
+import { categoricalPalette as masterPalette } from '@rokkit/core'
 
 describe('assignColors', () => {
 	it('maps values to hex colors using shade indices from preset', () => {

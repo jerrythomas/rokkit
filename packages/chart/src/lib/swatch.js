@@ -1,4 +1,4 @@
-import palette from './palette.json'
+import { categoricalPalette as palette } from '@rokkit/core'
 import { PATTERN_ORDER } from './brewing/patterns.js'
 import { shapes } from '../symbols'
 
