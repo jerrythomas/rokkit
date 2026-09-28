@@ -176,6 +176,43 @@ test.describe('graph demo', () => {
 		await expect(card.locator('[data-graph-more]')).toHaveText('show less')
 	})
 
+	test('the dependency view nests kind inside schema, and the axes reverse', async ({ page }) => {
+		// Schema alone is a poor axis for a dependency graph — `audit` holds a table, a trigger
+		// and a procedure. Nesting shows both facts at once instead of trading one for the
+		// other, and which is outer is the reader's choice.
+		await page.goto('/app/graph?variant=schema-deps')
+		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+
+		const outer = page.locator('[data-graph-cluster][data-cluster-depth="0"]')
+		const inner = page.locator('[data-graph-cluster][data-cluster-depth="1"]')
+		await expect(outer).toHaveCount(3)
+		expect(await inner.count()).toBeGreaterThan(3)
+
+		// `table` appears under more than one schema — keyed by name alone that is a duplicate
+		// key, and Svelte aborts the whole render rather than drawing any inner box.
+		expect(
+			await page.locator('[data-cluster-depth="1"][data-node-group="table"]').count()
+		).toBeGreaterThan(1)
+
+		await openControls(page)
+		await setControl(page, 'Group by', 'kind-schema')
+		await expect(
+			page.locator('[data-graph-cluster][data-cluster-depth="0"][data-node-group="table"]')
+		).toHaveCount(1)
+	})
+
+	test('grouping flattens to one level when a single axis is chosen', async ({ page }) => {
+		await page.goto('/app/graph?variant=schema-deps')
+		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+		await openControls(page)
+		await setControl(page, 'Group by', 'kind')
+
+		await expect(page.locator('[data-graph-cluster][data-cluster-depth="1"]')).toHaveCount(0)
+		expect(
+			await page.locator('[data-graph-cluster][data-cluster-depth="0"]').count()
+		).toBeGreaterThan(3)
+	})
+
 	test('switching to the neighborhood layout drops the clusters', async ({ page }) => {
 		await page.locator('[data-graph-node]').first().click()
 		await openControls(page)

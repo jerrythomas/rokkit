@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { SCHEMA_FIELDS, fromSchemaModel } from '../../src/schema/fromSchemaModel.js'
+import { SCHEMA_FIELDS, fromSchemaModel, toGraphInput } from '../../src/schema/fromSchemaModel.js'
+import { normalizeGraph } from '../../src/model/normalize.js'
 
 const MODEL = {
 	project: { name: 'demo', db: 'postgres' },
@@ -238,6 +239,26 @@ describe('fromSchemaModel — dependency scope', () => {
 		const view = fromSchemaModel(V2, { as: 'dependencies' }).byId.get('public.active_orders')
 
 		expect(view?.note).toBe('Undelivered orders.')
+	})
+
+	it('gives every node an EXPLICIT id, so the grouping axis is free to change', () => {
+		// Identity must not be derived from the group. `id` defaults to `${group}.${label}`, so
+		// a consumer that regroups by kind would silently re-key every node to `table.orders`
+		// and every dep edge — which resolves `${from.s}.${name}` — would stop matching and the
+		// whole graph would render unplaced.
+		const nodes = fromSchemaModel(V2, { as: 'dependencies' }).nodes
+
+		expect(nodes.find((n) => n.label === 'orders')?.id).toBe('public.orders')
+		expect(nodes.find((n) => n.label === 'active_orders')?.id).toBe('public.active_orders')
+	})
+
+	it('keeps edges resolving when the consumer regroups by kind', () => {
+		// The actual point of the explicit id: same data, different grouping axis, same graph.
+		const { nodes, edges, fields } = toGraphInput(V2, 'dependencies')
+		const byKind = normalizeGraph(nodes, edges, { ...fields, group: 'kind' })
+
+		expect(byKind.edges.filter((e) => e.unplaced)).toHaveLength(1) // only the built-in call
+		expect(byKind.byId.get('public.orders')?.group).toBe('table')
 	})
 
 	it('handles a v1 model asked for dependencies — no entities, no deps, no crash', () => {

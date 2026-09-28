@@ -15,6 +15,8 @@
 		layout = 'cluster',
 		density = $bindable('keys'),
 		arrange = 'untangle',
+		groupBy = 'group',
+		nestBy = undefined,
 		edgeStyle = 'curved',
 		focus = null,
 		value = undefined,
@@ -39,6 +41,8 @@
 		layout,
 		density,
 		arrange,
+		groupBy,
+		nestBy,
 		edgeStyle,
 		focus,
 		value,
@@ -200,9 +204,10 @@
 		data-graph-layout={graph.layoutName}
 		style="width: {graph.size.w}px; height: {graph.size.h}px; transform: translate({tx}px, {ty}px) scale({scale}); --graph-label-counter-scale: {(1 / scale).toFixed(3)};"
 	>
-		{#each graph.clusters as cluster (cluster.name)}
+		{#each graph.clusters as cluster (graph.clusterKey(cluster))}
 			<div
 				data-graph-cluster
+				data-cluster-depth={cluster.depth ?? 0}
 				data-node-group={cluster.name}
 				style:left="{cluster.x}px"
 				style:top="{cluster.y}px"

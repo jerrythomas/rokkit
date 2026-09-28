@@ -65,6 +65,8 @@ const meta: DemoMeta = {
 			{ name: 'layout', type: "'cluster' | 'neighborhood' | LayoutFn", default: "'cluster'", desc: 'A built-in by name, or your own pure (model, options) => LayoutResult' },
 			{ name: 'density', type: "'names' | 'keys' | 'full'", default: "'keys'", desc: 'How much of each node’s row list a card shows' },
 			{ name: 'arrange', type: "'untangle' | 'a-z'", default: "'untangle'", desc: 'Cluster ordering. untangle chains heavily-linked groups; a-z is area-descending' },
+			{ name: 'groupBy', type: "'group' | 'kind'", default: "'group'", desc: 'Outer grouping axis. Schema suits an ER diagram; kind suits a dependency graph, where one schema holds a table, a trigger and a procedure' },
+			{ name: 'nestBy', type: "'group' | 'kind'", desc: 'Subdivide each cluster by a second axis, so both facts are visible at once. Omit for one level; the same axis as groupBy is ignored' },
 			{ name: 'edgeStyle', type: "'curved' | 'orthogonal'", default: "'curved'", desc: 'Connector geometry' },
 			{ name: 'focus', type: 'string | null', default: 'null', desc: '`neighborhood` only — the node to centre. Defaults to the selection' },
 			{ name: 'value', type: 'string | null', desc: 'Selected node id. Input and output both' },
@@ -86,6 +88,7 @@ const meta: DemoMeta = {
 			{ selector: '[data-graph-density-controls]', desc: 'On-canvas detail toggle; buttons carry data-graph-density="names|keys|full"' },
 			// Clusters
 			{ selector: '[data-graph-cluster]', desc: 'One group box. Reads --group-fill / --group-stroke' },
+			{ selector: '[data-cluster-depth]', desc: '0 for an outer box, 1 for one nested inside it. Outer boxes are emitted first, so paint order nests them with no DOM tree' },
 			{ selector: '[data-graph-cluster-label]', desc: 'Group name + count. Reads --group-label' },
 			// Node card
 			{ selector: '[data-graph-node]', desc: 'Node card — a <button>' },

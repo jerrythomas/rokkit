@@ -140,6 +140,19 @@
   background-color: var(--paper-mute);
 }
 
+/* A nested box subdivides the region around it. Outline only — no fill — because the outer
+   box already carries the group colour, and a second fill on top of it reads as a different
+   cluster rather than a part of this one. */
+[data-style='material'] [data-graph-cluster][data-cluster-depth='1'] {
+  background-color: transparent;
+  border-color: var(--paper-edge);
+  border-style: dashed;
+}
+
+[data-style='material'] [data-graph-cluster][data-cluster-depth='1'] [data-graph-cluster-label] {
+  color: var(--ink-mute);
+}
+
 /* ─── node kinds ────────────────────────────────────────────────────────── */
 
 [data-style='material'] [data-node-kind='table'] {

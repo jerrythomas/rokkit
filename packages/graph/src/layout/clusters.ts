@@ -19,14 +19,24 @@ import {
 	CL_GAP_Y,
 	MAX_ROW_W
 } from './constants.js'
-import type { Cluster, Cards, Size, Arrange } from './types.js'
+import type { Cluster, Cards, Size, Arrange, NodeAxis } from './types.js'
 import type { GraphEdge, GraphModel, GraphNode } from '../types.js'
 
-/** Group nodes by group name. An ungrouped node files under ''. */
-export function groupByGroup(nodes: GraphNode[]): Record<string, GraphNode[]> {
+/**
+ * Group nodes by an axis. A node with no value on it files under ''.
+ *
+ * `axis` defaults to `group`, so every existing caller — and the ported characterization
+ * tests — keep their exact behaviour. It exists because the single-axis case is NOT a special
+ * case of nesting: `groupBy: 'kind'` with no `nestBy` has to regroup the flat layout too, and
+ * without it the control moved while the picture did not.
+ */
+export function groupByGroup(
+	nodes: GraphNode[],
+	axis: NodeAxis = 'group'
+): Record<string, GraphNode[]> {
 	const byGroup: Record<string, GraphNode[]> = {}
 	for (const node of nodes) {
-		const key = node.group ?? ''
+		const key = (axis === 'kind' ? node.kind : node.group) ?? ''
 		;(byGroup[key] = byGroup[key] || []).push(node)
 	}
 	return byGroup

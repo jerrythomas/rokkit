@@ -53,6 +53,18 @@
 			set: (v: string) => (explorer.density = v as typeof explorer.density)
 		},
 		{
+			id: 'grouping',
+			label: 'Group by',
+			options: [
+				{ value: 'schema', label: 'Schema' },
+				{ value: 'kind', label: 'Kind' },
+				{ value: 'schema-kind', label: 'Schema › Kind' },
+				{ value: 'kind-schema', label: 'Kind › Schema' }
+			],
+			get: () => explorer.grouping,
+			set: (v: string) => (explorer.grouping = v as typeof explorer.grouping)
+		},
+		{
 			id: 'arrange',
 			label: 'Arrange',
 			options: [

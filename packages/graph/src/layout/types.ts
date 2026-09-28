@@ -37,7 +37,24 @@ export type Cluster = {
 	w?: number
 	h?: number
 	pos?: { key: string; dx: number; dy: number }[]
+	/**
+	 * 0 for an outer box, 1 for one nested inside it. Absent means the same as 0.
+	 *
+	 * Nesting needs no DOM tree: clusters are absolutely positioned boxes, so a flat list
+	 * where the outer ones are larger and emitted FIRST renders correctly by paint order.
+	 * Depth is what lets CSS tell the two apart — an inner box is a faint subdivision, not a
+	 * second coloured region competing with the one containing it.
+	 */
+	depth?: number
+	/** Name of the enclosing cluster, for a depth-1 box. */
+	parent?: string
 }
+
+/**
+ * Which node property a layout groups on. Both already exist on `GraphNode`, so nesting
+ * needs no new model field — only a choice of which is outer.
+ */
+export type NodeAxis = 'group' | 'kind'
 
 export type RoutedEdge = {
 	i: number
@@ -72,6 +89,19 @@ export type LayoutOptions = {
 	 * "+3 more" on a card is otherwise a statement with no corresponding action.
 	 */
 	expanded?: ReadonlySet<string>
+	/**
+	 * Outer grouping axis. Defaults to `group`, which is every existing caller's behaviour.
+	 *
+	 * Schema is the right axis for an ER diagram and a poor one for a dependency graph, where
+	 * a single schema holds a table, a trigger and a procedure and the question is usually
+	 * "what are the routines and what do they touch".
+	 */
+	groupBy?: NodeAxis
+	/**
+	 * Subdivide each outer cluster by this second axis. Unset (the default) means one level,
+	 * and the layout runs its original single-level path untouched.
+	 */
+	nestBy?: NodeAxis
 }
 
 export type LayoutResult = {

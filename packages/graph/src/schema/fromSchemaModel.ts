@@ -17,6 +17,12 @@ import type { GraphFields, GraphModel } from '../types.js'
  * - `cardinality` — dbd's `Ref` is `{ from, to, action? }`.
  */
 export const SCHEMA_FIELDS: GraphFields = {
+	// Identity must NOT be derived from the group, or regrouping re-keys every node. `id`
+	// defaults to `${group}.${label}`, so a consumer switching the axis to `kind` would turn
+	// `public.orders` into `table.orders` and every dep edge — which resolves
+	// `${from.s}.${name}` — would stop matching and the graph would render entirely unplaced.
+	// Safe for a consumer passing raw dbd rows too: a row with no `id` falls back as before.
+	id: 'id',
 	label: 'name',
 	group: 'schema',
 	kind: 'kind',
@@ -77,6 +83,14 @@ export const DEPS_FIELDS: GraphFields = {
  */
 export type SchemaScope = 'er' | 'dependencies'
 
+/** A dbd node row, with the canonical id made explicit so the grouping axis stays free. */
+function identified(rows: unknown[]): unknown[] {
+	return rows.map((row) => {
+		const r = (row ?? {}) as { schema?: string; name?: string }
+		return { ...r, id: r.schema ? `${r.schema}.${r.name}` : String(r.name ?? '') }
+	})
+}
+
 /** The minimum of dbd's `SchemaModel` this view reads. v2 fields are optional. */
 type SchemaModelInput = {
 	tables: unknown[]
@@ -97,11 +111,11 @@ export function toGraphInput(
 	scope: SchemaScope = 'er'
 ): { nodes: unknown[]; edges: unknown[]; fields: GraphFields } {
 	if (scope === 'er') {
-		return { nodes: model.tables, edges: model.refs, fields: SCHEMA_FIELDS }
+		return { nodes: identified(model.tables), edges: model.refs, fields: SCHEMA_FIELDS }
 	}
 
 	return {
-		nodes: [...model.tables, ...(model.entities ?? [])],
+		nodes: identified([...model.tables, ...(model.entities ?? [])]),
 		edges: model.deps ?? [],
 		fields: DEPS_FIELDS
 	}

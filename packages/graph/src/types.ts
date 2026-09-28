@@ -89,6 +89,10 @@ export type GraphProps = {
 	layout?: string | import('./layout/types.js').LayoutFn
 	density?: import('./layout/types.js').Density
 	arrange?: import('./layout/types.js').Arrange
+	/** Outer grouping axis — `group` (default) or `kind`. */
+	groupBy?: import('./layout/types.js').NodeAxis
+	/** Subdivide each cluster by a second axis. Omit for one level. */
+	nestBy?: import('./layout/types.js').NodeAxis
 	edgeStyle?: import('./layout/types.js').EdgeStyle
 	/** `neighborhood` only — the node the view centres on. Defaults to the selection. */
 	focus?: string | null

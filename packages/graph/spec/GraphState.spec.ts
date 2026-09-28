@@ -240,6 +240,37 @@ describe('GraphState — layout', () => {
 		expect(make().moreLabel('public.nope')).toBeNull()
 	})
 
+	it('refuses to subdivide a box by its own axis', () => {
+		// One child holding everything is not a no-op, it is a picture of a bug.
+		const state = make({ groupBy: 'kind', nestBy: 'kind' })
+
+		expect(state.nestBy).toBeNull()
+		expect(state.clusters.every((c) => (c.depth ?? 0) === 0)).toBe(true)
+	})
+
+	it('nests when the two axes differ', () => {
+		const state = make({ groupBy: 'group', nestBy: 'kind' })
+
+		expect(state.nestBy).toBe('kind')
+		expect(state.clusters.some((c) => c.depth === 1)).toBe(true)
+	})
+
+	it('setGrouping drives it from inside the component', () => {
+		// A groupBy PROP only reaches the state Graph OWNS; with a caller-supplied state a
+		// control that set the prop would render, click, and change nothing.
+		const state = make()
+		state.setGrouping('kind', 'group')
+
+		expect([state.groupBy, state.nestBy]).toEqual(['kind', 'group'])
+	})
+
+	it('setGrouping drops a self-nesting pair too', () => {
+		const state = make()
+		state.setGrouping('kind', 'kind')
+
+		expect(state.nestBy).toBeNull()
+	})
+
 	it('falls back to the selection when no explicit focus is given', () => {
 		// `focus` defaults to `value`, so selecting a node is enough to drive a
 		// neighbourhood view without the consumer wiring a second prop.

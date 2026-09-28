@@ -334,6 +334,21 @@
   cursor: pointer;
 }
 
+/* An inner box is a SUBDIVISION of the box around it, not a second region competing with it:
+   a shorter label strip, and (per style) an outline rather than a fill. Without the depth
+   distinction two nested coloured boxes read as two unrelated clusters that happen to
+   overlap. */
+[data-graph-cluster][data-cluster-depth='1'] > [data-graph-cluster-label] {
+  font-size: 0.6rem;
+  padding-top: 0.15rem;
+}
+
+/* The outer box is painted first (the layout emits it first), so the inner one sits above it
+   without needing a stacking context of its own. */
+[data-graph-cluster][data-cluster-depth='1'] {
+  border-radius: 0.375rem;
+}
+
 /* Secondary to the title: it answers "what IS this" once, then gets out of the way. Sized like
    the row count at the other end of the head, because that is what it is — a small fact about
    the node, not part of its name.

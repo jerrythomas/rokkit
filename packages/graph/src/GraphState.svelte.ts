@@ -11,6 +11,7 @@ import type {
 	Density,
 	EdgeStyle,
 	LayoutFn,
+	NodeAxis,
 	RoutedEdge,
 	Size
 } from './layout/types.js'
@@ -44,6 +45,10 @@ export type GraphStateConfig = {
 	layout?: string | LayoutFn
 	density?: Density
 	arrange?: Arrange
+	/** Outer grouping axis. Defaults to `group` (the schema, for dbd data). */
+	groupBy?: NodeAxis
+	/** Second axis subdividing each outer cluster. Unset means one level. */
+	nestBy?: NodeAxis | null
 	edgeStyle?: EdgeStyle
 	focus?: string | null
 	value?: string | null
@@ -130,6 +135,8 @@ export class GraphState {
 	#layout = $state<string | LayoutFn>('cluster')
 	#density = $state<Density>('keys')
 	#arrange = $state<Arrange>('untangle')
+	#groupBy = $state<NodeAxis>('group')
+	#nestBy = $state<NodeAxis | null>(null)
 	#edgeStyle = $state<EdgeStyle>('curved')
 	#focus = $state<string | null>(null)
 	#value = $state<string | null>(null)
@@ -149,6 +156,8 @@ export class GraphState {
 		this.#layoutFn(this.#model, {
 			density: this.#density,
 			arrange: this.#arrange,
+			groupBy: this.#groupBy,
+			nestBy: this.#nestBy ?? undefined,
 			edgeStyle: this.#edgeStyle,
 			focus: this.#focus ?? this.#value,
 			expanded: this.#expanded
@@ -254,9 +263,19 @@ export class GraphState {
 		this.#focus = config.focus ?? null
 	}
 
+	/** How the boxes are organised — one axis, or one subdivided by a second. */
+	#applyGrouping(config: GraphStateConfig): void {
+		const outer = config.groupBy ?? 'group'
+		this.#groupBy = outer
+		// Rejected rather than rendered: a box subdivided by its OWN axis yields exactly one
+		// child containing everything, which reads as a rendering fault, not a no-op.
+		this.#nestBy = config.nestBy === outer ? null : (config.nestBy ?? null)
+	}
+
 	#applyView(config: GraphStateConfig): void {
 		this.#density = config.density ?? 'keys'
 		this.#arrange = config.arrange ?? 'untangle'
+		this.#applyGrouping(config)
 		this.#edgeStyle = config.edgeStyle ?? 'curved'
 		this.#preset = config.preset ?? defaultGraphPreset
 		this.#mode = config.mode ?? 'light'
@@ -428,6 +447,42 @@ export class GraphState {
 	}
 	get arrange(): Arrange {
 		return this.#arrange
+	}
+
+	/**
+	 * A cluster's unique render key.
+	 *
+	 * NOT the name: nesting puts a `table` box under `public` AND under `billing`, and keying
+	 * an `{#each}` by name alone is a duplicate key — Svelte throws `each_key_duplicate`, the
+	 * render aborts, and no inner box appears at all, which reads as nesting silently not
+	 * working rather than as an error.
+	 */
+	clusterKey(cluster: Cluster): string {
+		return `${cluster.depth ?? 0}:${cluster.parent ?? ''}:${cluster.name}`
+	}
+
+	get groupBy(): NodeAxis {
+		return this.#groupBy
+	}
+
+	get nestBy(): NodeAxis | null {
+		return this.#nestBy
+	}
+
+	/**
+	 * Change the grouping axes from inside the component.
+	 *
+	 * Same reason `setDensity` exists: a `groupBy` PROP only ever reaches the state `Graph`
+	 * owns, so with a caller-supplied state — which is how all three views share one — a
+	 * control that set the prop would render, click, and change nothing.
+	 *
+	 * Passing the same axis for both is rejected rather than silently rendered: a box
+	 * subdivided by itself produces exactly one child containing everything, which looks like
+	 * a rendering fault rather than a no-op.
+	 */
+	setGrouping(outer: NodeAxis, inner: NodeAxis | null = null): void {
+		this.#groupBy = outer
+		this.#nestBy = inner === outer ? null : inner
 	}
 	get edgeStyle(): EdgeStyle {
 		return this.#edgeStyle

@@ -148,6 +148,57 @@ describe('Graph — published attributes', () => {
 		)
 	})
 
+	it('renders two same-named inner boxes under different parents', () => {
+		// `table` exists under public AND under billing. Keyed by name alone that is a duplicate
+		// key: Svelte throws each_key_duplicate, the render aborts, and NO inner box appears —
+		// which looks like nesting silently not working rather than like an error.
+		const shared = [
+			{ schema: 'public', name: 'orders', kind: 'table', columns: [] },
+			{ schema: 'billing', name: 'invoices', kind: 'table', columns: [] }
+		]
+		const s = new GraphState({
+			nodes: shared,
+			edges: [],
+			fields: FIELDS,
+			groupBy: 'group',
+			nestBy: 'kind'
+		})
+		const { container } = render(Graph, { state: s })
+		const inner = [...container.querySelectorAll('[data-cluster-depth="1"]')]
+
+		expect(inner).toHaveLength(2)
+		expect(inner.map((el) => el.getAttribute('data-node-group'))).toEqual(['table', 'table'])
+	})
+
+	it('publishes cluster depth, and paints every outer box before any inner one', () => {
+		// Absolutely positioned siblings: an outer box emitted after its subdivisions would
+		// cover them. Depth is also what lets CSS draw an inner box as a faint subdivision
+		// rather than a second coloured region fighting the one around it.
+		const s = new GraphState({
+			nodes: NODES,
+			edges: EDGES,
+			fields: FIELDS,
+			groupBy: 'group',
+			nestBy: 'kind'
+		})
+		const { container } = render(Graph, { state: s })
+		const depths = [...container.querySelectorAll('[data-graph-cluster]')].map((el) =>
+			Number(el.getAttribute('data-cluster-depth'))
+		)
+
+		expect(depths).toContain(1)
+		expect(depths).toEqual([...depths].sort((a, b) => a - b))
+	})
+
+	it('reports depth 0 for every cluster when nesting is off', () => {
+		const { container } = render(Graph, { state: state() })
+		const depths = [...container.querySelectorAll('[data-graph-cluster]')].map((el) =>
+			el.getAttribute('data-cluster-depth')
+		)
+
+		expect(new Set(depths)).toEqual(new Set(['0']))
+	})
+
 	it('labels the kind in TEXT beside the icon, not only as a glyph', () => {
 		// A glyph alone is a guess — layers vs eye vs bolt does not tell a reader what a
 		// materialized view is. The icon carries it at a glance, the tag disambiguates.

@@ -10,7 +10,7 @@
 	import { vibe } from '@rokkit/states'
 	import { Graph, GraphState, createGraphPreset } from '@rokkit/graph'
 	import { EntitiesView, EntityView } from '@rokkit/graph/schema'
-	import { explorer } from './store.svelte'
+	import { explorer, GROUPING } from './store.svelte'
 	import { datasets } from './datasets'
 
 	const dataset = $derived(datasets[explorer.dataset])
@@ -39,6 +39,7 @@
 			layout: explorer.layout,
 			density: explorer.density,
 			arrange: explorer.arrange,
+			...GROUPING[explorer.grouping],
 			edgeStyle: explorer.edgeStyle,
 			preset: createGraphPreset({ using: explorer.using }),
 			// Without this the group ramp resolves from the LIGHT ladder forever, so every

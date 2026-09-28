@@ -13,6 +13,21 @@ export type LayoutId = 'cluster' | 'neighborhood' | 'points'
 export type DensityId = 'names' | 'keys' | 'full'
 export type ArrangeId = 'untangle' | 'a-z'
 export type EdgeStyleId = 'curved' | 'orthogonal'
+
+/**
+ * How the boxes are organised. One setting rather than two axes, because the invalid pair
+ * (the same axis outer AND inner) would subdivide a box by itself — one child holding
+ * everything, which reads as a rendering fault rather than a no-op.
+ */
+export type GroupingId = 'schema' | 'kind' | 'schema-kind' | 'kind-schema'
+
+export const GROUPING: Record<GroupingId, { groupBy: 'group' | 'kind'; nestBy?: 'group' | 'kind' }> =
+	{
+		schema: { groupBy: 'group' },
+		kind: { groupBy: 'kind' },
+		'schema-kind': { groupBy: 'group', nestBy: 'kind' },
+		'kind-schema': { groupBy: 'kind', nestBy: 'group' }
+	}
 export type ChannelId = 'color' | 'pattern'
 
 class GraphExplorerStore {
@@ -23,6 +38,7 @@ class GraphExplorerStore {
 	arrange = $state<ArrangeId>('untangle')
 	edgeStyle = $state<EdgeStyleId>('curved')
 	using = $state<ChannelId>('color')
+	grouping = $state<GroupingId>('schema')
 	/** Multiplier on Graph's fit-to-container scale. 1 = fit the whole diagram. */
 	zoom = $state<number>(1)
 
@@ -32,6 +48,10 @@ class GraphExplorerStore {
 	 */
 	selectDataset(id: DatasetId): void {
 		this.dataset = id
+		// Schema is the right axis for an ER diagram and a poor one for a dependency graph,
+		// where one schema holds a table, a trigger and a procedure. Defaulting per dataset
+		// means the view opens on the question that dataset is FOR; the control still moves it.
+		this.grouping = id === 'schema-deps' ? 'schema-kind' : 'schema'
 		// A call graph is a dense graph: cards are the wrong unit for it, and `points` is the
 		// answer to "what does this look like with a thousand nodes". The two schema views keep
 		// cards, which are right when a node HAS columns worth reading — and a dependency node
