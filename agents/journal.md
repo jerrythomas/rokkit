@@ -9485,3 +9485,46 @@ to zen-sumi, so graph renders with structure and no colour there. The e2e pins
 (minimal, material, frosted, zen-sumi) need a `graph.css` before this is done.
 
 Full repo 6835 tests + 83 e2e green; lint, types, svelte-check all 0/0.
+
+## Issue #159: graph.css for all six styles (closing the theme gap)
+
+`zen-sumi`, `minimal`, `material`, `frosted` (`f47bd305`) — the gap flagged at
+the end of Task 20. Each style is self-contained, so base + rokkit alone left the
+diagram unstyled in four of six, **including zen-sumi, the learn app's default**.
+
+Each has its own character rather than a copy: zen-sumi has no shadows at all,
+hairline borders, depth from tone, selection darkening a border instead of adding
+a ring, and a **single accent** (primary marks a table, everything else is ink
+tone). Material makes the border transparent and lets elevation carry hierarchy.
+Frosted uses `--ink` for every label, because glass puts text over an unknown
+background where `ink-mute` has no guaranteed ratio.
+
+Applying every rokkit contrast lesson up front paid off: the sweep (5 styles × 2
+modes × 5 skins) found **one** new failure, not twenty. zen-sumi's hover moves
+the surface to `paper-mute`, which in dark closes on `ink-mute` at 4.07:1 — fixed
+by lifting the row type to full ink on hover, since hover should raise contrast
+rather than spend it.
+
+**Generalising the guards was the right call.** Rewriting `graph-css.spec.js` to
+run every colour rule across all styles immediately caught frosted ignoring
+`--group-stroke` entirely — a consumer's preset would have silently done nothing
+there. It also caught its own false positive: rules were being matched including
+their *comments*, so a comment describing `background-color` read as the property.
+Comments are stripped before matching now.
+
+**`GraphPreset.kinds` removed.** Declared, documented, merge-tested — and nothing
+ever read it. The locked design says node kinds are themed in CSS *because* they
+are a closed set, so the field contradicted the design it was meant to serve.
+Same class as `SCHEMA_FIELDS.uq`: config that looks live and silently does nothing.
+
+**The documented one-rule override was wrong.** `[data-node-kind='table']` is
+(0,1,1) against a theme's (0,2,0) and silently loses. Adding zen-sumi's stylesheet
+is what exposed it — before that there was no competing rule under the default
+style. Docs and snippet now show `[data-style] [data-node-kind='table']`, and the
+e2e asserts **both halves**: that the under-specific form does not win, and that
+the documented one does.
+
+E2E now sweeps node-kind distinction *and* card paint per style — the second
+catches a missing stylesheet, which otherwise reads as "looks a bit plain" rather
+than as an error. 92 e2e (was 83) + 6860 unit green; lint, types, svelte-check
+0/0 across all seven packages.
