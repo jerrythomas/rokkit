@@ -213,6 +213,12 @@ const ecommerceEntities = [
 		name: 'orders_audit',
 		kind: 'trigger',
 		noteMd: 'Fires on every write to `public.orders`.'
+	},
+	{
+		schema: 'audit',
+		name: 'purge_events',
+		kind: 'procedure',
+		noteMd: 'Nightly. Drops `events` rows older than the window `retention` sets.'
 	}
 ]
 
@@ -254,7 +260,21 @@ const ecommerceDeps = [
 		kind: 'reads'
 	},
 	{ from: { s: 'audit', n: 'orders_audit' }, to: { s: 'public', n: 'orders' }, kind: 'member' },
-	{ from: { s: 'audit', n: 'orders_audit' }, to: { s: 'audit', n: 'events' }, kind: 'writes' }
+	{ from: { s: 'audit', n: 'orders_audit' }, to: { s: 'audit', n: 'events' }, kind: 'writes' },
+	{ from: { s: 'audit', n: 'purge_events' }, to: { s: 'audit', n: 'retention' }, kind: 'reads' },
+	{ from: { s: 'audit', n: 'purge_events' }, to: { s: 'audit', n: 'events' }, kind: 'writes' },
+
+	/* A column's enum TYPE is a real dependency — Postgres records it in `pg_depend`, and you
+	   cannot drop the type while a column uses it. Without these the enums sat in the
+	   dependency view with nothing attached, which is the same orphan defect the ER/dependency
+	   split exists to remove, just from the other side.
+
+	   `uses` is this demo's own verb, not one dbd emits: `DepEdge.kind` is a String on the
+	   wire, but dbd's `dep_kind()` only ever produces reads|writes|calls|member today. Carrying
+	   it is exactly what `GraphEdge.relation` is for — an open vocabulary over a closed
+	   `EdgeKind`. */
+	{ from: { s: 'public', n: 'orders' }, to: { s: 'public', n: 'order_status' }, kind: 'uses' },
+	{ from: { s: 'public', n: 'users' }, to: { s: 'public', n: 'user_status' }, kind: 'uses' }
 ]
 
 /** A dbd v2 `SchemaModel` — two graphs in one payload, selected by `toGraphInput`. */

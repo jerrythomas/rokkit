@@ -96,6 +96,7 @@ const meta: DemoMeta = {
 			{ selector: '[data-graph-node-head]', desc: 'Card header strip' },
 			{ selector: '[data-graph-node-icon]', desc: 'Kind icon' },
 			{ selector: '[data-graph-node-title]', desc: 'Node label' },
+			{ selector: '[data-graph-node-kind]', desc: 'Kind spelled out beside the icon (underscores rendered as spaces). Hidden below `full` detail and in the points layout' },
 			{ selector: '[data-graph-node-count]', desc: 'Total row count' },
 			// Rows
 			{ selector: '[data-graph-row]', desc: 'One visible row' },

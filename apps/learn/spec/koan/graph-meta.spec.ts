@@ -2,6 +2,9 @@ import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import meta from '../../src/lib/koan/demos/graph/meta'
+import { datasets } from '../../src/lib/koan/demos/graph/datasets'
+import type { DatasetId } from '../../src/lib/koan/demos/graph/datasets'
+import { normalizeGraph } from '@rokkit/graph'
 import chartMeta from '../../src/lib/koan/demos/chart/meta'
 
 // cwd is the REPO ROOT even for the `learn` project, which is why this is not `../../`.
@@ -72,4 +75,30 @@ describe('graph demo meta', () => {
 		expect(meta.snippets!.some((s) => s.code.includes('fields'))).toBe(true)
 		expect(meta.snippets!.some((s) => s.lang === 'css')).toBe(true)
 	})
+})
+
+/* An orphan — a node no edge touches — means the dataset put something in a view whose
+   relationships that view does not carry. It is the defect the ER/dependency split exists to
+   remove, and it is symmetric: the ER scope must not contain routines, and the dependency
+   scope must not contain a node whose only relationships are foreign keys.
+   Asserted on the DATA rather than in the browser, because it is a property of the dataset. */
+describe('graph demo datasets', () => {
+	const orphansIn = (id: DatasetId) => {
+		const { nodes, edges, fields } = datasets[id]
+		const model = normalizeGraph(nodes, edges, fields)
+		const touched = new Set<string>()
+		for (const edge of model.edges) {
+			// An unplaced end is not a node, so it cannot rescue one from being an orphan.
+			if (edge.unplaced !== 'source' && edge.unplaced !== 'both') touched.add(edge.source)
+			if (edge.unplaced !== 'target' && edge.unplaced !== 'both') touched.add(edge.target)
+		}
+		return model.nodes.map((n) => n.id).filter((id) => !touched.has(id))
+	}
+
+	it.each(['ecommerce', 'schema-deps', 'service-calls'] as const)(
+		'%s leaves no node unconnected',
+		(id) => {
+			expect(orphansIn(id)).toEqual([])
+		}
+	)
 })

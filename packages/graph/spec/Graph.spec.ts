@@ -148,6 +148,37 @@ describe('Graph — published attributes', () => {
 		)
 	})
 
+	it('labels the kind in TEXT beside the icon, not only as a glyph', () => {
+		// A glyph alone is a guess — layers vs eye vs bolt does not tell a reader what a
+		// materialized view is. The icon carries it at a glance, the tag disambiguates.
+		const { container } = render(Graph, { state: state() })
+		const tags = [...container.querySelectorAll('[data-graph-node-kind]')].map(
+			(el) => el.textContent
+		)
+
+		expect(tags.sort()).toEqual(['matview', 'table', 'view'])
+	})
+
+	it('spells a wire-format kind readably rather than echoing the underscore', () => {
+		const wire = [{ schema: 'p', name: 'v', kind: 'materialized_view', columns: [] }]
+		const { container } = render(Graph, {
+			state: new GraphState({ nodes: wire, edges: [], fields: FIELDS })
+		})
+
+		expect(container.querySelector('[data-graph-node-kind]')?.textContent).toBe(
+			'materialized view'
+		)
+	})
+
+	it('renders no kind tag for a node that declares no kind', () => {
+		const bare = [{ schema: 'p', name: 'x', columns: [] }]
+		const { container } = render(Graph, {
+			state: new GraphState({ nodes: bare, edges: [], fields: FIELDS })
+		})
+
+		expect(container.querySelector('[data-graph-node-kind]')).toBeNull()
+	})
+
 	it('marks a pk row with data-row-badge', () => {
 		const { container } = render(Graph, { state: state({ density: 'full' }) })
 

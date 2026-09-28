@@ -123,6 +123,15 @@
   stroke-dasharray: 5 4;
 }
 
+/* The kind tag is a quiet fact, not part of the name — ink-mute against a faint chip, so it
+   reads as secondary to the title sitting next to it. `--ink-mute`, never `--ink-soft`: the
+   node card IS a button, and ink-soft (1.95-2.13:1 on paper) cannot carry an interactive
+   control's text. */
+[data-style='minimal'] [data-graph-node-kind] {
+  color: var(--ink-mute);
+  background-color: var(--paper-mute);
+}
+
 /* ─── node kinds ────────────────────────────────────────────────────────── */
 
 [data-style='minimal'] [data-node-kind='table'] {

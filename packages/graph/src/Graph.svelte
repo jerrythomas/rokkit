@@ -271,6 +271,13 @@
 				<span data-graph-node-head>
 					<span data-graph-node-icon class={icons[card.node.kind ?? ''] ?? icons.fallback}></span>
 					<span data-graph-node-title>{card.node.label}</span>
+					{#if card.node.kind}
+						<!-- The glyph alone is a guess: layers vs eye vs bolt does not tell anyone what a
+						     materialized view is. Icon for the glance, tag for the answer. Underscores
+						     are the WIRE format (dbd sends `materialized_view`), not something to
+						     read. -->
+						<span data-graph-node-kind>{card.node.kind.replace(/_/g, ' ')}</span>
+					{/if}
 					<span data-graph-node-count>{card.node.rows.length}</span>
 				</span>
 				{#each card.vis as row (row.name)}

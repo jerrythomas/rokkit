@@ -331,6 +331,34 @@
   cursor: pointer;
 }
 
+/* Secondary to the title: it answers "what IS this" once, then gets out of the way. Sized like
+   the row count at the other end of the head, because that is what it is — a small fact about
+   the node, not part of its name.
+
+   The glyph alone is a guess: layers vs eye vs bolt does not tell a reader what a materialized
+   view is. Icon for the glance, tag for the answer. */
+[data-graph-node-kind] {
+  flex: none;
+  font-size: 0.6rem;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.02em;
+  padding: 0 0.3rem;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The title is what you read; the tag must never win the space fight. Below `full` the card is
+   too small for two labels, so the tag goes first — the icon still carries the kind at every
+   tier, and the points layout has no head to put it in at all. */
+[data-graph-detail='compact'] [data-graph-node-kind],
+[data-graph-detail='minimal'] [data-graph-node-kind],
+[data-graph-detail='dot'] [data-graph-node-kind],
+[data-graph-layout='points'] [data-graph-node-kind] {
+  display: none;
+}
+
 /* "no keys · 3 rows" is a STATEMENT about the filter, not a count of what is collapsed.
    Italic separates the two, so a view/procedure/enum at key density reads as "this entity
    has none" rather than as a card that failed to render its rows. Deliberately NOT a

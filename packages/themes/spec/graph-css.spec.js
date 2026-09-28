@@ -54,6 +54,14 @@ describe('graph theme CSS', () => {
 		}
 	})
 
+	it.each(STYLES)('%s tones the kind tag down from the title', (style) => {
+		// base/graph.css sizes it but cannot colour it (headless-base rule), so a style that
+		// forgets it inherits full-contrast ink and the tag competes with the node's NAME.
+		const css = read(`${style}/graph.css`)
+
+		expect(css, style).toContain('[data-graph-node-kind]')
+	})
+
 	it.each(STYLES)('%s gives materialized_view the same accent as its matview alias', (style) => {
 		// One object, two spellings. Different colours for the same thing would read as two
 		// different kinds sitting side by side in one diagram.
