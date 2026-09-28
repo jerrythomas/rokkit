@@ -2684,7 +2684,7 @@ Copying `PlotState.update`'s guard pattern makes this task fail its own test
 - Create: `packages/graph/src/GraphState.svelte.ts`, `packages/graph/spec/GraphState.spec.ts`
 - Modify: `packages/graph/src/index.ts`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/graph/spec/GraphState.spec.ts`. **No DOM anywhere in this file** — that is the
 whole point of the layer.
@@ -3120,12 +3120,12 @@ describe('GraphState — edges', () => {
 })
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../src/GraphState.svelte.js'`.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `packages/graph/src/GraphState.svelte.ts`. Shape — `#private $state` inputs, `$derived`
 outputs, explicit getters, named methods for every transition:
@@ -3435,17 +3435,17 @@ export { GraphState } from './GraphState.svelte.js'
 export type { EntityRow, GraphStateConfig, Relationship } from './GraphState.svelte.js'
 ```
 
-- [ ] **Step 4: Run to verify it passes**
+- [x] **Step 4: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 38 `GraphState` tests, none of which render anything.
 
-- [ ] **Step 5: Check types**
+- [x] **Step 5: Check types**
 
 Run: `cd packages/graph && bun run check:types`
 Expected: no output.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/graph/src/GraphState.svelte.ts packages/graph/src/index.ts packages/graph/spec/GraphState.spec.ts

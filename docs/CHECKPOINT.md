@@ -1,17 +1,17 @@
 # CHECKPOINT
 
-**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–11 of 22
-done**, tree clean, **not pushed** (37 ahead of origin/develop). **Plan:**
-`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 11.
-**Done:** the whole non-visual core — model, preset, and **both layouts behind one interface**
-(`cluster` `5eb7682c`, `neighborhood` `cd786a65`, registry). Both dbd characterization suites
-green with every original number. 146 tests, 100% stmts/funcs.
+**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–12 of 22
+done**, tree clean, **not pushed** (39 ahead of origin/develop). **Plan:**
+`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 12.
+**Done: the entire non-visual package** — model, preset, both layouts behind one interface, and
+`GraphState` (`e0e3b0bd`) holding every derivation. Both dbd characterization suites green with
+every original number. **212 tests, 100% stmts/funcs, and not one renders anything.**
 
 ## Remains
 
-1. **Next: Task 12 — `GraphState`** (`src/GraphState.svelte.ts`), the largest remaining piece
-   and the one the layer rule hangs on: **every** derivation lives here, a component may not
-   compute. `update()` follows `SparkState`. Task 13 is then the first `.svelte` file.
+1. **Next: Task 13 — `Graph.svelte`**, the first component. **Presentation only: it computes
+   nothing** — no `cardState()`/`edgeClass()` helpers; if a template needs a value, `GraphState`
+   exposes it. Only `scale`/`tx`/`ty` stay local (they need `clientWidth`).
 2. Tasks 14–21 notes → schema views → theme → demo → e2e → docs.
 3. **Task 22 — dbd consumes the package** (separate repo + PR). **The acceptance proof.** Linked
    workspace; publish only after it passes. Then slice 2 (force-directed), slice 3 (dbd#24).

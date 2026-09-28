@@ -9202,3 +9202,46 @@ satisfies a key check and a callable check, and fails silently —
 `layout="neighborhood"` would render a cluster diagram.
 
 146 tests, 100% statements/functions, lint and types green. Commit `cd786a65`.
+
+## Issue #159 Task 12: `GraphState` — every derivation in one store
+
+`src/GraphState.svelte.ts`. Layer 2 of the ui-state-pattern: private `$state`
+inputs, `$derived` outputs, explicit getters, named methods for every
+transition. **45 tests and not one renders anything** — normalization, layout
+resolution, group styles, selection, node/edge state and the entity derivations
+are all provable without a DOM, which is what lets Task 13's component specs
+assert only attributes.
+
+`update()` follows **`SparkState`** (unconditional reassign), not `PlotState`
+(which guards each field with `if (config.X !== undefined)` and so merges). The
+plan's guidance table said exactly this, and then its own class doc comment said
+"matching `PlotState.update`" — the table is right. Every field has its own
+revert case, because a lone `density` assertion passes against an implementation
+that merged the other nine.
+
+`value` is the documented exception: input **and** output, so `update()` adopts
+it only when the caller supplies one, or a re-render would wipe a selection the
+user just made. Both sides pinned — an explicit value is adopted, an explicit
+`null` clears.
+
+`relationships` derives from `#model.edges`, never `#result.edges`. A layout
+filters, and `focus`/`value` are independent, so reading the layout's edges lets
+the state contradict itself: `relationships: []` while `refCount` says 1. A
+property test now sweeps every entity and asserts the two never disagree.
+
+Four lint warnings, only one disabled. `#groups` dropped its `Set` outright —
+`resolveGroupStyles` already de-duplicates and sorts, so it was redundant rather
+than merely un-reactive. `update()` and `contentSize` were decomposed. The
+call-local `routed` Map keeps a documented disable, matching
+`PlotState.#sortedBandDomain`.
+
+Removed the plan's `label: node?.label ?? other` fallback: `normalizeGraph` drops
+edges whose endpoints do not resolve, so it was **unreachable**, and unreachable
+defensive code cannot be tested against a 100% bar. The invariant is asserted
+instead. (A test I had written claiming to cover that fallback did not — it used
+a known node. Caught by coverage, rewritten to assert the invariant.)
+
+The accessible name pluralises: "1 relationship", not "1 relationships". A
+screen reader reads it verbatim.
+
+212 tests, 100% statements/functions, lint and types green. Commit `e0e3b0bd`.
