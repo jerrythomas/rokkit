@@ -129,9 +129,7 @@
 				style:top="{cluster.y}px"
 				style:width="{cluster.w}px"
 				style:height="{cluster.h}px"
-				style={Object.entries(graph.groupStyle(cluster.name))
-					.map(([k, v]) => `${k}:${v}`)
-					.join(';')}
+				style={graph.groupStyleAttr(cluster.name)}
 			>
 				<span data-graph-cluster-label>{cluster.name} · {cluster.count}</span>
 			</div>
@@ -165,9 +163,7 @@
 				style:left="{card.x}px"
 				style:top="{card.y}px"
 				style:width="{card.w}px"
-				style={Object.entries(graph.groupStyle(card.node.group))
-					.map(([k, v]) => `${k}:${v}`)
-					.join(';')}
+				style={graph.groupStyleAttr(card.node.group)}
 				onclick={(event) => {
 					event.stopPropagation()
 					graph.select(key)

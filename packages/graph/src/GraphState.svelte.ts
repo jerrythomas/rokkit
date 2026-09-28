@@ -255,6 +255,19 @@ export class GraphState {
 		return (group && this.#groupStyles.get(group)) || {}
 	}
 
+	/**
+	 * The same style as a `style=` attribute string.
+	 *
+	 * A template cannot spread an object into `style`, so something has to serialise it.
+	 * Doing that inline put the same map/join in two places in `Graph.svelte` — a derivation
+	 * living in a component, which is the one thing this layer exists to prevent.
+	 */
+	groupStyleAttr(group: string | undefined): string {
+		return Object.entries(this.groupStyle(group))
+			.map(([property, value]) => `${property}:${value}`)
+			.join(';')
+	}
+
 	// ─── reads ─────────────────────────────────────────────────────────────────
 	get model(): GraphModel {
 		return this.#model

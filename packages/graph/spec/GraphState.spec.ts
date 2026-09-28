@@ -248,6 +248,21 @@ describe('GraphState — group styles', () => {
 		expect(make().groupStyle(undefined)).toEqual({})
 	})
 
+	it('serialises a group style into a style attribute string', () => {
+		// The template cannot spread an object into `style`, so something has to build the
+		// string. Doing it inline meant the same map/join in two places in Graph.svelte and
+		// a derivation living in a component — here it is one function with a test.
+		const state = make()
+		const attr = state.groupStyleAttr('public')
+
+		expect(attr).toContain('--group-fill:')
+		expect(attr.split(';')).toHaveLength(Object.keys(state.groupStyle('public')).length)
+	})
+
+	it('serialises an unknown group to an empty string, not ";" noise', () => {
+		expect(make().groupStyleAttr('nope')).toBe('')
+	})
+
 	it('switches to patterns when the preset says using: pattern', () => {
 		const state = make({ preset: createGraphPreset({ using: 'pattern' }) })
 
