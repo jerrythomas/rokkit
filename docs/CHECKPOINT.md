@@ -1,17 +1,18 @@
 # CHECKPOINT
 
-**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–15 of 22
-done**, tree clean, **not pushed** (47 ahead of origin/develop). **Plan:**
-`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 15.
-**Done:** model, preset, both layouts, `GraphState`, `Graph.svelte`, notes + `NoteBlocks`
-(`a7250cae`), `fromSchemaModel` (`ca652198`). 281 tests, 100% stmts, svelte-check 0/0. Both dbd
-characterization suites green with every original number.
+**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–16 of 22
+done**, tree clean, **not pushed** (51 ahead of origin/develop). **Plan:**
+`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 16.
+**Done:** model, preset, both layouts, `GraphState`, `Graph.svelte`, notes, `fromSchemaModel`,
+`EntitiesView` (`c8e42357`) — plus a real a11y fix in `@rokkit/ui`'s Table (`3c79c7df`: its
+roving tabindex had no resting stop, so no keyboard user could enter any Table).
+296 graph tests, 100% stmts, svelte-check 0/0; full repo 6770 tests green.
 
 ## Remains
 
-1. **Next: Task 16 — `EntitiesView`** on `@rokkit/ui`'s Table (presentation only, reads
-   `state.entities`; **no `refCount` loop in the component**). Then Task 17 `EntityView`,
-   which reads `state.entity` / `state.relationships`.
+1. **Next: Task 17 — `EntityView`**, presentation only, reading `state.entity` and
+   `state.relationships`. Same three-way state resolution as `Graph`/`EntitiesView`
+   (prop → context → self-construct).
 2. Tasks 18–21 theme CSS → learn demo → e2e + contrast gates → docs and close-out.
 3. **Task 22 — dbd consumes the package** (separate repo + PR). **The acceptance proof.** Linked
    workspace; publish only after it passes. Then slice 2 (force-directed), slice 3 (dbd#24).

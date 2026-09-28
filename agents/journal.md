@@ -9323,3 +9323,38 @@ badge and no value, indistinguishable from data that simply has none. Their
 absence is asserted with the reason, so nobody "fixes" it back.
 
 281 tests, 100% statements, lint and svelte-check clean.
+
+## Issue #159 Task 16: `EntitiesView` on `@rokkit/ui`'s Table
+
+`src/schema/EntitiesView.svelte` (`c8e42357`). The `refCount` loop is gone from
+the component — it is a `GraphState` derivation, covered without a DOM — and the
+hand-rolled `<table>` with `onclick` on each `<tr>` is replaced by composing
+`@rokkit/ui`'s `Table`. The em dash for a zero ref count stays in the component:
+state reports the number `0`, and how to show it is presentation.
+
+**Row hooks are Table's, not ours.** The plan specified `data-graph-entity-row`
+on each row, but `Table` owns the `<tr>` and its `row` snippet is handed neither
+the entry key nor the focus flag. Re-rendering the row to attach our own
+attributes would drop `data-path` and the roving tabindex — breaking the exact
+keyboard navigation this task exists to gain. So rows are `[data-table-row]` and
+the kind hook moved to the entity cell, which we do control.
+
+**Found a real a11y bug in `@rokkit/ui`** (`3c79c7df`, fixed separately). Table's
+rows are `tabindex={isFocused ? 0 : -1}` and `wrapper.focusedKey` starts `null`.
+Its root carries no tabindex either — unlike `Tree`, which puts `0` on its
+container and lets Navigator redirect focus inward. So **at rest no element in
+the table was a tab stop** and a keyboard user could not enter the grid at all.
+The first row now holds the stop until focus moves: the standard
+roving-tabindex-at-rest pattern, no second stop. Full `ui` suite green (1911).
+
+The plan's own test here ("every row is keyboard reachable", `tabIndex >= 0`)
+was the wrong shape for a grid — a grid takes ONE tab stop and moves with the
+arrow keys — but writing the correct assertion is what exposed that there was no
+stop at all.
+
+One environment note, not a repo defect: `packages/ui/dist` is gitignored and
+was a stale local build from two days before `snippets` was added to
+`TableProps`, so `svelte-check` reported a phantom type error. Rebuilt.
+
+296 graph tests, 100% statements, svelte-check 0/0; full repo 426 files / 6770
+tests green.

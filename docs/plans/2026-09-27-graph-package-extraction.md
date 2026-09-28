@@ -4201,13 +4201,13 @@ Two changes from dbd's version, both structural:
 - Create: `packages/graph/src/schema/EntitiesView.svelte`,
   `packages/graph/spec/schema/EntitiesView.spec.ts`
 
-- [ ] **Step 1: Read the source**
+- [x] **Step 1: Read the source**
 
 Read `~/Developer/dbd/site/src/lib/design/EntitiesView.svelte` (80 lines). Its `refCount`
 function and its `<table>` markup are both replaced, not ported — only the column set and the
 note formatting carry over.
 
-- [ ] **Step 2: Write the failing test**
+- [x] **Step 2: Write the failing test**
 
 Create `packages/graph/spec/schema/EntitiesView.spec.ts`. DOM only — the counts themselves are
 `GraphState`'s tests, not this file's:
@@ -4355,12 +4355,12 @@ describe('EntitiesView', () => {
 })
 ```
 
-- [ ] **Step 3: Run to verify it fails**
+- [x] **Step 3: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../../src/schema/EntitiesView.svelte'`.
 
-- [ ] **Step 4: Implement**
+- [x] **Step 4: Implement**
 
 Create `packages/graph/src/schema/EntitiesView.svelte`:
 
@@ -4382,12 +4382,12 @@ Create `packages/graph/src/schema/EntitiesView.svelte`:
    Also `bg-bg` → `paper`, `border-line-soft` → `paper-edge`, `hover:bg-paper-2` → `paper-mute`,
    `text-fg` → `ink`, `text-muted` → `ink-mute`, `text-accent-2` → `primary`.
 
-- [ ] **Step 5: Run to verify it passes**
+- [x] **Step 5: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 11 `EntitiesView` tests.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/graph/src/schema/EntitiesView.svelte packages/graph/spec/schema/EntitiesView.spec.ts
