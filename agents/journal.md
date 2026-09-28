@@ -9392,3 +9392,39 @@ header element.
 
 333 tests, **100% statements and functions**, lint clean, svelte-check 0 errors
 0 warnings across every package, full repo 6805 tests green.
+
+## Issue #159 Task 18: graph theme CSS
+
+`themes/src/base/graph.css` and `themes/src/rokkit/graph.css` (`2fc3cbe2`), both
+registered next to `chart.css` in the component group of each index (those files
+are grouped, not alphabetical).
+
+`base/` is structure only and `graph-css.spec.js` asserts it across every colour
+**form** — not just the named-token/hex/oklch three an obvious draft covers, but
+`hsl()`, `rgb()`, `lab()`, `lch()`, `hwb()`, `color-mix()` and bare CSS colour
+names too. Plus a non-empty assertion, because every one of those guards passes
+vacuously on an empty file.
+
+Colour lives in `rokkit/` as raw `var(--token)` rather than `@apply`. Both forms
+are house-legitimate (`button.css` and `frame.css` use raw `var()`), and `@apply`
+cannot express `var(--group-fill, var(--paper-soft))`, which this needs
+throughout.
+
+Two rules encoded from the contrast gates rather than taste: row types and `fk`
+badges take **`ink-mute`**, never `ink-soft` (the node card is a `<button>` and
+ink-soft is the ~2:1 placeholder tone), and hover moves a fill *away* from its
+own label via relative oklch rather than a fixed darken. `data-edge-kind=
+'dependency'` is themed ahead of use so dbd#24's second edge kind arrives styled.
+
+**Three guards beyond the plan's list.** The ink-soft check matches per *rule*,
+not per line — normal CSS puts the selector and the declaration on separate
+lines, so no single line carries both and a line filter would pass while the
+violation shipped. Every `--group-*` read must carry a named-token fallback,
+because `resolveGroupStyles` only sets those for nodes that *have* a group and an
+ungrouped graph would otherwise paint with an empty value and render invisible.
+And `--graph-head-h`/`row-h`/`more-h` are pinned to `layout/constants.ts`: the
+layout derives card heights from those numbers and nothing measures the DOM, so
+CSS that disagrees overflows every card.
+
+Themes build emits `dist/{base,rokkit}/graph.css`; checked for leftover `@apply`
+(none) and that the fallbacks survived. 97 themes tests, full repo **6829** green.

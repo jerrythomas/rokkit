@@ -1,19 +1,19 @@
 # CHECKPOINT
 
-**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–17 of 22
-done**, tree clean, **not pushed** (55 ahead of origin/develop). **Plan:**
-`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 17.
-**All the code exists.** Model, preset, both layouts, `GraphState`, `Graph`, and both schema
-views (`cc5cf7cb`) — plus an a11y fix in `@rokkit/ui`'s Table (`3c79c7df`: its roving tabindex
-had no resting stop, so no keyboard user could enter any Table). **333 graph tests, 100%
-stmts+funcs**, svelte-check 0/0 everywhere; full repo 6805 tests green. Layer audit clean:
-no component computes anything.
+**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–18 of 22
+done**, tree clean, **not pushed** (59 ahead of origin/develop). **Plan:**
+`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 18.
+**Code and theme are done.** Model, preset, both layouts, `GraphState`, `Graph`, both schema
+views, `themes/{base,rokkit}/graph.css` (`2fc3cbe2`) — plus an a11y fix in `@rokkit/ui`'s Table
+(`3c79c7df`: its roving tabindex had no resting stop, so no keyboard user could enter one).
+**333 graph tests, 100% stmts+funcs**; full repo **6829** green. No component computes anything.
 
-## Remains — all of it is surfacing, not core logic
+## Remains — surfacing and proof, not core logic
 
-1. **Next: Task 18 — theme CSS**: `themes/src/base/graph.css` (structure only, NO colour) and
-   `themes/src/rokkit/graph.css`. Reaches outside `packages/graph`, so run full `test:ci`.
-2. Task 19 learn demo → 20 e2e + contrast gates → 21 docs/llms/README + close-out.
+1. **Next: Task 19 — the learn demo**, the visual verification surface. Three layers visible at
+   once: `datasets.ts` (load) · `store.svelte.ts` + `GraphState` (state) · `GraphExplorer` /
+   `GraphControls` (component). Every control in the design's table must exist.
+2. Task 20 e2e + contrast gates → Task 21 docs/llms/README + close-out.
 3. **Task 22 — dbd consumes the package** (separate repo + PR). **The acceptance proof.** Linked
    workspace; publish only after it passes. Then slice 2 (force-directed), slice 3 (dbd#24).
 

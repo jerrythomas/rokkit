@@ -4704,13 +4704,13 @@ segs snippet, so the two views cannot drift apart again."
 - Create: `packages/themes/src/base/graph.css`, `packages/themes/src/rokkit/graph.css`
 - Modify: `packages/themes/src/base/index.css`, `packages/themes/src/rokkit/index.css`
 
-- [ ] **Step 1: Read the conventions**
+- [x] **Step 1: Read the conventions**
 
 Read `packages/themes/src/base/chart.css` and `packages/themes/src/rokkit/chart.css` to match
 structure. Read `packages/themes/src/base/graph-paper.css` — it already provides the dotted
 canvas and must **not** be duplicated.
 
-- [ ] **Step 2: Write the failing test**
+- [x] **Step 2: Write the failing test**
 
 Create `packages/themes/spec/graph-css.spec.js`:
 
@@ -4811,12 +4811,12 @@ describe('graph theme CSS', () => {
 })
 ```
 
-- [ ] **Step 3: Run to verify it fails**
+- [x] **Step 3: Run to verify it fails**
 
 Run: `bun run test:ci --project themes`
 Expected: FAIL — `ENOENT` on `base/graph.css`.
 
-- [ ] **Step 4: Write `base/graph.css`**
+- [x] **Step 4: Write `base/graph.css`**
 
 Structure only — positioning, sizing, overflow, the `--control`-style custom-property
 declarations with **no** colour values. Cover: `[data-graph-world]`, `[data-graph-cluster]`,
@@ -4837,7 +4837,7 @@ Include the naming note the design calls for:
 Carry over the geometry that must agree with `constants.ts`:
 `--graph-head-h: 40px`, `--graph-row-h: 24px`, `--graph-more-h: 22px`.
 
-- [ ] **Step 5: Write `rokkit/graph.css`**
+- [x] **Step 5: Write `rokkit/graph.css`**
 
 Colour only, using the canonical named tokens and the translation table from the design doc:
 
@@ -4856,7 +4856,7 @@ Colour only, using the canonical named tokens and the translation table from the
 - hover moves a fill **away** from its label with
   `oklch(from … calc(l + (l - 0.566) * 0.3) …)` — never a fixed darken or lighten
 
-- [ ] **Step 6: Register the imports**
+- [x] **Step 6: Register the imports**
 
 Add `@import './graph.css';` to `packages/themes/src/base/index.css` and
 `packages/themes/src/rokkit/index.css`.
@@ -4864,12 +4864,12 @@ Add `@import './graph.css';` to `packages/themes/src/base/index.css` and
 **These files are not alphabetical** — they are grouped (typography/density/radius/layout first,
 then components). Add the import to the component group, next to `chart.css`.
 
-- [ ] **Step 7: Run to verify it passes**
+- [x] **Step 7: Run to verify it passes**
 
 Run: `bun run test:ci --project themes && bun run build --filter @rokkit/themes`
 Expected: PASS on 5 tests; themes build emits `dist/base/graph.css` and `dist/rokkit/graph.css`.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add packages/themes
