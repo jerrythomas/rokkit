@@ -151,7 +151,11 @@
   --node-accent: var(--success);
 }
 
-[data-style='frosted'] [data-node-kind='matview'] {
+/* dbd v2's wire string is `materialized_view`; `matview` is rokkit's shorter alias for the
+   same object. Both spellings, one accent — two colours for one kind would read as two
+   different kinds sitting side by side. */
+[data-style='frosted'] [data-node-kind='matview'],
+[data-style='frosted'] [data-node-kind='materialized_view'] {
   --node-accent: var(--info);
 }
 
@@ -159,7 +163,14 @@
   --node-accent: var(--warning);
 }
 
-[data-style='frosted'] [data-node-kind='procedure'] {
+/* A trigger shares procedure's accent deliberately: there are SEVEN node kinds and six
+   semantic roles (primary, accent, success, info, warning, danger — `--secondary` appears in
+   the CLI skin scaffold but is never emitted), and inventing a seventh hue with color-mix
+   would put an unskinnable colour through the 5-style x 2-mode x 5-skin contrast sweep. The
+   pairing is the honest one: a trigger IS invoked behaviour, like a procedure, and the glyph
+   (bolt vs play-circle) carries the distinction. */
+[data-style='frosted'] [data-node-kind='procedure'],
+[data-style='frosted'] [data-node-kind='trigger'] {
   --node-accent: var(--accent);
 }
 

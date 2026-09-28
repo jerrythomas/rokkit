@@ -515,11 +515,83 @@ learn demo and its examples**, dbd consuming it.
 **Slice 2 — force-directed / call graph.** A second `LayoutFn` plus `d3-force`, validated
 against an interface one real consumer already exercises. Sensei's call graph is the driver.
 
-**Slice 3 — dbd#24 v2 model.** Non-table entity kinds and the dependency-edge list. Lands as
-normalizer plus theme work: `data-node-kind` and `data-edge-kind` already exist for it.
+**Slice 3 — dbd#24 v2 model.** ~~Non-table entity kinds and the dependency-edge list.~~
+**Pulled into slice 1** (2026-09-28): dbd shipped v2 on 2026-09-27, so slice 1's acceptance
+gate — dbd consuming the package — was going to hit it regardless, and task 21 would otherwise
+have documented a model the one real consumer had already moved past. See *A schema is two
+graphs* below.
 
 Sequencing rationale, from #159: the current model is stable and tested, so extracting against
 it avoids extracting a moving target.
+
+---
+
+## A schema is two graphs, not one
+
+Locked 2026-09-28, from a reader's question: *"what position do views and functions have in an
+ER diagram? An ER diagram is only for table entities."*
+
+That is right, and **dbd's v2 `SchemaModel` had already encoded it** — in its own doc comments:
+
+> `tables`: "Tables only — unchanged from v1, deliberately. Every other kind is in `entities`,
+> so a consumer reading this as *the tables* stays correct."
+>
+> `refs`: "Foreign keys only — unchanged from v1. The dependency graph is `deps`; **an ER
+> renderer wants these and a call-graph renderer wants those.**"
+>
+> `EntityNode`: "A non-table entity: a view, materialized view, function or procedure. **No
+> columns.** A parsed routine has none, and a view's are not read — what it has is a body and
+> the things it depends on."
+
+An ER diagram is entities and their relationships. A view is a derived projection and a
+routine is behaviour; neither is an entity. The visible symptom of ignoring that: slice 1's
+demo put all six kinds in `tables`, invented columns for them, and gave them no edges — four
+of fourteen nodes floated unconnected, and at `keys` density they collapsed to a bare `+3
+more`. The picture asserted more structure than the data had.
+
+**The package does not gain a kind filter.** The consumer choosing what to pass IS the
+mechanism, and it is what dbd's split exists for. A built-in filter would force a generic
+graph package to know that `table` is special.
+
+What `./schema` gains — the one entry point allowed to know dbd's vocabulary — is a scope:
+
+| call | nodes | edges |
+| --- | --- | --- |
+| `toGraphInput(model, 'er')` *(default)* | `tables` | `refs` |
+| `toGraphInput(model, 'dependencies')` | `tables` + `entities` | `deps` |
+
+Tables stay in the dependency scope because a view READS a table; dropping them would leave
+every edge dangling — the same orphan defect from the other direction. `er` is the default so
+a caller written against v1 reads a v2 model unchanged.
+
+### Two canonical additions this required
+
+- **`GraphEdge.relation`** — dbd's `DepEdge.kind` is `reads | writes | calls | member`, four
+  verbs that are one `EdgeKind` for layout but read very differently. Widening `EdgeKind` to
+  hold them would teach a generic package what a stored procedure is, so `kind` stays the
+  two-value discriminator every layout branches on and `relation` carries the consumer's word
+  out to `data-edge-relation`. It also joins the edge id: a procedure that both reads AND
+  writes one table is two edges with identical endpoints and no row anchors.
+- **`GraphFields.defaultEdgeKind`** — for a list that is wholly dependencies there is no
+  per-row path to point at, and without it every call renders as a foreign key.
+
+`DepEdge.unresolved` needs no mapping: an endpoint dbd could not resolve is absent from the
+model, so `unplaced` derives the same fact. dbd's instruction is the same one already
+implemented — *"the edge is real, the endpoint is not placeable"*, so dim rather than drop.
+
+### Vocabulary corrections found here
+
+- `materialized_view` and `trigger` are dbd's wire strings and were unknown to the icon map
+  and to all five themes. `matview` stays as a declared alias.
+- **Kind icons never worked.** `i-graph-*` was defined in no UnoCSS config, icon collection or
+  stylesheet, so every kind rendered an identical blank 13x13 box. `src/icons.ts` now names
+  `i-glyph:*` entries and `spec/icons.spec.ts` checks each against the shipped collection.
+- **Seven kinds, six semantic roles.** `trigger` shares `procedure`'s accent — both are
+  invoked behaviour — and the glyph carries the distinction. `--secondary` exists in the CLI
+  skin scaffold but is never emitted, and inventing a seventh hue via `color-mix` would put an
+  unskinnable colour through the 5-style x 2-mode x 5-skin contrast sweep. Note also that the
+  **default skin collapses `primary`/`accent`/`danger` to one colour** and `info`/`warning` to
+  another, so kind colour is a weaker signal than the glyph on that skin.
 
 ---
 

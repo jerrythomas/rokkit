@@ -41,8 +41,16 @@
 		<strong>{active.label}</strong>.
 	</ChatMessage>
 	<ChatMessage kind="info" status="explained" icon="i-mdi:map-marker-path">
+		<strong>An ER diagram is table entities and their foreign keys.</strong> A view is a derived
+		projection and a routine is behaviour — neither is an entity, so neither is here. They live
+		in <strong>Schema dependencies</strong>, where the edges that give them meaning
+		(<code>reads</code>, <code>writes</code>, <code>calls</code>, <code>member</code>) actually
+		exist. Both views come from one <code>SchemaModel</code>, split by
+		<code>toGraphInput</code>.
+	</ChatMessage>
+	<ChatMessage kind="info" status="explained" icon="i-mdi:shape-outline">
 		<strong>Data-first, not schema-first.</strong> An ER diagram is one thing this draws, not
-		what it is. The call graph below shares none of the schema shape's key names —
+		what it is. The call graph shares none of the schema shape's key names —
 		<code>key</code>, <code>team</code>, <code>endpoints</code>, <code>caller</code>,
 		<code>callee</code> — and is adapted entirely by a <code>fields</code> map.
 	</ChatMessage>

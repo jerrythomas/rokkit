@@ -15,6 +15,17 @@ const openControls = async (page: Page) => {
 	await expect(page.locator('[data-graph-controls]')).toBeVisible()
 }
 
+/** Every kind `DEFAULT_ICONS` names, minus `matview` which is a declared alias. */
+const KINDS = [
+	'table',
+	'view',
+	'materialized_view',
+	'function',
+	'procedure',
+	'trigger',
+	'enum'
+] as const
+
 /**
  * Scoped to [data-graph-controls] on purpose: the app shell has its own "Density" control, so
  * an unscoped getByLabel('Density') matches two elements and hangs on strict mode.
@@ -45,17 +56,97 @@ test.describe('graph demo', () => {
 		expect(await page.locator('[data-graph-row]').count()).toBeGreaterThan(0)
 	})
 
+	test('the ER diagram admits ONLY table entities — no view, routine or trigger', async ({
+		page
+	}) => {
+		// The whole ER/dependency split. A view is a derived projection and a routine is
+		// behaviour; neither is an entity, and in dbd v2 neither has columns — so on an ER
+		// canvas they render as orphan cards with nothing in them and no edges, which is what
+		// this demo used to do.
+		await expect(page.locator('[data-graph-node]').first()).toBeVisible()
+
+		for (const kind of ['view', 'materialized_view', 'matview', 'function', 'procedure', 'trigger']) {
+			await expect(page.locator(`[data-graph-node][data-node-kind="${kind}"]`), kind).toHaveCount(0)
+		}
+		expect(await page.locator('[data-graph-node][data-node-kind="table"]').count()).toBeGreaterThan(
+			0
+		)
+	})
+
+	test('every ER node is connected — the diagram has no orphan', async ({ page }) => {
+		// An orphan card in an ER diagram means the data put something there that has no
+		// relationships, which is the symptom the split exists to remove.
+		const orphans = await page.evaluate(() => {
+			const edges = [...document.querySelectorAll('[data-graph-edge]')]
+			const ends = new Set(
+				edges.flatMap((e) => [e.getAttribute('data-edge-from'), e.getAttribute('data-edge-to')])
+			)
+			return [...document.querySelectorAll('[data-graph-node]')]
+				.map((n) => n.getAttribute('data-graph-node') as string)
+				.filter((id) => !ends.has(id))
+		})
+
+		expect(orphans).toEqual([])
+	})
+
+	test('the dependency view carries the entities and dbd’s verbs', async ({ page }) => {
+		await page.goto('/app/graph?variant=schema-deps')
+		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+		await expect(page.locator('[data-graph-node]').first()).toBeVisible()
+
+		for (const kind of ['view', 'materialized_view', 'function', 'procedure', 'trigger']) {
+			expect(
+				await page.locator(`[data-graph-node][data-node-kind="${kind}"]`).count(),
+				kind
+			).toBeGreaterThan(0)
+		}
+
+		// The coarse kind is what layouts branch on; the verb is what a reader and a theme see.
+		await expect(page.locator('[data-graph-edge][data-edge-kind="reference"]')).toHaveCount(0)
+		for (const verb of ['reads', 'writes', 'calls', 'member']) {
+			expect(
+				await page.locator(`[data-graph-edge][data-edge-relation="${verb}"]`).count(),
+				verb
+			).toBeGreaterThan(0)
+		}
+	})
+
+	test('every node kind renders a DISTINCT icon, not a blank box', async ({ page }) => {
+		// `i-graph-*` was defined in no config, collection or stylesheet, so every kind rendered
+		// an identical empty 13x13 span while the class attribute looked perfectly correct.
+		// Only a computed-style check in a real browser sees that.
+		await page.goto('/app/graph?variant=schema-deps')
+		await expect(page.locator('[data-graph-node]').first()).toBeVisible()
+
+		const icons = await page.evaluate(() => {
+			const out: Record<string, string> = {}
+			for (const n of document.querySelectorAll('[data-graph-node]')) {
+				const kind = n.getAttribute('data-node-kind')
+				const el = n.querySelector('[data-graph-node-icon]')
+				if (!kind || !el || out[kind]) continue
+				const cs = getComputedStyle(el)
+				out[kind] = cs.maskImage !== 'none' ? cs.maskImage : cs.backgroundImage
+			}
+			return out
+		})
+
+		const kinds = Object.keys(icons)
+		expect(kinds.length).toBeGreaterThan(4)
+		for (const kind of kinds) expect(icons[kind], kind).not.toBe('none')
+		expect(new Set(Object.values(icons)).size, 'each kind a different glyph').toBe(kinds.length)
+	})
+
 	test('a keyless entity says so at key density instead of only counting hidden rows', async ({
 		page
 	}) => {
-		// A view, a procedure and an enum have no pk and no fk. At 'keys' their cards collapse
-		// to a title plus "+3 more", which is indistinguishable from a card the reader
-		// collapsed and reads as a rendering failure rather than as a fact about the entity.
+		// An enum's labels are not keys, so at 'keys' its card collapses to a title plus
+		// "+5 more" — indistinguishable from a card the reader collapsed, and reading as a
+		// rendering failure rather than as a fact about the entity.
 		await openControls(page)
 		await setControl(page, 'Density', 'keys')
 
-		const view = page.locator('[data-graph-node="public.active_orders"] [data-graph-more]')
-		await expect(view).toHaveText('no keys · 3 rows')
+		const view = page.locator('[data-graph-node="public.order_status"] [data-graph-more]')
+		await expect(view).toHaveText('no keys · 5 rows')
 
 		// Italic is the visual half of the distinction and lives in the BUILT theme CSS, which
 		// a component test cannot see — the point of asserting it out here.
@@ -77,11 +168,11 @@ test.describe('graph demo', () => {
 		for (let i = 0; i < 7; i++) await zoomIn.click()
 		await expect(page.locator('[data-graph-paper]')).toHaveAttribute('data-graph-detail', 'full')
 
-		const card = page.locator('[data-graph-node="public.active_orders"]')
+		const card = page.locator('[data-graph-node="public.order_status"]')
 		await expect(card.locator('[data-graph-row]')).toHaveCount(0)
 
 		await card.locator('[data-graph-more]').click()
-		await expect(card.locator('[data-graph-row]')).toHaveCount(3)
+		await expect(card.locator('[data-graph-row]')).toHaveCount(5)
 		await expect(card.locator('[data-graph-more]')).toHaveText('show less')
 	})
 
@@ -95,7 +186,12 @@ test.describe('graph demo', () => {
 	})
 
 	test('every preset node kind is rendered', async ({ page }) => {
-		for (const kind of ['table', 'view', 'matview', 'function', 'procedure', 'enum']) {
+		// The non-table kinds live in the DEPENDENCY view, not the ER one — a view and a routine
+		// are not entities. `enum` stays on the ER side as a domain the columns reference.
+		await page.goto('/app/graph?variant=schema-deps')
+		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+
+		for (const kind of KINDS) {
 			await expect(page.locator(`[data-graph-node][data-node-kind="${kind}"]`).first(), kind)
 				.toBeVisible()
 		}
@@ -105,10 +201,12 @@ test.describe('graph demo', () => {
 	// would render structure and no colour at all. Swept per style rather than pinned to one.
 	for (const style of ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi'] as const) {
 		test(`the ${style} theme tells the node kinds apart`, async ({ page }) => {
+			await page.goto('/app/graph?variant=schema-deps')
+			await expect(page.locator('[data-graph-explorer]')).toBeVisible()
 			await setStyle(page, style)
 
 			const accents = new Set<string>()
-			for (const kind of ['table', 'view', 'matview', 'function', 'procedure', 'enum']) {
+			for (const kind of KINDS) {
 				const node = page.locator(`[data-graph-node][data-node-kind="${kind}"]`).first()
 				accents.add(
 					await node.evaluate((el) =>
@@ -228,12 +326,18 @@ test.describe('graph demo', () => {
 		expect(await scaleOf()).toBeGreaterThan(before)
 	})
 
-	test('both examples are reachable as variant chips, not just via a control', async ({
+	test('all three examples are reachable as variant chips, not just via a control', async ({
 		page
 	}) => {
 		// The variants were declared in meta and surfaced nowhere: the layout renders variant
 		// chips only in its GENERIC demo branch, and graph has its own conversation component.
-		await expect(page.getByRole('button', { name: 'ER diagram' })).toBeVisible()
+		for (const label of ['ER diagram', 'Schema dependencies', 'Call graph']) {
+			await expect(page.getByRole('button', { name: label }), label).toBeVisible()
+		}
+
+		await page.getByRole('button', { name: 'Schema dependencies' }).click()
+		await expect(page).toHaveURL(/variant=schema-deps/)
+		await expect(page.locator('[data-graph-node][data-node-kind="view"]').first()).toBeAttached()
 
 		await page.getByRole('button', { name: 'Call graph' }).click()
 		await expect(page).toHaveURL(/variant=call-graph/)

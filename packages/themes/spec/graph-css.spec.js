@@ -32,12 +32,38 @@ describe('graph theme CSS', () => {
 		}
 	})
 
+	// Every kind `DEFAULT_ICONS` can produce. `materialized_view` and `trigger` are dbd v2's
+	// WIRE strings — a real schema emits those, not `matview`, and a style that only knows
+	// `matview` renders half of dbd's objects with no accent at all.
+	const KINDS = [
+		'table',
+		'view',
+		'matview',
+		'materialized_view',
+		'function',
+		'procedure',
+		'trigger',
+		'enum'
+	]
+
 	it.each(STYLES)('%s styles every node kind the preset names', (style) => {
 		const css = read(`${style}/graph.css`)
 
-		for (const kind of ['table', 'view', 'matview', 'function', 'procedure', 'enum']) {
+		for (const kind of KINDS) {
 			expect(css, `${style} / ${kind}`).toContain(`[data-node-kind='${kind}']`)
 		}
+	})
+
+	it.each(STYLES)('%s gives materialized_view the same accent as its matview alias', (style) => {
+		// One object, two spellings. Different colours for the same thing would read as two
+		// different kinds sitting side by side in one diagram.
+		const css = read(`${style}/graph.css`)
+		const accentOf = (kind) =>
+			css.match(
+				new RegExp(`\\[data-node-kind='${kind}'\\][^{]*\\{[^}]*--node-accent:\\s*([^;]+);`)
+			)?.[1]
+
+		expect(accentOf('materialized_view')).toBe(accentOf('matview'))
 	})
 
 	it.each(STYLES)('%s never uses a brand colour as a FOREGROUND colour', (style) => {
@@ -130,7 +156,7 @@ describe('graph theme CSS', () => {
 	it('styles every node kind the preset names', () => {
 		const rokkit = read('rokkit/graph.css')
 
-		for (const kind of ['table', 'view', 'matview', 'function', 'procedure', 'enum']) {
+		for (const kind of KINDS) {
 			expect(rokkit, kind).toContain(`[data-node-kind='${kind}']`)
 		}
 	})

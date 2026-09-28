@@ -227,6 +227,8 @@
 					data-graph-edge
 					data-edge-kind={edge.kind}
 					data-edge-relation={edge.relation}
+					data-edge-from={edge.fromKey}
+					data-edge-to={edge.toKey}
 					data-edge-state={graph.edgeState(edge)}
 				>
 					<path d={graph.edgePath(edge)} />

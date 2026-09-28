@@ -150,12 +150,14 @@
 }
 
 [data-style='zen-sumi'] [data-node-kind='view'],
-[data-style='zen-sumi'] [data-node-kind='matview'] {
+[data-style='zen-sumi'] [data-node-kind='matview'],
+[data-style='zen-sumi'] [data-node-kind='materialized_view'] {
   --node-accent: var(--ink-mute);
 }
 
 [data-style='zen-sumi'] [data-node-kind='function'],
-[data-style='zen-sumi'] [data-node-kind='procedure'] {
+[data-style='zen-sumi'] [data-node-kind='procedure'],
+[data-style='zen-sumi'] [data-node-kind='trigger'] {
   --node-accent: var(--ink-soft);
 }
 

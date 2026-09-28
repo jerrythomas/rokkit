@@ -33,8 +33,9 @@ class GraphExplorerStore {
 	selectDataset(id: DatasetId): void {
 		this.dataset = id
 		// A call graph is a dense graph: cards are the wrong unit for it, and `points` is the
-		// answer to "what does this look like with a thousand nodes". Switching back to the
-		// schema restores cards, which are right when a node HAS columns worth reading.
+		// answer to "what does this look like with a thousand nodes". The two schema views keep
+		// cards, which are right when a node HAS columns worth reading — and a dependency node
+		// that has none still reads as a titled card among the tables it touches.
 		this.layout = id === 'service-calls' ? 'points' : 'cluster'
 	}
 }

@@ -116,6 +116,16 @@ describe('Graph — published attributes', () => {
 		)
 	})
 
+	it('publishes both endpoints, which are not otherwise recoverable from the DOM', () => {
+		// A consumer highlighting "every edge touching this node", and any check that no node is
+		// left unconnected, both need these — the geometry alone does not say who it joins.
+		const { container } = render(Graph, { state: state() })
+		const edge = container.querySelector('[data-graph-edge]')
+
+		expect(edge?.getAttribute('data-edge-from')).toBe('public.orders')
+		expect(edge?.getAttribute('data-edge-to')).toBe('public.users')
+	})
+
 	it('publishes the relation verb so a theme can tell reads from writes', () => {
 		const s = new GraphState({
 			nodes: NODES,

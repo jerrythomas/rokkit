@@ -21,15 +21,20 @@ const meta: DemoMeta = {
 		description:
 			'Mount the interactive graph explorer on the canvas — a node-link diagram with pluggable layouts. Pass `dataset` to open a specific one.',
 		parameters: {
-			dataset: 'optional dataset: ecommerce | service-calls (defaults to ecommerce)'
+			dataset:
+				'optional dataset: ecommerce | schema-deps | service-calls (defaults to ecommerce)'
 		}
 	},
 	inline: { capable: true },
 	/*
-	 * Two datasets, two discoverable examples. The second is the point: a service call
-	 * graph shares none of the schema shape's key names and is adapted entirely by a
-	 * `fields` map, so seeing both mount from one component is what shows the contract
-	 * is general rather than ER-specific.
+	 * Three examples, and the first two come from ONE dbd v2 payload. An ER diagram is table
+	 * entities and their foreign keys; a view is a derived projection and a routine is
+	 * behaviour, so neither is an entity and neither appears in the ER example. They appear in
+	 * `Schema dependencies`, where the edges that give them meaning — reads, writes, calls,
+	 * member — actually exist.
+	 *
+	 * The third is the general-contract proof: a service call graph shares none of the schema
+	 * shape's key names and is adapted entirely by a `fields` map.
 	 */
 	variants: [
 		{
@@ -37,6 +42,12 @@ const meta: DemoMeta = {
 			label: 'ER diagram',
 			mode: 'dynamic',
 			props: { dataset: 'ecommerce' }
+		},
+		{
+			id: 'schema-deps',
+			label: 'Schema dependencies',
+			mode: 'dynamic',
+			props: { dataset: 'schema-deps' }
 		},
 		{
 			id: 'call-graph',
@@ -60,7 +71,7 @@ const meta: DemoMeta = {
 			{ name: 'preset', type: 'GraphPreset', desc: 'createGraphPreset({ groups, shades, using }) — colour for the open-ended GROUP vocabulary. Node kinds are a closed set and are themed in CSS instead' },
 			{ name: 'mode', type: "'light' | 'dark'", default: "'light'", desc: 'Which shade ladder the group ramp resolves against' },
 			{ name: 'label', type: 'string', desc: 'Accessible name. Derived from the node/edge counts when omitted' },
-			{ name: 'icons', type: 'Record<string, string>', desc: 'Icon class per node kind and row badge, merged over the built-ins' },
+			{ name: 'icons', type: 'Record<string, string>', desc: 'Icon class per node kind and row badge, merged over DEFAULT_ICONS. The built-ins name i-glyph:* entries — override to adopt a different collection' },
 			{ name: 'onselect', type: '(id: string) => void', desc: 'Fires when a node is activated' }
 		],
 		attrs: [
@@ -78,7 +89,7 @@ const meta: DemoMeta = {
 			{ selector: '[data-graph-cluster-label]', desc: 'Group name + count. Reads --group-label' },
 			// Node card
 			{ selector: '[data-graph-node]', desc: 'Node card — a <button>' },
-			{ selector: '[data-node-kind]', desc: 'table | view | matview | function | procedure | enum — sets --node-accent' },
+			{ selector: '[data-node-kind]', desc: 'table | view | matview | materialized_view | function | procedure | trigger | enum — sets --node-accent. matview and materialized_view are the same object under rokkit’s short name and dbd’s wire name' },
 			{ selector: '[data-node-group]', desc: 'The node’s group name, for per-group overrides' },
 			{ selector: '[data-node-state]', desc: 'selected | related | dim' },
 			{ selector: '[data-node-headonly]', desc: 'Card with neither rows nor a more-row' },
@@ -100,6 +111,9 @@ const meta: DemoMeta = {
 			// Edges
 			{ selector: '[data-graph-edge]', desc: 'Routed edge group' },
 			{ selector: '[data-edge-kind]', desc: 'reference | dependency — dependency renders dashed' },
+			{ selector: '[data-edge-relation]', desc: 'The producer’s own verb for the edge, when it has one — dbd v2 emits reads | writes | calls | member. Absent on a plain foreign key' },
+			{ selector: '[data-edge-from]', desc: 'Source node id — an edge’s endpoints are not otherwise recoverable from the DOM' },
+			{ selector: '[data-edge-to]', desc: 'Target node id' },
 			{ selector: '[data-edge-state]', desc: 'highlight | dim' },
 			{ selector: '[data-graph-edge-dot]', desc: 'Source anchor dot (and the target anchor when arrows are off)' },
 			{ selector: '[data-graph-edge-arrow]', desc: 'Directional arrowhead at the edge target' },

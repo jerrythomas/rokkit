@@ -1,21 +1,32 @@
 /**
  * The LOAD layer of the graph demo.
  *
- * Two datasets, and the second one is the point. `ecommerceSchema` is dbd-shaped, so it goes
- * through `SCHEMA_FIELDS` unchanged. `serviceCallGraph` is a deliberately different shape —
- * services with endpoints, calls with a transport — mapped by its own `fields`. If both render
- * from the same `<Graph>`, the contract is genuinely general rather than a SchemaModel wearing
- * a different name.
+ * Three datasets. `ecommerceSchema` is a dbd v2 `SchemaModel`, which splits a database into
+ * TWO graphs and is rendered here as two examples:
+ *
+ * - **ER** — `tables` + `refs`. Entities and their foreign keys, and nothing else. A view is a
+ *   derived projection and a routine is behaviour; neither is an entity, so neither belongs on
+ *   an ER canvas. dbd says the same thing in its own doc comments: `tables` is "Tables only",
+ *   `refs` is "Foreign keys only — the dependency graph is `deps`; an ER renderer wants these
+ *   and a call-graph renderer wants those."
+ * - **Dependencies** — `tables` + `entities` as nodes, `deps` as edges. What reads, writes,
+ *   calls or belongs to what. The tables stay, because a view READS a table.
+ *
+ * `serviceCallGraph` is a deliberately different shape — services with endpoints, calls with a
+ * transport — mapped by its own `fields`. If all three render from the same `<Graph>`, the
+ * contract is genuinely general rather than a SchemaModel wearing a different name.
  */
 
-import { SCHEMA_FIELDS } from '@rokkit/graph/schema'
+import { toGraphInput } from '@rokkit/graph/schema'
 import type { GraphFields } from '@rokkit/graph'
 
-export type DatasetId = 'ecommerce' | 'service-calls'
+export type DatasetId = 'ecommerce' | 'schema-deps' | 'service-calls'
 
-/* ─── 1. dbd-shaped ──────────────────────────────────────────────────────────
-   Three groups so the ramp wraps visibly, and every kind the preset names:
-   table, view, matview, function, procedure, enum. */
+/* ─── 1. dbd v2-shaped ───────────────────────────────────────────────────────
+   `tables` holds tables (plus the two enums — dbd flags an enum COLUMN via `Column.en`
+   rather than emitting an enum node, but a domain is a legitimate ER participant and the
+   package's `kind` is open, so the demo shows them). Views, matviews, functions, procedures
+   and triggers live in `entities` below, with no columns, exactly as v2 defines them. */
 
 const ecommerceTables = [
 	{
@@ -94,27 +105,6 @@ const ecommerceTables = [
 		]
 	},
 	{
-		schema: 'public',
-		name: 'active_orders',
-		kind: 'view',
-		noteMd: 'Orders not yet `delivered` or `cancelled`.',
-		columns: [
-			{ name: 'id', type: 'uuid' },
-			{ name: 'user_id', type: 'uuid' },
-			{ name: 'status', type: 'order_status' }
-		]
-	},
-	{
-		schema: 'public',
-		name: 'place_order',
-		kind: 'procedure',
-		noteMd: 'Writes the order and its lines in one transaction.',
-		columns: [
-			{ name: 'p_user_id', type: 'uuid' },
-			{ name: 'p_lines', type: 'jsonb' }
-		]
-	},
-	{
 		schema: 'billing',
 		name: 'invoices',
 		kind: 'table',
@@ -134,23 +124,6 @@ const ecommerceTables = [
 			{ name: 'invoice_id', type: 'uuid', nn: true },
 			{ name: 'captured_at', type: 'timestamptz' }
 		]
-	},
-	{
-		schema: 'billing',
-		name: 'revenue_daily',
-		kind: 'matview',
-		noteMd: 'Refreshed nightly. Do not join for live figures.',
-		columns: [
-			{ name: 'day', type: 'date' },
-			{ name: 'gross_cents', type: 'numeric(14,2)' },
-			{ name: 'orders', type: 'integer' }
-		]
-	},
-	{
-		schema: 'billing',
-		name: 'invoice_total',
-		kind: 'function',
-		columns: [{ name: 'p_invoice_id', type: 'uuid' }]
 	},
 	{
 		schema: 'audit',
@@ -211,8 +184,92 @@ const ecommerceRefs = [
 	}
 ]
 
-export const ecommerceSchema = { tables: ecommerceTables, refs: ecommerceRefs }
-export const ecommerceFields: GraphFields = SCHEMA_FIELDS
+/* v2 `entities`: everything that is not a table. No `columns` — dbd's EntityNode carries
+   none ("A parsed routine has none, and a view's are not read — what it has is a body and the
+   things it depends on"), and inventing some was what made these four render as orphan cards
+   full of fake parameters in the ER diagram. */
+const ecommerceEntities = [
+	{
+		schema: 'public',
+		name: 'active_orders',
+		kind: 'view',
+		noteMd: 'Orders not yet `delivered` or `cancelled`.'
+	},
+	{
+		schema: 'public',
+		name: 'place_order',
+		kind: 'procedure',
+		noteMd: 'Writes the order and its lines in one transaction.'
+	},
+	{
+		schema: 'billing',
+		name: 'revenue_daily',
+		kind: 'materialized_view',
+		noteMd: 'Refreshed nightly. Do not join for live figures.'
+	},
+	{ schema: 'billing', name: 'invoice_total', kind: 'function' },
+	{
+		schema: 'audit',
+		name: 'orders_audit',
+		kind: 'trigger',
+		noteMd: 'Fires on every write to `public.orders`.'
+	}
+]
+
+/* v2 `deps`: what reads, writes, calls or belongs to what. This is the structure the four
+   entities above were missing — in the ER diagram they had no foreign keys and so no edges at
+   all, which is exactly the point that an ER diagram is the wrong canvas for them.
+
+   `now` is deliberately unresolvable: a call to a built-in is a real edge whose endpoint is
+   not placeable, and dbd flags the same case `unresolved`. It is dimmed, never dropped. */
+const ecommerceDeps = [
+	{ from: { s: 'public', n: 'active_orders' }, to: { s: 'public', n: 'orders' }, kind: 'reads' },
+	{ from: { s: 'public', n: 'active_orders' }, to: { s: 'public', n: 'users' }, kind: 'reads' },
+	{ from: { s: 'public', n: 'place_order' }, to: { s: 'public', n: 'orders' }, kind: 'writes' },
+	{
+		from: { s: 'public', n: 'place_order' },
+		to: { s: 'public', n: 'order_lines' },
+		kind: 'writes'
+	},
+	{ from: { s: 'public', n: 'place_order' }, to: { s: 'public', n: 'products' }, kind: 'reads' },
+	{
+		from: { s: 'public', n: 'place_order' },
+		to: { s: 'billing', n: 'invoice_total' },
+		kind: 'calls'
+	},
+	{
+		from: { s: 'billing', n: 'invoice_total' },
+		to: { s: 'billing', n: 'invoices' },
+		kind: 'reads'
+	},
+	{ from: { s: 'billing', n: 'invoice_total' }, to: { s: '', n: 'round' }, kind: 'calls' },
+	{
+		from: { s: 'billing', n: 'revenue_daily' },
+		to: { s: 'billing', n: 'payments' },
+		kind: 'reads'
+	},
+	{
+		from: { s: 'billing', n: 'revenue_daily' },
+		to: { s: 'billing', n: 'invoices' },
+		kind: 'reads'
+	},
+	{ from: { s: 'audit', n: 'orders_audit' }, to: { s: 'public', n: 'orders' }, kind: 'member' },
+	{ from: { s: 'audit', n: 'orders_audit' }, to: { s: 'audit', n: 'events' }, kind: 'writes' }
+]
+
+/** A dbd v2 `SchemaModel` — two graphs in one payload, selected by `toGraphInput`. */
+export const ecommerceSchema = {
+	version: 2,
+	tables: ecommerceTables,
+	refs: ecommerceRefs,
+	entities: ecommerceEntities,
+	deps: ecommerceDeps
+}
+
+const er = toGraphInput(ecommerceSchema, 'er')
+const deps = toGraphInput(ecommerceSchema, 'dependencies')
+
+export const ecommerceFields: GraphFields = er.fields
 
 /* ─── 2. deliberately NOT dbd-shaped ─────────────────────────────────────────
    Different key names at every level: `key` not schema+name, `team` not schema,
@@ -313,16 +370,26 @@ export const serviceCallFields: GraphFields = {
 	source: 'caller',
 	target: 'callee',
 	sourceRow: 'from',
-	targetRow: 'to'
+	targetRow: 'to',
+	// A call is not a foreign key. Every edge in this list is a dependency and there is no
+	// per-row field saying so, which is exactly what `defaultEdgeKind` is for.
+	defaultEdgeKind: 'dependency'
 }
 
 export const datasets = {
 	ecommerce: {
 		id: 'ecommerce' as const,
-		label: 'E-commerce schema',
-		nodes: ecommerceSchema.tables as unknown[],
-		edges: ecommerceSchema.refs as unknown[],
-		fields: ecommerceFields
+		label: 'E-commerce ER',
+		nodes: er.nodes,
+		edges: er.edges,
+		fields: er.fields
+	},
+	'schema-deps': {
+		id: 'schema-deps' as const,
+		label: 'Schema dependencies',
+		nodes: deps.nodes,
+		edges: deps.edges,
+		fields: deps.fields
 	},
 	'service-calls': {
 		id: 'service-calls' as const,

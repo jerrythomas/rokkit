@@ -122,10 +122,11 @@ reach for first:
 
 | Attribute          | Values                                            |
 | ------------------ | ------------------------------------------------- |
-| `data-node-kind`   | `table` `view` `matview` `function` `procedure` `enum` |
+| `data-node-kind`   | `table` `view` `matview` / `materialized_view` `function` `procedure` `trigger` `enum` |
 | `data-node-group`  | your group names                                  |
 | `data-node-state`  | `selected` `related` `dim`                        |
 | `data-edge-kind`   | `reference` `dependency` (dashed)                 |
+| `data-edge-relation` | the producer's own verb — dbd emits `reads` `writes` `calls` `member`. Absent on a foreign key |
 | `data-edge-state`  | `highlight` `dim`                                 |
 | `data-row-badge`   | `pk` `fk` `uq` `nn`                               |
 
@@ -136,3 +137,43 @@ reach for first:
 It does **not** import dbd's `SchemaModel` type, and that is on purpose: the hand-written
 mirror of `schema_model.rs` stays in the consuming app, so this package never becomes a third
 definition to keep in step by hand.
+
+### A schema is two graphs, not one
+
+dbd's v2 `SchemaModel` splits the database in two, and says so in its own doc comments:
+`tables` is *"Tables only"*, `refs` is *"Foreign keys only — the dependency graph is `deps`;
+an ER renderer wants these and a call-graph renderer wants those."*
+
+That split is a modelling fact, not a rendering preference. **An ER diagram is table entities
+and their relationships.** A view is a derived projection, a routine is behaviour; neither is
+an entity, and in v2 neither even has columns. Put them on an ER canvas and they render as
+orphan cards with nothing in them and no edges — which is exactly what they are there.
+
+So pick the graph you mean:
+
+```js
+import { toGraphInput } from '@rokkit/graph/schema'
+
+// tables + refs — entities and their foreign keys
+const er = toGraphInput(model, 'er')
+
+// tables + entities as nodes, deps as edges — what reads, writes or calls what.
+// The tables stay: a view READS a table, so dropping them would leave every edge dangling.
+const deps = toGraphInput(model, 'dependencies')
+```
+
+```svelte
+<Graph nodes={er.nodes} edges={er.edges} fields={er.fields} />
+```
+
+`fromSchemaModel(model, { as: 'dependencies' })` is the same choice when you want a normalized
+`GraphModel` rather than component props. Both default to `er`, so a caller written against v1
+reads a v2 model unchanged.
+
+A `deps` edge carries dbd's verb on `data-edge-relation` (`reads`, `writes`, `calls`,
+`member`) while `data-edge-kind` stays `dependency` — the coarse kind is what layouts branch
+on, the verb is what you theme and label with.
+
+An edge whose endpoint does not resolve — a call to a built-in like `round()` — is **kept and
+dimmed, never dropped**. dbd flags the same case `unresolved` and gives the same instruction:
+*"the edge is real, the endpoint is not placeable."*
