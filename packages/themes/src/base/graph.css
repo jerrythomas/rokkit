@@ -1,0 +1,259 @@
+/**
+ * Graph - Base Structural Styles
+ *
+ * Positioning, sizing, overflow, typography. No colors — those live in
+ * theme-specific graph.css files. A colour here bleeds into every style and
+ * turns a missing theme override from actionable into invisible.
+ *
+ * NOTE ON NAMING: [data-graph-paper] in graph-paper.css is a BACKGROUND utility
+ * (a grid/dot pattern), unrelated to the node-link parts below. Graph reuses it
+ * for its canvas rather than shipping its own dotted background.
+ */
+
+/* Card geometry. These MUST agree with packages/graph/src/layout/constants.ts:
+   the layout derives every card height from them and nothing measures the DOM,
+   so a disagreement renders rows that overflow the card they sit in. */
+[data-graph-world] {
+  --graph-head-h: 40px;
+  --graph-row-h: 24px;
+  --graph-more-h: 22px;
+
+  position: relative;
+  transform-origin: 0 0;
+}
+
+[data-graph-cluster] {
+  position: absolute;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.5rem;
+  pointer-events: none;
+}
+
+[data-graph-cluster-label] {
+  position: absolute;
+  top: 0.35rem;
+  left: 0.65rem;
+  font-size: 0.7rem;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* The card is a <button>; strip the native chrome so it renders as a panel. */
+[data-graph-node] {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+[data-graph-node-head] {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: var(--graph-head-h);
+  padding: 0 0.5rem;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+[data-node-headonly] [data-graph-node-head] {
+  border-bottom-width: 0;
+}
+
+[data-graph-node-icon] {
+  flex: none;
+  width: 0.8125rem;
+  height: 0.8125rem;
+}
+
+[data-graph-node-title] {
+  font-size: 0.8rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-graph-node-count] {
+  margin-left: auto;
+  font-size: 0.62rem;
+  font-family: var(--font-mono, monospace);
+}
+
+[data-graph-row] {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: var(--graph-row-h);
+  padding: 0 0.5rem;
+  font-size: 0.7rem;
+  font-family: var(--font-mono, monospace);
+}
+
+[data-graph-row-name] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-graph-row-type] {
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-graph-more] {
+  height: var(--graph-more-h);
+  padding: 0 0.5rem;
+  font-size: 0.65rem;
+  font-family: var(--font-mono, monospace);
+}
+
+/* Badge and its spacer keep the same box so name columns line up across rows
+   whether or not the row carries a key. */
+[data-row-badge],
+[data-row-badge-empty] {
+  flex: none;
+  width: 0.6875rem;
+  height: 0.6875rem;
+}
+
+[data-graph-edge] path {
+  fill: none;
+  stroke-width: 1.25;
+}
+
+[data-graph-edge-dot] {
+  stroke: none;
+}
+
+/* ─── schema views ──────────────────────────────────────────────────────── */
+
+[data-graph-entity] {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+[data-graph-entity-head] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+[data-graph-entity-group],
+[data-graph-relationship-group] {
+  font-size: 0.75rem;
+  font-family: var(--font-mono, monospace);
+}
+
+[data-graph-section-title] {
+  font-size: 0.7rem;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+[data-graph-column] {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  font-size: 0.75rem;
+}
+
+[data-graph-column-name] {
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+[data-graph-column-type],
+[data-graph-column-size] {
+  font-family: var(--font-mono, monospace);
+}
+
+[data-graph-column-size] {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+[data-graph-index] {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  font-size: 0.75rem;
+  font-family: var(--font-mono, monospace);
+}
+
+[data-graph-index]:last-child {
+  border-bottom-width: 0;
+}
+
+[data-graph-index-name] {
+  margin-left: auto;
+  font-size: 0.66rem;
+}
+
+[data-graph-relationship] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  font: inherit;
+  font-size: 0.75rem;
+  font-family: var(--font-mono, monospace);
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-graph-relationship]:last-child {
+  border-bottom-width: 0;
+}
+
+[data-graph-relationship-action] {
+  margin-left: auto;
+}
+
+[data-graph-note] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+[data-graph-note-list] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+[data-graph-note-code] {
+  padding: 0 0.25rem;
+  border-radius: 0.1875rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85em;
+}

@@ -1,0 +1,227 @@
+/**
+ * Graph - Rokkit Theme Styles
+ *
+ * Colour only; structure lives in base/graph.css.
+ *
+ * Two rules here come from the contrast gates rather than from taste:
+ *
+ * 1. Row types, fk badges and every label inside a clickable row take `ink-mute`,
+ *    never `ink-soft`. ink-soft is the placeholder tone (ink.500, ~2:1 on paper)
+ *    and cannot carry an interactive control's text — and a graph node card IS a
+ *    button.
+ * 2. Hover moves a fill AWAY from its own label with a relative oklch, never a
+ *    fixed darken or lighten, so it stays legible in both modes and under any skin.
+ *
+ * Every `--group-*` read carries a named-token fallback: resolveGroupStyles only
+ * sets those properties for nodes that have a group, so an ungrouped graph would
+ * otherwise paint with an empty value and render invisible.
+ */
+
+[data-style='rokkit'] [data-graph-paper] {
+  background-color: var(--paper);
+  --graph-paper-color: var(--paper-mute);
+}
+
+/* ─── clusters ──────────────────────────────────────────────────────────── */
+
+[data-style='rokkit'] [data-graph-cluster] {
+  background-color: var(--group-fill, var(--paper-soft));
+  border-color: var(--group-stroke, var(--paper-edge));
+}
+
+[data-style='rokkit'] [data-graph-cluster-label] {
+  color: var(--group-label, var(--ink-mute));
+}
+
+/* ─── node cards ────────────────────────────────────────────────────────── */
+
+[data-style='rokkit'] [data-graph-node] {
+  background-color: var(--paper-soft);
+  border-color: var(--paper-edge);
+  color: var(--ink);
+}
+
+[data-style='rokkit'] [data-graph-node-head] {
+  background-color: var(--paper-mute);
+  border-bottom-color: var(--paper-edge);
+}
+
+[data-style='rokkit'] [data-graph-node-title] {
+  color: var(--ink);
+}
+
+[data-style='rokkit'] [data-graph-node-count],
+[data-style='rokkit'] [data-graph-more] {
+  color: var(--ink-mute);
+}
+
+[data-style='rokkit'] [data-graph-node-icon] {
+  color: var(--node-accent, var(--ink-mute));
+}
+
+[data-style='rokkit'] [data-graph-row-name] {
+  color: var(--ink);
+}
+
+[data-style='rokkit'] [data-graph-row-type] {
+  color: var(--ink-mute);
+}
+
+/* Moves the surface away from its own label rather than a fixed darken: 0.566 is
+   the mid lightness the ladder is built around, so this pushes away from mid in
+   whichever direction the current mode sits. */
+[data-style='rokkit'] [data-graph-node]:hover {
+  background-color: oklch(from var(--paper-soft) calc(l + (l - 0.566) * 0.3) c h);
+  border-color: var(--paper-edge-hover, var(--paper-edge));
+}
+
+/* ─── row badges ────────────────────────────────────────────────────────── */
+
+[data-style='rokkit'] [data-row-badge='pk'] {
+  color: var(--primary);
+}
+
+[data-style='rokkit'] [data-row-badge='fk'] {
+  color: var(--ink-mute);
+}
+
+[data-style='rokkit'] [data-row-badge='uq'] {
+  color: var(--accent);
+}
+
+[data-style='rokkit'] [data-row-badge='nn'] {
+  color: var(--ink-mute);
+}
+
+/* ─── selection ─────────────────────────────────────────────────────────── */
+
+/* primary, never accent: on-accent is baked at build time and cannot react to a
+   skin swap, whereas on-primary is a real CSS variable. */
+[data-style='rokkit'] [data-node-state='selected'] {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+
+[data-style='rokkit'] [data-node-state='related'] {
+  border-color: var(--accent);
+}
+
+[data-style='rokkit'] [data-node-state='dim'] {
+  opacity: 0.35;
+}
+
+/* ─── edges ─────────────────────────────────────────────────────────────── */
+
+[data-style='rokkit'] [data-graph-edge] path {
+  stroke: var(--graph-edge, var(--paper-edge));
+}
+
+[data-style='rokkit'] [data-graph-edge] [data-graph-edge-dot] {
+  fill: var(--graph-edge, var(--paper-edge));
+}
+
+[data-style='rokkit'] [data-edge-state='highlight'] path,
+[data-style='rokkit'] [data-edge-state='highlight'] [data-graph-edge-dot] {
+  --graph-edge: var(--primary);
+  stroke-width: 1.75;
+}
+
+[data-style='rokkit'] [data-edge-state='dim'] {
+  opacity: 0.25;
+}
+
+/* Themed ahead of use so dbd#24's dependency edges arrive styled rather than
+   indistinguishable from foreign keys. */
+[data-style='rokkit'] [data-edge-kind='dependency'] path {
+  stroke-dasharray: 5 4;
+}
+
+/* ─── node kinds ────────────────────────────────────────────────────────── */
+
+[data-style='rokkit'] [data-node-kind='table'] {
+  --node-accent: var(--primary);
+}
+
+[data-style='rokkit'] [data-node-kind='view'] {
+  --node-accent: var(--success);
+}
+
+[data-style='rokkit'] [data-node-kind='matview'] {
+  --node-accent: var(--info);
+}
+
+[data-style='rokkit'] [data-node-kind='function'] {
+  --node-accent: var(--warning);
+}
+
+[data-style='rokkit'] [data-node-kind='procedure'] {
+  --node-accent: var(--accent);
+}
+
+[data-style='rokkit'] [data-node-kind='enum'] {
+  --node-accent: var(--danger);
+}
+
+/* ─── schema views ──────────────────────────────────────────────────────── */
+
+[data-style='rokkit'] [data-graph-entity] {
+  color: var(--ink);
+}
+
+[data-style='rokkit'] [data-graph-entity-group],
+[data-style='rokkit'] [data-graph-section-title],
+[data-style='rokkit'] [data-graph-column-size] {
+  color: var(--ink-mute);
+}
+
+[data-style='rokkit'] [data-graph-entity-kind] {
+  color: var(--node-accent, var(--ink));
+}
+
+[data-style='rokkit'] [data-graph-column],
+[data-style='rokkit'] [data-graph-index],
+[data-style='rokkit'] [data-graph-relationship] {
+  border-bottom-color: var(--paper-edge);
+}
+
+[data-style='rokkit'] [data-graph-column-note] {
+  color: var(--ink-mute);
+}
+
+[data-style='rokkit'] [data-graph-column-type] {
+  color: var(--ink-mute);
+}
+
+[data-style='rokkit'] [data-graph-index-unique] {
+  color: var(--primary);
+}
+
+[data-style='rokkit'] [data-graph-index-name] {
+  color: var(--ink-mute);
+}
+
+[data-style='rokkit'] [data-graph-relationship] {
+  color: var(--ink);
+}
+
+[data-style='rokkit'] [data-graph-relationship]:hover {
+  background-color: var(--paper-mute);
+}
+
+[data-style='rokkit'] [data-graph-relationship-label] {
+  color: var(--primary);
+}
+
+[data-style='rokkit'] [data-graph-relationship-action],
+[data-style='rokkit'] [data-graph-relationships-empty] {
+  color: var(--ink-mute);
+}
+
+[data-style='rokkit'] [data-graph-note] {
+  color: var(--ink-mute);
+}
+
+[data-style='rokkit'] [data-graph-note-code] {
+  background-color: var(--paper-mute);
+  color: var(--primary);
+}
