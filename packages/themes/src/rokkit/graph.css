@@ -50,13 +50,24 @@
   color: var(--ink);
 }
 
+/* --ink not --ink-mute: these render at 0.62-0.65rem, and ink-mute at that size measures
+   4.07:1 in dark — under the 4.5 normal-text bar. Small text has no contrast discount. */
 [data-style='rokkit'] [data-graph-node-count],
 [data-style='rokkit'] [data-graph-more] {
-  color: var(--ink-mute);
+  color: var(--ink);
 }
 
+/* The GLYPH carries the kind — i-graph-table and i-graph-view are different shapes — so the
+   icon takes full-contrast ink and --node-accent tints the head rule instead. The semantic
+   500s (warning amber measured 1.69:1 on paper-mute) cannot carry a foreground, and there is
+   no --on-warning/--on-success to pair them with the way --on-primary pairs with primary.
+   --node-accent stays defined per kind: it is the documented consumer override hook. */
 [data-style='rokkit'] [data-graph-node-icon] {
-  color: var(--node-accent, var(--ink-mute));
+  color: var(--ink);
+}
+
+[data-style='rokkit'] [data-graph-node-head] {
+  border-bottom-color: var(--node-accent, var(--paper-edge));
 }
 
 [data-style='rokkit'] [data-graph-row-name] {
@@ -77,20 +88,28 @@
 
 /* ─── row badges ────────────────────────────────────────────────────────── */
 
-[data-style='rokkit'] [data-row-badge='pk'] {
-  color: var(--primary);
+/* A badge renders two different ways and each needs its own treatment.
+   
+   Inside a node card it is a MASKED ICON: the UnoCSS icon utility sets
+   `background-color: currentColor` plus a mask, so it owns the background outright and a chip
+   fill is impossible — the glyph's own colour has to carry the contrast. Paired with a primary
+   chip it measured 1.02:1, near-black on near-black, because the fill never landed. */
+[data-style='rokkit'] [data-graph-row] [data-row-badge] {
+  color: var(--ink);
 }
 
-[data-style='rokkit'] [data-row-badge='fk'] {
-  color: var(--ink-mute);
+/* In the entity panel it is short TEXT ("pk"), where the fill + auto on-color pair is the
+   house pattern. `--primary` is never a foreground here: the 500 sits around 2.4:1 on paper.
+   `uq`/`fk`/`nn` take the neutral chip — there is no `--on-accent` CSS variable to pair with
+   accent (it is baked at build time), so accent-as-fill has no safe label colour. */
+[data-style='rokkit'] [data-graph-column-badges] [data-row-badge] {
+  background-color: var(--paper-mute);
+  color: var(--ink);
 }
 
-[data-style='rokkit'] [data-row-badge='uq'] {
-  color: var(--accent);
-}
-
-[data-style='rokkit'] [data-row-badge='nn'] {
-  color: var(--ink-mute);
+[data-style='rokkit'] [data-graph-column-badges] [data-row-badge='pk'] {
+  background-color: var(--primary);
+  color: var(--on-primary);
 }
 
 /* ─── selection ─────────────────────────────────────────────────────────── */
@@ -193,7 +212,8 @@
 }
 
 [data-style='rokkit'] [data-graph-index-unique] {
-  color: var(--primary);
+  background-color: var(--primary);
+  color: var(--on-primary);
 }
 
 [data-style='rokkit'] [data-graph-index-name] {
@@ -208,13 +228,18 @@
   background-color: var(--paper-mute);
 }
 
+/* ink, not primary: primary as foreground measures 2.39:1 on paper. The row is a button and
+   already signals affordance through its hover fill, so weight carries the emphasis. */
 [data-style='rokkit'] [data-graph-relationship-label] {
-  color: var(--primary);
+  color: var(--ink);
+  font-weight: 600;
 }
 
+/* --ink: ink-mute measures 4.07:1 against paper in dark mode, under the 4.5 text bar, and
+   these carry real content (a referential action, an empty-state sentence). */
 [data-style='rokkit'] [data-graph-relationship-action],
 [data-style='rokkit'] [data-graph-relationships-empty] {
-  color: var(--ink-mute);
+  color: var(--ink);
 }
 
 [data-style='rokkit'] [data-graph-note] {
@@ -223,5 +248,5 @@
 
 [data-style='rokkit'] [data-graph-note-code] {
   background-color: var(--paper-mute);
-  color: var(--primary);
+  color: var(--ink);
 }

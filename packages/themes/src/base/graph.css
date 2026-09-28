@@ -120,13 +120,29 @@
   font-family: var(--font-mono, monospace);
 }
 
-/* Badge and its spacer keep the same box so name columns line up across rows
-   whether or not the row carries a key. */
+/* Badge and its spacer keep the same minimum box so name columns line up across rows
+   whether or not the row carries a key. The badge is a CHIP — it renders as a bare icon
+   inside a graph card and as short text ("pk") inside EntityView, so it sizes to content
+   above that floor rather than being a fixed square. */
 [data-row-badge],
 [data-row-badge-empty] {
   flex: none;
-  width: 0.6875rem;
-  height: 0.6875rem;
+  min-width: 0.6875rem;
+  min-height: 0.6875rem;
+}
+
+/* Chip geometry only where the badge renders as TEXT. Inside a node card the badge is a
+   masked icon whose utility owns background-color, so it stays a bare glyph box. */
+[data-graph-column-badges] [data-row-badge],
+[data-graph-index-unique] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.25rem;
+  border-radius: 0.1875rem;
+  font-size: 0.6rem;
+  line-height: 1.5;
+  text-transform: uppercase;
 }
 
 [data-graph-edge] path {

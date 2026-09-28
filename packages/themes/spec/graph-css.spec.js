@@ -72,7 +72,7 @@ describe('graph theme CSS', () => {
 	// puts the selector and the declaration on separate lines, so no single line carries both
 	// `row-type` and `--ink-soft`, and the guard passes while the violation ships. That is
 	// exactly the defect this test exists to catch.
-	it.each(['data-graph-row-type', "data-row-badge='fk'", 'data-graph-entity'])(
+	it.each(['data-graph-row-type', 'data-row-badge', 'data-graph-entity'])(
 		'never puts ink-soft on %s',
 		(selector) => {
 			const rules = rulesFor('rokkit/graph.css', selector)
@@ -86,6 +86,28 @@ describe('graph theme CSS', () => {
 		const rules = rulesFor('rokkit/graph.css', 'data-graph-row-type')
 
 		expect(rules.some((r) => /--ink-mute/.test(r))).toBe(true)
+	})
+
+	it('never uses a brand colour as a FOREGROUND colour', () => {
+		// The 500 sits around 2.4:1 on paper, so `color: var(--primary)` fails WCAG AA as text
+		// wherever it lands — measured at 2.39:1 on the relationship label and the pk badge
+		// before this rule existed. Every other rokkit component already treats primary as a
+		// fill or a border; this keeps graph in line. A brand fill pairs with `--on-primary`,
+		// which is auto-computed for contrast.
+		const offenders = read('rokkit/graph.css')
+			.split('}')
+			.filter((rule) => /(^|[;{\s])color:\s*var\(--(primary|accent|success|warning|danger|error|info)\b/.test(rule))
+
+		expect(offenders).toEqual([])
+	})
+
+	it('pairs a primary fill with its auto on-color', () => {
+		const rules = read('rokkit/graph.css')
+			.split('}')
+			.filter((rule) => /background-color:\s*var\(--primary\)/.test(rule))
+
+		expect(rules.length).toBeGreaterThan(0)
+		for (const rule of rules) expect(rule).toMatch(/color:\s*var\(--on-primary\)/)
 	})
 
 	it('backs the selected node with primary, never accent', () => {
