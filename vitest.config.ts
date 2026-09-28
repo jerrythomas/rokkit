@@ -89,6 +89,8 @@ export default defineConfig({
 				'packages/data/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/forms/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/forms/**/*.svelte': { statements: 90, lines: 92 },
+				'packages/graph/**/*.{js,ts}': { statements: 100, lines: 100 },
+				'packages/graph/**/*.svelte': { statements: 90, lines: 90 },
 				'packages/helpers/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/helpers/**/*.svelte': { statements: 100, lines: 100 },
 				'packages/states/**/*.{js,ts}': { statements: 100, lines: 100 },
@@ -123,6 +125,14 @@ export default defineConfig({
 				}
 			},
 			{ extends: true, test: { name: 'forms', root: 'packages/forms' } },
+			{
+				extends: true,
+				test: {
+					name: 'graph',
+					root: 'packages/graph',
+					setupFiles: ['../helpers/src/mocks/index.js', 'spec/setup.js']
+				}
+			},
 			{ extends: true, test: { name: 'helpers', root: 'packages/helpers' } },
 			{
 				extends: true,
