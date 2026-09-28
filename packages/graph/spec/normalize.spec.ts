@@ -153,6 +153,53 @@ describe('normalizeGraph', () => {
 		expect(model.edges[0].kind).toBe('dependency')
 	})
 
+	it('carries the specific relation verb alongside the coarse kind', () => {
+		// dbd v2's DepEdge.kind is `reads | writes | calls | member` — four verbs that are all
+		// ONE EdgeKind for layout purposes but read very differently. `kind` stays the
+		// two-value discriminator every layout branches on; `relation` carries the consumer's
+		// own word so the renderer can label and theme it without the package learning SQL.
+		const model = normalizeGraph(
+			TABLES,
+			[
+				{
+					from: { s: 'public', t: 'orders', c: 'id' },
+					to: { s: 'public', t: 'users', c: 'id' },
+					rel: 'dependency',
+					verb: 'reads'
+				}
+			],
+			{ ...FIELDS, edgeKind: 'rel', relation: 'verb' }
+		)
+
+		expect(model.edges[0]).toMatchObject({ kind: 'dependency', relation: 'reads' })
+	})
+
+	it('leaves relation undefined when the map does not name one', () => {
+		const model = normalizeGraph(
+			TABLES,
+			[{ from: { s: 'public', t: 'orders', c: 'id' }, to: { s: 'public', t: 'users', c: 'id' } }],
+			FIELDS
+		)
+
+		expect(model.edges[0].relation).toBeUndefined()
+	})
+
+	it('distinguishes two edges between the same pair by their relation', () => {
+		// A procedure that both reads AND writes one table is two dep edges with identical
+		// endpoints. They must not collapse to one id, or `{#each … as e (e.id)}` drops one.
+		const model = normalizeGraph(
+			TABLES,
+			[
+				{ from: { s: 'public', t: 'orders' }, to: { s: 'public', t: 'users' }, verb: 'reads' },
+				{ from: { s: 'public', t: 'orders' }, to: { s: 'public', t: 'users' }, verb: 'writes' }
+			],
+			{ ...FIELDS, relation: 'verb' }
+		)
+
+		expect(new Set(model.edges.map((e) => e.id)).size).toBe(2)
+		expect(model.edges.map((e) => e.relation)).toEqual(['reads', 'writes'])
+	})
+
 	it('KEEPS an edge whose endpoint is not a known node, marked unplaced', () => {
 		// Never dropped. Sensei's code graph reports 59.6% of 4.08M edges with a null target:
 		// the call is real, the callee simply is not indexed. Dropping those would make the

@@ -182,6 +182,20 @@ function uniqueEdgeId(base: string, seen: Map<string, number>): string {
 	return seq === 0 ? base : `${base}#${seq}`
 }
 
+/**
+ * The coarse edge kind: what the row declares, else the map's default, else a reference.
+ *
+ * Only the two canonical values are accepted from the data. A row carrying dbd v2's verb
+ * (`reads`) would otherwise fall through to `reference` and draw a view's dependency as a
+ * foreign key — which is why `defaultEdgeKind` exists for a list that is wholly one kind.
+ */
+function edgeKindOf(source: unknown, fields: GraphFields): EdgeKind {
+	const declared = str(pick(source, fields.edgeKind, 'kind'))
+	if (declared === 'dependency' || declared === 'reference') return declared
+
+	return fields.defaultEdgeKind ?? 'reference'
+}
+
 function buildEdge(
 	source: unknown,
 	fields: GraphFields,
@@ -194,16 +208,26 @@ function buildEdge(
 	const { from, to, unplaced } = endpoints
 	const sourceRow = str(pick(source, fields.sourceRow, 'sourceRow'))
 	const targetRow = str(pick(source, fields.targetRow, 'targetRow'))
-	const kind: EdgeKind =
-		str(pick(source, fields.edgeKind, 'kind')) === 'dependency' ? 'dependency' : 'reference'
+	const kind = edgeKindOf(source, fields)
+	const relation = str(pick(source, fields.relation, 'relation'))
+
+	// `relation` joins the id because it is what separates otherwise-identical edges: a
+	// procedure that both reads AND writes one table produces two dep edges with the same
+	// endpoints and no row anchors, which would key identically and lose one to `{#each}`.
+	//
+	// Appended only when present, so every edge id a v1 consumer already has stays
+	// byte-identical — these are `{#each}` keys, and churning them relayouts for no reason.
+	const verb = relation ? `${kind}/${relation}` : kind
+	const base = `${verb}:${from}:${sourceRow ?? ''}->${to}:${targetRow ?? ''}`
 
 	return {
-		id: uniqueEdgeId(`${kind}:${from}:${sourceRow ?? ''}->${to}:${targetRow ?? ''}`, seen),
+		id: uniqueEdgeId(base, seen),
 		source: from,
 		target: to,
 		sourceRow,
 		targetRow,
 		kind,
+		relation,
 		cardinality: str(pick(source, fields.cardinality, 'cardinality')),
 		action: str(pick(source, fields.action, 'action')),
 		unplaced

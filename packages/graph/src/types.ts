@@ -41,6 +41,16 @@ export type GraphEdge = {
 	/** GraphRow.name — the anchor row on the target card. */
 	targetRow?: string
 	kind: EdgeKind
+	/**
+	 * The consumer's own word for the relationship, when it has one — dbd v2's `DepEdge.kind`
+	 * is `reads | writes | calls | member`.
+	 *
+	 * Open vocabulary, deliberately. `kind` stays the two-value discriminator that layouts
+	 * branch on; widening THAT to hold four SQL verbs would teach a generic graph package
+	 * what a stored procedure is. This carries the word so the renderer can label and theme
+	 * it (`data-edge-relation`) without the coupling.
+	 */
+	relation?: string
 	cardinality?: string
 	action?: string
 	/**
@@ -137,6 +147,17 @@ export type GraphFields = {
 	sourceRow?: string
 	targetRow?: string
 	edgeKind?: string
+	/**
+	 * Kind for an edge whose `edgeKind` path yields nothing. Defaults to `'reference'`.
+	 *
+	 * For a dataset that is ENTIRELY dependencies — dbd v2's `deps`, or a call graph — the
+	 * kind is a property of the list, not of each row, and there is no path to point at.
+	 * Without this the consumer has to rewrite every edge object just to tag it, or accept
+	 * every call being drawn as a foreign key.
+	 */
+	defaultEdgeKind?: EdgeKind
+	/** Path to the consumer's own relationship word — see `GraphEdge.relation`. */
+	relation?: string
 	cardinality?: string
 	action?: string
 }

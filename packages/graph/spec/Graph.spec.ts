@@ -116,6 +116,28 @@ describe('Graph — published attributes', () => {
 		)
 	})
 
+	it('publishes the relation verb so a theme can tell reads from writes', () => {
+		const s = new GraphState({
+			nodes: NODES,
+			edges: [{ ...EDGES[0], rel: 'dependency', verb: 'reads' }],
+			fields: { ...FIELDS, edgeKind: 'rel', relation: 'verb' }
+		})
+		const { container } = render(Graph, { state: s })
+		const edge = container.querySelector('[data-graph-edge]')
+
+		expect(edge?.getAttribute('data-edge-kind')).toBe('dependency')
+		expect(edge?.getAttribute('data-edge-relation')).toBe('reads')
+	})
+
+	it('omits data-edge-relation entirely when the edge has no verb', () => {
+		// Absent, not empty: `[data-edge-relation]` must not match a plain foreign key.
+		const { container } = render(Graph, { state: state() })
+
+		expect(container.querySelector('[data-graph-edge]')?.hasAttribute('data-edge-relation')).toBe(
+			false
+		)
+	})
+
 	it('marks a pk row with data-row-badge', () => {
 		const { container } = render(Graph, { state: state({ density: 'full' }) })
 

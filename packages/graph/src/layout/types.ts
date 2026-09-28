@@ -46,6 +46,8 @@ export type RoutedEdge = {
 	fromKey: string
 	toKey: string
 	kind: GraphModel['edges'][number]['kind']
+	/** GraphEdge.relation — the consumer's own verb, carried through for theming. */
+	relation?: string
 	self: boolean
 	x1: number
 	y1: number
