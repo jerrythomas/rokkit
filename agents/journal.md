@@ -8957,3 +8957,13 @@ Both duplicate-runtime bugs were invisible to every gate in the repo and only
 observable in a consumer's tree.
 
 Tag: `v1.6.0` · release commit `5513399d`
+
+## Issue #159 Task 1: @rokkit/graph package scaffold
+
+Scaffolded `@rokkit/graph` (manifest, tsconfig, svelte.config, placeholder
+`src/index.ts`, README, `spec/setup.js`) with a TDD-first
+`spec/dependencies.spec.js` pinning svelte-as-peer, no third-party runtime
+deps, `@rokkit/ui` as optional peer, and the two designed entry points
+(`.`, `./schema`). Registered the `graph` vitest project + coverage
+thresholds and added it to `check:svelte`. Full suite (408 files, 6472
+tests), lint, check:types, check:svelte all green. Commit `b20044a1`.
