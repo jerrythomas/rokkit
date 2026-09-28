@@ -79,6 +79,56 @@ describe('buildCards', () => {
 		expect(cards.a).toMatchObject({ w: CARD_W, x: 0, y: 0 })
 	})
 
+	it('caps at an explicit limit when one is given', () => {
+		const rows = Array.from({ length: 20 }, (_, i) => row(`c${i}`))
+
+		expect(buildCards([node('a', rows)], 'full', { limit: 16 }).a.vis).toHaveLength(16)
+	})
+
+	it('keeps the 14-row default when no limit is given', () => {
+		// The neighbourhood layout caps its focus card at 16, the cluster layout at 14. The
+		// default must not move, or every cluster card silently regrows.
+		const rows = Array.from({ length: 20 }, (_, i) => row(`c${i}`))
+
+		expect(buildCards([node('a', rows)], 'full').a.vis).toHaveLength(14)
+	})
+
+	it('applies an explicit row selector before the cap', () => {
+		const rows = [row('id', ['pk']), row('a'), row('b')]
+		const cards = buildCards([node('n', rows)], 'full', {
+			select: (r) => r.badges.includes('pk')
+		})
+
+		expect(cards.n.vis.map((r) => r.name)).toEqual(['id'])
+	})
+
+	it('counts `more` against every row, not just the selected ones', () => {
+		// The neighbourhood layout shows a neighbour only its key and referenced rows, but dbd
+		// counted "+N more" against the FULL column list. Filtering a node's rows before
+		// calling would report "+0 more" and drop MORE_H from the card height — so the
+		// selector has to live here rather than at the call site.
+		const rows = [row('id', ['pk']), row('a'), row('b')]
+		const cards = buildCards([node('n', rows)], 'full', {
+			select: (r) => r.badges.includes('pk')
+		})
+
+		expect(cards.n.more).toBe(2)
+		expect(cards.n.h).toBe(HEAD_H + ROW_H + MORE_H + PAD_B)
+	})
+
+	it('passes the node to the selector so each card can filter on its own rows', () => {
+		// Neighbour cards each reveal a DIFFERENT referenced row, so one shared predicate
+		// must be able to branch per node.
+		const cards = buildCards(
+			[node('x', [row('keep'), row('drop')]), node('y', [row('keep'), row('drop')])],
+			'full',
+			{ select: (r, n) => (n.id === 'x' ? r.name === 'keep' : r.name === 'drop') }
+		)
+
+		expect(cards.x.vis.map((r) => r.name)).toEqual(['keep'])
+		expect(cards.y.vis.map((r) => r.name)).toEqual(['drop'])
+	})
+
 	it('keys cards by node id', () => {
 		const cards = buildCards([node('public.users', []), node('public.orders', [])], 'full')
 
