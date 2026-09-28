@@ -172,10 +172,29 @@
 	// registers into it also depends on it and re-runs forever
 	// (effect_update_depth_exceeded). onMount runs once and treats the returned
 	// disposer as its cleanup, which keeps the singleton registry tidy.
+	// These RUN. An earlier version registered `run: () => {}` with labels reading "Open file"
+	// and "Save changes", which looked like a working palette and did nothing — worse than
+	// either honest option, because a reader cannot tell a fixture from a broken control.
+	// Now the label says it is a sample and activating one reports back, so the palette is
+	// demonstrably alive without the gallery pretending to own files.
+	let lastCommand = $state<string | null>(null)
+
 	onMount(() =>
 		commands.registerMany([
-			{ id: 'gallery.open', label: 'Open file', shortcut: 'mod+o', group: 'File', run: () => {} },
-			{ id: 'gallery.save', label: 'Save changes', shortcut: 'mod+s', group: 'File', run: () => {} }
+			{
+				id: 'gallery.sample-one',
+				label: 'Sample command one',
+				shortcut: 'mod+1',
+				group: 'Gallery sample',
+				run: () => (lastCommand = 'Sample command one')
+			},
+			{
+				id: 'gallery.sample-two',
+				label: 'Sample command two',
+				shortcut: 'mod+2',
+				group: 'Gallery sample',
+				run: () => (lastCommand = 'Sample command two')
+			}
 		])
 	)
 
@@ -271,8 +290,14 @@
 	<div data-gallery-comp="floating-navigation" class="cell">
 		<FloatingNavigation items={floatingNavItems} bind:value={floatingNavValue} />
 	</div>
+	<!-- Held open on purpose: the palette renders [data-command-empty] until commands exist,
+	     so its item rules (hover, focus, selected) would have nothing for the contrast
+	     collector to measure. -->
 	<div data-gallery-comp="command-palette" class="cell">
 		<CommandPalette open />
+		<p data-gallery-note>
+			{lastCommand ? `Ran: ${lastCommand}` : 'Sample commands — pick one to see it run.'}
+		</p>
 	</div>
 
 	<!-- Chart marks paint via SVG `fill`; the collector measures them at the 3:1
@@ -313,6 +338,12 @@
 		margin: 0;
 		padding: 0;
 	}
+	[data-gallery-note] {
+		margin: 8px 0 0;
+		font-size: 0.75rem;
+		color: var(--ink-mute);
+	}
+
 	/* Graph's viewport fills its nearest positioned ancestor, so its cell needs a size. */
 	.graph-cell {
 		position: relative;

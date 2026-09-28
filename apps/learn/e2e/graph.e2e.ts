@@ -143,6 +143,33 @@ test.describe('graph demo', () => {
 		expect(await positions()).not.toBe(untangled)
 	})
 
+	test('zooming in scales the diagram past its fit', async ({ page }) => {
+		const scaleOf = () =>
+			page
+				.locator('[data-graph-world]')
+				.evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).a)
+
+		const fitted = await scaleOf()
+
+		await openControls(page)
+		await setControl(page, 'Zoom', '2')
+
+		expect(await scaleOf()).toBeCloseTo(fitted * 2, 3)
+	})
+
+	test('a zoomed diagram scrolls instead of clipping', async ({ page }) => {
+		// Zoom with no pan gesture is only usable if the overflow is reachable. The canvas
+		// scrolls, which a trackpad and a keyboard both drive.
+		await openControls(page)
+		await setControl(page, 'Zoom', '3')
+
+		const overflows = await page
+			.locator('[data-graph-paper]')
+			.evaluate((el) => el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight)
+
+		expect(overflows).toBe(true)
+	})
+
 	test('switching edge style changes the drawn path', async ({ page }) => {
 		const firstPath = () =>
 			page.locator('[data-graph-edge] path').first().getAttribute('d')

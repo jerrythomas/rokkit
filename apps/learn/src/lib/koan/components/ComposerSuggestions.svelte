@@ -16,7 +16,7 @@
 
 	const {
 		query,
-		starterIds = ['tabs', 'table', 'form', 'chart', 'multi-select'],
+		starterIds = ['tabs', 'table', 'form', 'chart', 'graph', 'multi-select'],
 		max = 5,
 		onpick
 	}: Props = $props()

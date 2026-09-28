@@ -255,6 +255,28 @@ describe('Graph — intent routing', () => {
 })
 
 describe('Graph — accessibility and construction', () => {
+	it('scales the world by the zoom prop', () => {
+		// jsdom reports 0 for clientWidth/Height, so the fit lands on its 0.08 floor. That is
+		// what makes the MULTIPLIER observable: the ratio is what this asserts, not the fit.
+		const read = (container: HTMLElement) =>
+			(container.querySelector('[data-graph-world]') as HTMLElement).style.transform
+
+		const { container: fitted } = render(Graph, { state: state() })
+		const { container: zoomed } = render(Graph, { state: state(), zoom: 2 })
+
+		expect(read(fitted)).toContain('scale(0.08)')
+		expect(read(zoomed)).toContain('scale(0.16)')
+	})
+
+	it('defaults zoom to 1 so the diagram fits', () => {
+		const { container: implied } = render(Graph, { state: state() })
+		const { container: explicit } = render(Graph, { state: state(), zoom: 1 })
+		const read = (c: HTMLElement) =>
+			(c.querySelector('[data-graph-world]') as HTMLElement).style.transform
+
+		expect(read(implied)).toBe(read(explicit))
+	})
+
 	it('takes its accessible name from the state', () => {
 		// Cycle 1 of the radar work shipped sparklines with no role/accessible name
 		// and had to pay it back later. Not repeating that here.

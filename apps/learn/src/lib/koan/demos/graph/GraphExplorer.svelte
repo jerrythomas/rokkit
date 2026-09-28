@@ -7,6 +7,7 @@
 	 * and EntityView already reads it — no wiring between the views at all.
 	 */
 	import { untrack } from 'svelte'
+	import { vibe } from '@rokkit/states'
 	import { Graph, GraphState, createGraphPreset } from '@rokkit/graph'
 	import { EntitiesView, EntityView } from '@rokkit/graph/schema'
 	import { explorer } from './store.svelte'
@@ -40,6 +41,11 @@
 			arrange: explorer.arrange,
 			edgeStyle: explorer.edgeStyle,
 			preset: createGraphPreset({ using: explorer.using }),
+			// Without this the group ramp resolves from the LIGHT ladder forever, so every
+			// cluster keeps its pale shade-100 fill in dark mode and the canvas reads as
+			// light whatever the app is set to. GraphState defaults to 'light'; nothing
+			// infers the mode for you.
+			mode: vibe.mode === 'dark' ? 'dark' : 'light',
 			// update() fully re-applies, so the selection has to be carried back in explicitly
 			// or every control change would clear it.
 			value: graph.value
@@ -64,7 +70,7 @@
 	<div class="stage">
 		{#if explorer.view === 'diagram'}
 			<div class="canvas">
-				<Graph state={graph} />
+				<Graph state={graph} zoom={explorer.zoom} />
 			</div>
 		{:else if explorer.view === 'entity'}
 			<div class="scroll">

@@ -75,6 +75,11 @@ export type GraphProps = {
 	value?: string | null
 	preset?: import('./preset.js').GraphPreset
 	mode?: 'light' | 'dark'
+	/**
+	 * Multiplier on the fit-to-container scale. 1 fits the whole diagram; above 1 the canvas
+	 * scrolls rather than clipping, so the overflow is reachable without a pan gesture.
+	 */
+	zoom?: number
 	label?: string
 	onselect?: (id: string) => void
 	/** Icon class per node kind and row badge, merged over the built-in map. */

@@ -15,7 +15,13 @@ export const load: PageLoad = ({ params }) => {
 			id: comp.id,
 			title: comp.title,
 			description: comp.description,
-			docs: comp.docs ?? null
+			docs: comp.docs ?? null,
+			// Both are plain serialisable data (no component refs), so they survive
+			// prerendering. Without them the page showed only prose — the curated examples
+			// and the documented API surface, which is what a consumer actually comes for,
+			// were sitting in the meta unused.
+			snippets: comp.snippets ?? null,
+			api: comp.api ?? null
 		},
 		seo: {
 			title: `${comp.title} — Rokkit Components`,

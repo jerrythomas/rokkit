@@ -34,6 +34,7 @@
 		value = undefined,
 		preset = undefined,
 		mode = 'light',
+		zoom = 1,
 		label = undefined,
 		onselect = undefined,
 		icons: userIcons = undefined,
@@ -81,20 +82,27 @@
 
 	const icons = $derived<Record<string, string>>({ ...defaultIcons, ...userIcons })
 
-	// Static fit-to-container (no pan/zoom in slice 1). These stay in the component because
-	// they depend on the rendered viewport, which state cannot know. The content extent they
-	// divide by is `graph.contentSize` — a pure derivation, so it lives in state.
+	// Fit-to-container, multiplied by `zoom`. These stay in the component because they depend
+	// on the rendered viewport, which state cannot know. The content extent they divide by is
+	// `graph.contentSize` — a pure derivation, so it lives in state.
+	//
+	// `fit` alone shrinks a real schema until its labels are unreadable, which is the whole
+	// reason zoom exists. There is deliberately no PAN gesture: the canvas scrolls instead,
+	// so a keyboard and a trackpad both reach the overflow without a drag handler.
 	const PAD = 28
 	let vw = $state(0)
 	let vh = $state(0)
-	const scale = $derived(
+	const fit = $derived(
 		Math.max(
 			0.08,
 			Math.min((vw - PAD * 2) / graph.contentSize.w, (vh - PAD * 2) / graph.contentSize.h, 1)
 		) || 0.5
 	)
-	const tx = $derived((vw - graph.contentSize.w * scale) / 2)
-	const ty = $derived((vh - graph.contentSize.h * scale) / 2)
+	const scale = $derived(fit * zoom)
+	// Centre while the content is smaller than the viewport; once it is larger, pin to a
+	// padding offset so scrolling reaches the far edge instead of clipping it.
+	const tx = $derived(Math.max(PAD, (vw - graph.contentSize.w * scale) / 2))
+	const ty = $derived(Math.max(PAD, (vh - graph.contentSize.h * scale) / 2))
 </script>
 
 <!-- The viewport fills its nearest positioned ancestor. Place it inside a `relative` box

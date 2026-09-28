@@ -10,6 +10,13 @@
  * for its canvas rather than shipping its own dotted background.
  */
 
+/* Zoomed past fit, the world is larger than the viewport. Scroll rather than clip: a
+   transformed child still contributes to the scrollable overflow area, so this reaches the
+   far edge with a trackpad or a keyboard and needs no pan gesture. */
+[data-graph-paper] {
+  overflow: auto;
+}
+
 /* Card geometry. These MUST agree with packages/graph/src/layout/constants.ts:
    the layout derives every card height from them and nothing measures the DOM,
    so a disagreement renders rows that overflow the card they sit in. */

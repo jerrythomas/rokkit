@@ -23,6 +23,8 @@ class GraphExplorerStore {
 	arrange = $state<ArrangeId>('untangle')
 	edgeStyle = $state<EdgeStyleId>('curved')
 	using = $state<ChannelId>('color')
+	/** Multiplier on Graph's fit-to-container scale. 1 = fit the whole diagram. */
+	zoom = $state<number>(1)
 
 	/**
 	 * Switching dataset drops the selection: an id from the previous dataset names nothing in

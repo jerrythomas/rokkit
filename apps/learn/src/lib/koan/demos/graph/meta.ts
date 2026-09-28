@@ -25,7 +25,26 @@ const meta: DemoMeta = {
 		}
 	},
 	inline: { capable: true },
-	variants: [],
+	/*
+	 * Two datasets, two discoverable examples. The second is the point: a service call
+	 * graph shares none of the schema shape's key names and is adapted entirely by a
+	 * `fields` map, so seeing both mount from one component is what shows the contract
+	 * is general rather than ER-specific.
+	 */
+	variants: [
+		{
+			id: 'er-diagram',
+			label: 'ER diagram',
+			mode: 'dynamic',
+			props: { dataset: 'ecommerce' }
+		},
+		{
+			id: 'call-graph',
+			label: 'Call graph',
+			mode: 'dynamic',
+			props: { dataset: 'service-calls' }
+		}
+	],
 	api: {
 		props: [
 			{ name: 'nodes', type: 'unknown[]', default: '[]', desc: 'Any row shape — mapped by `fields`, never required to match a schema type' },
