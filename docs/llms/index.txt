@@ -118,6 +118,7 @@ Verify that `<body>` is on its own line in `src/app.html`. The script is injecte
 | `@rokkit/ui` | Main UI components (40+ components) |
 | `@rokkit/forms` | Dynamic form generation from JSON schema |
 | `@rokkit/chart` | Data visualization (PlotChart, FacetPlot, AnimatedPlot, Sparkline, CrossFilter, GeomBar/Line/Area/Point/etc.) |
+| `@rokkit/graph` | Node-link diagrams (Graph, EntityView, EntitiesView) — ER diagrams, dependency and call graphs, pluggable layouts |
 | `@rokkit/blocks` | Rich content blocks for tables and plots (PlotPlugin, TablePlugin, SparklinePlugin, MermaidPlugin) |
 | `@rokkit/states` | State management (ProxyItem, LazyProxyItem, ProxyTree, ProxyTable, ProxyTableTree, Wrapper, LazyWrapper, vibe, messages, watchMedia, commands) |
 | `@rokkit/actions` | DOM event layer + Svelte actions (Navigator class, shortcuts, hoverLift, magnetic, ripple, and more) |
@@ -336,6 +337,7 @@ Long-form prose covering framework concepts. Mirrors what users see at `/guides/
 - [guides/theming.txt](/llms/guides/theming.txt) — skins / styles / modes; data-attribute styling
 - [guides/skins.txt](/llms/guides/skins.txt) — named skins, the data-skin cascade, BUILTIN_SKINS, SkinSwitcherToggle, skinnable
 - [guides/accessibility.txt](/llms/guides/accessibility.txt) — keyboard, ARIA, focus, i18n, reduced motion
+- [guides/graphs.txt](/llms/guides/graphs.txt) — node-link diagrams: the data contract, layouts, two grouping axes, the dbd adapter
 - [guides/forms.txt](/llms/guides/forms.txt) — schema-driven, lookups, dependencies, custom renderers
 - [guides/charts.txt](/llms/guides/charts.txt) — nine prebuilt shapes + when to drop to `<Plot>`
 - [guides/utilities.txt](/llms/guides/utilities.txt) — controllers + navigator pattern
@@ -470,6 +472,18 @@ The building blocks List / Select / Menu render by default; use inside an `itemC
 - [FacetPlot](/llms/components/facet-plot.txt) — small-multiples, one panel per facet value
 - [AnimatedPlot](/llms/components/animated-plot.txt) — frame-by-frame animation with play/pause controls
 - [CrossFilter](/llms/components/crossfilter.txt) — linked filter context with FilterBar, FilterSlider, FilterHistogram
+
+### Diagrams (`@rokkit/graph`)
+
+- [Graph](/llms/components/graph.txt) — node-link canvas. ER diagrams, dependency graphs and
+  call graphs from one component, with pluggable layouts (`cluster`, `neighborhood`, `points`),
+  two-level clustering, zoom/pan and level-of-detail
+- EntityView — columns, indexes and relationships of the selected node (`@rokkit/graph/schema`)
+- EntitiesView — sortable table of every entity, sharing the diagram's selection
+  (`@rokkit/graph/schema`)
+
+A schema is **two** graphs: `tables` + `refs` is the ER diagram, `entities` + `deps` is the
+dependency graph. See [packages/graph.txt](/llms/packages/graph.txt#using-it-with-dbd).
 
 ## Keyboard Navigation
 

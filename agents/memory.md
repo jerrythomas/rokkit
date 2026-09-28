@@ -26,6 +26,7 @@ This file is read at the start of every session.
 | `@rokkit/icons`   | SVG icon sets                                                                             |
 | `@rokkit/data`    | Data structures (Dataset, hierarchy, parsing)                                             |
 | `@rokkit/chart`   | Chart components                                                                          |
+| `@rokkit/graph`   | Node-link diagrams (`Graph` + `./schema` ER views) — ER, dependency and call graphs        |
 | `site`            | Documentation site + interactive demos + e2e tests                                        |
 
 ## Project Principles
@@ -111,6 +112,38 @@ Rules that fall out of this, learned the hard way:
   against neither near-black nor near-white. `violet-500` and `indigo-500` are the only two
   built-in palettes in it.
 - Freeze transitions before measuring a state, or you read the idle colour at t=0.
+
+## @rokkit/graph
+
+Extracted from dbd's ER viewer (#159), rebuilt data-first. Design: `docs/design/23-graph.md`.
+
+- **Three layouts, one seam.** `(model, options) => LayoutResult`, DOM-free and deterministic:
+  `cluster` (cards), `neighborhood` (focus + 1 hop), `points` (degree-sized rects, dense).
+- **A schema is TWO graphs.** dbd v2 separates `tables`/`refs` (ER) from `entities`/`deps`
+  (dependency), and says so in its own doc comments. A view is a derived projection and a
+  routine is behaviour — neither is an entity, and in v2 neither has columns, so on an ER
+  canvas they render as orphan cards. `toGraphInput(model, 'er' | 'dependencies')` picks one.
+  The package has **no kind filter**: the consumer choosing what to pass is the mechanism.
+- **Unplaced edges are dimmed, never dropped.** 59.6% of Sensei's 4.08M code-graph edges have
+  a null target. Dropping them is the single most misleading thing the view can do.
+- **Identity must not depend on the grouping axis.** `id` defaults to `${group}.${label}`, so
+  regrouping by kind re-keys every node and every edge stops resolving. `toGraphInput` emits
+  an explicit id.
+- **`kind` is closed → CSS; `group` is open → preset.** No `kinds` map on the preset. A kind
+  override must out-specify the theme: `[data-style] [data-node-kind='x']`, not
+  `[data-node-kind='x']` — (0,1,1) loses to (0,2,0).
+- **Nesting needs no DOM tree.** Clusters are absolutely positioned, so a flat list with outer
+  boxes first nests by paint order. Key them by depth+parent+name — name alone throws
+  `each_key_duplicate` the moment two schemas both contain a `table` box, and Svelte aborts
+  the ENTIRE render, which reads as "nesting doesn't work".
+- **A class attribute that looks right proves nothing.** `i-graph-*` was defined in no UnoCSS
+  config, collection or stylesheet; every kind rendered a blank 13×13 box for weeks while the
+  code, the theme comments and the docs all described working icons. Only a computed-style
+  check in a real browser catches that — `spec/icons.spec.ts` now checks each name against
+  the shipped collection.
+- **Measure fill, not just fit.** The `points` layout declared a canvas 64% empty (one spiral
+  step sized by the largest dot; a circular cluster discards 21% of its bounding box), which
+  presented as a zoom bug. Rounded rects shelf-packed fixed both.
 
 ## Current Status
 

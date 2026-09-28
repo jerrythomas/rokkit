@@ -76,16 +76,40 @@ type LayoutFn = (model: GraphModel, options: LayoutOptions) => LayoutResult
 ```
 
 DOM-free, synchronous, deterministic — card heights come from row
-counts, nothing is measured. Two ship today:
+counts, nothing is measured. Three ship today:
 
 - `cluster` — groups become clusters, ordered to reduce edge
   crossings; each cluster's nodes are masonry-packed then flowed
-  into wrapping rows. Options: `density`, `arrange`, `edgeStyle`.
+  into wrapping rows. Options: `density`, `arrange`, `edgeStyle`,
+  `groupBy`, `nestBy`.
 - `neighborhood` — the focused node centred, nodes that reference
   it stacked left, nodes it references stacked right. Options:
   `focus` (defaults to the selection).
+- `points` — a node becomes a degree-sized rounded rect,
+  shelf-packed into its group. For dense graphs: a card stops
+  working long before the data does, and at 1000 nodes a 248px
+  card renders 11.6px wide with a 0.56px label.
 
 Pass `layout` a name or your own function.
+
+### Two grouping axes
+
+Schema is the right axis for an ER diagram and a poor one for a
+dependency graph, where one schema holds a table, a trigger and a
+procedure. `nestBy` shows both facts at once instead of trading
+one for the other:
+
+```svelte
+<Graph {nodes} {edges} {fields} groupBy="group" nestBy="kind" />
+```
+
+Clusters come back as a FLAT list carrying `depth` (0 outer, 1
+inner) and `parent`. They are absolutely positioned, so every
+outer box is emitted first and paint order does the nesting.
+
+If you ever intend to regroup, give nodes an explicit `id`. It
+defaults to `${group}.${label}`, so switching the axis silently
+re-keys every node and every edge stops resolving.
 
 ## Three views, one state
 
@@ -178,3 +202,40 @@ for dbd-shaped JSON. It does NOT import dbd's `SchemaModel` type:
 the hand-written mirror of `schema_model.rs` stays in the consuming
 app, so this package never becomes a third definition to keep in
 step by hand.
+
+### A schema is two graphs, not one
+
+dbd's v2 `SchemaModel` splits the database and says so in its own
+doc comments: `tables` is "Tables only", `refs` is "Foreign keys
+only — the dependency graph is `deps`; an ER renderer wants these
+and a call-graph renderer wants those."
+
+That is a modelling fact, not a rendering preference. An ER diagram
+is table entities and their relationships. A view is a derived
+projection and a routine is behaviour; neither is an entity, and in
+v2 neither even has columns — put them on an ER canvas and they
+render as orphan cards with nothing in them and no edges.
+
+```js
+import { toGraphInput } from '@rokkit/graph/schema'
+
+const er = toGraphInput(model, 'er')             // tables + refs
+const deps = toGraphInput(model, 'dependencies') // + entities, deps
+```
+
+Tables stay in the dependency scope because a view READS a table.
+`er` is the default, so a caller written against v1 reads a v2
+model unchanged.
+
+A `deps` edge carries dbd's verb on `data-edge-relation` (`reads`,
+`writes`, `calls`, `member`) while `data-edge-kind` stays
+`dependency` — the coarse kind is what layouts branch on, the verb
+is what you theme and label with.
+
+### An unplaced edge is dimmed, never dropped
+
+An endpoint the map cannot resolve is a normal state at scale, not
+a defect. Sensei's code graph reports 59.6% of 4.08M edges with a
+null target: the call is real, the callee is simply not indexed.
+Dropping them makes the graph look far more complete than it is —
+the most misleading thing this view can do.

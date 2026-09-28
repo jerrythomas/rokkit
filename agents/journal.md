@@ -9528,3 +9528,104 @@ E2E now sweeps node-kind distinction *and* card paint per style — the second
 catches a missing stylesheet, which otherwise reads as "looks a bit plain" rather
 than as an error. 92 e2e (was 83) + 6860 unit green; lint, types, svelte-check
 0/0 across all seven packages.
+
+---
+
+## 2026-09-28 — #159 slice 1: the diagram stops overstating what it knows
+
+Five commits in one arc. Every one came from reading real data or looking at the
+rendered result, not from the plan.
+
+**`421b49a1` — unplaced edges, and keyless cards.** Sensei's
+`code-graph-schema.json` reports **59.6% of 4,077,549 edges with a null
+`target_id`** — the call is real, the callee simply is not indexed — and
+`normalizeGraph` was silently discarding every one. Dropping them makes the graph
+look far more complete than it is, which is the single most misleading thing this
+view can do. `GraphEdge.unplaced` now records which end, with the raw value left
+readable. Everything needing a card skips them: `buildNeighbors` (an unplaced end
+is not clickable, so it must not appear as `related`), `buildAdjacency`
+(`barycenter` reads a card's `y` and crashed on the lookup) and
+`neighborhood.partition`.
+
+Same commit, same defect one level down: a view/procedure/enum has no pk and no
+fk, so at `keys` density its card collapsed to a title plus `+3 more` —
+indistinguishable from a card the reader collapsed. `GraphState.moreLabel` now
+says `no keys · 3 rows`.
+
+**`43c4e435` — the kind icons never worked.** `Graph.svelte` shipped
+`i-graph-table`, `i-graph-view`, `i-graph-matview` … a prefix defined in **no**
+UnoCSS config, no icon collection and no stylesheet. Uno emits nothing for an
+unknown prefix, so all six kinds rendered an identical blank 13×13 box
+(`mask: none`, `background: none`) while the class attribute, the theme comments
+("the GLYPH carries the kind — i-graph-table and i-graph-view are different
+shapes") and the docs all described a working feature.
+
+A component test cannot see this: the attribute is present and plausible. Only a
+computed-style check in a real browser can. The map moved to `src/icons.ts` and
+`spec/icons.spec.ts` checks every name against `packages/icons/lib/glyph.json` —
+the collection the repo actually ships.
+
+**`1e761044` — a schema is two graphs, not one.** Prompted by a question: *"what
+position do views and functions have in an ER diagram? An ER diagram is only for
+table entities."* Correct — and **dbd's v2 `SchemaModel` already said so in its own
+doc comments**: `refs` is *"Foreign keys only — the dependency graph is `deps`; an
+ER renderer wants these and a call-graph renderer wants those"*, `EntityNode` is
+*"No columns."*
+
+The demo had ignored all of it, cramming six kinds into `tables` with invented
+columns and no edges — four of fourteen nodes floated unconnected. `./schema`
+gained `toGraphInput(model, 'er' | 'dependencies')`. The **package gained no kind
+filter**: the consumer choosing what to pass is the mechanism, and a filter would
+force a generic graph package to know that `table` is special. Slice 3 closed here
+rather than later, because dbd was already on v2 and the acceptance gate would
+have hit it regardless.
+
+**`d86de9ca` — 36% canvas fill presented as a zoom bug.** The call graph opened
+zoomed out and clipped. Not zoom: the layout declared 607×595 for 362×364 of ink,
+and fit-to-container was faithfully framing the emptiness. Two compounding causes,
+both intrinsic to packing discs — one spiral step derived from the *largest* dot
+applied to every ring (238px for three dots), and a circular cluster discarding
+1 − π/4 = 21% of its bounding box. Rounded rects, shelf-packed FFDH: 352×426, and
+it opens at scale 1.0 instead of 0.732.
+
+The old overlap test compared centre distance to summed radii — it passes on rects
+that plainly overlap at their corners. Now axis-aligned. The fill-ratio guard whose
+absence let this ship runs at 300 nodes, because on a 5-node model a group's label
+strip and padding (66px) legitimately exceed its 58px of ink.
+
+**`91799084` — two-level clustering.** Schema is a poor axis for a dependency
+graph where `audit` holds a table, a trigger and a procedure. `groupBy` × `nestBy`
+shows both. No new model field was needed: `GraphNode` already carries `group` and
+`kind`.
+
+Nesting needs **no DOM tree** — clusters are absolutely positioned, so a flat list
+with outer boxes emitted first nests by paint order. The prerequisite was subtler:
+identity had to stop depending on the group. `id` defaults to `${group}.${label}`,
+so regrouping by kind would re-key `public.orders` to `table.orders` while every
+dep edge still resolved `${from.s}.${name}` — the whole graph would have rendered
+unplaced.
+
+Three defects found building it: clusters keyed by `name` alone threw
+`each_key_duplicate` the moment two schemas both held a `table` box, and Svelte
+**aborted the entire render** so no inner box appeared at all; `groupBy` was read
+only on the nested path, so plain "Kind" moved the control and left the picture
+grouped by schema; and the outer row-wrap had no test.
+
+**`test:e2e` was failing for reasons unrelated to the code.** The built app
+hydrates fine. Two harness faults: `webServer.timeout` was Playwright's 60s
+default, shorter than a cold build (~23s warm, more under memory pressure), so the
+run died before one test executed; and running `vite dev` alongside corrupts the
+artifact, because both run `sync:assets`, which `cp -r`s the same trees into
+`static/`, and `static/` is copied into the build. The result loads but never
+hydrates, failing every test that waits on `data-hydrated`.
+
+**Lesson worth keeping:** three of these were invisible to the unit suite and
+visible in one browser check — blank icons, an over-declared canvas, and a render
+aborted by a duplicate key. A green suite proves the assertions hold, not that
+anyone looked.
+
+6988 unit + 105 e2e green; lint/types/svelte-check 0/0; graph coverage 100%.
+Task 21 (docs) closed here: `llms/{packages,components}/graph.txt`, the graphs
+guide, the index, both READMEs, `12-priority.md`, `agents/memory.md`. **Task 22 —
+dbd consuming the package — remains the acceptance gate, and nothing publishes
+before it passes.**

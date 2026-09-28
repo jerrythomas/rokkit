@@ -1,0 +1,137 @@
+# Graph
+
+Node-link diagram canvas. ER diagrams, dependency graphs and call graphs from one component,
+driven by field-mapped data rather than a fixed schema type.
+
+```svelte
+<script>
+  import { Graph } from '@rokkit/graph'
+</script>
+
+<div class="relative h-[600px]">
+  <Graph {nodes} {edges} {fields} bind:value />
+</div>
+```
+
+The canvas fills its nearest positioned ancestor, so **give it a `relative` box with a
+height** or it collapses.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `nodes` | `unknown[]` | `[]` | Any row shape — mapped by `fields`, never required to match a schema type |
+| `edges` | `unknown[]` | `[]` | Any edge shape — endpoints resolved through `fields.source` / `fields.target` |
+| `fields` | `GraphFields` | `{}` | Dotted-path map from your shape to the canonical model |
+| `state` | `GraphState` | — | Share one state across Graph / EntityView / EntitiesView |
+| `layout` | `'cluster' \| 'neighborhood' \| 'points' \| LayoutFn` | `'cluster'` | A built-in by name, or your own pure `(model, options) => LayoutResult` |
+| `density` | `'names' \| 'keys' \| 'full'` | `'keys'` | How much of each node's row list a card shows. **Bindable** |
+| `arrange` | `'untangle' \| 'a-z'` | `'untangle'` | Cluster ordering |
+| `groupBy` | `'group' \| 'kind'` | `'group'` | Outer grouping axis |
+| `nestBy` | `'group' \| 'kind'` | — | Subdivide each cluster by a second axis |
+| `edgeStyle` | `'curved' \| 'orthogonal'` | `'curved'` | Connector geometry |
+| `focus` | `string \| null` | `null` | `neighborhood` only — the node to centre. Defaults to the selection |
+| `value` | `string \| null` | — | Selected node id. Input and output both |
+| `preset` | `GraphPreset` | — | `createGraphPreset({ groups, shades, using })` — colour for the open-ended GROUP vocabulary |
+| `mode` | `'light' \| 'dark'` | `'light'` | Which shade ladder the group ramp resolves against |
+| `zoom` | `number` | `1` | Multiplier on the fit-to-container scale. **Bindable** |
+| `zoomable` | `boolean` | `true` | Built-in zoom controls, ctrl/pinch-wheel zoom, drag-to-pan |
+| `densityToggle` | `boolean` | `true` | On-canvas names/keys/all toggle |
+| `arrows` | `boolean` | `true` | Arrowhead at each edge target instead of a plain dot |
+| `label` | `string` | — | Accessible name. Derived from node/edge counts when omitted |
+| `icons` | `Record<string, string>` | — | Icon class per node kind and row badge, merged over `DEFAULT_ICONS` |
+| `onselect` | `(id: string) => void` | — | Fires when a node is activated |
+
+**`mode` does not infer itself.** Left at `'light'` in a dark app, the group ramp resolves
+from the light ladder forever and every cluster keeps a pale fill — the canvas reads as light
+whatever the app is set to.
+
+**A supplied `state` must keep stable identity.** Context captures it once at init, so drive
+the existing instance through its methods and `update()` rather than swapping instances.
+
+## Interaction
+
+| Gesture | Effect |
+|---------|--------|
+| Click a node | Select it; related nodes highlight, the rest dim |
+| Click the background, or `Escape` | Clear the selection |
+| Ctrl/⌘ + wheel, or trackpad pinch | Zoom the diagram (not the page) |
+| Drag the background | Pan. Plain scroll works too |
+| Click `+ N more` | Expand that ONE card in full |
+
+Expansion is per node on purpose: a reader clicking "+3 more" is asking about that card, and
+expanding all of them answers a question they did not ask.
+
+## Level of detail
+
+The canvas publishes `data-graph-detail` from the **effective** scale (fit × zoom), and each
+tier drops what has stopped being legible. Measured on a 1000-node graph fitted to 1440×900:
+scale 0.047, so a 248px card renders 11.6px wide and a 12px label lands at 0.56px.
+
+| Tier | Scale | Drops |
+|------|-------|-------|
+| `full` | ≥ 0.6 | nothing |
+| `compact` | ≥ 0.32 | row types, row count, kind tag |
+| `minimal` | ≥ 0.14 | rows, the more-row |
+| `dot` | below | titles, cluster labels |
+
+Hover or keyboard focus restores a node's label at any tier, counter-scaled so it is readable.
+
+## Data attributes
+
+Every visual hook is a data-attribute — 58 in total. The ones you reach for first:
+
+| Attribute | Values |
+|-----------|--------|
+| `data-graph-node` | The node id |
+| `data-node-kind` | `table` `view` `matview` / `materialized_view` `function` `procedure` `trigger` `enum` — sets `--node-accent` |
+| `data-node-group` | Your group names |
+| `data-node-state` | `selected` `related` `dim` |
+| `data-graph-node-kind` | The kind spelled out beside the icon |
+| `data-graph-more-empty` | The density filter matched NO rows (a view at key density has no keys) |
+| `data-edge-kind` | `reference` `dependency` (dashed) |
+| `data-edge-relation` | The producer's own verb — dbd emits `reads` `writes` `calls` `member` |
+| `data-edge-from` / `data-edge-to` | Endpoint ids — not otherwise recoverable from the DOM |
+| `data-edge-state` | `highlight` `dim` |
+| `data-cluster-depth` | `0` outer, `1` nested inside it |
+| `data-graph-detail` | `full` `compact` `minimal` `dot` |
+| `data-graph-layout` | Active layout — `points` reshapes a node from a card into a rect |
+| `data-row-badge` | `pk` `fk` `uq` `nn` |
+
+### Retoning one kind
+
+```css
+/* [data-node-kind='table'] alone is (0,1,1) against a theme's (0,2,0) and silently loses. */
+[data-style] [data-node-kind='table'] {
+  --node-accent: var(--primary);
+}
+```
+
+## Composing the schema views
+
+`EntityView` and `EntitiesView` read the same `GraphState` from context, so selection is
+shared with no wiring:
+
+```svelte
+<script>
+  import { Graph, GraphState } from '@rokkit/graph'
+  import { EntityView, EntitiesView } from '@rokkit/graph/schema'
+
+  const graph = new GraphState({ nodes, edges, fields })
+</script>
+
+<Graph state={graph} />
+<EntitiesView />   <!-- sortable table of every entity -->
+<EntityView />     <!-- columns, indexes and relationships of the selection -->
+```
+
+## Accessibility
+
+Every node is a real `<button>`, reachable by keyboard and activated with Enter or Space. The
+accessible name lives on the `<svg>` holding edge geometry, not on the root — `role="img"`
+makes its whole subtree presentational, so putting it on the root would hide every node from
+assistive tech.
+
+## Related
+
+- [@rokkit/graph](/llms/packages/graph.txt) — the data contract, layouts, the dbd adapter

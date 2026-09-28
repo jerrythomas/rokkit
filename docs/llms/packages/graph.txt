@@ -1,0 +1,200 @@
+# @rokkit/graph
+
+Node-link diagram components for Svelte 5. ER diagrams, schema entity tables and dependency /
+call graphs from one component, driven by field-mapped data rather than a fixed schema type.
+
+Extracted from dbd's ER viewer and rebuilt data-first. The package has no opinion about
+databases: it knows nodes, edges, groups and kinds. The dbd vocabulary lives entirely in the
+optional `./schema` entry point.
+
+## Install
+
+```bash
+npm install @rokkit/graph
+```
+
+`@rokkit/ui` and `svelte` are **peer** dependencies. `@rokkit/ui` is optional — only the
+`./schema` views use it — so a consumer that wants the canvas alone does not pull it in.
+
+## Entry points
+
+| Import | Contains |
+|--------|----------|
+| `@rokkit/graph` | `Graph`, `GraphState`, layouts, presets, the normalizer, icons, types |
+| `@rokkit/graph/schema` | ER-flavoured views and the dbd adapter: `EntityView`, `EntitiesView`, `NoteBlocks`, `fromSchemaModel`, `toGraphInput`, `SCHEMA_FIELDS`, `DEPS_FIELDS` |
+
+## The data contract
+
+`nodes` and `edges` are whatever shape you already have. `fields` maps dotted paths from that
+shape to the canonical model, resolved **once**, before anything else runs. Nothing downstream
+sees your field names.
+
+```js
+const fields = {
+  id: 'key',          // explicit id — see the warning below
+  label: 'key',
+  group: 'team',      // clusters, and the group colour ramp
+  kind: 'type',       // data-node-kind, for CSS
+  rows: 'endpoints',
+  rowName: 'label',
+  rowBadges: { pk: 'primary' },
+  source: 'caller',
+  target: 'callee'
+}
+```
+
+Anything omitted falls back to the same-named key, so a source already shaped like the
+canonical model needs no map at all.
+
+**Give nodes an explicit `id` if you ever intend to regroup.** `id` defaults to
+`${group}.${label}`, so switching `group` from `schema` to `kind` silently re-keys every node
+and every edge stops resolving.
+
+## Canonical model
+
+```ts
+type GraphNode = {
+  id: string
+  label: string
+  group?: string     // open vocabulary — a schema, a team, a package
+  kind?: string      // table | view | matview | materialized_view | function | procedure | trigger | enum
+  rows: GraphRow[]
+  note?: string
+  meta: Record<string, unknown>   // source fields the map did not claim
+}
+
+type GraphEdge = {
+  id: string
+  source: string
+  target: string
+  sourceRow?: string
+  targetRow?: string
+  kind: 'reference' | 'dependency'   // what layouts branch on
+  relation?: string                  // the producer's own verb: reads | writes | calls | member
+  cardinality?: string
+  action?: string
+  unplaced?: 'source' | 'target' | 'both'
+}
+```
+
+### An unplaced edge is dimmed, never dropped
+
+An endpoint the map cannot resolve is a **normal state at scale**, not a defect. Sensei's code
+graph reports 59.6% of 4.08M edges with a null target: the call is real, the callee is simply
+not indexed. Dropping those makes the graph look far more complete than it is, so the edge is
+kept, the raw value stays readable on `source`/`target`, and `unplaced` records which end.
+
+## Layouts
+
+A layout is a pure `(model, options) => LayoutResult` — DOM-free, synchronous, deterministic.
+Your own slots in exactly the same way.
+
+| Name | Shape | For |
+|------|-------|-----|
+| `cluster` | Cards in group boxes | The default. Entity diagrams |
+| `neighborhood` | One focus node + its 1-hop neighbours | Walking a graph one step at a time |
+| `points` | Degree-sized rounded rects, shelf-packed | Dense graphs — a code index, 1000+ nodes |
+
+```js
+import { cluster, neighborhood, points, layouts } from '@rokkit/graph'
+```
+
+### Options
+
+| Option | Default | Effect |
+|--------|---------|--------|
+| `density` | `'keys'` | `names` \| `keys` \| `full` — how much of a node's row list a card shows |
+| `arrange` | `'untangle'` | Cluster ordering. `untangle` chains heavily-linked groups; `a-z` is area-descending |
+| `groupBy` | `'group'` | Outer grouping axis — `group` or `kind` |
+| `nestBy` | — | Subdivide each cluster by a second axis. Omit for one level |
+| `edgeStyle` | `'curved'` | `curved` \| `orthogonal` |
+| `focus` | — | `neighborhood` only — the node to centre |
+| `expanded` | — | Node ids shown at full detail whatever `density` says |
+
+### Two-level clustering
+
+Schema is the right axis for an ER diagram and a poor one for a dependency graph, where one
+schema holds a table, a trigger and a procedure. `nestBy` shows both facts at once:
+
+```svelte
+<Graph {nodes} {edges} {fields} groupBy="group" nestBy="kind" />
+```
+
+Clusters come back as a FLAT list with `depth` (0 outer, 1 inner) and `parent`. They are
+absolutely positioned, so every outer box is emitted first and paint order does the nesting —
+there is no DOM tree. Passing the same axis for both is ignored, not rendered: a box
+subdivided by itself yields one child holding everything.
+
+## Using it with dbd
+
+`./schema` is the only place that knows dbd's vocabulary. It does **not** import dbd's
+`SchemaModel` type — the hand-written mirror of `schema_model.rs` stays in the consuming app,
+so this package never becomes a third definition to keep in step.
+
+### A schema is two graphs, not one
+
+dbd's v2 `SchemaModel` splits the database and says so in its own doc comments: `tables` is
+*"Tables only"*, `refs` is *"Foreign keys only — the dependency graph is `deps`; an ER
+renderer wants these and a call-graph renderer wants those."*
+
+That is a modelling fact, not a rendering preference. **An ER diagram is table entities and
+their relationships.** A view is a derived projection, a routine is behaviour; neither is an
+entity, and in v2 neither even has columns — put them on an ER canvas and they render as
+orphan cards with nothing in them and no edges.
+
+```js
+import { toGraphInput, fromSchemaModel } from '@rokkit/graph/schema'
+
+const er   = toGraphInput(model, 'er')            // tables + refs
+const deps = toGraphInput(model, 'dependencies')  // tables + entities, deps as edges
+```
+
+```svelte
+<Graph nodes={er.nodes} edges={er.edges} fields={er.fields} />
+```
+
+Tables stay in the dependency scope because a view READS a table; dropping them would leave
+every edge dangling. `er` is the default, so a caller written against v1 reads a v2 model
+unchanged. `fromSchemaModel(model, { as })` is the same choice when you want a normalized
+`GraphModel` rather than component props.
+
+A `deps` edge carries dbd's verb on `data-edge-relation` (`reads`, `writes`, `calls`,
+`member`) while `data-edge-kind` stays `dependency` — the coarse kind is what layouts branch
+on, the verb is what you theme and label with.
+
+## Colour: two vocabularies, deliberately split
+
+- **Node kinds are a closed set** → plain CSS on `data-node-kind`. One rule retones one kind.
+- **Groups are open-ended** → `createGraphPreset({ groups, shades, using })` assigns a ramp.
+
+```js
+import { createGraphPreset } from '@rokkit/graph'
+
+const preset = createGraphPreset({ using: 'pattern' })  // 'color' | 'pattern'
+```
+
+There is no `kinds` map on the preset. A kind is known at build time and belongs in a
+stylesheet; a group name is not and cannot.
+
+A kind override must match the theme's specificity — `[data-node-kind='table']` is (0,1,1)
+against a theme's (0,2,0) and silently loses:
+
+```css
+[data-style] [data-node-kind='table'] {
+  --node-accent: var(--primary);
+}
+```
+
+## Icons
+
+`DEFAULT_ICONS` maps every node kind and row badge to an `i-glyph:*` class. Override per-kind
+through the `icons` prop to adopt a different collection:
+
+```svelte
+<Graph {nodes} {edges} icons={{ view: 'i-lucide-eye' }} />
+```
+
+## Related
+
+- [Graph component](/llms/components/graph.txt) — props, snippets, data-attributes
+- [@rokkit/themes](/llms/packages/themes.txt) — `graph.css` ships for all six styles

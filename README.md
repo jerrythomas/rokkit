@@ -29,6 +29,7 @@ Components have been separated into the following packages. Refer to the [storie
 - [@rokkit/ui](packages/ui)
 - [@rokkit/forms](packages/forms)
 - [@rokkit/chart](packages/chart)
+- [@rokkit/graph](packages/graph) — node-link diagrams: ER diagrams, dependency and call graphs
 - [@rokkit/unocss](packages/unocss) — UnoCSS preset with named-token vocabulary (`--paper`, `--ink-mute`, `--accent-soft`, …) and `tokens: 'core' | 'extended'` modes
 
 ## Installation

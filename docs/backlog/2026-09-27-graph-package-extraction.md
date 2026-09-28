@@ -1,7 +1,8 @@
 # Extract dbd's ER-diagram viewer into `@rokkit/graph`
 
 **Raised:** 2026-09-27, from issue #159
-**Status:** OPEN — design agreed, plan pending
+**Status:** SLICE 1 BUILT (2026-09-28) — **blocked on acceptance: dbd must consume it**
+**Plan:** `docs/plans/2026-09-27-graph-package-extraction.md`
 **Design:** `docs/design/23-graph.md`
 **Upstream:** `sensei-hq/dbd` `site/src/lib/design/` · data contract in `sensei-hq/dbd#24`
 
@@ -55,10 +56,27 @@ ship as a distinct `categoricalPalette` export so no chart baseline moves.
 1. **ER on a pluggable layout** — scaffold, normalizer, layout interface, `cluster` ported with
    its 344 lines of tests, `Graph`/`EntityDiagram`/`EntityView`/`EntitiesView`, palette move,
    `base` + `rokkit` themes, learn demo, dbd consuming it.
-2. **Force-directed / call graph** — a second `LayoutFn` plus `d3-force`. Driven by sensei.
-3. **dbd#24 v2 model** — non-table entity kinds and the dependency-edge list. `data-node-kind`
-   and `data-edge-kind` already exist for it; lands as normalizer plus theme work.
+2. **Force-directed / world view** — a second `LayoutFn`. Driven by sensei. STILL OPEN.
+3. ~~**dbd#24 v2 model**~~ — **pulled into slice 1** on 2026-09-28. dbd shipped v2 on
+   2026-09-27, so slice 1's acceptance gate was going to hit it regardless, and task 21 would
+   otherwise have documented a model the one real consumer had already moved past.
+
+## What shipped in slice 1
+
+Package, three layouts (`cluster` / `neighborhood` / `points`), `GraphState`, `graph.css` for
+all six styles, the learn demo with three examples, and the v2 adapter. Plus, beyond the
+original scope:
+
+- **`toGraphInput(model, 'er' | 'dependencies')`** — a schema is two graphs, and dbd v2 says
+  so in its own doc comments. An ER diagram is table entities and their foreign keys.
+- **`GraphEdge.unplaced`** — 59.6% of Sensei's 4.08M code-graph edges have a null target. Kept
+  and dimmed, never dropped.
+- **`groupBy` × `nestBy`** — two-level clustering, because schema alone is a poor axis for a
+  dependency graph.
+- **`GraphEdge.relation`** + `GraphFields.defaultEdgeKind` — dbd's `reads|writes|calls|member`
+  without teaching a generic package what a stored procedure is.
 
 ## Next step
 
-Write the slice 1 implementation plan to `docs/plans/`.
+**Task 22 — dbd consumes the package.** This is the acceptance proof: linked workspace, then a
+PR against `sensei-hq/dbd`. **Nothing publishes before it passes.** Then slice 2.

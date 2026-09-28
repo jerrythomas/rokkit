@@ -50,6 +50,35 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 
 #### Components
 
+- [x] **`@rokkit/graph` — slice 1 (#159)** — Package shipped 2026-09-28; **dbd consuming it is
+  the outstanding acceptance gate** (nothing publishes before that passes). dbd's ER viewer
+  extracted and rebuilt data-first: a canonical `{nodes, edges}` model reached through a
+  dotted-path `fields` map, three pluggable `(model, options) => LayoutResult` layouts
+  (`cluster`, `neighborhood`, `points`), `GraphState` owning every derivation, and
+  `graph.css` for all six theme styles. `@rokkit/ui` is an optional peer — only the
+  `./schema` views need it. Slice 3 (dbd's v2 model) was **pulled forward into slice 1**:
+  dbd shipped v2 on 2026-09-27, so the acceptance gate was going to hit it regardless.
+  - **A schema is two graphs.** dbd v2 separates `tables`/`refs` from `entities`/`deps`, and
+    its own doc comments say why: *"an ER renderer wants these and a call-graph renderer wants
+    those."* An ER diagram is table entities and their foreign keys; a view is a derived
+    projection and a routine is behaviour. `toGraphInput(model, 'er' | 'dependencies')` picks
+    one. The package deliberately gains **no kind filter** — the consumer choosing what to
+    pass is the mechanism, and a filter would force a generic package to know `table` is
+    special.
+  - **An unplaced edge is dimmed, never dropped.** Sensei's code graph reports 59.6% of 4.08M
+    edges with a null target — the call is real, the callee is simply not indexed. The
+    normalizer was silently discarding all of them.
+  - **Two-level clustering** (`groupBy` × `nestBy`), because schema alone is a poor axis for a
+    dependency graph where one schema holds a table, a trigger and a procedure.
+  - Three defects worth remembering: kind icons named a prefix (`i-graph-*`) defined in no
+    config or collection, so every kind rendered a blank box while the class attribute looked
+    correct; the `points` layout declared a canvas 64% empty (one spiral step sized by the
+    largest dot, plus a circular cluster discarding 21% of its box), which read as a zoom bug;
+    and clusters keyed by name alone threw `each_key_duplicate` once nesting put a `table` box
+    under two schemas, aborting the whole render. See journal 2026-09-28.
+  - **Remaining:** dbd consumes the package (acceptance), then publish. Slice 2 — the
+    hierarchical world view — stays open; `docs/design/23-graph.md` records the design.
+
 - [x] **List / Tree honour `bind:value`** — Shipped 2026-08-21 (`653fe415`, **breaking**). Both declared `value = $bindable()` and documented it `bindable: true` but never wrote it — only Select did — so consumers needed an `onselect={(v) => (mine = v)}` workaround for a binding they had already asked for. Selection now routes through a `handleSelect` interceptor. Race contract, since `value` is input *and* output: the write happens in a DOM event handler (never an effect, so it cannot re-enter the effects reading `value`); it is skipped when unchanged (an unconditional write would re-run `syncExpandedGroups` and collapse groups the user expanded by hand); it lands *before* the consumer callback, so a consumer assigning its own value still wins — which is what makes it backward compatible. Disabled and group/parent rows never write. 14 tests + 2 DOM-observable fixtures, break-it verified. `Table`/`TreeTable` unaffected (their bindable prop is `values`). See journal 2026-08-21.
   - **Open:** should `List` honour item-level `expanded: true` as a first-paint seed under `collapsible`? It cannot today — accordion semantics re-derive expansion from `value` on every change, overwriting the flag. `Tree` does honour it. Documented and pinned by tests; needs an owner decision.
 
