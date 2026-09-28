@@ -221,3 +221,19 @@
   background-color: var(--paper-mute);
   color: var(--ink);
 }
+
+/* ─── zoom controls ─────────────────────────────────────────────────────── */
+
+[data-style='zen-sumi'] [data-graph-zoom-controls] {
+  background-color: var(--paper);
+  border-color: var(--paper-mute);
+}
+
+[data-style='zen-sumi'] [data-graph-zoom-controls] button {
+  background-color: transparent;
+  color: var(--ink);
+}
+
+[data-style='zen-sumi'] [data-graph-zoom-controls] button:hover:not(:disabled) {
+  background-color: var(--paper-mute);
+}

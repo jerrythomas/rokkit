@@ -143,31 +143,61 @@ test.describe('graph demo', () => {
 		expect(await positions()).not.toBe(untangled)
 	})
 
-	test('zooming in scales the diagram past its fit', async ({ page }) => {
+	test('the zoom controls are on the canvas and change the scale', async ({ page }) => {
+		// On the canvas, not in a host app's drawer — driven here through the component's own
+		// controls so this covers @rokkit/graph rather than the demo's chrome.
 		const scaleOf = () =>
 			page
 				.locator('[data-graph-world]')
 				.evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).a)
 
 		const fitted = await scaleOf()
+		await page.locator('[data-graph-zoom="in"]').click()
 
-		await openControls(page)
-		await setControl(page, 'Zoom', '2')
+		expect(await scaleOf()).toBeGreaterThan(fitted)
 
-		expect(await scaleOf()).toBeCloseTo(fitted * 2, 3)
+		await page.locator('[data-graph-zoom="reset"]').click()
+		expect(await scaleOf()).toBeCloseTo(fitted, 3)
 	})
 
 	test('a zoomed diagram scrolls instead of clipping', async ({ page }) => {
-		// Zoom with no pan gesture is only usable if the overflow is reachable. The canvas
-		// scrolls, which a trackpad and a keyboard both drive.
-		await openControls(page)
-		await setControl(page, 'Zoom', '3')
+		// Zoom is only usable if the overflow is reachable — the canvas scrolls and drags.
+		for (let i = 0; i < 4; i++) await page.locator('[data-graph-zoom="in"]').click()
 
 		const overflows = await page
 			.locator('[data-graph-paper]')
 			.evaluate((el) => el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight)
 
 		expect(overflows).toBe(true)
+	})
+
+	test('ctrl+wheel zooms the diagram rather than the page', async ({ page }) => {
+		// A trackpad pinch reports as ctrl+wheel. Without preventDefault the browser zooms
+		// the whole page, which reads as the component ignoring the gesture.
+		const scaleOf = () =>
+			page
+				.locator('[data-graph-world]')
+				.evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).a)
+
+		const before = await scaleOf()
+		await page.locator('[data-graph-paper]').dispatchEvent('wheel', {
+			deltaY: -120,
+			ctrlKey: true
+		})
+
+		expect(await scaleOf()).toBeGreaterThan(before)
+	})
+
+	test('both examples are reachable as variant chips, not just via a control', async ({
+		page
+	}) => {
+		// The variants were declared in meta and surfaced nowhere: the layout renders variant
+		// chips only in its GENERIC demo branch, and graph has its own conversation component.
+		await expect(page.getByRole('button', { name: 'ER diagram' })).toBeVisible()
+
+		await page.getByRole('button', { name: 'Call graph' }).click()
+		await expect(page).toHaveURL(/variant=call-graph/)
+		await expect(page.locator('[data-node-group="commerce"]').first()).toBeAttached()
 	})
 
 	test('switching edge style changes the drawn path', async ({ page }) => {

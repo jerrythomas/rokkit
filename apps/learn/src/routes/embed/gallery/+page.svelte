@@ -28,6 +28,17 @@
 	import { EntityView } from '@rokkit/graph/schema'
 	import { datasets } from '$lib/koan/demos/graph/datasets'
 
+	const style = $derived(page.url.searchParams.get('style') ?? 'zen-sumi')
+	const skin = $derived(page.url.searchParams.get('skin') ?? 'default')
+	const modeParam = $derived(page.url.searchParams.get('mode') ?? 'light')
+	const mode = $derived(
+		modeParam === 'system' || modeParam === 'auto'
+			? typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+				? 'dark'
+				: 'light'
+			: modeParam
+	)
+
 	/* density 'full' so node titles, row names, row types AND badges are all present and
 	   measurable — at the default 'keys' most rows are hidden and the sweep would pass by
 	   simply having less text on the page. A selection is made so the selected/related/dim
@@ -40,16 +51,20 @@
 	})
 	graphState.select('public.orders')
 
-	const style = $derived(page.url.searchParams.get('style') ?? 'zen-sumi')
-	const skin = $derived(page.url.searchParams.get('skin') ?? 'default')
-	const modeParam = $derived(page.url.searchParams.get('mode') ?? 'light')
-	const mode = $derived(
-		modeParam === 'system' || modeParam === 'auto'
-			? typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
-				? 'dark'
-				: 'light'
-			: modeParam
-	)
+	// The cluster FILL resolves from the light or dark ladder per this mode, while its label
+	// inherits the page's ink. Leave mode at its 'light' default here and dark mode paints
+	// near-white labels on pale fills — 1.1:1. Same bug the /app demo had; it has to be wired
+	// on every surface that renders a Graph, because nothing infers it.
+	$effect(() => {
+		graphState.update({
+			nodes: datasets.ecommerce.nodes,
+			edges: datasets.ecommerce.edges,
+			fields: datasets.ecommerce.fields,
+			density: 'full',
+			mode: mode === 'dark' ? 'dark' : 'light',
+			value: graphState.value
+		})
+	})
 
 	// CRITICAL for the contrast audit: this embed page renders inside the app's
 	// <body>, which the root layout's `themable` action pins to `vibe`. A

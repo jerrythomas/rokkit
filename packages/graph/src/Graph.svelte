@@ -34,7 +34,8 @@
 		value = undefined,
 		preset = undefined,
 		mode = 'light',
-		zoom = 1,
+		zoom = $bindable(1),
+		zoomable = true,
 		label = undefined,
 		onselect = undefined,
 		icons: userIcons = undefined,
@@ -87,11 +88,57 @@
 	// `graph.contentSize` — a pure derivation, so it lives in state.
 	//
 	// `fit` alone shrinks a real schema until its labels are unreadable, which is the whole
-	// reason zoom exists. There is deliberately no PAN gesture: the canvas scrolls instead,
-	// so a keyboard and a trackpad both reach the overflow without a drag handler.
+	// reason zoom exists.
 	const PAD = 28
+	const ZOOM_MIN = 0.25
+	const ZOOM_MAX = 4
+	const ZOOM_STEP = 1.25
+
 	let vw = $state(0)
 	let vh = $state(0)
+	let paper = $state<HTMLElement | null>(null)
+
+	const clampZoom = (value: number) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, value))
+
+	function zoomBy(factor: number) {
+		zoom = clampZoom(zoom * factor)
+	}
+
+	/**
+	 * Ctrl/meta + wheel is what a trackpad pinch reports as. Without preventDefault the
+	 * browser zooms the whole PAGE instead of the diagram, which is the behaviour a reader
+	 * hits first and reads as the component ignoring them.
+	 *
+	 * A plain wheel is left alone: the canvas scrolls, which is how panning works here.
+	 */
+	function onWheel(event: WheelEvent) {
+		if (!zoomable || !(event.ctrlKey || event.metaKey)) return
+		event.preventDefault()
+		zoomBy(event.deltaY < 0 ? ZOOM_STEP : 1 / ZOOM_STEP)
+	}
+
+	// Drag-to-pan on the background. Scrolling already reaches the overflow, so this is the
+	// direct-manipulation path on top of it, not the only way across.
+	let panning = $state(false)
+	let panFrom = { x: 0, y: 0, left: 0, top: 0 }
+
+	function onPointerDown(event: PointerEvent) {
+		// Only the background drags — a press that starts on a card is a selection.
+		if (!paper || (event.target as HTMLElement).closest('[data-graph-node]')) return
+		panning = true
+		panFrom = { x: event.clientX, y: event.clientY, left: paper.scrollLeft, top: paper.scrollTop }
+		paper.setPointerCapture(event.pointerId)
+	}
+
+	function onPointerMove(event: PointerEvent) {
+		if (!panning || !paper) return
+		paper.scrollLeft = panFrom.left - (event.clientX - panFrom.x)
+		paper.scrollTop = panFrom.top - (event.clientY - panFrom.y)
+	}
+
+	function endPan() {
+		panning = false
+	}
 	const fit = $derived(
 		Math.max(
 			0.08,
@@ -103,6 +150,7 @@
 	// padding offset so scrolling reaches the far edge instead of clipping it.
 	const tx = $derived(Math.max(PAD, (vw - graph.contentSize.w * scale) / 2))
 	const ty = $derived(Math.max(PAD, (vh - graph.contentSize.h * scale) / 2))
+	const zoomPercent = $derived(Math.round(zoom * 100))
 </script>
 
 <!-- The viewport fills its nearest positioned ancestor. Place it inside a `relative` box
@@ -115,16 +163,23 @@
      role="presentation" is what this is — a positioned surface. Click-the-background-to-
      dismiss is not the only way out: Escape does the same, and every node is a real
      <button>, so nothing here is keyboard-inaccessible. -->
-<div
-	data-graph-paper
-	role="presentation"
-	class={className}
-	bind:clientWidth={vw}
-	bind:clientHeight={vh}
-	onclick={() => graph.clear()}
-	onkeydown={(e) => e.key === 'Escape' && graph.clear()}
-	tabindex="-1"
->
+<div data-graph-viewport class={className}>
+	<div
+		data-graph-paper
+		data-graph-panning={panning ? '' : undefined}
+		role="presentation"
+		bind:this={paper}
+		bind:clientWidth={vw}
+		bind:clientHeight={vh}
+		onclick={() => graph.clear()}
+		onkeydown={(e) => e.key === 'Escape' && graph.clear()}
+		onwheel={onWheel}
+		onpointerdown={onPointerDown}
+		onpointermove={onPointerMove}
+		onpointerup={endPan}
+		onpointercancel={endPan}
+		tabindex="-1"
+	>
 	<div
 		data-graph-world
 		style="width: {graph.size.w}px; height: {graph.size.h}px; transform: translate({tx}px, {ty}px) scale({scale});"
@@ -198,5 +253,31 @@
 				{/if}
 			</button>
 		{/each}
+		</div>
 	</div>
+
+	{#if zoomable}
+		<!-- On-canvas, because a zoom control that lives in someone else's settings drawer is
+		     a control a reader never finds. Buttons rather than a slider: each is one tab stop
+		     and one keypress, so this works without a trackpad. -->
+		<div data-graph-zoom-controls>
+			<button
+				type="button"
+				data-graph-zoom="out"
+				aria-label="Zoom out"
+				disabled={zoom <= ZOOM_MIN}
+				onclick={() => zoomBy(1 / ZOOM_STEP)}>−</button
+			>
+			<button type="button" data-graph-zoom="reset" aria-label="Reset zoom to fit" onclick={() => (zoom = 1)}
+				>{zoomPercent}%</button
+			>
+			<button
+				type="button"
+				data-graph-zoom="in"
+				aria-label="Zoom in"
+				disabled={zoom >= ZOOM_MAX}
+				onclick={() => zoomBy(ZOOM_STEP)}>+</button
+			>
+		</div>
+	{/if}
 </div>

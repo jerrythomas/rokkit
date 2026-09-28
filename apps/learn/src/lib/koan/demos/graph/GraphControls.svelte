@@ -72,18 +72,6 @@
 			set: (v: string) => (explorer.edgeStyle = v as typeof explorer.edgeStyle)
 		},
 		{
-			id: 'zoom',
-			label: 'Zoom',
-			options: [
-				{ value: '1', label: 'Fit' },
-				{ value: '1.5', label: '150%' },
-				{ value: '2', label: '200%' },
-				{ value: '3', label: '300%' }
-			],
-			get: () => String(explorer.zoom),
-			set: (v: string) => (explorer.zoom = Number(v))
-		},
-		{
 			id: 'using',
 			label: 'Differentiate by',
 			options: [

@@ -1,10 +1,35 @@
 <script lang="ts">
-	import { ChatStream, ChatMessage } from '$lib/chat'
+	import { goto } from '$app/navigation'
+	import { page } from '$app/state'
+	import { ChatStream, ChatMessage, Chips } from '$lib/chat'
 	import { shell } from '$lib/koan/shell.svelte'
 	import { explorer } from './store.svelte'
 	import { datasets } from './datasets'
+	import meta from './meta'
 
 	const active = $derived(datasets[explorer.dataset])
+
+	/*
+	 * Variant chips have to be rendered HERE. The layout renders them only in its generic
+	 * demo branch; a demo with its own conversation component — chart, sparkline, this one —
+	 * owns its whole chat stream, so declaring `variants` in meta and stopping there leaves
+	 * them surfaced nowhere. They were invisible until this existed.
+	 */
+	const current = $derived(page.url.searchParams.get('variant'))
+
+	const chips = $derived(
+		(meta.variants ?? []).map((v) => ({
+			label: v.label,
+			icon: 'i-mdi:auto-fix',
+			id: v.id,
+			active: current === v.id
+		}))
+	)
+
+	function pick(item: { id?: string; active?: boolean }) {
+		if (!item.id) return
+		goto(item.active ? '/app/graph' : `/app/graph?variant=${item.id}`)
+	}
 </script>
 
 <ChatStream>
@@ -16,9 +41,10 @@
 		<strong>{active.label}</strong>.
 	</ChatMessage>
 	<ChatMessage kind="info" status="explained" icon="i-mdi:map-marker-path">
-		<strong>Data-first, not schema-first.</strong> Both datasets render through the same
-		component. The e-commerce one is database JSON; the service call graph shares none of its
-		key names and is adapted entirely by a <code>fields</code> map. Switch the dataset to see it.
+		<strong>Data-first, not schema-first.</strong> An ER diagram is one thing this draws, not
+		what it is. The call graph below shares none of the schema shape's key names —
+		<code>key</code>, <code>team</code>, <code>endpoints</code>, <code>caller</code>,
+		<code>callee</code> — and is adapted entirely by a <code>fields</code> map.
 	</ChatMessage>
 	<ChatMessage kind="info" status="explained" icon="i-mdi:palette-swatch">
 		<strong>Layouts are pluggable.</strong>
@@ -26,4 +52,11 @@
 		node and shows one hop. Both are plain
 		<code>(model, options) =&gt; LayoutResult</code> functions, so your own slots in the same way.
 	</ChatMessage>
+	{#if chips.length > 0}
+		<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
+			Pick an example — same component, a completely different shape of data. The URL
+			updates, so each one is bookmarkable.
+		</ChatMessage>
+		<Chips items={chips} onselect={pick} />
+	{/if}
 </ChatStream>

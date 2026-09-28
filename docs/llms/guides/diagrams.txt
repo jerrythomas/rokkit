@@ -1,0 +1,180 @@
+# Diagrams
+
+`@rokkit/graph` draws node-link diagrams. An ER diagram is one
+thing it can draw, not what it is — the same component renders a
+service call graph, a dependency tree or a lineage map, because
+nothing in it knows what a table is.
+
+See the [Graph demo](/app/graph) for a live explorer, with an ER
+diagram and a service call graph rendered by the same component.
+
+## The data contract
+
+There is no import step and no schema type to conform to. `nodes`
+and `edges` are whatever shape you already hold, and `fields` maps
+dotted paths from that shape to the canonical model.
+
+```svelte
+<script>
+  import { Graph } from '@rokkit/graph'
+
+  const services = [
+    { key: 'checkout', team: 'commerce', endpoints: [{ label: 'POST /cart' }] },
+    { key: 'catalog', team: 'commerce', endpoints: [{ label: 'GET /products' }] }
+  ]
+  const calls = [{ caller: 'checkout', callee: 'catalog' }]
+
+  const fields = {
+    id: 'key',
+    label: 'key',
+    group: 'team',
+    rows: 'endpoints',
+    rowName: 'label',
+    source: 'caller',
+    target: 'callee'
+  }
+</script>
+
+<Graph nodes={services} edges={calls} {fields} />
+```
+
+Anything omitted falls back to the same-named key, so data already
+shaped like the canonical model needs no map. Fields the map does
+not claim ride along on `node.meta`.
+
+Endpoints resolve by exactly two rules: the value already IS a node
+id, or it is `group.value` where the group comes from a DECLARED
+path. There is deliberately no third "search the siblings" rule —
+an unresolvable endpoint drops its edge rather than landing on a
+coincidental match and drawing a relationship that does not exist.
+
+## Field map
+
+| Key                  | Reads                                         |
+| -------------------- | --------------------------------------------- |
+| `id`                 | stable node key (else `group.label`)          |
+| `label`              | node title                                    |
+| `group`              | open vocabulary — drives clustering + colour  |
+| `kind`               | closed vocabulary — table/view/matview/…      |
+| `rows`               | array of rows on the node                     |
+| `rowName` `rowType`  | per-row name and type                         |
+| `rowNote`            | per-row comment                               |
+| `rowBadges`          | `{ pk, fk, uq, nn }` → truthy paths on a row  |
+| `note`               | node comment (paragraphs, bullets, `code`)    |
+| `source` `target`    | edge endpoints                                |
+| `sourceGroup` `targetGroup` | where an endpoint's group is read from |
+| `sourceRow` `targetRow`     | anchor row on each card                |
+| `edgeKind`           | `reference` (default) or `dependency`         |
+| `cardinality` `action`      | edge annotations                       |
+
+## Layouts
+
+A layout is a pure function:
+
+```ts
+type LayoutFn = (model: GraphModel, options: LayoutOptions) => LayoutResult
+```
+
+DOM-free, synchronous, deterministic — card heights come from row
+counts, nothing is measured. Two ship today:
+
+- `cluster` — groups become clusters, ordered to reduce edge
+  crossings; each cluster's nodes are masonry-packed then flowed
+  into wrapping rows. Options: `density`, `arrange`, `edgeStyle`.
+- `neighborhood` — the focused node centred, nodes that reference
+  it stacked left, nodes it references stacked right. Options:
+  `focus` (defaults to the selection).
+
+Pass `layout` a name or your own function.
+
+## Three views, one state
+
+`Graph`, `EntityView` and `EntitiesView` all read a `GraphState`.
+Share one instance and selection is two-way for free.
+
+```svelte
+<script>
+  import { Graph, GraphState } from '@rokkit/graph'
+  import { EntityView } from '@rokkit/graph/schema'
+
+  const state = new GraphState({ nodes, edges, fields })
+</script>
+
+<Graph {state} />
+<EntityView {state} />
+```
+
+A view nested inside `<Graph>` reads the state from context. The
+instance must keep STABLE IDENTITY — drive it with `update()` and
+its methods rather than replacing it.
+
+`GraphState` owns every derivation. Components render and route
+intent; they compute nothing.
+
+## Reading a large diagram
+
+Fit-to-container alone shrinks a real schema until labels are
+unreadable, so the canvas zooms:
+
+- controls on the canvas, bottom right: `−`, the percentage
+  (click to reset to fit), `+`
+- ctrl/cmd + wheel — what a trackpad pinch reports as — zooms the
+  diagram, not the page
+- past the fit the canvas scrolls, and dragging the background pans
+
+`zoomable={false}` turns it off; bind `zoom` to drive it yourself.
+
+## Colour
+
+Two vocabularies, handled differently on purpose.
+
+Node KINDS are a closed set, so they live in CSS. Match the theme's
+specificity — every style scopes its rules under `[data-style]`, so
+a bare `[data-node-kind='table']` is (0,1,1) against the theme's
+(0,2,0) and silently loses:
+
+```css
+[data-style] [data-node-kind='table'] {
+  --node-accent: var(--primary);
+}
+```
+
+Group NAMES are open — not knowable at build time. `createGraphPreset`
+assigns them from a ramp, by SORTED group name so a group keeps its
+colour when `arrange` reorders the layout:
+
+```js
+createGraphPreset({
+  groups: ['teal', 'gold', 'violet'],
+  using: 'pattern' // colour-blind- and print-safe
+})
+```
+
+It resolves to CSS custom properties, not concrete fills, so an
+attribute rule still wins. There is no `kinds` map on the preset:
+kinds are CSS, groups are the preset.
+
+All six styles ship a `graph.css` — base, rokkit, minimal, material,
+frosted, zen-sumi.
+
+## Styling hooks
+
+`data-graph-paper` `data-graph-world` `data-graph-cluster`
+`data-graph-cluster-label` `data-graph-node` `data-node-kind`
+`data-node-group` `data-node-state` (selected|related|dim)
+`data-node-headonly` `data-graph-node-head` `data-graph-node-icon`
+`data-graph-node-title` `data-graph-node-count` `data-graph-row`
+`data-graph-row-name` `data-graph-row-type` `data-row-badge`
+(pk|fk|uq|nn) `data-graph-more` `data-graph-edge` `data-edge-kind`
+(reference|dependency) `data-edge-state` (highlight|dim)
+`data-graph-edge-dot` `data-graph-zoom-controls` plus the schema-view
+hooks (`data-graph-entity`, `data-graph-column`,
+`data-graph-relationship`, `data-graph-note`, …).
+
+## Using it with dbd
+
+`@rokkit/graph/schema` carries `SCHEMA_FIELDS` and `fromSchemaModel`
+for dbd-shaped JSON. It does NOT import dbd's `SchemaModel` type:
+the hand-written mirror of `schema_model.rs` stays in the consuming
+app, so this package never becomes a third definition to keep in
+step by hand.

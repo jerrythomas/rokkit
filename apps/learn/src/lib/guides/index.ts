@@ -7,6 +7,7 @@ import themingContent from './theming/content.md?raw'
 import accessibilityContent from './accessibility/content.md?raw'
 import formsContent from './forms/content.md?raw'
 import chartsContent from './charts/content.md?raw'
+import diagramsContent from './diagrams/content.md?raw'
 import aiChatbotsContent from './ai-chatbots/content.md?raw'
 import utilitiesContent from './utilities/content.md?raw'
 import toolkitContent from './toolkit/content.md?raw'
@@ -81,6 +82,14 @@ export const guides: Guide[] = [
 		description: 'Chart shapes, axes, data binding, and embedding charts in markdown.',
 		category: 'workflows',
 		content: chartsContent
+	},
+	{
+		slug: 'diagrams',
+		title: 'Diagrams',
+		description:
+			'Node-link diagrams — ER diagrams, call graphs and dependency maps from field-mapped data, with pluggable layouts.',
+		category: 'workflows',
+		content: diagramsContent
 	},
 	{
 		slug: 'ai-chatbots',

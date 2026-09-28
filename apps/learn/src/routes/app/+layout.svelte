@@ -2927,7 +2927,11 @@ ${tabsTag}`
 							{:then mod}
 								{@const C = mod.default as Component}
 								<div class="dyn-mount">
-									<C {...tweakProps} />
+									<!-- variantProps BEFORE tweakProps, so a user tweak still wins over a
+									     picked variant. This branch spread only tweakProps, so a dynamic
+									     demo's declared variants reached the component as nothing at all
+									     — the chips navigated and the canvas never changed. -->
+									<C {...variantProps} {...tweakProps} />
 								</div>
 							{:catch err}
 								<div class="dyn-error">Failed to load demo: {err.message}</div>

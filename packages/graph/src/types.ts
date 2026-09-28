@@ -77,9 +77,11 @@ export type GraphProps = {
 	mode?: 'light' | 'dark'
 	/**
 	 * Multiplier on the fit-to-container scale. 1 fits the whole diagram; above 1 the canvas
-	 * scrolls rather than clipping, so the overflow is reachable without a pan gesture.
+	 * scrolls and drags rather than clipping. Bindable — the built-in controls drive it.
 	 */
 	zoom?: number
+	/** Built-in zoom controls, ctrl/pinch-wheel zoom and drag-to-pan. Default true. */
+	zoomable?: boolean
 	label?: string
 	onselect?: (id: string) => void
 	/** Icon class per node kind and row badge, merged over the built-in map. */

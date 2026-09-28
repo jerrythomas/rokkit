@@ -214,3 +214,19 @@
   background-color: var(--paper-mute);
   color: var(--ink);
 }
+
+/* ─── zoom controls ─────────────────────────────────────────────────────── */
+
+[data-style='frosted'] [data-graph-zoom-controls] {
+  background-color: color-mix(in oklch, var(--paper-soft) 72%, transparent);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+[data-style='frosted'] [data-graph-zoom-controls] button {
+  background-color: transparent;
+  color: var(--ink);
+}
+
+[data-style='frosted'] [data-graph-zoom-controls] button:hover:not(:disabled) {
+  background-color: color-mix(in oklch, var(--paper-mute) 55%, transparent);
+}

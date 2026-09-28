@@ -2,6 +2,7 @@
    GraphState.spec.ts with no renderer; asserting it again here would just be slower. */
 
 import { describe, it, expect } from 'vitest'
+import { tick } from 'svelte'
 import { render } from '@testing-library/svelte'
 import Graph from '../src/Graph.svelte'
 import { GraphState } from '../src/GraphState.svelte.js'
@@ -275,6 +276,39 @@ describe('Graph — accessibility and construction', () => {
 			(c.querySelector('[data-graph-world]') as HTMLElement).style.transform
 
 		expect(read(implied)).toBe(read(explicit))
+	})
+
+	it('renders zoom controls on the canvas', () => {
+		// On the canvas, not in a host app's settings drawer — a zoom control a reader has to
+		// go looking for is one they never find.
+		const { container } = render(Graph, { state: state() })
+
+		expect(container.querySelector('[data-graph-zoom="in"]')).not.toBeNull()
+		expect(container.querySelector('[data-graph-zoom="out"]')).not.toBeNull()
+		expect(container.querySelector('[data-graph-zoom="reset"]')?.textContent).toContain('100%')
+	})
+
+	it('zooms in and out from the controls', async () => {
+		const { container } = render(Graph, { state: state() })
+		const read = () =>
+			(container.querySelector('[data-graph-world]') as HTMLElement).style.transform
+
+		const fitted = read()
+		;(container.querySelector('[data-graph-zoom="in"]') as HTMLElement).click()
+		await tick()
+
+		expect(read()).not.toBe(fitted)
+
+		;(container.querySelector('[data-graph-zoom="reset"]') as HTMLElement).click()
+		await tick()
+
+		expect(read()).toBe(fitted)
+	})
+
+	it('omits the controls when zoomable is off', () => {
+		const { container } = render(Graph, { state: state(), zoomable: false })
+
+		expect(container.querySelector('[data-graph-zoom-controls]')).toBeNull()
 	})
 
 	it('takes its accessible name from the state', () => {

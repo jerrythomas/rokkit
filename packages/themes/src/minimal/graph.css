@@ -203,3 +203,19 @@
   background-color: var(--paper-mute);
   color: var(--ink);
 }
+
+/* ─── zoom controls ─────────────────────────────────────────────────────── */
+
+[data-style='minimal'] [data-graph-zoom-controls] {
+  background-color: var(--paper-soft);
+  border-color: var(--paper-edge);
+}
+
+[data-style='minimal'] [data-graph-zoom-controls] button {
+  background-color: transparent;
+  color: var(--ink);
+}
+
+[data-style='minimal'] [data-graph-zoom-controls] button:hover:not(:disabled) {
+  background-color: var(--paper-mute);
+}

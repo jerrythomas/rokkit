@@ -70,7 +70,7 @@
 	<div class="stage">
 		{#if explorer.view === 'diagram'}
 			<div class="canvas">
-				<Graph state={graph} zoom={explorer.zoom} />
+				<Graph state={graph} bind:zoom={explorer.zoom} />
 			</div>
 		{:else if explorer.view === 'entity'}
 			<div class="scroll">

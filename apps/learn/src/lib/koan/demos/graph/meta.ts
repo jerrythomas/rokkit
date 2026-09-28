@@ -65,7 +65,10 @@ const meta: DemoMeta = {
 		],
 		attrs: [
 			// Canvas
-			{ selector: '[data-graph-paper]', desc: 'Viewport surface — reuses the shared dotted-canvas primitive' },
+			{ selector: '[data-graph-viewport]', desc: 'Positioned wrapper; anchors the zoom controls over the canvas' },
+			{ selector: '[data-graph-paper]', desc: 'Scrolling canvas — reuses the shared dotted-canvas primitive' },
+			{ selector: '[data-graph-panning]', desc: 'Present on the canvas while a drag-pan is in progress' },
+			{ selector: '[data-graph-zoom-controls]', desc: 'On-canvas zoom cluster; buttons carry data-graph-zoom="in|out|reset"' },
 			{ selector: '[data-graph-world]', desc: 'Scaled/translated world; declares --graph-head-h, --graph-row-h, --graph-more-h' },
 			// Clusters
 			{ selector: '[data-graph-cluster]', desc: 'One group box. Reads --group-fill / --group-stroke' },
