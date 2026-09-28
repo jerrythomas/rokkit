@@ -1,0 +1,342 @@
+import { SvelteSet } from 'svelte/reactivity'
+import { normalizeGraph } from './model/normalize.js'
+import { layouts } from './layout/index.js'
+import { edgePath } from './layout/edges.js'
+import { defaultGraphPreset, resolveGroupStyles } from './preset.js'
+import type { GraphPreset } from './preset.js'
+import type {
+	Arrange,
+	Cards,
+	Cluster,
+	Density,
+	EdgeStyle,
+	LayoutFn,
+	RoutedEdge,
+	Size
+} from './layout/types.js'
+import type { GraphEdge, GraphFields, GraphModel, GraphNode } from './types.js'
+
+export type EntityRow = {
+	id: string
+	label: string
+	group?: string
+	kind?: string
+	rowCount: number
+	refCount: number
+	note?: string
+}
+
+export type Relationship = {
+	direction: 'in' | 'out'
+	id: string
+	label: string
+	group?: string
+	/** The canonical edge — always present. A relationship is a fact about the model. */
+	edge: GraphEdge
+	/** Routed geometry, present only when the ACTIVE layout placed this edge. */
+	routed?: RoutedEdge
+}
+
+export type GraphStateConfig = {
+	nodes?: unknown[]
+	edges?: unknown[]
+	fields?: GraphFields
+	layout?: string | LayoutFn
+	density?: Density
+	arrange?: Arrange
+	edgeStyle?: EdgeStyle
+	focus?: string | null
+	value?: string | null
+	preset?: GraphPreset
+	mode?: 'light' | 'dark'
+	label?: string
+	onselect?: (id: string) => void
+}
+
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
+
+/** Bottom-right extent of a set of boxes, or {0,0} when there are none. */
+function extentOf(boxes: { x: number; y: number; w: number; h: number }[]): Size {
+	let w = 0
+	let h = 0
+
+	for (const box of boxes) {
+		w = Math.max(w, box.x + box.w)
+		h = Math.max(h, box.y + box.h)
+	}
+
+	return { w, h }
+}
+
+/**
+ * The store. Turns raw `nodes`/`edges`/`fields` into the reactive shape the visuals
+ * render, and owns every transition.
+ *
+ * Components read from this and call its methods — they never compute. That is what
+ * lets the geometry, badge derivation and selection logic be covered exhaustively
+ * with no DOM, and lets the component specs assert only attributes.
+ *
+ * `update()` is re-callable and FULLY re-applies config rather than merging deltas,
+ * matching `SparkState.update` — so a prop reverting to undefined actually reverts.
+ * Deliberately NOT `PlotState.update`, which guards each field with
+ * `if (config.X !== undefined)` and therefore merges.
+ */
+export class GraphState {
+	#nodes = $state<unknown[]>([])
+	#edges = $state<unknown[]>([])
+	#fields = $state<GraphFields>({})
+	#layout = $state<string | LayoutFn>('cluster')
+	#density = $state<Density>('keys')
+	#arrange = $state<Arrange>('untangle')
+	#edgeStyle = $state<EdgeStyle>('curved')
+	#focus = $state<string | null>(null)
+	#value = $state<string | null>(null)
+	#preset = $state<GraphPreset>(defaultGraphPreset)
+	#mode = $state<'light' | 'dark'>('light')
+	#label = $state<string | undefined>(undefined)
+	#onselect = $state<((id: string) => void) | undefined>(undefined)
+
+	#model = $derived(normalizeGraph(this.#nodes, this.#edges, this.#fields))
+
+	#layoutFn = $derived(
+		typeof this.#layout === 'function' ? this.#layout : (layouts[this.#layout] ?? layouts.cluster)
+	)
+
+	#result = $derived(
+		this.#layoutFn(this.#model, {
+			density: this.#density,
+			arrange: this.#arrange,
+			edgeStyle: this.#edgeStyle,
+			focus: this.#focus ?? this.#value
+		})
+	)
+
+	// Duplicates are left in on purpose: `resolveGroupStyles` de-duplicates and sorts, because
+	// that is where ramp assignment lives. A Set here would be a second, redundant de-dup.
+	#groups = $derived(
+		this.#model.nodes.map((n) => n.group).filter((g): g is string => Boolean(g))
+	)
+
+	#groupStyles = $derived(resolveGroupStyles(this.#groups, this.#mode, this.#preset))
+
+	#related = $derived(
+		this.#value
+			? new SvelteSet(this.#model.neighbors.get(this.#value) ?? [])
+			: new SvelteSet<string>()
+	)
+
+	#entities = $derived(
+		this.#model.nodes.map((node) => ({
+			id: node.id,
+			label: node.label,
+			group: node.group,
+			kind: node.kind,
+			rowCount: node.rows.length,
+			refCount: this.#model.edges.filter((e) => e.source === node.id || e.target === node.id)
+				.length,
+			note: node.note
+		}))
+	)
+
+	#entity = $derived(this.#value ? (this.#model.byId.get(this.#value) ?? null) : null)
+
+	/**
+	 * Derived from `#model.edges` — the canonical, unfiltered model — NOT from `#result.edges`.
+	 *
+	 * A layout filters: `cluster` drops edges whose endpoints were not laid out, and
+	 * `neighborhood` lays out only the focus node's 1-hop neighbourhood. Since `focus` and
+	 * `value` are independent config fields, reading the layout's edges lets the state
+	 * contradict itself: with `focus: 'audit.log'` (no neighbours) and `value: 'public.orders'`,
+	 * `relationships` would be `[]` while `entities`' `refCount` for the same node is 1.
+	 *
+	 * Routed geometry is attached opportunistically — it exists only for edges the active layout
+	 * actually placed, so `routed` is optional on `Relationship`. A relationship is a fact about
+	 * the model; its geometry is a fact about the current view.
+	 */
+	#relationships = $derived.by((): Relationship[] => {
+		const id = this.#value
+		if (!id) return []
+
+		// A plain Map on purpose: a call-local lookup built once from an already-derived array
+		// and discarded when this derivation re-runs. Nothing outside can observe it, so
+		// SvelteMap would add proxying for no reactivity.
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const routed = new Map(this.#result.edges.map((e) => [e.id, e]))
+
+		const describe = (other: string, direction: 'in' | 'out', edge: GraphEdge): Relationship => {
+			// normalizeGraph drops any edge whose endpoints do not resolve, so both ends of
+			// every edge in #model.edges are in byId. No `?? other` fallback here: an
+			// unreachable branch cannot be tested, and the package's 100% statement bar
+			// exists to keep that honest.
+			const node = this.#model.byId.get(other) as GraphNode
+
+			return {
+				direction,
+				id: other,
+				label: node.label,
+				group: node.group,
+				edge,
+				routed: routed.get(edge.id)
+			}
+		}
+
+		return this.#model.edges.flatMap((edge) => {
+			if (edge.source === id && edge.target === id) return [describe(id, 'out', edge)]
+			if (edge.target === id) return [describe(edge.source, 'in', edge)]
+			if (edge.source === id) return [describe(edge.target, 'out', edge)]
+			return []
+		})
+	})
+
+	constructor(config: GraphStateConfig = {}) {
+		this.update(config)
+	}
+
+	/**
+	 * Fully re-applies config. Safe to call on every prop change.
+	 *
+	 * Split across two helpers only to stay under the complexity bar — every field is still
+	 * assigned unconditionally on every call, which is the contract the specs enforce
+	 * field by field.
+	 */
+	update(config: GraphStateConfig = {}): void {
+		this.#applyData(config)
+		this.#applyView(config)
+		// `value` is input AND output, so it is only adopted when the caller supplies
+		// one — otherwise a re-render would wipe a selection the user just made.
+		if (config.value !== undefined) this.#value = config.value
+	}
+
+	#applyData(config: GraphStateConfig): void {
+		this.#nodes = config.nodes ?? []
+		this.#edges = config.edges ?? []
+		this.#fields = config.fields ?? {}
+		this.#layout = config.layout ?? 'cluster'
+		this.#focus = config.focus ?? null
+	}
+
+	#applyView(config: GraphStateConfig): void {
+		this.#density = config.density ?? 'keys'
+		this.#arrange = config.arrange ?? 'untangle'
+		this.#edgeStyle = config.edgeStyle ?? 'curved'
+		this.#preset = config.preset ?? defaultGraphPreset
+		this.#mode = config.mode ?? 'light'
+		this.#label = config.label
+		this.#onselect = config.onselect
+	}
+
+	// ─── transitions ───────────────────────────────────────────────────────────
+	select(id: string): void {
+		this.#value = id
+		this.#onselect?.(id)
+	}
+
+	clear(): void {
+		this.#value = null
+	}
+
+	// ─── per-item lookups the templates need ───────────────────────────────────
+	nodeState(id: string): 'selected' | 'related' | 'dim' | null {
+		if (!this.#value) return null
+		if (id === this.#value) return 'selected'
+		return this.#related.has(id) ? 'related' : 'dim'
+	}
+
+	edgeState(edge: RoutedEdge): 'highlight' | 'dim' | null {
+		if (!this.#value) return null
+		return edge.fromKey === this.#value || edge.toKey === this.#value ? 'highlight' : 'dim'
+	}
+
+	edgePath(edge: RoutedEdge): string {
+		return edgePath(edge, this.#edgeStyle)
+	}
+
+	groupStyle(group: string | undefined): Record<string, string> {
+		return (group && this.#groupStyles.get(group)) || {}
+	}
+
+	// ─── reads ─────────────────────────────────────────────────────────────────
+	get model(): GraphModel {
+		return this.#model
+	}
+	get clusters(): Cluster[] {
+		return this.#result.clusters
+	}
+	get cards(): Cards {
+		return this.#result.cards
+	}
+	get routedEdges(): RoutedEdge[] {
+		return this.#result.edges
+	}
+	get size(): Size {
+		return this.#result.size
+	}
+	/**
+	 * The true content extent, as distinct from `size`.
+	 *
+	 * `LayoutResult.size` adds a +60 margin on the right and bottom only, so fitting to it hugs
+	 * the left/top edge and floats away from the right/bottom. Centring needs the real bounds.
+	 *
+	 * This lives in state, not in `Graph.svelte`, because it is a pure max over `clusters` — no
+	 * viewport involved. Only the `scale`/`tx`/`ty` that consume it need `clientWidth`, and those
+	 * stay in the component. Keeping this here is what lets it be tested without a renderer.
+	 */
+	get contentSize(): Size {
+		const clusters = this.#result.clusters.map((c) => ({
+			x: c.x,
+			y: c.y,
+			w: c.w ?? 0,
+			h: c.h ?? 0
+		}))
+		let { w, h } = extentOf(clusters)
+
+		// An ungrouped layout (neighborhood) reports no clusters, so fall back to the cards.
+		if (!w || !h) {
+			const cards = extentOf(Object.values(this.#result.cards))
+			w = Math.max(w, cards.w)
+			h = Math.max(h, cards.h)
+		}
+
+		return { w: w || this.#result.size.w, h: h || this.#result.size.h }
+	}
+	get related(): SvelteSet<string> {
+		return this.#related
+	}
+	get entities(): EntityRow[] {
+		return this.#entities
+	}
+	get entity(): GraphNode | null {
+		return this.#entity
+	}
+	get relationships(): Relationship[] {
+		return this.#relationships
+	}
+	get density(): Density {
+		return this.#density
+	}
+	get arrange(): Arrange {
+		return this.#arrange
+	}
+	get edgeStyle(): EdgeStyle {
+		return this.#edgeStyle
+	}
+	get mode(): 'light' | 'dark' {
+		return this.#mode
+	}
+	/** The layout's registry key, or 'custom' when a LayoutFn was passed directly. */
+	get layoutName(): string {
+		return typeof this.#layout === 'string' ? this.#layout : 'custom'
+	}
+	get value(): string | null {
+		return this.#value
+	}
+	get label(): string {
+		return (
+			this.#label ??
+			`Diagram of ${plural(this.#model.nodes.length, 'node')} and ${plural(
+				this.#model.edges.length,
+				'relationship'
+			)}`
+		)
+	}
+}
