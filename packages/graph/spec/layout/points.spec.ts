@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { points } from '../../src/layout/points.js'
+/** Mirrors the layout's own CANVAS_PAD — the outer margin is margin, not wasted space. */
+const CANVAS_PAD = 60
+
 import { normalizeGraph } from '../../src/model/normalize.js'
 import type { GraphFields } from '../../src/types.js'
 
@@ -31,6 +34,20 @@ const EDGES = [
 
 const model = () => normalizeGraph(NODES, EDGES, FIELDS)
 
+/** A spread of degrees across ten groups — the shape a real code index has. */
+const denseModel = (n: number) => {
+	const nodes = Array.from({ length: n }, (_, i) => ({
+		key: `t${i % 10}.n${i}`,
+		team: `t${i % 10}`,
+		endpoints: []
+	}))
+	const edges = Array.from({ length: n * 2 }, (_, i) => ({
+		caller: `t${i % 10}.n${i % n}`,
+		callee: `t${(i + 3) % 10}.n${(i * 7) % n}`
+	}))
+	return normalizeGraph(nodes, edges, FIELDS)
+}
+
 describe('points layout', () => {
 	it('places every node', () => {
 		expect(Object.keys(points(model(), {})).length).toBeGreaterThan(0)
@@ -43,11 +60,42 @@ describe('points layout', () => {
 		])
 	})
 
-	it('renders a node as a square dot, not a card', () => {
+	it('renders a node as a wide rect, not a card and not a square', () => {
+		// 2:1 shelves without wasting the band under each node the way a square does.
 		const card = points(model(), {}).cards['a.leaf1']
 
-		expect(card.w).toBe(card.h)
+		expect(card.w / card.h).toBeCloseTo(2, 5)
 		expect(card.vis).toEqual([])
+	})
+
+	it('fills most of the canvas it declares', () => {
+		// The defect this layout was rewritten for. Spiral-packed discs declared a 607x595
+		// world for 362x364 of actual node ink — 36% — because one spiral step sized by the
+		// LARGEST dot was applied to every ring, and a circular cluster throws away 21% of its
+		// bounding box before anything is placed. Fit-to-container then frames the emptiness,
+		// so the diagram opens further out than its content warrants and still clips.
+		// Measured at a realistic size. On a 5-node model a group's label strip and padding
+		// (66px) legitimately exceed its 58px of ink, so the ratio there says nothing about
+		// packing; at 300 nodes the chrome amortises and the packing is what is left.
+		const result = points(denseModel(300), {})
+		const cards = Object.values(result.cards)
+		const x0 = Math.min(...cards.map((c) => c.x))
+		const y0 = Math.min(...cards.map((c) => c.y))
+		const x1 = Math.max(...cards.map((c) => c.x + c.w))
+		const y1 = Math.max(...cards.map((c) => c.y + c.h))
+
+		// Measured against the canvas minus its outer padding, which is margin, not waste.
+		const inner = (result.size.w - CANVAS_PAD * 2) * (result.size.h - CANVAS_PAD * 2)
+		const spanned = (x1 - x0) * (y1 - y0)
+
+		expect(spanned / inner).toBeGreaterThan(0.75)
+	})
+
+	it('packs a group far tighter than one step sized for its biggest node', () => {
+		// The concrete regression: one hub plus two leaves used to produce a 238px disc.
+		const cluster = points(model(), {}).clusters.find((c) => c.name === 'a')
+
+		expect(cluster?.w).toBeLessThan(238)
 	})
 
 	it('sizes a dot by degree, so a hub is visibly bigger than a leaf', () => {
@@ -83,22 +131,24 @@ describe('points layout', () => {
 		}
 	})
 
-	it('never overlaps two dots', () => {
-		// The spiral packs without an overlap test, so this is the assertion that the step
-		// and the sqrt growth were chosen correctly rather than by eye.
-		const result = points(model(), {})
-		const placed = Object.values(result.cards).map((c) => ({
-			cx: c.x + c.w / 2,
-			cy: c.y + c.h / 2,
-			r: c.w / 2
-		}))
+	it('never overlaps two nodes', () => {
+		// Shelf packing places by arithmetic with no collision test, so this is the assertion
+		// that the shelf wrap and the gap were chosen correctly rather than by eye. Axis
+		// aligned, because the nodes are rects — the old circle-distance form would pass on
+		// rects that plainly overlap at their corners.
+		const result = points(denseModel(240), {})
+		const placed = Object.values(result.cards)
 
 		for (let i = 0; i < placed.length; i++) {
 			for (let j = i + 1; j < placed.length; j++) {
 				const a = placed[i]
 				const b = placed[j]
-				const distance = Math.hypot(a.cx - b.cx, a.cy - b.cy)
-				expect(distance, `${i} vs ${j}`).toBeGreaterThanOrEqual(a.r + b.r - 0.001)
+				const apart =
+					a.x + a.w <= b.x + 0.001 ||
+					b.x + b.w <= a.x + 0.001 ||
+					a.y + a.h <= b.y + 0.001 ||
+					b.y + b.h <= a.y + 0.001
+				expect(apart, `${a.node.id} vs ${b.node.id}`).toBe(true)
 			}
 		}
 	})

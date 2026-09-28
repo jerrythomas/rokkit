@@ -96,8 +96,11 @@
    difference is shape and the fact that its label lives OUTSIDE it — at dense-graph
    sizes there is no inside to put text in. */
 
+/* A rounded rect, not a disc. The layout shelf-packs rects because circle packing wasted most
+   of the canvas (36% fill measured on the service graph), and the shape has to agree with the
+   geometry or the boxes the layout reserved will not be the boxes drawn. */
 [data-graph-layout='points'] [data-graph-node] {
-  border-radius: 50%;
+  border-radius: 0.25rem;
   overflow: visible;
   padding: 0;
 }
@@ -155,7 +158,7 @@
 }
 
 [data-graph-layout='points'] [data-graph-cluster] {
-  border-radius: 50%;
+  border-radius: 0.5rem;
 }
 
 /* A hovered dot lifts above its neighbours so its label is not overlapped by them. */

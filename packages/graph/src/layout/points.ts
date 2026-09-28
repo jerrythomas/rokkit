@@ -1,14 +1,28 @@
-/* Dense-graph layout: every node is a sized DOT, grouped into packed clusters.
+/* Dense-graph layout: every node is a sized rounded RECT, shelf-packed into its group.
 
    Cards stop working long before the data does. Measured on a 1000-node call graph fitted
    into 1440x900, the `cluster` layout produces an 1780x18090 canvas at scale 0.047 — a 248px
    card renders 11.6px wide and a 12px label lands at 0.56px. The geometry is fine and the
-   maths is fast (30ms end to end); the CARD is what fails.
+   maths is fast; the CARD is what fails.
 
-   So this layout drops the card. A node becomes a dot sized by its degree, positioned in a
-   spiral inside its group's disc, and groups are laid out in a grid ordered by size. Reading
-   shifts from "what columns does this table have" to "which things are central, and which
-   cluster do they live in" — which is the question you actually ask of a code index.
+   So this layout drops the card. A node becomes a small rect sized by its degree, packed into
+   its group's box, and groups are laid out in a grid ordered by size. Reading shifts from
+   "what columns does this table have" to "which things are central, and which cluster do they
+   live in" — the question you actually ask of a code index.
+
+   WHY RECTS AND NOT DISCS. The first version spiral-packed circles, and it wasted most of its
+   canvas: measured on the 7-node service graph, a declared 607x595 world held only 362x364 of
+   actual dots — 36% fill. Two compounding causes, both intrinsic to the shape:
+
+     1. One spiral step, derived from the LARGEST dot present, applied to every ring. A group
+        holding one hub (r=26) and two leaves (r=5) stepped all three at 60.7px, giving a
+        238px disc for three dots.
+     2. A circular cluster throws away 1 - pi/4 = 21% of its bounding box before anything is
+        placed in it, and the canvas is made of bounding boxes.
+
+   Fit-to-container then frames all that emptiness, so the diagram opens zoomed further out
+   than its content warrants and still clips. Rects remove both causes: shelf packing has no
+   global step, and a rectangular group box is the area it occupies.
 
    Deterministic and DOM-free like every other LayoutFn: no physics, no simulation, no random
    seed. The same model always produces the same picture, so it is unit-testable to exact
@@ -18,16 +32,29 @@ import { buildEdges } from './edges.js'
 import type { Cards, Cluster, LayoutFn, LayoutResult } from './types.js'
 import type { GraphModel, GraphNode } from '../types.js'
 
-/** Dot geometry. A node's area — not its radius — tracks degree, so ten edges reads as ten. */
-const MIN_R = 5
-const MAX_R = 26
+/**
+ * Node geometry. AREA — not width — tracks degree, so ten edges reads as ten rather than as
+ * a hundred. Areas are carried over from the disc version (pi*5^2 to pi*26^2) so the ink
+ * weight of a diagram is unchanged; only the shape and the packing are different.
+ */
+const MIN_AREA = Math.PI * 5 * 5
+const MAX_AREA = Math.PI * 26 * 26
+/** Width:height. 2:1 reads as a "chip" and shelves well; a square wastes shelf height. */
+const ASPECT = 2
+
 const NODE_GAP = 6
-const CLUSTER_PAD = 28
-const CLUSTER_GAP = 48
+const CLUSTER_PAD = 20
+/** Room for the group's own label above its first shelf. */
+const CLUSTER_TITLE = 26
+const CLUSTER_GAP = 40
 const CANVAS_PAD = 60
 
-/** Golden-angle spiral: even packing with no overlap test and no iteration. */
-const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5))
+/**
+ * How wide a group is allowed to get before it wraps, as a multiple of sqrt(total ink).
+ * Above 1 the group box is wider than tall, which suits a label above it and tiles into a
+ * grid of groups better than a tall column.
+ */
+const SHELF_ASPECT = 1.6
 
 function degreeOf(model: GraphModel): Map<string, number> {
 	const degree = new Map<string, number>()
@@ -43,48 +70,61 @@ function degreeOf(model: GraphModel): Map<string, number> {
 	return degree
 }
 
-/** Radius by degree, on a square-root scale so AREA is proportional rather than radius. */
-function radiusFor(degree: number, maxDegree: number): number {
-	if (maxDegree <= 0) return MIN_R
-	const t = Math.sqrt(degree / maxDegree)
-	return MIN_R + (MAX_R - MIN_R) * t
+type Sized = { node: GraphNode; w: number; h: number }
+
+/** Size by degree. Area is linear in degree, so width grows as its square root. */
+function sizeFor(degree: number, maxDegree: number): { w: number; h: number } {
+	const t = maxDegree <= 0 ? 0 : degree / maxDegree
+	const area = MIN_AREA + (MAX_AREA - MIN_AREA) * t
+
+	return { w: Math.sqrt(area * ASPECT), h: Math.sqrt(area / ASPECT) }
 }
 
-type Packed = { nodes: { node: GraphNode; r: number; dx: number; dy: number }[]; radius: number }
+type Packed = { nodes: { node: GraphNode; w: number; h: number; dx: number; dy: number }[]; w: number; h: number }
 
 /**
- * Spiral-pack one group's nodes, biggest first so the hubs land at the centre — the thing
- * you look for in a dense graph is the thing nearest the middle.
+ * Shelf-pack one group (first-fit decreasing height).
+ *
+ * Tallest first, so each shelf is set by its first member and later rows never have to grow —
+ * that is what keeps the wasted band under each node small. It also puts the hubs top-left,
+ * which is where the eye starts, matching the disc version's "hubs at the centre" intent.
+ *
+ * `dx`/`dy` are the node's CENTRE, the convention `buildDots` and the cluster `pos` share.
  */
-function packGroup(members: { node: GraphNode; r: number }[]): Packed {
-	const ordered = [...members].sort((a, b) => b.r - a.r || a.node.id.localeCompare(b.node.id))
+function packGroup(members: Sized[]): Packed {
+	const ordered = [...members].sort(
+		(a, b) => b.h - a.h || b.w - a.w || a.node.id.localeCompare(b.node.id)
+	)
 
-	// Derived from the LARGEST dot actually present, not from the average. On a Vogel spiral
-	// with r = step*sqrt(i) the nearest-neighbour distance tends to ~0.95*step, so two
-	// max-radius dots need step >= 2*maxR/0.95. Averaging the radii packed tighter and let
-	// the two biggest dots overlap — which the packing test caught.
-	const maxR = Math.max(MIN_R, ...ordered.map((m) => m.r))
-	const step = (2 * maxR) / 0.95 + NODE_GAP
+	const ink = ordered.reduce((sum, m) => sum + (m.w + NODE_GAP) * (m.h + NODE_GAP), 0)
+	// At least one node wide, or a single oversized hub would wrap onto its own shelf forever.
+	const limit = Math.max(ordered[0].w, Math.sqrt(ink * SHELF_ASPECT))
 
-	let extent = 0
-	const nodes = ordered.map((member, i) => {
-		// sqrt(i) keeps the areal density even as the spiral grows outward.
-		const distance = i === 0 ? 0 : step * Math.sqrt(i)
-		const angle = i * GOLDEN_ANGLE
-		const dx = Math.cos(angle) * distance
-		const dy = Math.sin(angle) * distance
-		extent = Math.max(extent, distance + member.r)
-		return { node: member.node, r: member.r, dx, dy }
-	})
+	const nodes: Packed['nodes'] = []
+	let x = 0
+	let y = 0
+	let shelfHeight = 0
+	let widest = 0
 
-	return { nodes, radius: extent + CLUSTER_PAD }
+	for (const member of ordered) {
+		if (x > 0 && x + member.w > limit) {
+			y += shelfHeight + NODE_GAP
+			x = 0
+			shelfHeight = 0
+		}
+
+		nodes.push({ ...member, dx: x + member.w / 2, dy: y + member.h / 2 })
+		x += member.w + NODE_GAP
+		shelfHeight = Math.max(shelfHeight, member.h)
+		widest = Math.max(widest, x - NODE_GAP)
+	}
+
+	return { nodes, w: widest, h: y + shelfHeight }
 }
 
 type Placement = { name: string; pack: Packed }
 
 function clusterFrom(entry: Placement, x: number, y: number): Cluster {
-	const size = entry.pack.radius * 2
-
 	return {
 		name: entry.name,
 		list: entry.pack.nodes.map((n) => n.node),
@@ -92,12 +132,12 @@ function clusterFrom(entry: Placement, x: number, y: number): Cluster {
 		groupIndex: 0,
 		x,
 		y,
-		w: size,
-		h: size,
+		w: entry.pack.w + CLUSTER_PAD * 2,
+		h: entry.pack.h + CLUSTER_PAD * 2 + CLUSTER_TITLE,
 		pos: entry.pack.nodes.map((n) => ({
 			key: n.node.id,
-			dx: entry.pack.radius + n.dx,
-			dy: entry.pack.radius + n.dy
+			dx: CLUSTER_PAD + n.dx,
+			dy: CLUSTER_PAD + CLUSTER_TITLE + n.dy
 		}))
 	}
 }
@@ -105,7 +145,7 @@ function clusterFrom(entry: Placement, x: number, y: number): Cluster {
 /** Lay the packed groups out in a grid, biggest first, wrapping to keep the canvas squarish. */
 function placeGroups(packs: Placement[]): Cluster[] {
 	const ordered = [...packs].sort(
-		(a, b) => b.pack.radius - a.pack.radius || a.name.localeCompare(b.name)
+		(a, b) => b.pack.w * b.pack.h - a.pack.w * a.pack.h || a.name.localeCompare(b.name)
 	)
 	const columns = Math.max(1, Math.ceil(Math.sqrt(ordered.length)))
 
@@ -128,45 +168,52 @@ function placeGroups(packs: Placement[]): Cluster[] {
 	return clusters
 }
 
-/** Nodes bucketed by group, each carrying the radius its degree earns it. */
-function sizeByGroup(model: GraphModel): Map<string, { node: GraphNode; r: number }[]> {
+/** Nodes bucketed by group, each carrying the size its degree earns it. */
+function sizeByGroup(model: GraphModel): Map<string, Sized[]> {
 	const degree = degreeOf(model)
 	const maxDegree = Math.max(0, ...degree.values())
-	const byGroup = new Map<string, { node: GraphNode; r: number }[]>()
+	const byGroup = new Map<string, Sized[]>()
 
 	for (const node of model.nodes) {
 		const key = node.group ?? ''
 		const list = byGroup.get(key) ?? []
-		list.push({ node, r: radiusFor(degree.get(node.id) ?? 0, maxDegree) })
+		list.push({ node, ...sizeFor(degree.get(node.id) ?? 0, maxDegree) })
 		byGroup.set(key, list)
 	}
 
 	return byGroup
 }
 
-/** One square card per placed dot. `pos` holds the CENTRE; a card is positioned top-left. */
-function buildDots(
-	model: GraphModel,
-	clusters: Cluster[],
-	radiusOf: Map<string, number>
-): Cards {
+/** One rect card for a placed node. `pos` holds the CENTRE; a card is positioned top-left. */
+function dotFor(
+	node: GraphNode,
+	cluster: Cluster,
+	p: { dx: number; dy: number },
+	size: Sized | undefined
+) {
+	const w = size?.w ?? 1
+	const h = size?.h ?? 1
+
+	return {
+		node,
+		vis: [],
+		more: node.rows.length,
+		w,
+		h,
+		x: cluster.x + p.dx - w / 2,
+		y: cluster.y + p.dy - h / 2,
+		groupIndex: cluster.groupIndex
+	}
+}
+
+/** One rect card per placed node. */
+function buildDots(model: GraphModel, clusters: Cluster[], sizeOf: Map<string, Sized>): Cards {
 	const cards: Cards = {}
 
 	for (const cluster of clusters) {
 		for (const p of cluster.pos ?? []) {
 			const node = model.byId.get(p.key) as GraphNode
-			const r = radiusOf.get(p.key) ?? MIN_R
-
-			cards[p.key] = {
-				node,
-				vis: [],
-				more: node.rows.length,
-				w: r * 2,
-				h: r * 2,
-				x: cluster.x + p.dx - r,
-				y: cluster.y + p.dy - r,
-				groupIndex: cluster.groupIndex
-			}
+			cards[p.key] = dotFor(node, cluster, p, sizeOf.get(p.key))
 		}
 	}
 
@@ -174,7 +221,7 @@ function buildDots(
 }
 
 /**
- * Dot layout for dense graphs. `density` is ignored on purpose — a dot has no rows — and
+ * Rect layout for dense graphs. `density` is ignored on purpose — a dot has no rows — and
  * `arrange` is ignored because placement is fully determined by degree and group.
  */
 export const points: LayoutFn = (model, _options): LayoutResult => {
@@ -195,10 +242,10 @@ export const points: LayoutFn = (model, _options): LayoutResult => {
 	const alphabetical = [...byGroup.keys()].sort()
 	for (const cluster of clusters) cluster.groupIndex = alphabetical.indexOf(cluster.name)
 
-	const radiusOf = new Map<string, number>()
-	for (const { pack } of packs) for (const n of pack.nodes) radiusOf.set(n.node.id, n.r)
+	const sizeOf = new Map<string, Sized>()
+	for (const { pack } of packs) for (const n of pack.nodes) sizeOf.set(n.node.id, n)
 
-	const cards = buildDots(model, clusters, radiusOf)
+	const cards = buildDots(model, clusters, sizeOf)
 
 	const width = Math.max(...clusters.map((c) => c.x + (c.w ?? 0))) + CANVAS_PAD
 	const height = Math.max(...clusters.map((c) => c.y + (c.h ?? 0))) + CANVAS_PAD
