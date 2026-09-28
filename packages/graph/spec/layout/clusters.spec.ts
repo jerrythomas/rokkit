@@ -64,6 +64,17 @@ describe('buildAdjacency', () => {
 	})
 })
 
+describe('buildAdjacency — unplaced edges', () => {
+	it('excludes an edge whose endpoint was never placed', () => {
+		// barycenter averages neighbour CARD positions, so a neighbour with no card crashes
+		// the lookup. An unplaced endpoint is real but has no position to contribute.
+		const unplaced: GraphEdge = { ...edge('a.x', 'ghost'), unplaced: 'target' }
+
+		expect(buildAdjacency([unplaced]).get('a.x')).toBeUndefined()
+		expect(buildAdjacency([unplaced]).get('ghost')).toBeUndefined()
+	})
+})
+
 describe('buildAdjacency — multiplicity', () => {
 	it('records a neighbour once per edge, so a doubly-linked pair appears twice', () => {
 		// barycenter divides by the ARRAY LENGTH, so this duplicate is what makes a

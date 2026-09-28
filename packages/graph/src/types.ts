@@ -43,6 +43,16 @@ export type GraphEdge = {
 	kind: EdgeKind
 	cardinality?: string
 	action?: string
+	/**
+	 * Endpoints the field map could not resolve to a node, with the raw value left in place
+	 * on `source`/`target` so it is still readable.
+	 *
+	 * An unresolvable endpoint is a NORMAL state, not a defect. Sensei's code graph reports
+	 * 59.6% of 4.08M edges with a null target: the call is real, the callee is simply not
+	 * indexed. Dropping those would make the graph look far more complete than it is, so the
+	 * edge is kept and marked, and it is the renderer's job to dim it.
+	 */
+	unplaced?: 'source' | 'target' | 'both'
 }
 
 export type GraphModel = {

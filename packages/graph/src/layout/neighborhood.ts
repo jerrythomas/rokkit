@@ -43,6 +43,11 @@ function partition(model: GraphModel, focusId: string): Partitioned {
 	}
 
 	for (const edge of model.edges) {
+		// An unplaced endpoint is not a node, so it has no card and cannot be a neighbour.
+		// The relationship is still real and still reported by GraphState.relationships —
+		// it simply has nothing to draw here.
+		if (edge.unplaced) continue
+
 		const isFrom = edge.source === focusId
 		const isTo = edge.target === focusId
 

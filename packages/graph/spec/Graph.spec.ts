@@ -340,6 +340,149 @@ describe('Graph — accessibility and construction', () => {
 		expect(s.density).toBe('full')
 	})
 
+	it('prints the state’s more-row label verbatim, including the no-keys case', () => {
+		const keyless = [
+			{ schema: 'public', name: 'active_orders', kind: 'view', columns: [{ name: 'id' }] }
+		]
+		const s = new GraphState({ nodes: keyless, edges: [], fields: FIELDS, density: 'keys' })
+		const { container } = render(Graph, { state: s })
+
+		expect(container.querySelector('[data-graph-more]')?.textContent).toBe('no keys · 1 row')
+	})
+
+	it('zooms on ctrl+wheel and prevents the browser zooming the page instead', async () => {
+		const { container } = render(Graph, { state: state() })
+		const paper = container.querySelector('[data-graph-paper]') as HTMLElement
+		const read = () =>
+			(container.querySelector('[data-graph-world]') as HTMLElement).style.transform
+
+		const before = read()
+		const event = new WheelEvent('wheel', { deltaY: -120, ctrlKey: true, cancelable: true })
+		paper.dispatchEvent(event)
+		await tick()
+
+		expect(event.defaultPrevented).toBe(true)
+		expect(read()).not.toBe(before)
+	})
+
+	it('leaves a PLAIN wheel alone so the canvas still scrolls', async () => {
+		const { container } = render(Graph, { state: state() })
+		const paper = container.querySelector('[data-graph-paper]') as HTMLElement
+		const read = () =>
+			(container.querySelector('[data-graph-world]') as HTMLElement).style.transform
+
+		const before = read()
+		const event = new WheelEvent('wheel', { deltaY: -120, cancelable: true })
+		paper.dispatchEvent(event)
+		await tick()
+
+		expect(event.defaultPrevented).toBe(false)
+		expect(read()).toBe(before)
+	})
+
+	it('zooms out on a downward ctrl+wheel', async () => {
+		const { container } = render(Graph, { state: state(), zoom: 2 })
+		const paper = container.querySelector('[data-graph-paper]') as HTMLElement
+		const read = () =>
+			(container.querySelector('[data-graph-world]') as HTMLElement).style.transform
+
+		const before = read()
+		paper.dispatchEvent(new WheelEvent('wheel', { deltaY: 120, ctrlKey: true, cancelable: true }))
+		await tick()
+
+		expect(read()).not.toBe(before)
+	})
+
+	it('ignores the wheel entirely when zoomable is off', async () => {
+		const { container } = render(Graph, { state: state(), zoomable: false })
+		const paper = container.querySelector('[data-graph-paper]') as HTMLElement
+		const event = new WheelEvent('wheel', { deltaY: -120, ctrlKey: true, cancelable: true })
+
+		paper.dispatchEvent(event)
+		await tick()
+
+		expect(event.defaultPrevented).toBe(false)
+	})
+
+	it('pans the canvas by dragging the background', async () => {
+		const { container } = render(Graph, { state: state() })
+		const paper = container.querySelector('[data-graph-paper]') as HTMLElement
+		paper.setPointerCapture = () => {}
+		Object.defineProperty(paper, 'scrollLeft', { value: 0, writable: true })
+		Object.defineProperty(paper, 'scrollTop', { value: 0, writable: true })
+
+		paper.dispatchEvent(new PointerEvent('pointerdown', { clientX: 100, clientY: 80, bubbles: true }))
+		await tick()
+		paper.dispatchEvent(new PointerEvent('pointermove', { clientX: 60, clientY: 50, bubbles: true }))
+
+		expect(paper.scrollLeft).toBe(40)
+		expect(paper.scrollTop).toBe(30)
+	})
+
+	it('does not pan when the drag starts on a card — that is a selection', async () => {
+		const { container } = render(Graph, { state: state() })
+		const paper = container.querySelector('[data-graph-paper]') as HTMLElement
+		const node = container.querySelector('[data-graph-node]') as HTMLElement
+		paper.setPointerCapture = () => {}
+		Object.defineProperty(paper, 'scrollLeft', { value: 0, writable: true })
+
+		node.dispatchEvent(new PointerEvent('pointerdown', { clientX: 100, clientY: 80, bubbles: true }))
+		await tick()
+		paper.dispatchEvent(new PointerEvent('pointermove', { clientX: 60, clientY: 50, bubbles: true }))
+
+		expect(paper.scrollLeft).toBe(0)
+	})
+
+	it('stops panning on pointerup', async () => {
+		const { container } = render(Graph, { state: state() })
+		const paper = container.querySelector('[data-graph-paper]') as HTMLElement
+		paper.setPointerCapture = () => {}
+		Object.defineProperty(paper, 'scrollLeft', { value: 0, writable: true })
+		Object.defineProperty(paper, 'scrollTop', { value: 0, writable: true })
+
+		paper.dispatchEvent(new PointerEvent('pointerdown', { clientX: 100, clientY: 80, bubbles: true }))
+		await tick()
+		paper.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }))
+		await tick()
+		paper.dispatchEvent(new PointerEvent('pointermove', { clientX: 10, clientY: 10, bubbles: true }))
+
+		expect(paper.scrollLeft).toBe(0)
+	})
+
+	it('expands a card from the keyboard, not only by pointer', async () => {
+		const s = state({ density: 'names' })
+		const { container } = render(Graph, { state: s })
+		const more = container.querySelector('[data-graph-more]') as HTMLElement
+
+		more.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+		await tick()
+
+		expect(container.querySelectorAll('[data-graph-row]').length).toBeGreaterThan(0)
+	})
+
+	it('ignores an unrelated key on the more-row', async () => {
+		const s = state({ density: 'names' })
+		const { container } = render(Graph, { state: s })
+		const more = container.querySelector('[data-graph-more]') as HTMLElement
+
+		more.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', bubbles: true }))
+		await tick()
+
+		expect(container.querySelectorAll('[data-graph-row]')).toHaveLength(0)
+	})
+
+	it('zooms out from the control', async () => {
+		const { container } = render(Graph, { state: state(), zoom: 2 })
+		const read = () =>
+			(container.querySelector('[data-graph-world]') as HTMLElement).style.transform
+
+		const before = read()
+		;(container.querySelector('[data-graph-zoom="out"]') as HTMLElement).click()
+		await tick()
+
+		expect(read()).not.toBe(before)
+	})
+
 	it('renders zoom controls on the canvas', () => {
 		// On the canvas, not in a host app's settings drawer — a zoom control a reader has to
 		// go looking for is one they never find.

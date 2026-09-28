@@ -56,7 +56,10 @@ export function buildAdjacency(edges: GraphEdge[]): Map<string, string[]> {
 	}
 
 	for (const edge of edges) {
-		if (edge.source === edge.target) continue
+		// An unplaced endpoint has no card, and `barycenter` reads a card's y to average
+		// positions — so including one crashes on the lookup. The relationship is real and
+		// still in the model; it simply has no POSITION to contribute.
+		if (edge.unplaced || edge.source === edge.target) continue
 		link(edge.source, edge.target)
 		link(edge.target, edge.source)
 	}

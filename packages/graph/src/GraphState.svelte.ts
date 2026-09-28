@@ -55,6 +55,48 @@ export type GraphStateConfig = {
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
 
+/** How `id` sits on an edge: not on it, both ends of it, or one end with a far side. */
+function endpointsFor(
+	edge: GraphEdge,
+	id: string
+): { self: boolean; other: string; direction: 'in' | 'out' } | null {
+	const isSource = edge.source === id
+	const isTarget = edge.target === id
+	if (!isSource && !isTarget) return null
+
+	return {
+		self: isSource && isTarget,
+		other: isSource ? edge.target : edge.source,
+		direction: isSource ? 'out' : 'in'
+	}
+}
+
+/**
+ * One edge's contribution to the selected node's relationship list.
+ *
+ * An UNPLACED edge is reported too, with the raw name as the label — the far end is not a
+ * node, so there is nothing to look up. Hiding it would be worse: "this references something
+ * we have not indexed" is exactly what a reader of a partial graph needs to see.
+ */
+function describeEdge(
+	edge: GraphEdge,
+	id: string,
+	describe: (other: string, direction: 'in' | 'out', edge: GraphEdge) => Relationship
+): Relationship[] {
+	const ends = endpointsFor(edge, id)
+	if (!ends) return []
+	if (ends.self) return [describe(id, 'out', edge)]
+
+	const { other, direction } = ends
+
+	// An unplaced far end is not a node, so there is nothing to look up: the raw name IS
+	// the label. Reported rather than hidden — "references something not indexed" is what a
+	// reader of a partial graph most needs to see.
+	return edge.unplaced
+		? [{ direction, id: other, label: other, edge }]
+		: [describe(other, direction, edge)]
+}
+
 /** Bottom-right extent of a set of boxes, or {0,0} when there are none. */
 function extentOf(boxes: { x: number; y: number; w: number; h: number }[]): Size {
 	let w = 0
@@ -182,12 +224,7 @@ export class GraphState {
 			}
 		}
 
-		return this.#model.edges.flatMap((edge) => {
-			if (edge.source === id && edge.target === id) return [describe(id, 'out', edge)]
-			if (edge.target === id) return [describe(edge.source, 'in', edge)]
-			if (edge.source === id) return [describe(edge.target, 'out', edge)]
-			return []
-		})
+		return this.#model.edges.flatMap((edge) => describeEdge(edge, id, describe))
 	})
 
 	constructor(config: GraphStateConfig = {}) {
@@ -251,6 +288,28 @@ export class GraphState {
 
 	isExpanded(id: string): boolean {
 		return this.#expanded.has(id)
+	}
+
+	/**
+	 * The more-row's text, or null when the card is hiding nothing and needs no control.
+	 *
+	 * The "no keys" case is the whole reason this is a method rather than a template
+	 * expression. A view, a procedure and an enum have no pk and no fk — correctly, they are
+	 * not tables — so at 'keys' their cards collapse to a title and "+3 more", which is
+	 * indistinguishable from a card the reader collapsed and reads as a rendering failure.
+	 * The count alone cannot say WHY the rows are hidden; naming the empty filter can.
+	 *
+	 * Scoped to 'keys' because 'names' hides every row BY DESIGN — an empty card there is the
+	 * answer to what was asked, not a filter that matched nothing.
+	 */
+	moreLabel(id: string): string | null {
+		if (this.#expanded.has(id)) return 'show less'
+
+		const card = this.cards[id]
+		if (!card || card.more <= 0) return null
+		if (this.#density !== 'keys' || card.vis.length > 0) return `+ ${card.more} more`
+
+		return `no keys · ${card.more} ${card.more === 1 ? 'row' : 'rows'}`
 	}
 
 	/**
@@ -352,6 +411,17 @@ export class GraphState {
 	}
 	get relationships(): Relationship[] {
 		return this.#relationships
+	}
+	/**
+	 * Edges the field map could not place at one or both ends.
+	 *
+	 * Exposed rather than hidden because at scale this is the MAJORITY: Sensei's code graph
+	 * reports 59.6% of 4.08M edges with a null target. A view that silently omitted them
+	 * would claim a completeness the data does not have. They are absent from `routedEdges`
+	 * because there is no card to draw them between — that is geometry, not a judgement.
+	 */
+	get unplacedEdges(): GraphEdge[] {
+		return this.#model.edges.filter((e) => e.unplaced !== undefined)
 	}
 	get density(): Density {
 		return this.#density

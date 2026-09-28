@@ -45,6 +45,46 @@ test.describe('graph demo', () => {
 		expect(await page.locator('[data-graph-row]').count()).toBeGreaterThan(0)
 	})
 
+	test('a keyless entity says so at key density instead of only counting hidden rows', async ({
+		page
+	}) => {
+		// A view, a procedure and an enum have no pk and no fk. At 'keys' their cards collapse
+		// to a title plus "+3 more", which is indistinguishable from a card the reader
+		// collapsed and reads as a rendering failure rather than as a fact about the entity.
+		await openControls(page)
+		await setControl(page, 'Density', 'keys')
+
+		const view = page.locator('[data-graph-node="public.active_orders"] [data-graph-more]')
+		await expect(view).toHaveText('no keys · 3 rows')
+
+		// Italic is the visual half of the distinction and lives in the BUILT theme CSS, which
+		// a component test cannot see — the point of asserting it out here.
+		await expect(view).toHaveCSS('font-style', 'italic')
+
+		const table = page.locator('[data-graph-node="public.orders"] [data-graph-more]')
+		await expect(table).toHaveText(/^\+ \d+ more$/)
+		await expect(table).toHaveCSS('font-style', 'normal')
+	})
+
+	test('a keyless card still expands to its rows', async ({ page }) => {
+		await openControls(page)
+		await setControl(page, 'Density', 'keys')
+
+		// The schema is wider than the canvas, so it opens at a fit scale whose LOD tier hides
+		// the more-row outright. Zooming in is what makes the control clickable at all — the
+		// control is only an affordance once the reader is close enough to read it.
+		const zoomIn = page.locator('[data-graph-zoom="in"]')
+		for (let i = 0; i < 7; i++) await zoomIn.click()
+		await expect(page.locator('[data-graph-paper]')).toHaveAttribute('data-graph-detail', 'full')
+
+		const card = page.locator('[data-graph-node="public.active_orders"]')
+		await expect(card.locator('[data-graph-row]')).toHaveCount(0)
+
+		await card.locator('[data-graph-more]').click()
+		await expect(card.locator('[data-graph-row]')).toHaveCount(3)
+		await expect(card.locator('[data-graph-more]')).toHaveText('show less')
+	})
+
 	test('switching to the neighborhood layout drops the clusters', async ({ page }) => {
 		await page.locator('[data-graph-node]').first().click()
 		await openControls(page)

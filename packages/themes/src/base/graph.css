@@ -331,6 +331,15 @@
   cursor: pointer;
 }
 
+/* "no keys · 3 rows" is a STATEMENT about the filter, not a count of what is collapsed.
+   Italic separates the two, so a view/procedure/enum at key density reads as "this entity
+   has none" rather than as a card that failed to render its rows. Deliberately NOT a
+   softer ink: --ink-mute has measured contrast debt in dark, and a line whose whole job is
+   to explain an empty card is the worst place to spend it. */
+[data-graph-more-empty] {
+  font-style: italic;
+}
+
 /* A soft rounded highlight rather than the default focus rectangle — a hard box around a
    label inside a card reads as a rendering artefact. */
 [data-graph-more]:focus-visible,

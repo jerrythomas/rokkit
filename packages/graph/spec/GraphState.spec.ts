@@ -175,6 +175,71 @@ describe('GraphState — layout', () => {
 		expect(state.cards['public.users'].h).toBeGreaterThan(short)
 	})
 
+	it('says a card has NO KEYS rather than only how many rows it hid', () => {
+		// A view, a procedure and an enum have no pk and no fk — correctly, they are not
+		// tables. At 'keys' the card then collapses to a title and "+3 more", which is
+		// indistinguishable from a card the reader collapsed, and reads as a rendering
+		// failure. The card has to say the filter matched nothing.
+		const keyless = [
+			{ schema: 'public', name: 'active_orders', kind: 'view', columns: [{ name: 'id' }] }
+		]
+		const state = new GraphState({ nodes: keyless, edges: [], fields: FIELDS, density: 'keys' })
+
+		expect(state.moreLabel('public.active_orders')).toBe('no keys · 1 row')
+	})
+
+	it('pluralises the no-keys label', () => {
+		const keyless = [
+			{
+				schema: 'public',
+				name: 'place_order',
+				kind: 'procedure',
+				columns: [{ name: 'p_user_id' }, { name: 'p_lines' }]
+			}
+		]
+		const state = new GraphState({ nodes: keyless, edges: [], fields: FIELDS, density: 'keys' })
+
+		expect(state.moreLabel('public.place_order')).toBe('no keys · 2 rows')
+	})
+
+	it('counts hidden rows normally when SOME keys matched', () => {
+		const mixed = [
+			{
+				schema: 'public',
+				name: 'invoices',
+				kind: 'table',
+				columns: [{ name: 'id', pk: true }, { name: 'amount' }, { name: 'issued_at' }]
+			}
+		]
+		const state = new GraphState({ nodes: mixed, edges: [], fields: FIELDS, density: 'keys' })
+
+		expect(state.moreLabel('public.invoices')).toBe('+ 2 more')
+	})
+
+	it('does not claim "no keys" at a density that hides every row by design', () => {
+		// 'names' shows titles only, so an empty card there is the answer, not a filter miss.
+		const state = make({ density: 'names' })
+
+		expect(state.moreLabel('public.users')).toBe('+ 1 more')
+	})
+
+	it('reports the expanded label once a card is open', () => {
+		const state = make({ density: 'keys' })
+		state.toggleExpanded('public.users')
+
+		expect(state.moreLabel('public.users')).toBe('show less')
+	})
+
+	it('reports no label for a card that is hiding nothing', () => {
+		const state = make({ density: 'full' })
+
+		expect(state.moreLabel('public.users')).toBeNull()
+	})
+
+	it('reports no label for an id that is not laid out', () => {
+		expect(make().moreLabel('public.nope')).toBeNull()
+	})
+
 	it('falls back to the selection when no explicit focus is given', () => {
 		// `focus` defaults to `value`, so selecting a node is enough to drive a
 		// neighbourhood view without the consumer wiring a second prop.
@@ -444,6 +509,36 @@ describe('GraphState — entity derivations', () => {
 		state.select('public.orders')
 
 		expect(state.relationships[0].direction).toBe('out')
+	})
+
+	it('reports an unplaced edge as a relationship, with the raw name as its label', () => {
+		// "this references something not in the index" is information a reader needs. Omitting
+		// it would claim a completeness the data does not have.
+		const ghost = [
+			{ from: { s: 'public', t: 'orders', c: 'x' }, to: { s: 'nowhere', t: 'ghost', c: 'id' } }
+		]
+		const state = make({ edges: ghost })
+		state.select('public.orders')
+
+		expect(state.relationships).toHaveLength(1)
+		expect(state.relationships[0]).toMatchObject({ direction: 'out', label: 'ghost' })
+		expect(state.relationships[0].routed).toBeUndefined()
+	})
+
+	it('exposes the unplaced edges separately', () => {
+		const ghost = [
+			{ from: { s: 'public', t: 'orders', c: 'x' }, to: { s: 'nowhere', t: 'ghost', c: 'id' } }
+		]
+		const state = make({ edges: [...EDGES, ...ghost] })
+
+		expect(state.unplacedEdges).toHaveLength(1)
+		expect(state.unplacedEdges[0].unplaced).toBe('target')
+		// Not routed: there is no card to draw it between. Geometry, not a judgement.
+		expect(state.routedEdges).toHaveLength(1)
+	})
+
+	it('reports nothing unplaced when every edge resolves', () => {
+		expect(make().unplacedEdges).toEqual([])
 	})
 
 	it('reports no relationships when nothing is selected', () => {

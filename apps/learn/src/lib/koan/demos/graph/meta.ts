@@ -92,7 +92,11 @@ const meta: DemoMeta = {
 			{ selector: '[data-graph-row-type]', desc: 'Row type — ink-mute, never ink-soft' },
 			{ selector: '[data-row-badge]', desc: 'pk | fk | uq | nn' },
 			{ selector: '[data-row-badge-empty]', desc: 'Spacer keeping badge-less rows aligned' },
-			{ selector: '[data-graph-more]', desc: 'Hidden-row count' },
+			{ selector: '[data-graph-more]', desc: 'Hidden-row count / expand toggle' },
+			{
+				selector: '[data-graph-more-empty]',
+				desc: 'Set when the density filter matched NO rows — a view, procedure or enum at key density has no keys, and the count alone reads as a rendering failure'
+			},
 			// Edges
 			{ selector: '[data-graph-edge]', desc: 'Routed edge group' },
 			{ selector: '[data-edge-kind]', desc: 'reference | dependency — dependency renders dashed' },

@@ -88,8 +88,8 @@ function buildNode(source: unknown, fields: GraphFields): GraphNode {
  * fallback. That shape guesses: for `{ from: { s: 'staging', t: 'orders', c: 'legacy' } }`
  * where `staging.orders` does not exist but `legacy.orders` does, it would resolve the
  * endpoint to `legacy.orders` — silently drawing a relationship between two entities
- * that have none. An unresolvable endpoint must drop the edge, not land on a
- * coincidental match.
+ * that have none. An unresolvable endpoint stays unresolved rather than landing on a
+ * coincidental match; `resolveEndpoints` then marks the edge unplaced and keeps it.
  */
 type EndpointSpec = {
 	/** Mapped path to the endpoint value on the edge source. */
@@ -115,12 +115,19 @@ function resolveEndpoint(
 	return undefined
 }
 
-/** Both endpoints, or null when either fails to resolve — an edge needs both. */
+/**
+ * Both endpoints, each flagged when the map could not resolve it to a node.
+ *
+ * Deliberately NOT "resolve or drop". Refusing to GUESS is still right — see resolveEndpoint
+ * — but discarding is a different decision, and a wrong one: an endpoint that cannot be
+ * placed is the normal case at scale, and dropping the edge hides that the relationship
+ * exists at all.
+ */
 function resolveEndpoints(
 	source: unknown,
 	fields: GraphFields,
 	byId: Map<string, GraphNode>
-): { from: string; to: string } | null {
+): { from: string; to: string; unplaced?: 'source' | 'target' | 'both' } | null {
 	const from = resolveEndpoint(
 		source,
 		{
@@ -140,7 +147,23 @@ function resolveEndpoints(
 		byId
 	)
 
-	return from && to ? { from, to } : null
+	// The raw value is kept when it does not resolve, so an unplaced edge still carries the
+	// name written at the use site rather than becoming anonymous.
+	const rawFrom = str(pick(source, fields.source, 'source'))
+	const rawTo = str(pick(source, fields.target, 'target'))
+	if (rawFrom === undefined || rawTo === undefined) return null
+
+	return { from: from ?? rawFrom, to: to ?? rawTo, unplaced: whichUnplaced(from, to) }
+}
+
+/** Which end (if either) the map could not resolve. */
+function whichUnplaced(
+	from: string | undefined,
+	to: string | undefined
+): 'source' | 'target' | 'both' | undefined {
+	if (from && to) return undefined
+	if (!from && !to) return 'both'
+	return from ? 'target' : 'source'
 }
 
 /**
@@ -168,7 +191,7 @@ function buildEdge(
 	const endpoints = resolveEndpoints(source, fields, byId)
 	if (!endpoints) return null
 
-	const { from, to } = endpoints
+	const { from, to, unplaced } = endpoints
 	const sourceRow = str(pick(source, fields.sourceRow, 'sourceRow'))
 	const targetRow = str(pick(source, fields.targetRow, 'targetRow'))
 	const kind: EdgeKind =
@@ -182,16 +205,28 @@ function buildEdge(
 		targetRow,
 		kind,
 		cardinality: str(pick(source, fields.cardinality, 'cardinality')),
-		action: str(pick(source, fields.action, 'action'))
+		action: str(pick(source, fields.action, 'action')),
+		unplaced
 	}
+}
+
+/**
+ * The source row an edge makes a foreign key, if any.
+ *
+ * An unplaced TARGET still qualifies — the reference is real, only its destination is
+ * unknown. An unplaced SOURCE has no row to mark.
+ */
+function foreignKeyRow(byId: Map<string, GraphNode>, edge: GraphEdge): GraphRow | undefined {
+	if (edge.unplaced === 'source' || edge.unplaced === 'both') return undefined
+	if (edge.kind !== 'reference' || !edge.sourceRow) return undefined
+
+	return byId.get(edge.source)?.rows.find((r) => r.name === edge.sourceRow)
 }
 
 /** Adds the derived `fk` badge to each reference edge's source row. */
 function markForeignKeys(byId: Map<string, GraphNode>, edges: GraphEdge[]): void {
 	for (const edge of edges) {
-		if (edge.kind !== 'reference' || !edge.sourceRow) continue
-
-		const row = byId.get(edge.source)?.rows.find((r) => r.name === edge.sourceRow)
+		const row = foreignKeyRow(byId, edge)
 		if (row && !row.badges.includes('fk')) {
 			row.badges = BADGE_ORDER.filter((b) => b === 'fk' || row.badges.includes(b))
 		}
@@ -208,7 +243,9 @@ function buildNeighbors(edges: GraphEdge[]): Map<string, Set<string>> {
 	}
 
 	for (const edge of edges) {
-		if (edge.source === edge.target) continue
+		// An unplaced endpoint is not a node, so it cannot be a neighbour. `related` and the
+		// dim/highlight states must only ever name things the reader can actually click.
+		if (edge.unplaced || edge.source === edge.target) continue
 		link(edge.source, edge.target)
 		link(edge.target, edge.source)
 	}

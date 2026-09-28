@@ -290,13 +290,16 @@
 						<span data-graph-row-type>{row.type}</span>
 					</span>
 				{/each}
-				{#if card.more > 0 || graph.isExpanded(key)}
+				{#if graph.moreLabel(key)}
 					<!-- A real control. "+3 more" that does nothing is a statement dressed as an
 					     affordance; this expands just this card. -->
 					<span
 						role="button"
 						tabindex="0"
 						data-graph-more
+						data-graph-more-empty={card.vis.length === 0 && !graph.isExpanded(key)
+							? ''
+							: undefined}
 						data-expanded={graph.isExpanded(key) ? '' : undefined}
 						onclick={(event) => {
 							event.stopPropagation()
@@ -308,7 +311,7 @@
 							event.stopPropagation()
 							graph.toggleExpanded(key)
 						}}
-					>{graph.isExpanded(key) ? 'show less' : `+ ${card.more} more`}</span
+					>{graph.moreLabel(key)}</span
 					>
 				{/if}
 			</button>

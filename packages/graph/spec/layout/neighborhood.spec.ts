@@ -99,6 +99,20 @@ describe('neighborhood layout', () => {
 		expect(result.edges[0]).toMatchObject({ fromKey: 'p.orders', toKey: 'p.users' })
 	})
 
+	it('skips an unplaced edge rather than laying out a phantom neighbour', () => {
+		// An unplaced endpoint is kept in the MODEL (dropping it would hide the relationship)
+		// but it is not a node, so it has no card. Laying it out crashed on a missing card.
+		const withGhost = [
+			...EDGES,
+			{ from: { s: 'p', t: 'nowhere', c: 'x' }, to: { s: 'p', t: 'users', c: 'id' } }
+		]
+		const model = normalizeGraph(NODES, withGhost, FIELDS)
+
+		expect(model.edges.some((e) => e.unplaced)).toBe(true)
+		expect(() => neighborhood(model, { focus: 'p.users' })).not.toThrow()
+		expect(Object.keys(neighborhood(model, { focus: 'p.users' }).cards)).not.toContain('nowhere')
+	})
+
 	it('reports no clusters — neighbourhood is ungrouped by design', () => {
 		const result = neighborhood(model(), { focus: 'p.users' })
 

@@ -153,14 +153,63 @@ describe('normalizeGraph', () => {
 		expect(model.edges[0].kind).toBe('dependency')
 	})
 
-	it('drops an edge whose endpoint is not a known node', () => {
+	it('KEEPS an edge whose endpoint is not a known node, marked unplaced', () => {
+		// Never dropped. Sensei's code graph reports 59.6% of 4.08M edges with a null target:
+		// the call is real, the callee simply is not indexed. Dropping those would make the
+		// graph look far more complete than it is — the most misleading thing it could do.
 		const model = normalizeGraph(
 			TABLES,
 			[{ from: { s: 'public', t: 'ghost', c: 'id' }, to: { s: 'public', t: 'users', c: 'id' } }],
 			FIELDS
 		)
 
-		expect(model.edges).toEqual([])
+		expect(model.edges).toHaveLength(1)
+		expect(model.edges[0].unplaced).toBe('source')
+		// The raw value survives, so the edge still says what was written at the use site.
+		expect(model.edges[0].source).toBe('ghost')
+	})
+
+	it('marks which END is unplaced, not merely that one is', () => {
+		const model = normalizeGraph(
+			TABLES,
+			[
+				{ from: { s: 'public', t: 'orders', c: 'x' }, to: { s: 'public', t: 'ghost', c: 'id' } },
+				{ from: { s: 'p', t: 'ghost1', c: 'x' }, to: { s: 'p', t: 'ghost2', c: 'id' } }
+			],
+			FIELDS
+		)
+
+		expect(model.edges.map((e) => e.unplaced)).toEqual(['target', 'both'])
+	})
+
+	it('leaves a fully resolved edge unmarked', () => {
+		expect(normalizeGraph(TABLES, REFS, FIELDS).edges[0].unplaced).toBeUndefined()
+	})
+
+	it('keeps an unplaced endpoint OUT of the neighbour map', () => {
+		// `related` drives the dim/highlight states, so it must only ever name something the
+		// reader can actually click.
+		const model = normalizeGraph(
+			TABLES,
+			[{ from: { s: 'public', t: 'orders', c: 'x' }, to: { s: 'public', t: 'ghost', c: 'id' } }],
+			FIELDS
+		)
+
+		expect(model.neighbors.get('public.orders')).toBeUndefined()
+	})
+
+	it('still derives fk when only the TARGET is unplaced', () => {
+		// The reference is real and the source row IS a foreign key; only its destination is
+		// unknown. Suppressing the badge would lose information the data actually has.
+		const model = normalizeGraph(
+			TABLES,
+			[{ from: { s: 'public', t: 'orders', c: 'user_id' }, to: { s: 'p', t: 'ghost', c: 'id' } }],
+			FIELDS
+		)
+
+		expect(model.byId.get('public.orders')?.rows.find((r) => r.name === 'user_id')?.badges).toEqual(
+			['fk']
+		)
 	})
 
 	it('builds undirected adjacency and excludes self-edges', () => {
@@ -266,10 +315,11 @@ describe('normalizeGraph', () => {
 		expect(new Set(model.edges.map((e) => e.id)).size).toBe(2)
 	})
 
-	it('DROPS an unresolvable endpoint rather than guessing a coincidental node', () => {
+	it('never GUESSES a coincidental node for an unresolvable endpoint', () => {
 		// `staging.orders` does not exist, but `legacy.orders` does. A resolver that swept every
 		// sibling field for a match would attach the edge to `legacy.orders` and draw a
-		// relationship between two entities that have none.
+		// relationship between two entities that have none. Keeping the edge unplaced is the
+		// honest outcome; inventing an endpoint is not.
 		const nodes = [
 			{ schema: 'legacy', name: 'orders', columns: [{ name: 'id' }] },
 			{ schema: 'public', name: 'users', columns: [{ name: 'id' }] }
@@ -277,8 +327,10 @@ describe('normalizeGraph', () => {
 		const edges = [
 			{ from: { s: 'staging', t: 'orders', c: 'legacy' }, to: { s: 'public', t: 'users', c: 'id' } }
 		]
+		const model = normalizeGraph(nodes, edges, FIELDS)
 
-		expect(normalizeGraph(nodes, edges, FIELDS).edges).toEqual([])
+		expect(model.edges[0].unplaced).toBe('source')
+		expect(model.edges[0].source).not.toBe('legacy.orders')
 	})
 
 	it('gives a node no rows when the mapped rows path is absent or not an array', () => {
@@ -336,19 +388,19 @@ describe('normalizeGraph', () => {
 		expect(model.edges).toMatchObject([{ source: 'orders', target: 'users' }])
 	})
 
-	it('drops an unknown endpoint when there is no group path left to qualify it with', () => {
-		// The other side of the branch above: strategy 1 misses and there is no declared
-		// group path to try, so the edge is dropped rather than guessed at.
+	it('marks an unknown endpoint unplaced when no group path is left to qualify it', () => {
+		// The other side of the branch above: strategy 1 misses and there is no declared group
+		// path to try, so the endpoint stays unresolved — and the edge stays.
 		const model = normalizeGraph(
 			TABLES,
 			[{ from: { s: 'public', t: 'ghost', c: 'id' }, to: { s: 'public', t: 'users', c: 'id' } }],
 			ungrouped()
 		)
 
-		expect(model.edges).toEqual([])
+		expect(model.edges[0].unplaced).toBe('source')
 	})
 
-	it('drops the edge when no group path resolves on the edge object', () => {
+	it('marks BOTH ends unplaced when no group path resolves on the edge object', () => {
 		// `group: 'schema'` is a path on a NODE. Read against dbd's edge shape
 		// (`{ from: { s, t, c } }`) it finds nothing, so the bare label `orders` cannot be
 		// qualified and the edge is dropped. This is why SCHEMA_FIELDS declares
@@ -357,6 +409,6 @@ describe('normalizeGraph', () => {
 		delete withoutEndpointGroups.sourceGroup
 		delete withoutEndpointGroups.targetGroup
 
-		expect(normalizeGraph(TABLES, REFS, withoutEndpointGroups).edges).toEqual([])
+		expect(normalizeGraph(TABLES, REFS, withoutEndpointGroups).edges[0].unplaced).toBe('both')
 	})
 })
