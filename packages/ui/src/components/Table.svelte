@@ -160,6 +160,12 @@
 					{@const row = entry.proxy.value as Record<string, unknown>}
 					{@const isSelected = wrapper.selectedKeys.has(entry.key)}
 					{@const isFocused = wrapper.focusedKey === entry.key}
+					<!-- A roving tabindex needs a resting stop. focusedKey starts null, and this
+						 root carries no tabindex of its own (unlike Tree, which puts 0 on its
+						 container), so keying purely off isFocused left the body with NO tab stop
+						 and no way for a keyboard user to enter the grid. The first row holds it
+						 until focus moves. -->
+					{@const isTabStop = isFocused || (wrapper.focusedKey === null && rowIndex === 0)}
 					{#if rowSnippet}
 						{@render rowSnippet(row, proxyTable.columns, rowIndex, isSelected)}
 					{:else}
@@ -170,7 +176,7 @@
 							data-focused={isFocused || undefined}
 							aria-selected={isSelected}
 							aria-rowindex={rowIndex + 1}
-							tabindex={isFocused ? 0 : -1}
+							tabindex={isTabStop ? 0 : -1}
 						>
 							{#each proxyTable.columns as column (column.name)}
 								<!-- A column that names a snippet is more specific than the blanket

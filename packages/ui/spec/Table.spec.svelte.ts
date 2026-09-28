@@ -306,4 +306,27 @@ describe('Table', () => {
 		expect(rows[0].hasAttribute('data-selected')).toBe(true)
 		expect(rows[1].hasAttribute('data-selected')).toBe(false)
 	})
+
+	it('keeps one row tabbable at rest so the grid can be entered by keyboard', async () => {
+		// Rows use a roving tabindex driven by wrapper.focusedKey, which starts null. With
+		// nothing focused every row was -1 and the container carries no tabindex either
+		// (unlike Tree, which puts 0 on its root), so the body had NO tab stop at all and a
+		// keyboard user could never reach it. Exactly one stop, as a grid should have.
+		const { container } = render(Table, { data: sampleData })
+		const rows = [...container.querySelectorAll('[data-table-row]')] as HTMLElement[]
+
+		expect(rows.length).toBeGreaterThan(1)
+		expect(rows.filter((r) => r.tabIndex === 0)).toHaveLength(1)
+		expect(rows[0].tabIndex).toBe(0)
+	})
+
+	it('moves the single tab stop to the focused row once one is focused', async () => {
+		const { container } = render(Table, { data: sampleData })
+		const rows = [...container.querySelectorAll('[data-table-row]')] as HTMLElement[]
+
+		await fireEvent.click(rows[1])
+
+		expect(rows.filter((r) => r.tabIndex === 0)).toHaveLength(1)
+		expect(rows[1].tabIndex).toBe(0)
+	})
 })
