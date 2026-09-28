@@ -322,6 +322,31 @@ describe('GraphState — selection', () => {
 		expect(state.related.size).toBe(0)
 	})
 
+	it('expands one node to full rows without touching the others', () => {
+		// Per NODE, not a global density change: clicking "+3 more" on one card asks about
+		// that card, and expanding every card answers a question nobody asked.
+		const state = make({ density: 'names' })
+		const before = state.cards['public.users'].vis.length
+		state.toggleExpanded('public.users')
+
+		expect(state.isExpanded('public.users')).toBe(true)
+		expect(state.cards['public.users'].vis.length).toBeGreaterThan(before)
+		expect(state.cards['public.orders'].vis).toHaveLength(0)
+	})
+
+	it('collapses again on a second toggle', () => {
+		const state = make({ density: 'names' })
+		state.toggleExpanded('public.users')
+		state.toggleExpanded('public.users')
+
+		expect(state.isExpanded('public.users')).toBe(false)
+		expect(state.cards['public.users'].vis).toHaveLength(0)
+	})
+
+	it('reports nothing expanded to begin with', () => {
+		expect(make().isExpanded('public.users')).toBe(false)
+	})
+
 	it('nodeState returns null with nothing selected', () => {
 		expect(make().nodeState('public.users')).toBeNull()
 	})

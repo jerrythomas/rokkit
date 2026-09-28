@@ -91,6 +91,7 @@ export class GraphState {
 	#edgeStyle = $state<EdgeStyle>('curved')
 	#focus = $state<string | null>(null)
 	#value = $state<string | null>(null)
+	#expanded = new SvelteSet<string>()
 	#preset = $state<GraphPreset>(defaultGraphPreset)
 	#mode = $state<'light' | 'dark'>('light')
 	#label = $state<string | undefined>(undefined)
@@ -107,7 +108,8 @@ export class GraphState {
 			density: this.#density,
 			arrange: this.#arrange,
 			edgeStyle: this.#edgeStyle,
-			focus: this.#focus ?? this.#value
+			focus: this.#focus ?? this.#value,
+			expanded: this.#expanded
 		})
 	)
 
@@ -233,6 +235,22 @@ export class GraphState {
 
 	clear(): void {
 		this.#value = null
+	}
+
+	/**
+	 * Show one node's rows in full, whatever the density says.
+	 *
+	 * Per NODE rather than a global density change: a reader who clicks "+3 more" on one
+	 * card is asking about that card, and expanding all of them answers a question they did
+	 * not ask — on a large diagram it also relayouts everything under them.
+	 */
+	toggleExpanded(id: string): void {
+		if (this.#expanded.has(id)) this.#expanded.delete(id)
+		else this.#expanded.add(id)
+	}
+
+	isExpanded(id: string): boolean {
+		return this.#expanded.has(id)
 	}
 
 	// ─── per-item lookups the templates need ───────────────────────────────────

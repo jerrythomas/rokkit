@@ -27,7 +27,7 @@
 		edges = [],
 		fields = {},
 		layout = 'cluster',
-		density = 'keys',
+		density = $bindable('keys'),
 		arrange = 'untangle',
 		edgeStyle = 'curved',
 		focus = null,
@@ -36,6 +36,7 @@
 		mode = 'light',
 		zoom = $bindable(1),
 		zoomable = true,
+		densityToggle = true,
 		label = undefined,
 		onselect = undefined,
 		icons: userIcons = undefined,
@@ -151,6 +152,20 @@
 	const tx = $derived(Math.max(PAD, (vw - graph.contentSize.w * scale) / 2))
 	const ty = $derived(Math.max(PAD, (vh - graph.contentSize.h * scale) / 2))
 	const zoomPercent = $derived(Math.round(zoom * 100))
+
+	/**
+	 * Level of detail, from the EFFECTIVE scale rather than from `zoom` — a diagram fitted to
+	 * 0.05 is unreadable whether or not the reader touched the zoom control.
+	 *
+	 * Measured on a 1000-node call graph fitted into 1440x900: scale 0.047, so a 248px card
+	 * renders 11.6px wide and a 12px label lands at 0.56px. Drawing that text costs layout
+	 * and paint for glyphs nobody can see, so each tier drops what has stopped being legible
+	 * and the card keeps its colour, shape and position — which is what still reads at that
+	 * size. Hovering a node brings its label back at any tier.
+	 */
+	const detail = $derived(
+		scale >= 0.6 ? 'full' : scale >= 0.32 ? 'compact' : scale >= 0.14 ? 'minimal' : 'dot'
+	)
 </script>
 
 <!-- The viewport fills its nearest positioned ancestor. Place it inside a `relative` box
@@ -166,6 +181,7 @@
 <div data-graph-viewport class={className}>
 	<div
 		data-graph-paper
+		data-graph-detail={detail}
 		data-graph-panning={panning ? '' : undefined}
 		role="presentation"
 		bind:this={paper}
@@ -182,7 +198,8 @@
 	>
 	<div
 		data-graph-world
-		style="width: {graph.size.w}px; height: {graph.size.h}px; transform: translate({tx}px, {ty}px) scale({scale});"
+		data-graph-layout={graph.layoutName}
+		style="width: {graph.size.w}px; height: {graph.size.h}px; transform: translate({tx}px, {ty}px) scale({scale}); --graph-label-counter-scale: {(1 / scale).toFixed(3)};"
 	>
 		{#each graph.clusters as cluster (cluster.name)}
 			<div
@@ -248,13 +265,48 @@
 						<span data-graph-row-type>{row.type}</span>
 					</span>
 				{/each}
-				{#if card.more > 0}
-					<span data-graph-more>+ {card.more} more</span>
+				{#if card.more > 0 || graph.isExpanded(key)}
+					<!-- A real control. "+3 more" that does nothing is a statement dressed as an
+					     affordance; this expands just this card. -->
+					<span
+						role="button"
+						tabindex="0"
+						data-graph-more
+						data-expanded={graph.isExpanded(key) ? '' : undefined}
+						onclick={(event) => {
+							event.stopPropagation()
+							graph.toggleExpanded(key)
+						}}
+						onkeydown={(event) => {
+							if (event.key !== 'Enter' && event.key !== ' ') return
+							event.preventDefault()
+							event.stopPropagation()
+							graph.toggleExpanded(key)
+						}}
+					>{graph.isExpanded(key) ? 'show less' : `+ ${card.more} more`}</span
+					>
 				{/if}
 			</button>
 		{/each}
 		</div>
 	</div>
+
+	{#if densityToggle}
+		<!-- On the canvas for the same reason zoom is: "+3 more" tells a reader something is
+		     hidden; this is the control that does something about it for every card at once. -->
+		<div data-graph-density-controls role="group" aria-label="Detail level">
+			{#each [['names', 'Names', 'Titles only'], ['keys', 'Keys', 'Key rows only'], ['full', 'All', 'All rows']] as [value, short, title] (value)}
+				<button
+					type="button"
+					data-graph-density={value}
+					data-selected={density === value ? '' : undefined}
+					aria-pressed={density === value}
+					{title}
+					onclick={() => (density = value as typeof density)}>{short}</button
+				>
+			{/each}
+		</div>
+	{/if}
 
 	{#if zoomable}
 		<!-- On-canvas, because a zoom control that lives in someone else's settings drawer is

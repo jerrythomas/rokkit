@@ -1,4 +1,4 @@
-# Diagrams
+# Graphs
 
 `@rokkit/graph` draws node-link diagrams. An ER diagram is one
 thing it can draw, not what it is — the same component renders a

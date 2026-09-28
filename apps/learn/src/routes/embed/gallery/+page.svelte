@@ -51,6 +51,16 @@
 	})
 	graphState.select('public.orders')
 
+	/* The call graph is the OTHER thing this component draws, and it renders through a
+	   different layout with a different node shape — so the sweep has to measure it
+	   separately or half the component's surface goes unchecked. */
+	const callGraphState = new GraphState({
+		nodes: datasets['service-calls'].nodes,
+		edges: datasets['service-calls'].edges,
+		fields: datasets['service-calls'].fields,
+		layout: 'points'
+	})
+
 	// The cluster FILL resolves from the light or dark ladder per this mode, while its label
 	// inherits the page's ink. Leave mode at its 'light' default here and dark mode paints
 	// near-white labels on pale fills — 1.1:1. Same bug the /app demo had; it has to be wired
@@ -63,6 +73,14 @@
 			density: 'full',
 			mode: mode === 'dark' ? 'dark' : 'light',
 			value: graphState.value
+		})
+		callGraphState.update({
+			nodes: datasets['service-calls'].nodes,
+			edges: datasets['service-calls'].edges,
+			fields: datasets['service-calls'].fields,
+			layout: 'points',
+			mode: mode === 'dark' ? 'dark' : 'light',
+			value: callGraphState.value
 		})
 	})
 
@@ -341,6 +359,9 @@
 	     and every node/edge state are all on the page and measurable. -->
 	<div data-gallery-comp="graph" class="cell graph-cell">
 		<Graph state={graphState} />
+	</div>
+	<div data-gallery-comp="graph-points" class="cell graph-cell">
+		<Graph state={callGraphState} />
 	</div>
 	<div data-gallery-comp="graph-entity" class="cell">
 		<EntityView state={graphState} />

@@ -70,6 +70,9 @@ const meta: DemoMeta = {
 			{ selector: '[data-graph-panning]', desc: 'Present on the canvas while a drag-pan is in progress' },
 			{ selector: '[data-graph-zoom-controls]', desc: 'On-canvas zoom cluster; buttons carry data-graph-zoom="in|out|reset"' },
 			{ selector: '[data-graph-world]', desc: 'Scaled/translated world; declares --graph-head-h, --graph-row-h, --graph-more-h' },
+			{ selector: '[data-graph-layout]', desc: 'Active layout name — `points` reshapes a node from a card into a dot' },
+			{ selector: '[data-graph-detail]', desc: 'full | compact | minimal | dot — level of detail from the effective scale' },
+			{ selector: '[data-graph-density-controls]', desc: 'On-canvas detail toggle; buttons carry data-graph-density="names|keys|full"' },
 			// Clusters
 			{ selector: '[data-graph-cluster]', desc: 'One group box. Reads --group-fill / --group-stroke' },
 			{ selector: '[data-graph-cluster-label]', desc: 'Group name + count. Reads --group-label' },

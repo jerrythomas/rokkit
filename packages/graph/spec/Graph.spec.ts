@@ -278,6 +278,27 @@ describe('Graph — accessibility and construction', () => {
 		expect(read(implied)).toBe(read(explicit))
 	})
 
+	it('makes the more-row a real control that expands its card', async () => {
+		const s = state({ density: 'names' })
+		const { container } = render(Graph, { state: s })
+
+		expect(container.querySelectorAll('[data-graph-row]')).toHaveLength(0)
+		;(container.querySelector('[data-graph-more]') as HTMLElement).click()
+		await tick()
+
+		expect(container.querySelectorAll('[data-graph-row]').length).toBeGreaterThan(0)
+		expect(container.querySelector('[data-graph-more][data-expanded]')?.textContent).toContain(
+			'show less'
+		)
+	})
+
+	it('renders the density toggle on the canvas', () => {
+		const { container } = render(Graph, { state: state() })
+
+		expect(container.querySelectorAll('[data-graph-density]')).toHaveLength(3)
+		expect(container.querySelector('[data-graph-density="keys"][data-selected]')).not.toBeNull()
+	})
+
 	it('renders zoom controls on the canvas', () => {
 		// On the canvas, not in a host app's settings drawer — a zoom control a reader has to
 		// go looking for is one they never find.

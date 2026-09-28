@@ -84,7 +84,11 @@ function placeColumn(cards: Card[], x: number, height: number): void {
 	}
 }
 
-function buildNeighbourCards(model: GraphModel, neighbours: Neighbour[]): Cards {
+function buildNeighbourCards(
+	model: GraphModel,
+	neighbours: Neighbour[],
+	expanded: ReadonlySet<string> | undefined
+): Cards {
 	const nodes = neighbours
 		.map((n) => model.byId.get(n.id))
 		.filter((n): n is GraphNode => n !== undefined)
@@ -93,6 +97,7 @@ function buildNeighbourCards(model: GraphModel, neighbours: Neighbour[]): Cards 
 
 	return buildCards(nodes, 'full', {
 		limit: 8,
+		expanded,
 		select: (row, node) => row.badges.includes('pk') || (wanted.get(node.id)?.has(row.name) ?? false)
 	})
 }
@@ -110,8 +115,8 @@ export const neighborhood: LayoutFn = (model, options): LayoutResult => {
 
 	const { neighbours, selfEdges } = partition(model, focus.id)
 	const cards: Cards = {
-		...buildNeighbourCards(model, neighbours),
-		...buildCards([focus], 'full', { limit: 16 })
+		...buildNeighbourCards(model, neighbours, options.expanded),
+		...buildCards([focus], 'full', { limit: 16, expanded: options.expanded })
 	}
 
 	const focusCard = cards[focus.id]

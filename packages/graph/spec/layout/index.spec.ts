@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { cluster, layouts, neighborhood } from '../../src/layout/index.js'
+import { cluster, layouts, neighborhood, points } from '../../src/layout/index.js'
 import { normalizeGraph } from '../../src/model/normalize.js'
 
 describe('layout registry', () => {
 	it('registers exactly the two built-in layouts', () => {
-		expect(Object.keys(layouts).sort()).toEqual(['cluster', 'neighborhood'])
+		expect(Object.keys(layouts).sort()).toEqual(['cluster', 'neighborhood', 'points'])
 	})
 
 	it('maps each name to the layout of that name, not merely to some layout', () => {
@@ -13,6 +13,7 @@ describe('layout registry', () => {
 		// is silent: `layout="neighborhood"` would render a cluster diagram.
 		expect(layouts.cluster).toBe(cluster)
 		expect(layouts.neighborhood).toBe(neighborhood)
+		expect(layouts.points).toBe(points)
 	})
 
 	it('gives every registered layout the LayoutFn contract', () => {

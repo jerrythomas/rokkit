@@ -64,6 +64,104 @@
   opacity: 0.45;
 }
 
+/* ─── dot rendering (the `points` layout) ───────────────────────────────────
+   A dot is a card whose geometry the layout set to a square with no rows. The
+   difference is shape and the fact that its label lives OUTSIDE it — at dense-graph
+   sizes there is no inside to put text in. */
+
+[data-graph-layout='points'] [data-graph-node] {
+  border-radius: 50%;
+  overflow: visible;
+  padding: 0;
+}
+
+[data-graph-layout='points'] [data-graph-node-head] {
+  height: 100%;
+  padding: 0;
+  border-bottom-width: 0;
+  justify-content: center;
+}
+
+[data-graph-layout='points'] [data-graph-node-icon],
+[data-graph-layout='points'] [data-graph-node-count],
+[data-graph-layout='points'] [data-graph-node-title] {
+  display: none;
+}
+
+/* The name on hover or keyboard focus — the only way to read a dot. */
+[data-graph-layout='points'] [data-graph-node]:hover [data-graph-node-title],
+[data-graph-layout='points'] [data-graph-node]:focus-visible [data-graph-node-title] {
+  display: block;
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  z-index: 2;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(-50%) scale(var(--graph-label-counter-scale, 2));
+  transform-origin: 50% 100%;
+}
+
+[data-graph-layout='points'] [data-graph-cluster] {
+  border-radius: 50%;
+}
+
+/* ─── level of detail ───────────────────────────────────────────────────────
+   The canvas publishes data-graph-detail from the EFFECTIVE scale, so these are
+   structure — what is legible at a size — not theme. Each tier drops the text that
+   has stopped being readable; the card keeps its colour, shape and position, which
+   is what still carries meaning when it is 12px wide.
+
+   Every tier keeps the label reachable on hover, so nothing is lost, only deferred. */
+
+[data-graph-detail='compact'] [data-graph-row-type],
+[data-graph-detail='compact'] [data-graph-node-count] {
+  display: none;
+}
+
+[data-graph-detail='minimal'] [data-graph-row],
+[data-graph-detail='minimal'] [data-graph-more],
+[data-graph-detail='minimal'] [data-graph-node-count] {
+  display: none;
+}
+
+[data-graph-detail='dot'] [data-graph-row],
+[data-graph-detail='dot'] [data-graph-more],
+[data-graph-detail='dot'] [data-graph-node-count],
+[data-graph-detail='dot'] [data-graph-node-title],
+[data-graph-detail='dot'] [data-graph-cluster-label] {
+  display: none;
+}
+
+/* Hover restores the name at any tier. Positioned OUTSIDE the card and counter-scaled,
+   because at these tiers the card is a few pixels wide — a label drawn inside it would
+   be exactly as unreadable as the one that was hidden. */
+[data-graph-detail='minimal'] [data-graph-node]:hover [data-graph-node-title],
+[data-graph-detail='dot'] [data-graph-node]:hover [data-graph-node-title],
+[data-graph-detail='minimal'] [data-graph-node]:focus-visible [data-graph-node-title],
+[data-graph-detail='dot'] [data-graph-node]:focus-visible [data-graph-node-title] {
+  display: block;
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  z-index: 2;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: scale(var(--graph-label-counter-scale, 3));
+  transform-origin: 0 100%;
+}
+
+[data-graph-detail='minimal'] [data-graph-node],
+[data-graph-detail='dot'] [data-graph-node] {
+  overflow: visible;
+}
+
 /* Card geometry. These MUST agree with packages/graph/src/layout/constants.ts:
    the layout derives every card height from them and nothing measures the DOM,
    so a disagreement renders rows that overflow the card they sit in. */
@@ -131,6 +229,7 @@
 }
 
 [data-graph-node-title] {
+  border-radius: 0.25rem;
   font-size: 0.8rem;
   font-weight: 600;
   overflow: hidden;
@@ -168,10 +267,21 @@
 }
 
 [data-graph-more] {
+  display: flex;
+  align-items: center;
   height: var(--graph-more-h);
   padding: 0 0.5rem;
   font-size: 0.65rem;
   font-family: var(--font-mono, monospace);
+  cursor: pointer;
+}
+
+/* A soft rounded highlight rather than the default focus rectangle — a hard box around a
+   label inside a card reads as a rendering artefact. */
+[data-graph-more]:focus-visible,
+[data-graph-node-title]:focus-visible {
+  outline: none;
+  border-radius: 0.25rem;
 }
 
 /* Badge and its spacer keep the same minimum box so name columns line up across rows

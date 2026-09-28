@@ -14,10 +14,15 @@ export type CardOptions = {
 	 * height with it.
 	 */
 	select?: (row: GraphRow, node: GraphNode) => boolean
+	/** Nodes rendered at full detail and uncapped, whatever `density` says. */
+	expanded?: ReadonlySet<string>
 }
 
 /** The rows a card shows at the given density (none at 'names'). */
 function visibleRows(node: GraphNode, density: Density, options: CardOptions): GraphRow[] {
+	// An expanded node ignores the density AND the cap: the reader asked for this specific
+	// card in full, so truncating it again would answer a different question.
+	if (options.expanded?.has(node.id)) return node.rows
 	if (density === 'names') return []
 
 	const rows = selectedRows(node, density, options.select)

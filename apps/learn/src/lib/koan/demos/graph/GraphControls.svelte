@@ -34,7 +34,8 @@
 			id: 'layout',
 			label: 'Layout',
 			options: [
-				{ value: 'cluster', label: 'Cluster' },
+				{ value: 'cluster', label: 'Cluster (cards)' },
+				{ value: 'points', label: 'Points (dense)' },
 				{ value: 'neighborhood', label: 'Neighborhood' }
 			],
 			get: () => explorer.layout,

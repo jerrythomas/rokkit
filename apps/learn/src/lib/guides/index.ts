@@ -7,7 +7,7 @@ import themingContent from './theming/content.md?raw'
 import accessibilityContent from './accessibility/content.md?raw'
 import formsContent from './forms/content.md?raw'
 import chartsContent from './charts/content.md?raw'
-import diagramsContent from './diagrams/content.md?raw'
+import graphsContent from './graphs/content.md?raw'
 import aiChatbotsContent from './ai-chatbots/content.md?raw'
 import utilitiesContent from './utilities/content.md?raw'
 import toolkitContent from './toolkit/content.md?raw'
@@ -84,12 +84,12 @@ export const guides: Guide[] = [
 		content: chartsContent
 	},
 	{
-		slug: 'diagrams',
-		title: 'Diagrams',
+		slug: 'graphs',
+		title: 'Graphs',
 		description:
-			'Node-link diagrams — ER diagrams, call graphs and dependency maps from field-mapped data, with pluggable layouts.',
+			'Node-link graphs — ER diagrams, call graphs and dependency maps from field-mapped data, with pluggable layouts.',
 		category: 'workflows',
-		content: diagramsContent
+		content: graphsContent
 	},
 	{
 		slug: 'ai-chatbots',

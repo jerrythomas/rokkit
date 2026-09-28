@@ -129,6 +129,24 @@ describe('buildCards', () => {
 		expect(cards.y.vis.map((r) => r.name)).toEqual(['drop'])
 	})
 
+	it('ignores the density AND the cap for an expanded node', () => {
+		const rows = Array.from({ length: 20 }, (_, i) => row(`c${i}`))
+		const cards = buildCards([node('a', rows)], 'names', { expanded: new Set(['a']) })
+
+		expect(cards.a.vis).toHaveLength(20)
+		expect(cards.a.more).toBe(0)
+	})
+
+	it('leaves an unexpanded node alone', () => {
+		const rows = Array.from({ length: 20 }, (_, i) => row(`c${i}`))
+		const cards = buildCards([node('a', rows), node('b', rows)], 'names', {
+			expanded: new Set(['a'])
+		})
+
+		expect(cards.a.vis).toHaveLength(20)
+		expect(cards.b.vis).toHaveLength(0)
+	})
+
 	it('keys cards by node id', () => {
 		const cards = buildCards([node('public.users', []), node('public.orders', [])], 'full')
 

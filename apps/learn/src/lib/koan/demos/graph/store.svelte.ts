@@ -9,7 +9,7 @@
 import type { DatasetId } from './datasets'
 
 export type GraphViewId = 'diagram' | 'entity' | 'entities'
-export type LayoutId = 'cluster' | 'neighborhood'
+export type LayoutId = 'cluster' | 'neighborhood' | 'points'
 export type DensityId = 'names' | 'keys' | 'full'
 export type ArrangeId = 'untangle' | 'a-z'
 export type EdgeStyleId = 'curved' | 'orthogonal'
@@ -32,6 +32,10 @@ class GraphExplorerStore {
 	 */
 	selectDataset(id: DatasetId): void {
 		this.dataset = id
+		// A call graph is a dense graph: cards are the wrong unit for it, and `points` is the
+		// answer to "what does this look like with a thousand nodes". Switching back to the
+		// schema restores cards, which are right when a node HAS columns worth reading.
+		this.layout = id === 'service-calls' ? 'points' : 'cluster'
 	}
 }
 

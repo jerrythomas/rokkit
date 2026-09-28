@@ -219,3 +219,17 @@
 [data-style='minimal'] [data-graph-zoom-controls] button:hover:not(:disabled) {
   background-color: var(--paper-mute);
 }
+
+/* Hover label — it floats over the canvas, so it carries its own surface. */
+[data-style='minimal'] [data-graph-node]:hover [data-graph-node-title],
+[data-style='minimal'] [data-graph-node]:focus-visible [data-graph-node-title] {
+  background-color: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--paper-edge);
+}
+
+/* Soft rounded highlight instead of a focus rectangle. */
+[data-style='minimal'] [data-graph-more]:hover,
+[data-style='minimal'] [data-graph-more]:focus-visible {
+  background-color: var(--paper-mute);
+}

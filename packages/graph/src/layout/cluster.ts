@@ -24,7 +24,7 @@ export const cluster: LayoutFn = (model, options): LayoutResult => {
 	const density = options.density ?? 'keys'
 	const arrange = options.arrange ?? 'untangle'
 
-	const cards = buildCards(model.nodes, density)
+	const cards = buildCards(model.nodes, density, { expanded: options.expanded })
 	// NOT model.neighbors. That is a Set; barycenter needs the duplicate-preserving array so a
 	// twice-referenced neighbour weighs twice.
 	const neighbors = buildAdjacency(model.edges)

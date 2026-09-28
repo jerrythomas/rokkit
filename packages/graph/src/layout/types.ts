@@ -65,6 +65,11 @@ export type LayoutOptions = {
 	edgeStyle?: EdgeStyle
 	/** `neighborhood` only — the node the view centres on. */
 	focus?: string | null
+	/**
+	 * Node ids shown at FULL detail regardless of `density`, and uncapped.
+	 * "+3 more" on a card is otherwise a statement with no corresponding action.
+	 */
+	expanded?: ReadonlySet<string>
 }
 
 export type LayoutResult = {

@@ -82,6 +82,8 @@ export type GraphProps = {
 	zoom?: number
 	/** Built-in zoom controls, ctrl/pinch-wheel zoom and drag-to-pan. Default true. */
 	zoomable?: boolean
+	/** Built-in names/keys/all detail toggle on the canvas. Default true. */
+	densityToggle?: boolean
 	label?: string
 	onselect?: (id: string) => void
 	/** Icon class per node kind and row badge, merged over the built-in map. */
