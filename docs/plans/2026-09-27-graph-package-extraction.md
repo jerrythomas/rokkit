@@ -1802,7 +1802,7 @@ hue into its output. HUES is deleted."
 
 - Create: `packages/graph/src/layout/cards.ts`, `packages/graph/spec/layout/cards.spec.ts`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/graph/spec/layout/cards.spec.ts`:
 
@@ -1887,12 +1887,12 @@ describe('buildCards', () => {
 })
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../../src/layout/cards.js'`.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `packages/graph/src/layout/cards.ts`:
 
@@ -1930,12 +1930,12 @@ export function buildCards(nodes: GraphNode[], density: Density): Cards {
 }
 ```
 
-- [ ] **Step 4: Run to verify it passes**
+- [x] **Step 4: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 9 `buildCards` tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/graph/src/layout/cards.ts packages/graph/spec/layout/cards.spec.ts
@@ -1955,12 +1955,12 @@ The big one. Port `layout-clusters.ts` **and** its 192-line characterization sui
 
 - Create: `packages/graph/src/layout/clusters.ts`, `packages/graph/spec/layout/clusters.spec.ts`
 
-- [ ] **Step 1: Read both sources in full**
+- [x] **Step 1: Read both sources in full**
 
 Read `~/Developer/dbd/site/src/lib/design/layout-clusters.ts` (162 lines) and
 `layout-clusters.test.ts` (192 lines).
 
-- [ ] **Step 2: Port the test suite**
+- [x] **Step 2: Port the test suite**
 
 Create `packages/graph/spec/layout/clusters.spec.ts`. Apply exactly these transformations to
 the source test file, changing **nothing else** — every numeric assertion stays:
@@ -1983,7 +1983,7 @@ the source test file, changing **nothing else** — every numeric assertion stay
 question. `cluster.ts` calls `buildAdjacency`, so redirecting its test leaves the function that
 actually runs untested, including its self-edge skip.
 
-- [ ] **Step 2b: Add the two cases the source suite is blind to**
+- [x] **Step 2b: Add the two cases the source suite is blind to**
 
 The source's 192 lines contain no fixture that repeats a from/to pair, so nothing in it pins the
 duplicate-weighting that `barycenter` depends on. Add these — they are new coverage, not a port:
@@ -2050,12 +2050,12 @@ function edge(source: string, target: string): GraphEdge {
 }
 ```
 
-- [ ] **Step 3: Run the ported suite to verify it fails**
+- [x] **Step 3: Run the ported suite to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../../src/layout/clusters.js'`.
 
-- [ ] **Step 4: Implement**
+- [x] **Step 4: Implement**
 
 Create `packages/graph/src/layout/clusters.ts` by porting `layout-clusters.ts` with these
 changes and no others:
@@ -2098,13 +2098,13 @@ and the `+60` canvas margin exactly as they are.
 > where multiplicity is the whole point. They are different questions — keep both, and do not
 > collapse `cluster.ts` onto `model.neighbors` to save a function.
 
-- [ ] **Step 5: Run to verify it passes**
+- [x] **Step 5: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — every ported assertion green with its original numbers. **If a numeric
 assertion fails, the port changed behaviour — fix the port, do not rebaseline the test.**
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/graph/src/layout/clusters.ts packages/graph/spec/layout/clusters.spec.ts
@@ -2126,12 +2126,12 @@ layout for CSS."
 
 - Create: `packages/graph/src/layout/edges.ts`, `packages/graph/spec/layout/edges.spec.ts`
 
-- [ ] **Step 1: Read both sources in full**
+- [x] **Step 1: Read both sources in full**
 
 Read `~/Developer/dbd/site/src/lib/design/layout-edges.ts` (82 lines) and
 `layout-edges.test.ts` (152 lines).
 
-- [ ] **Step 2: Port the test suite**
+- [x] **Step 2: Port the test suite**
 
 Create `packages/graph/spec/layout/edges.spec.ts`. Transformations — again, **every path
 string and every coordinate stays exactly as written**:
@@ -2148,12 +2148,12 @@ string and every coordinate stays exactly as written**:
 Keep the test names. The `preserves the original refs index even when an earlier ref is
 skipped` case is load-bearing — it pins that a skipped edge does not shift later indices.
 
-- [ ] **Step 3: Run to verify it fails**
+- [x] **Step 3: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../../src/layout/edges.js'`.
 
-- [ ] **Step 4: Implement**
+- [x] **Step 4: Implement**
 
 Create `packages/graph/src/layout/edges.ts` by porting `layout-edges.ts` with these changes:
 
@@ -2170,12 +2170,12 @@ Keep `edgePath`, `orthogonalPath`, `curvedPath`, the self-loop `bow = 46`, the s
 `bow = 64`, the `Math.max(46, Math.min(170, …))` clamp, the `+ 52` orthogonal sweep, the `50`px
 side-gap threshold and the `+14` same-anchor nudge **exactly** as they are.
 
-- [ ] **Step 5: Run to verify it passes**
+- [x] **Step 5: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — all ported assertions, including all nine exact SVG path strings.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/graph/src/layout/edges.ts packages/graph/spec/layout/edges.spec.ts

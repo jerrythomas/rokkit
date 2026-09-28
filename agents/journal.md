@@ -9095,3 +9095,46 @@ namespace object trips over `Symbol.toStringTag`, hence the `Object.entries`
 round-trip.)
 
 59 tests, 100% coverage, lint and types green. Commit `5987b3b4`.
+
+## Issue #159 Tasks 7–9: the layout engine ports
+
+**Task 7 — `buildCards`** (`e961b821`). Straight port of `layout-cards.ts`; the
+density caps (14 full / 8 keys) and the height formula carry over unchanged, and
+the card key becomes `node.id` rather than being rebuilt from schema + name. Two
+adjustments to the plan's spec: one test was named for the more-row but asserted
+a case with none, and the height formula's terms were only ever exercised one
+side at a time (rows without a more-row, a more-row without rows), so a case
+with both now pins the only combination where every term contributes.
+
+**Task 8 — clusters** (`0b60e70e`). The 192-line characterization suite came
+across with **every numeric assertion intact** — `pos` arrays, cluster `w`/`h`,
+card coordinates, canvas sizes, the untangle chain order. Only fixture shape
+moved and `hue` became `groupIndex`.
+
+`buildAdjacency` keeps **arrays, not Sets**. Two edges between one pair list the
+neighbour twice and `barycenter` divides by array length, so that neighbour is
+weighted 2×. No fixture in the source's 192 lines repeats a pair, so a `Set`
+would have passed every ported assertion while silently relayouting every
+multi-FK schema — and two FKs to one table is routine.
+
+One signature had to change beyond the plan's list, which the plan did not
+anticipate: the source's `countSchemaLinks` reads `r.from.s` — the *schema* —
+straight off a ref, but a canonical edge carries node ids. So `orderClusters`
+takes the `GraphModel` (the direct analogue of the source's `data`) and reads
+groups from `byId`. Splitting an id back into parts would reintroduce exactly
+the key-parsing the canonical model removes.
+
+The guard in `countGroupLinks` had no coverage, and it is the one that runs
+constantly in production — most FKs are intra-group, and only cross-group links
+should steer which clusters sit side by side. Pinned.
+
+**Task 9 — edge routing** (`19dbdee5`). All **nine exact SVG path strings** pass
+unchanged, so the bezier and orthogonal geometry is provably identical after the
+model swap. `sourceRow`/`targetRow` are optional now — a dependency edge has no
+column anchors — and an unset anchor takes the same head-centre fallback a
+non-matching name already took.
+
+Four lint warnings across the three tasks (`countGroupLinks` complexity 9,
+`placeCluster` 8, `selfLoop` 5 params), all decomposed rather than disabled.
+
+104 tests, 100% statements/functions, lint and types green.
