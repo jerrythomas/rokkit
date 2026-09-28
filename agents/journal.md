@@ -9428,3 +9428,60 @@ CSS that disagrees overflows every card.
 
 Themes build emits `dist/{base,rokkit}/graph.css`; checked for leftover `@apply`
 (none) and that the fallbacks survived. 97 themes tests, full repo **6829** green.
+
+## Issue #159 Tasks 19–20: the learn demo, e2e, and six contrast findings
+
+**Task 19 — the demo** (`2765ab8b`). `apps/learn/.../demos/graph/` with all three
+layers visible at once: `datasets.ts` (load), `store.svelte.ts` + `GraphState`
+(state), `GraphExplorer`/`GraphControls` (component). Controls live in the
+composer's toggled details slab, matching chart and sparkline, not an always-on
+panel. Moved the `graph`/`graphs` keywords off the chart demo, which had claimed
+them.
+
+The second dataset is the point: a service call graph whose key names differ at
+every level (`key`/`team`/`endpoints`/`caller`/`callee`), adapted entirely by a
+`fields` map. It is the only thing that proves the contract is general rather
+than a `SchemaModel` in disguise.
+
+**Two bugs building it.** `const state = new GraphState(...)` breaks at runtime —
+a local binding named `state` makes the compiler read the `$state` rune as a
+store subscription (`s.subscribe is not a function`) and the explorer never
+mounts. Same trap `Graph.svelte`'s prop hit; renamed to `graph`. And a wrapping
+`<label>` computes its control's accessible name from *all* its text, so each
+`<select>` was announced as "View Diagram Entity Entities" — the whole option
+list read as the field name. Switched to explicit `for`/`id`.
+
+**Task 20 — e2e + contrast** (`d5803925`). 13 Playwright tests, all green;
+whole suite 83 green. They cover what a unit test cannot: each control visibly
+changing the render, every preset kind rendering, the non-dbd dataset rendering
+through field mapping alone, and a one-rule CSS override actually changing a
+computed colour.
+
+**Six real contrast findings**, all fixed at the token, none accept-listed:
+
+- relationship label and pk badge at **2.39:1** — `color: var(--primary)` is the
+  brand-as-text mistake. No other rokkit component uses primary as a foreground;
+  graph.css was the only violator.
+- the kind icon at **1.69:1** from `--node-accent` (warning amber). The *glyph*
+  carries the kind, so the icon takes full-contrast ink and the accent tints the
+  head rule. `--node-accent` stays defined per kind — it is the consumer hook.
+- node count and relationship action at **4.07:1** from `--ink-mute` in dark.
+- the cluster label at **3.63:1** — its shade is read against the cluster *fill*,
+  not paper, so the preset's label shade moved 700/200 → 900/100.
+
+The pk badge needed splitting by rendering: inside a node card it is a masked
+icon whose UnoCSS utility sets `background-color: currentColor`, so it owns the
+background and a chip fill never lands — paired with primary it measured
+**1.02:1**, near-black on near-black.
+
+Two new guards lock it in: no brand colour as a foreground anywhere in
+graph.css, and every primary fill must pair with `--on-primary`.
+
+**Known gap, worth a decision:** slice 1 ships `graph.css` for `base` + `rokkit`
+only (a locked decision), but each style in this repo is self-contained —
+zen-sumi imports its own component CSS, never rokkit's. The learn app defaults
+to zen-sumi, so graph renders with structure and no colour there. The e2e pins
+`rokkit` for the theming assertions rather than asserting the gap. Four styles
+(minimal, material, frosted, zen-sumi) need a `graph.css` before this is done.
+
+Full repo 6835 tests + 83 e2e green; lint, types, svelte-check all 0/0.

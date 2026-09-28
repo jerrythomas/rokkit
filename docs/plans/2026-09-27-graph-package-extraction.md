@@ -4923,7 +4923,7 @@ demo chrome. `GraphState` is the package's own store and must not be reimplement
 | `DemoKind` union | `apps/learn/src/routes/app/+layout.svelte`     |
 | `ShellDemoType`  | `apps/learn/src/lib/koan/shell.svelte.ts`      |
 
-- [ ] **Step 1: Read the pattern**
+- [x] **Step 1: Read the pattern**
 
 Read `apps/learn/src/lib/koan/demos/chart/` in full — `meta.ts`, `index.svelte`,
 `ChartExplorer.svelte`, `ChartControls.svelte`, `store.svelte.ts`, `registry.ts`, `datasets.ts`.
@@ -4932,7 +4932,7 @@ Match it. Then trace how `sparkline` is registered — it appears in exactly thr
 the `DEMO_ROUTE` entry), and `routes/app/+layout.svelte` (the `DemoKind` union plus
 `pickDemoKind`'s keyword list). Grep for `sparkline` across `apps/learn/src` and follow all hits.
 
-- [ ] **Step 2: Add `@rokkit/graph` to the learn app**
+- [x] **Step 2: Add `@rokkit/graph` to the learn app**
 
 In `apps/learn/package.json`, add to `dependencies`:
 
@@ -4942,7 +4942,7 @@ In `apps/learn/package.json`, add to `dependencies`:
 
 Run `bun install`.
 
-- [ ] **Step 3: Write two datasets**
+- [x] **Step 3: Write two datasets**
 
 Create `apps/learn/src/lib/koan/demos/graph/datasets.ts` exporting **two** shapes:
 
@@ -4957,7 +4957,7 @@ Create `apps/learn/src/lib/koan/demos/graph/datasets.ts` exporting **two** shape
 The second dataset is the point: it is the only thing that proves the contract is general rather
 than a `SchemaModel` in disguise.
 
-- [ ] **Step 4: Write the store and controls**
+- [x] **Step 4: Write the store and controls**
 
 `store.svelte.ts` holds `$state` for `dataset`, `layout`, `density`, `arrange`, `edgeStyle`,
 `using`, `selected`, `view`. `GraphControls.svelte` renders one control per row of the design's
@@ -4975,7 +4975,7 @@ verification table:
 
 Use `@rokkit/ui` controls (`Select`, `Toggle`), not bespoke ones.
 
-- [ ] **Step 5: Write `GraphExplorer.svelte`**
+- [x] **Step 5: Write `GraphExplorer.svelte`**
 
 Construct **one** `GraphState` from the store's choices and feed it to whichever view the `view`
 state selects — `<Graph>`, `<EntityView>` or `<EntitiesView>`. One state shared across all three
@@ -4984,7 +4984,7 @@ is what makes selection two-way for free: clicking a node in the diagram sets `s
 
 Include a `data-graph-explorer` marker element for the smoke gate.
 
-- [ ] **Step 6: Write `meta.ts`**
+- [x] **Step 6: Write `meta.ts`**
 
 Follow `demos/chart/meta.ts` exactly. `id: 'graph'`, `category: 'data'`, keywords covering
 `graph`, `diagram`, `er-diagram`, `schema`, `entity`, `nodes`, `edges`, `call-graph`,
@@ -5043,7 +5043,7 @@ describe('graph demo meta', () => {
 })
 ```
 
-- [ ] **Step 7: Register it**
+- [x] **Step 7: Register it**
 
 Four edits, in the files verified above:
 
@@ -5055,13 +5055,13 @@ Four edits, in the files verified above:
 4. Keyword collision: `demos/chart/meta.ts` currently claims `graph` and `graphs`. **Move those
    two to this demo** and leave chart the plotting words.
 
-- [ ] **Step 8: Write `docs.md`**
+- [x] **Step 8: Write `docs.md`**
 
 Cover: the data contract and `fields`, the layout interface and the two built-ins, the full
 data-attribute vocabulary, `createGraphPreset` and `using`, and the one-rule CSS override. State
 plainly that `SchemaModel` stays in the consuming app.
 
-- [ ] **Step 9: Verify both routes render**
+- [x] **Step 9: Verify both routes render**
 
 Run: `cd apps/learn && bun run build`
 Expected: build succeeds; `/components/graph` prerenders. This command exits.
@@ -5083,7 +5083,7 @@ Expected: `200`.
 Exercising every control by hand is a **human, non-blocking** checklist item — valuable, but not a
 step an executor waits on.
 
-- [ ] **Step 10: Commit**
+- [x] **Step 10: Commit**
 
 ```bash
 git add apps/learn packages/graph bun.lock
@@ -5109,12 +5109,12 @@ Moved the `graph`/`graphs` keywords off the chart demo, which had claimed them."
 - Create: `apps/learn/e2e/graph.e2e.ts`
 - Modify: `apps/learn/src/routes/embed/gallery/+page.svelte`
 
-- [ ] **Step 1: Read the gates**
+- [x] **Step 1: Read the gates**
 
 Read `apps/learn/e2e/screens-smoke.e2e.ts`, `apps/learn/e2e/theme-contrast.e2e.ts`,
 `apps/learn/e2e/interaction-contrast.e2e.ts` and `apps/learn/src/routes/embed/gallery/+page.svelte`.
 
-- [ ] **Step 2: Add the diagram to the contrast gallery**
+- [x] **Step 2: Add the diagram to the contrast gallery**
 
 Add a `<Graph>` section to `/embed/gallery` using the ecommerce dataset at `density: 'full'` so
 node titles, row names, row types and badges are all present and measurable.
@@ -5123,7 +5123,7 @@ node titles, row names, row types and badges are all present and measurable.
 `shu`, so a bad token swap is invisible under it. Follow the existing gallery's skin-switching
 mechanism.
 
-- [ ] **Step 3: Write the e2e spec**
+- [x] **Step 3: Write the e2e spec**
 
 Create `apps/learn/e2e/graph.e2e.ts`:
 
@@ -5231,12 +5231,12 @@ test.describe('graph demo', () => {
 })
 ```
 
-- [ ] **Step 4: Run the e2e suite**
+- [x] **Step 4: Run the e2e suite**
 
 Run: `cd apps/learn && npx playwright test graph.e2e.ts`
 Expected: 10 tests pass.
 
-- [ ] **Step 5: Run the gates**
+- [x] **Step 5: Run the gates**
 
 Run:
 
@@ -5248,7 +5248,7 @@ npx playwright test screens-smoke.e2e.ts theme-contrast.e2e.ts interaction-contr
 Expected: all pass. A contrast failure on a graph selector is a **real** finding — fix the token
 in `rokkit/graph.css`, do not add it to the accept-list.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add apps/learn
