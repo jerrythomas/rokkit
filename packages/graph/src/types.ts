@@ -54,6 +54,35 @@ export type GraphModel = {
 }
 
 /**
+ * Props for the `Graph` canvas.
+ *
+ * Either hand it a `state` — for composition, or to drive selection from outside — or hand
+ * it `nodes`/`edges`/`fields` and let it construct one. A supplied `state` must have STABLE
+ * IDENTITY for the component's lifetime: drive the existing instance through its own methods
+ * and `update()` rather than swapping instances, because context captures it once at init.
+ */
+export type GraphProps = {
+	state?: import('./GraphState.svelte.js').GraphState
+	nodes?: unknown[]
+	edges?: unknown[]
+	fields?: GraphFields
+	layout?: string | import('./layout/types.js').LayoutFn
+	density?: import('./layout/types.js').Density
+	arrange?: import('./layout/types.js').Arrange
+	edgeStyle?: import('./layout/types.js').EdgeStyle
+	/** `neighborhood` only — the node the view centres on. Defaults to the selection. */
+	focus?: string | null
+	value?: string | null
+	preset?: import('./preset.js').GraphPreset
+	mode?: 'light' | 'dark'
+	label?: string
+	onselect?: (id: string) => void
+	/** Icon class per node kind and row badge, merged over the built-in map. */
+	icons?: Record<string, string>
+	class?: string
+}
+
+/**
  * Field map from a consumer's shape to the canonical model. Every entry is a
  * dotted path read with `readPath`. Anything omitted falls back to the
  * same-named key, so a source already shaped like the canonical model needs no map.
