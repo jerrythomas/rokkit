@@ -9283,3 +9283,43 @@ did not return, per the standing note that stale disables are invisible.
 242 tests, 100% statements, lint clean, svelte-check **0 errors 0 warnings** (the
 "no svelte input files" warning is gone now the package has a component).
 Commit `c689623f`.
+
+## Issue #159 Tasks 14–15: notes and the dbd field map
+
+**Task 14 — note rendering** (`a7250cae`). `src/schema/notes.ts` carries dbd's
+`md.ts` behaviour with the tests it never had, decomposed into `takeList` /
+`takeParagraph` so the while-loop reads as the two cases it has.
+`NoteBlocks.svelte` extracts the `segs` snippet that `EntitiesView` and
+`EntityView` each inlined separately — which is what kept their formatting in
+sync by hand.
+
+The plan's snippet keyed the segment loop by `part.text`. That throws
+`each_key_duplicate` and renders **nothing** for ``"either `a` or `a`"`` — two
+code segments with the same text, and an entirely ordinary thing for a column
+comment to say. Reproduced before fixing, then keyed by index: a segment has no
+identity of its own and the list is re-derived whenever the note changes. The
+block and line loops key on object identity and were already fine, but both now
+have a test proving it rather than leaving it to luck.
+
+Worth stating because it is a dependency decision: this is deliberately **not**
+a markdown library. It recognises backticks and bullets and nothing else, so no
+tag is ever interpreted, the segment text carries markup verbatim, and Svelte's
+interpolation escapes it at render. Asserted at both the parser and the
+component level. That is what lets the package ship with neither a parser nor a
+sanitiser — the exact dependency cost `@rokkit/ui`'s MarkdownRenderer would have
+pulled in, and the reason `dependencies.spec.js` guards against it.
+
+**Task 15 — `fromSchemaModel`** (`ca652198`). Sugar over `normalizeGraph` for
+dbd-shaped JSON. It does **not** import dbd's `SchemaModel` type, so the
+hand-written mirror of `schema_model.rs` stays dbd's concern and this package
+never becomes a third definition to keep in step — #159's top-listed risk.
+
+Checked `SCHEMA_FIELDS` against dbd's real types rather than the plan's listing,
+and dropped two mappings that can never resolve. dbd's `Column` is
+`{ name, type, pk?, nn?, en?, def?, note? }` — there is no `uq`; uniqueness
+lives on `Index`. And its `Ref` is `{ from, to, action? }` — no `cardinality`.
+Both would have been invisible: a field map naming a missing path yields no
+badge and no value, indistinguishable from data that simply has none. Their
+absence is asserted with the reason, so nobody "fixes" it back.
+
+281 tests, 100% statements, lint and svelte-check clean.

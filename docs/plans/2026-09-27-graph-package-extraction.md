@@ -3875,11 +3875,11 @@ it depends on the rendered viewport, which state cannot know."
 - Create: `packages/graph/src/schema/notes.ts`, `packages/graph/src/schema/NoteBlocks.svelte`,
   `packages/graph/spec/schema/notes.spec.ts`
 
-- [ ] **Step 1: Read the source**
+- [x] **Step 1: Read the source**
 
 Read `~/Developer/dbd/site/src/lib/design/md.ts` (50 lines).
 
-- [ ] **Step 2: Write the failing test**
+- [x] **Step 2: Write the failing test**
 
 Create `packages/graph/spec/schema/notes.spec.ts`:
 
@@ -3971,12 +3971,12 @@ describe('noteBlocks', () => {
 })
 ```
 
-- [ ] **Step 3: Run to verify it fails**
+- [x] **Step 3: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../../src/schema/notes.js'`.
 
-- [ ] **Step 4: Implement**
+- [x] **Step 4: Implement**
 
 Copy `md.ts` to `packages/graph/src/schema/notes.ts` **verbatim** — it is framework-free, has no
 imports and needs no transformation. Only the header comment changes (drop the dbd reference).
@@ -4014,12 +4014,12 @@ Create `packages/graph/src/schema/NoteBlocks.svelte`, extracting the `segs` snip
 </div>
 ```
 
-- [ ] **Step 5: Run to verify it passes**
+- [x] **Step 5: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 15 note tests.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/graph/src/schema/notes.ts packages/graph/src/schema/NoteBlocks.svelte packages/graph/spec/schema/notes.spec.ts
@@ -4044,7 +4044,7 @@ types entering the package.
 - Create: `packages/graph/src/schema/fromSchemaModel.ts`,
   `packages/graph/spec/schema/fromSchemaModel.spec.ts`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/graph/spec/schema/fromSchemaModel.spec.ts`:
 
@@ -4120,12 +4120,12 @@ describe('fromSchemaModel', () => {
 })
 ```
 
-- [ ] **Step 2: Run to verify it fails**
+- [x] **Step 2: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../../src/schema/fromSchemaModel.js'`.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `packages/graph/src/schema/fromSchemaModel.ts`:
 
@@ -4169,12 +4169,12 @@ export function fromSchemaModel(model: { tables: unknown[]; refs: unknown[] }): 
 }
 ```
 
-- [ ] **Step 4: Run to verify it passes**
+- [x] **Step 4: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 8 `fromSchemaModel` tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/graph/src/schema/fromSchemaModel.ts packages/graph/spec/schema/fromSchemaModel.spec.ts
