@@ -9045,3 +9045,53 @@ and split into the two branches it was conflating.
 
 40 tests, 100% statements/branches/functions, lint and check:types green.
 Commit `a36c7b36`.
+
+## Issue #159 Task 5: `createGraphPreset`
+
+`src/preset.ts` — colour for the **open** vocabulary (group names), which cannot
+be pre-written in CSS the way the closed `data-node-kind` set can. It resolves
+to CSS custom properties rather than concrete fills, so an attribute rule still
+wins: JS picks the default, CSS keeps the final say. Assignment is by *sorted*
+group name so a group keeps its colour when `arrange` reorders the layout.
+
+Verified before writing rather than trusting the plan: all eight pattern names
+exist in chart's `PATTERN_ORDER` (they are its first eight, in order), the group
+ramp is chart's first eight families in chart's order, and every family the
+preset names exists in `categoricalPalette`. So a graph and a chart on one page
+differentiate alike. The shallow-spread shape matches `createChartPreset`
+exactly — arrays shared by reference — which is the house idiom, not an
+oversight.
+
+Four tests beyond the plan's thirteen, each closing something its set left open.
+The plan asserted only that two groups get *different* fills, which holds for
+any injective function; added an assertion on the actual palette hex, so a ramp
+read with the wrong shade key cannot pass. Added a sweep that every named family
+and shade actually exists (a typo there is invisible until the one group unlucky
+enough to land on that ramp position resolves `undefined` and throws). Added
+de-duplication: callers pass one group name per NODE, so without the `Set` the
+ramp advances per node and two nodes in one group disagree. Plus the
+default-preset parameter path.
+
+57 tests, 100% coverage, lint and types green. Commit `c4b6a757`.
+
+## Issue #159 Task 6: layout types + geometry constants
+
+`src/layout/constants.ts` and `src/layout/types.ts`. Read dbd's
+`layout-types.ts` and checked all twelve constants line by line — they match.
+`Cluster.hue` becomes `groupIndex` and `HUES` is deleted, so the geometry layer
+is no longer a second, competing source of paint.
+
+`LayoutResult` also drops the source's `consts: { CARD_W, ROW_H, HEAD_H }`.
+Grepped before dropping: `layout.ts` produces it but no `.svelte` view reads it,
+so it was carrying the constants to nobody.
+
+Coverage runs with `all: true`, so a constants module nothing imports yet reads
+0% and fails the package's 100% threshold. Rather than defer that to Task 7,
+`constants.spec.ts` pins all twelve values against the dbd source and asserts
+`HUES` is gone — which earns its place independently: an accidental edit now
+fails with "CARD_W moved" instead of surfacing three tasks later as an
+unexplained pixel diff in a ported characterization spec. (`toEqual` on a module
+namespace object trips over `Symbol.toStringTag`, hence the `Object.entries`
+round-trip.)
+
+59 tests, 100% coverage, lint and types green. Commit `5987b3b4`.

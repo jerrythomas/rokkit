@@ -1414,7 +1414,7 @@ pure CSS and needs no JS — that lands in Task 18.
 
 - Create: `packages/graph/src/preset.ts`, `packages/graph/spec/preset.spec.ts`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/graph/spec/preset.spec.ts`:
 
@@ -1515,12 +1515,12 @@ describe('resolveGroupStyles', () => {
 })
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../src/preset.js'`.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `packages/graph/src/preset.ts`:
 
@@ -1622,12 +1622,12 @@ export function resolveGroupStyles(
 }
 ```
 
-- [ ] **Step 4: Run to verify it passes**
+- [x] **Step 4: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 5 `createGraphPreset` + 8 `resolveGroupStyles` tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/graph/src/preset.ts packages/graph/spec/preset.spec.ts
@@ -1655,11 +1655,11 @@ deleted.
 
 - Create: `packages/graph/src/layout/constants.ts`, `packages/graph/src/layout/types.ts`
 
-- [ ] **Step 1: Read the source**
+- [x] **Step 1: Read the source**
 
 Read `~/Developer/dbd/site/src/lib/design/layout-types.ts` in full (71 lines).
 
-- [ ] **Step 2: Create the constants**
+- [x] **Step 2: Create the constants**
 
 `packages/graph/src/layout/constants.ts` — values copied **unchanged** from the source so the
 ported characterization tests keep passing:
@@ -1686,7 +1686,7 @@ export const CL_GAP_Y = 110
 export const MAX_ROW_W = 2750
 ```
 
-- [ ] **Step 3: Create the layout types**
+- [x] **Step 3: Create the layout types**
 
 `packages/graph/src/layout/types.ts`:
 
@@ -1775,12 +1775,12 @@ export type LayoutResult = {
 export type LayoutFn = (model: GraphModel, options: LayoutOptions) => LayoutResult
 ```
 
-- [ ] **Step 4: Verify it type-checks**
+- [x] **Step 4: Verify it type-checks**
 
 Run: `cd packages/graph && bun run check:types`
 Expected: no output (success).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/graph/src/layout/constants.ts packages/graph/src/layout/types.ts

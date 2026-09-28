@@ -1,17 +1,17 @@
 # CHECKPOINT
 
-**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–4 of 22
-done**, tree clean, **not pushed** (23 ahead of origin/develop). **Plan:**
-`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 4.
+**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–6 of 22
+done**, tree clean, **not pushed** (27 ahead of origin/develop). **Plan:**
+`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 6.
 **Done:** `b20044a1` scaffold · `f369404c` palette→core · `d0d9aa6a` types + `readPath` ·
-`a36c7b36` `normalizeGraph` (40 tests, 100% stmts/branches/funcs).
+`a36c7b36` `normalizeGraph` · `c4b6a757` preset · `5987b3b4` layout types + constants.
+59 tests, 100% stmts/branches/funcs.
 
 ## Remains
 
-1. **Next: Task 5 — `createGraphPreset`** (`src/preset.ts`): colour for the OPEN vocabulary
-   (group names), off `@rokkit/core`'s `categoricalPalette`. The closed vocabulary
-   (`data-node-kind`) stays in CSS. No decision needed; spec is in the plan.
-2. Tasks 6–21 layouts → `GraphState` → `Graph` → schema views → theme → demo → e2e → docs.
+1. **Next: Task 7 — `buildCards`** (`src/layout/cards.ts`), port of dbd's `layout-cards.ts`.
+   Then Task 8 clusters + Task 9 edges, both with **ported characterization specs**.
+2. Tasks 10–21 layouts → `GraphState` → `Graph` → schema views → theme → demo → e2e → docs.
 3. **Task 22 — dbd consumes the package** (separate repo + PR). **The acceptance proof.** Linked
    workspace; publish only after it passes. Then slice 2 (force-directed), slice 3 (dbd#24).
 
