@@ -9168,3 +9168,37 @@ model.edges, arrange)`, contradicting the signature Task 8 had to adopt — the
 plan was not updated when that changed.
 
 118 tests, 100% statements/functions, lint and types green. Commit `5eb7682c`.
+
+## Issue #159 Task 11: the `neighborhood` LayoutFn
+
+`src/layout/neighborhood.ts` plus the layout registry. `EntityDiagram.svelte`'s
+~100 lines of private geometry (its own `C` constants, `buildCard`, `anchorY`,
+`path`, `loopPath`) collapse into a second `LayoutFn` that **reuses** `cards.ts`
+and `edges.ts`. The duplication is gone rather than ported, and the layout seam
+is now validated by two real implementations instead of one plus a promise
+about d3-force.
+
+**The plan's `buildCards(nodes, density, limit?)` signature was not sufficient.**
+A neighbour card shows only its keys and the rows the focus references — but dbd
+counted "+N more" against the **full** column list. The plan's approach was to
+pre-filter each node's rows at the call site, which would report "+0 more" on a
+card hiding most of its rows and drop `MORE_H` from its height with it. So
+`buildCards` takes a `CardOptions` object and the selector lives inside, where
+`more` is still computed against every row. The selector also receives the node,
+because each neighbour reveals a different row. The cluster layout passes no
+options and its characterization suite is byte-identical.
+
+Two numbers deliberately unified rather than ported: self-loops use the shared
+`+14` anchor nudge and 46px bow, not EntityDiagram's `+16` and 52px. Keeping
+both would have meant keeping its private path helpers — the duplication the
+task exists to remove.
+
+Also pinned: edges are filtered to those touching the focus before routing.
+`buildEdges` will happily connect any two laid-out cards, so without the filter
+a `profiles -> users` edge would be drawn while focusing `orders`.
+
+The registry gets an **identity** test. Registering `cluster` under both names
+satisfies a key check and a callable check, and fails silently —
+`layout="neighborhood"` would render a cluster diagram.
+
+146 tests, 100% statements/functions, lint and types green. Commit `cd786a65`.

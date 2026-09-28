@@ -2405,13 +2405,13 @@ This is where `EntityDiagram.svelte`'s ~100 lines of duplicate geometry collapse
 - Create: `packages/graph/src/layout/neighborhood.ts`,
   `packages/graph/spec/layout/neighborhood.spec.ts`, `packages/graph/src/layout/index.ts`
 
-- [ ] **Step 1: Read the source**
+- [x] **Step 1: Read the source**
 
 Read `~/Developer/dbd/site/src/lib/design/EntityDiagram.svelte` (222 lines). Only the `$derived`
 block `m` and its helpers (`buildCard`, `anchorY`, `find`) are geometry; everything from the
 `{#snippet edCard}` onward is rendering and belongs to `Graph.svelte`.
 
-- [ ] **Step 2: Write the failing test**
+- [x] **Step 2: Write the failing test**
 
 Create `packages/graph/spec/layout/neighborhood.spec.ts`:
 
@@ -2550,12 +2550,12 @@ describe('neighborhood layout', () => {
 })
 ```
 
-- [ ] **Step 3: Run to verify it fails**
+- [x] **Step 3: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../../src/layout/neighborhood.js'`.
 
-- [ ] **Step 4: Implement**
+- [x] **Step 4: Implement**
 
 Create `packages/graph/src/layout/neighborhood.ts`. Port `EntityDiagram.svelte`'s `m` block,
 with these changes:
@@ -2623,12 +2623,12 @@ with these changes:
    Delete `EntityDiagram`'s private `anchorY`/`path`/`loopPath`.
 5. Returns `clusters: []`.
 
-- [ ] **Step 5: Run to verify it passes**
+- [x] **Step 5: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 14 `neighborhood layout` tests.
 
-- [ ] **Step 6: Create the layout registry**
+- [x] **Step 6: Create the layout registry**
 
 Create `packages/graph/src/layout/index.ts`:
 
@@ -2646,7 +2646,7 @@ export { cluster, neighborhood }
 export * from './types.js'
 ```
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add packages/graph/src/layout/neighborhood.ts packages/graph/src/layout/index.ts packages/graph/spec/layout/neighborhood.spec.ts
