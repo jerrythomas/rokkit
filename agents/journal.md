@@ -9358,3 +9358,37 @@ was a stale local build from two days before `snippets` was added to
 
 296 graph tests, 100% statements, svelte-check 0/0; full repo 426 files / 6770
 tests green.
+
+## Issue #159 Task 17: `EntityView` — and the layer audit pays off
+
+`src/schema/EntityView.svelte` plus `src/schema/index.ts`, the `./schema` entry
+point (`cc5cf7cb`). The inbound/outbound partitioning loop does not port — it is
+a `GraphState` derivation, so the split is tested without a renderer and the
+component only reflects direction onto an attribute. Indexes come through
+`GraphNode.meta`, which is exactly what that passthrough is for.
+
+`baseType`/`typeSize` were module-level helpers in dbd's component. They are
+parsing, not a formatting choice, so they moved to `column-type.ts` with their
+own tests rather than sitting inline in a template.
+
+**Step 7's layer audit earned its place.** The hard gate (no `normalizeGraph` /
+`buildCards` / `layouts[` in a component) was clean, but the soft sweep found two
+real hits: `Graph.svelte` was serialising `graph.groupStyle()` into a `style`
+string with the same `map`/`join` in two places. A template cannot spread an
+object into `style`, so something has to build it — that something is now
+`GraphState.groupStyleAttr`, one function with its own tests. Both gates are now
+clean: **no component in this package computes anything.** Worth recording that
+the audit was not ceremonial; it caught a duplicated derivation I had written
+myself in Task 13 and not noticed.
+
+**Deliberate omission:** dbd's per-column "Refs" cell, which filtered `outRefs`
+per column. The plan's view surface does not list it and the relationship list
+covers the same ground, so it is out of scope rather than forgotten — flagged so
+Task 22 catches it if dbd disagrees.
+
+One test of mine was wrong on first write: `getByText(/public/)` matched both the
+entity group and a relationship group and threw on ambiguity. Scoped to the
+header element.
+
+333 tests, **100% statements and functions**, lint clean, svelte-check 0 errors
+0 warnings across every package, full repo 6805 tests green.

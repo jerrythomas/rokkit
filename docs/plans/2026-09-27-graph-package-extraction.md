@@ -4417,14 +4417,14 @@ the component** — the in/out split is a `GraphState` derivation, already cover
 - Create: `packages/graph/src/schema/EntityView.svelte`, `packages/graph/src/schema/index.ts`,
   `packages/graph/spec/schema/EntityView.spec.ts`
 
-- [ ] **Step 1: Read the source**
+- [x] **Step 1: Read the source**
 
 Read `~/Developer/dbd/site/src/lib/design/EntityView.svelte` (211 lines) in full. It is the
 single-entity detail panel: header, note, column table with `pk`/`fk` badges, indexes, and the
 relationship list. Its inbound/outbound partitioning loop does **not** port — that moved to
 `GraphState.#relationships`.
 
-- [ ] **Step 2: Write the failing test**
+- [x] **Step 2: Write the failing test**
 
 Create `packages/graph/spec/schema/EntityView.spec.ts`:
 
@@ -4593,12 +4593,12 @@ describe('EntityView', () => {
 })
 ```
 
-- [ ] **Step 3: Run to verify it fails**
+- [x] **Step 3: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../../src/schema/EntityView.svelte'`.
 
-- [ ] **Step 4: Implement**
+- [x] **Step 4: Implement**
 
 Create `packages/graph/src/schema/EntityView.svelte`, porting the source's markup with:
 
@@ -4628,17 +4628,17 @@ export { inlineSegs, noteBlocks } from './notes.js'
 export type { Block, Seg } from './notes.js'
 ```
 
-- [ ] **Step 5: Run to verify it passes**
+- [x] **Step 5: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 16 `EntityView` tests.
 
-- [ ] **Step 6: Full gate**
+- [x] **Step 6: Full gate**
 
 Run: `bun run lint && bun run check:types && bun run check:svelte && bun run test:ci`
 Expected: lint 0 errors 0 warnings; types 0; svelte 0; all tests pass.
 
-- [ ] **Step 7: Verify the layer rule actually held**
+- [x] **Step 7: Verify the layer rule actually held**
 
 The point of Task 12 was that components stop computing. Check it rather than assume it — but
 these greps are a **triage aid, not a gate**. Two things a regex cannot do here: it cannot tell
@@ -4676,7 +4676,7 @@ Judge each hit:
 
 If a hit is a violation, moving it is not optional — the design's testability claim rests on it.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add packages/graph/src/schema packages/graph/spec/schema/EntityView.spec.ts
