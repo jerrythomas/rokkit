@@ -9245,3 +9245,41 @@ The accessible name pluralises: "1 relationship", not "1 relationships". A
 screen reader reads it verbatim.
 
 212 tests, 100% statements/functions, lint and types green. Commit `e0e3b0bd`.
+
+## Issue #159 Task 13: the `Graph` canvas — presentation only
+
+`src/Graph.svelte`, the package's first component. It reads `GraphState` and
+renders it: no `cardState`/`edgeClass` helpers, no normalization, no layout
+call. Only `scale`/`tx`/`ty` are local, because they depend on the rendered
+viewport; the content extent they divide by is `graph.contentSize`, a pure
+derivation living in state. The spec asserts **only DOM and attributes** — every
+question about what the values should be is already answered in
+`GraphState.spec.ts` without a renderer.
+
+Every BEM class from `DiagramView` became a data-attribute, `--cl-h` (a raw
+oklch hue angle) became state-resolved custom properties, and the dotted
+background reuses the existing `[data-graph-paper]` primitive instead of porting
+`.dg-dots`.
+
+**Two problems in the plan's design.** `role="img"` on the root — which the plan
+specified and whose `aria-label` assertion it wrote — makes the *entire subtree*
+presentational, hiding all three node buttons from assistive tech. The
+assertion would still have passed. The name moved to the `<svg>`, which holds
+only edge geometry and has no interactive descendants, and a test now pins that
+the buttons sit outside it. Separately, a prop named `state` makes the compiler
+read the `$state` rune as a store subscription on it (`store_invalid_shape`);
+the binding is aliased and the public prop name is unchanged.
+
+Three loop-variable traps. The plan closed one — edge paths, deliberately with
+two edges so a hardcoded `routedEdges[0]` cannot pass — and card positioning and
+click-to-select had exactly the same shape, so both now assert per-item.
+
+Escape clears as well as a background click. That is what lets
+`role="presentation"` on the surface be honest rather than a suppression: the
+dismiss affordance is not mouse-only. A `svelte-ignore` I added first turned out
+to be unnecessary once the role was right — removed after verifying the warning
+did not return, per the standing note that stale disables are invisible.
+
+242 tests, 100% statements, lint clean, svelte-check **0 errors 0 warnings** (the
+"no svelte input files" warning is gone now the package has a component).
+Commit `c689623f`.

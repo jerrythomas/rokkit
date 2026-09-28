@@ -1,18 +1,18 @@
 # CHECKPOINT
 
-**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–12 of 22
-done**, tree clean, **not pushed** (39 ahead of origin/develop). **Plan:**
-`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 12.
-**Done: the entire non-visual package** — model, preset, both layouts behind one interface, and
-`GraphState` (`e0e3b0bd`) holding every derivation. Both dbd characterization suites green with
-every original number. **212 tests, 100% stmts/funcs, and not one renders anything.**
+**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–13 of 22
+done**, tree clean, **not pushed** (41 ahead of origin/develop). **Plan:**
+`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 13.
+**Done: the package renders.** Model, preset, both layouts, `GraphState` (every derivation), and
+`Graph.svelte` (`c689623f`, presentation only). 242 tests, 100% stmts, svelte-check 0/0. Both dbd
+characterization suites green with every original number.
 
 ## Remains
 
-1. **Next: Task 13 — `Graph.svelte`**, the first component. **Presentation only: it computes
-   nothing** — no `cardState()`/`edgeClass()` helpers; if a template needs a value, `GraphState`
-   exposes it. Only `scale`/`tx`/`ty` stay local (they need `clientWidth`).
-2. Tasks 14–21 notes → schema views → theme → demo → e2e → docs.
+1. **Next: Task 14 — note rendering** (`src/schema/notes.ts`), port of dbd's `md.ts`
+   (`inlineSegs`, `noteBlocks`) plus `NoteBlocks.svelte`. Then Task 15 `fromSchemaModel`,
+   16 `EntitiesView` (on `@rokkit/ui` Table), 17 `EntityView`.
+2. Tasks 18–21 theme CSS → learn demo → e2e + contrast gates → docs and close-out.
 3. **Task 22 — dbd consumes the package** (separate repo + PR). **The acceptance proof.** Linked
    workspace; publish only after it passes. Then slice 2 (force-directed), slice 3 (dbd#24).
 
@@ -36,5 +36,4 @@ themes only. No pan/zoom. `EntityDiagram`'s geometry becomes a `neighborhood` `L
 5. **Plan file lists and code are drafts** — every task so far has had a defect: missed refs, a
    prototype-chain bug, stale literals, 7 lint warnings, uncovered paths. Grep and test it.
 
-**Known-broken:** nothing, all gates green. `svelte-check` warns "no svelte input files" for
-`packages/graph` until Task 13 — expected. Open: TS 7 (svelte-check > TS 6).
+**Known-broken:** nothing; lint, types, coverage and svelte-check all clean. Open: TS 7.

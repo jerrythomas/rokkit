@@ -3483,7 +3483,7 @@ make the same assertion slower.
 - Create: `packages/graph/src/Graph.svelte`, `packages/graph/spec/Graph.spec.ts`
 - Modify: `packages/graph/src/index.ts`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/graph/spec/Graph.spec.ts`:
 
@@ -3707,12 +3707,12 @@ describe('Graph — accessibility and construction', () => {
 })
 ```
 
-- [ ] **Step 2: Run to verify it fails**
+- [x] **Step 2: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../src/Graph.svelte'`.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `packages/graph/src/Graph.svelte`, porting `DiagramView.svelte`'s **render only**.
 
@@ -3836,17 +3836,17 @@ export type * from './layout/types.js'
 export type { GraphChannel, GraphPreset, GraphShades } from './preset.js'
 ```
 
-- [ ] **Step 4: Run to verify it passes**
+- [x] **Step 4: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 20 `Graph` tests.
 
-- [ ] **Step 5: Check types and svelte**
+- [x] **Step 5: Check types and svelte**
 
 Run: `cd packages/graph && bun run check:types && bun run check`
 Expected: 0 errors, 0 warnings.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/graph/src/Graph.svelte packages/graph/src/index.ts packages/graph/spec/Graph.spec.ts
