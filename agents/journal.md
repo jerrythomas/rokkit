@@ -9138,3 +9138,33 @@ Four lint warnings across the three tasks (`countGroupLinks` complexity 9,
 `placeCluster` 8, `selfLoop` 5 params), all decomposed rather than disabled.
 
 104 tests, 100% statements/functions, lint and types green.
+
+## Issue #159 Task 10: the `cluster` LayoutFn
+
+`src/layout/cluster.ts` — ports `layout.ts`'s `compute` to
+`(model, options) => LayoutResult`, composing the whole ported engine.
+Determinism is asserted directly, since every downstream spec leans on it.
+
+**Two real defects, both found by tests the plan did not have.**
+
+`flow` reported a canvas of `-Infinity` for an empty model — `Math.max(...[])`
+— which would render as an SVG with a negative viewBox. The plan raised this as
+a conditional ("if flow throws…"); it does not throw, it silently returns a
+backwards canvas, and the plan's own empty-model assertions checked
+clusters/cards/edges and so would not have caught it. Guarded, with a case in
+both specs.
+
+The plan's `arrange` test **could not fail**. With two clusters, untangle's
+chain *is* area order — seed the largest, one candidate remains — so both
+strategies agree by construction and the assertion held regardless of whether
+the option reached the algorithm. Its own comment half-anticipated this and
+hedged by also comparing placement, but placement agrees too. Rebuilt on a
+fixture where the two must diverge (`b` largest, `a` smallest but strongly
+linked to `b`: area order b,c,a versus chain b,a,c) and both orders are now
+asserted exactly rather than "not equal".
+
+Also: the plan's `cluster.ts` snippet called `orderClusters(clusters,
+model.edges, arrange)`, contradicting the signature Task 8 had to adopt — the
+plan was not updated when that changed.
+
+118 tests, 100% statements/functions, lint and types green. Commit `5eb7682c`.

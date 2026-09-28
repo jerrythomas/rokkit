@@ -2196,7 +2196,7 @@ head-centre fallback, which is what a non-matching column name already did."
 
 - Create: `packages/graph/src/layout/cluster.ts`, `packages/graph/spec/layout/cluster.spec.ts`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/graph/spec/layout/cluster.spec.ts`:
 
@@ -2321,12 +2321,12 @@ describe('cluster layout', () => {
 })
 ```
 
-- [ ] **Step 2: Run to verify it fails**
+- [x] **Step 2: Run to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../../src/layout/cluster.js'`.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `packages/graph/src/layout/cluster.ts`, porting `layout.ts`'s `compute` to the `LayoutFn`
 signature:
@@ -2378,12 +2378,12 @@ If `flow` throws on an empty cluster list (`Math.max(...[])` is `-Infinity`), gu
 `clusters.ts` by returning `{ w: 0, h: 0 }` when `clusters.length === 0`, and add the
 corresponding case to `clusters.spec.ts`.
 
-- [ ] **Step 4: Run to verify it passes**
+- [x] **Step 4: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 10 `cluster layout` tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/graph/src/layout/cluster.ts packages/graph/spec/layout/cluster.spec.ts

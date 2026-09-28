@@ -1,17 +1,17 @@
 # CHECKPOINT
 
-**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–9 of 22
-done**, tree clean, **not pushed** (31 ahead of origin/develop). **Plan:**
-`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 9.
-**Done:** scaffold · palette→core · types + `readPath` · `normalizeGraph` · preset · layout
-types/constants · `buildCards` · clusters `0b60e70e` · edges `19dbdee5`. **Layout engine fully
-ported**, both characterization suites green with every original number. 104 tests, 100%.
+**Slice #159** — extract dbd's ER-diagram viewer into **`@rokkit/graph`**. **Tasks 1–10 of 22
+done**, tree clean, **not pushed** (35 ahead of origin/develop). **Plan:**
+`docs/plans/2026-09-27-graph-package-extraction.md`, boxes ticked through Task 10.
+**Done:** scaffold · palette→core · types/`readPath` · `normalizeGraph` · preset · layout
+types/constants · `buildCards` · clusters · edges · **`cluster` LayoutFn `5eb7682c`**. Both dbd
+characterization suites green with every original number. 118 tests, 100% stmts/funcs.
 
 ## Remains
 
-1. **Next: Task 10 — the `cluster` LayoutFn** (`src/layout/cluster.ts`): composes `buildCards` →
-   `groupByGroup` → `buildClusters` → `pack` → `orderClusters` → `barycenterPasses` →
-   `buildEdges`. Then Task 11 `neighborhood`.
+1. **Next: Task 11 — the `neighborhood` LayoutFn** (`src/layout/neighborhood.ts`), from
+   `EntityDiagram.svelte`'s geometry (~100 lines duplicating cards+edges). As a LayoutFn it
+   REUSES both — a scope reduction, and a second real implementation of the layout seam.
 2. Tasks 12–21 `GraphState` → `Graph` → schema views → theme → demo → e2e → docs.
 3. **Task 22 — dbd consumes the package** (separate repo + PR). **The acceptance proof.** Linked
    workspace; publish only after it passes. Then slice 2 (force-directed), slice 3 (dbd#24).
