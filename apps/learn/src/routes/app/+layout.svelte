@@ -48,6 +48,8 @@
 	import ChartConversation from '$lib/koan/demos/chart/ChartConversation.svelte'
 	import ChartControls from '$lib/koan/demos/chart/ChartControls.svelte'
 	import SparklineConversation from '$lib/koan/demos/sparkline/SparklineConversation.svelte'
+	import GraphConversation from '$lib/koan/demos/graph/GraphConversation.svelte'
+	import GraphControls from '$lib/koan/demos/graph/GraphControls.svelte'
 	import SparklineControls from '$lib/koan/demos/sparkline/SparklineControls.svelte'
 	import DetailsSlab from '$lib/koan/components/DetailsSlab.svelte'
 	import type { DemoMeta } from '$lib/koan/types'
@@ -85,7 +87,7 @@
 
 	type DemoKind =
 		| 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts'
-		| 'form' | 'select' | 'chart' | 'sparkline' | 'combo' | 'date-picker' | 'stepper'
+		| 'form' | 'select' | 'chart' | 'sparkline' | 'graph' | 'combo' | 'date-picker' | 'stepper'
 		| 'button' | 'badge' | 'pill' | 'avatar' | 'divider' | 'message' | 'swatch'
 		| 'range' | 'rating' | 'switch' | 'toggle'
 		| 'breadcrumbs' | 'menu' | 'toolbar' | 'floating-action' | 'floating-navigation'
@@ -102,7 +104,7 @@
 	 */
 	const DEMO_KINDS = new Set<DemoKind>([
 		'theme-wizard', 'table', 'tree', 'multi-select', 'list', 'toasts',
-		'form', 'select', 'chart', 'sparkline', 'combo', 'date-picker', 'stepper'
+		'form', 'select', 'chart', 'sparkline', 'graph', 'combo', 'date-picker', 'stepper'
 	])
 
 	function pickDemoKind(query: string): DemoKind {
@@ -391,7 +393,11 @@
 	// Sparkline is likewise store-driven (no propsSchema) but surfaces its knobs
 	// via SparklineControls in the details slab — treat it as "has details".
 	const hasSparklineControls = $derived(shell.demoType === 'sparkline')
-	const showDetails = $derived(hasDetails || hasChartControls || hasSparklineControls)
+	// Graph is store-driven too — its knobs are GraphControls in the details slab.
+	const hasGraphControls = $derived(shell.demoType === 'graph')
+	const showDetails = $derived(
+		hasDetails || hasChartControls || hasSparklineControls || hasGraphControls
+	)
 
 	// The details slab is opt-in: the user clicks the icon on the
 	// composer to surface it (no layout disruption when closed). Reset
@@ -2137,6 +2143,8 @@ ${tabsTag}`
 				<ChartConversation />
 			{:else if shell.phase === 'response' && shell.demoType === 'sparkline'}
 				<SparklineConversation />
+			{:else if shell.phase === 'response' && shell.demoType === 'graph'}
+				<GraphConversation />
 			{/if}
 
 			{#if shell.phase === 'response' && showDetails && tweaksOpen && shell.demoType}
@@ -2145,6 +2153,8 @@ ${tabsTag}`
 						<ChartControls />
 					{:else if shell.demoType === 'sparkline'}
 						<SparklineControls />
+					{:else if shell.demoType === 'graph'}
+						<GraphControls />
 					{:else}
 						<DetailsSlab
 							demoId={shell.demoType}

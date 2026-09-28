@@ -24,6 +24,21 @@
 		CommandPalette
 	} from '@rokkit/ui'
 	import { BarChart, PieChart, LineChart, ScatterPlot, BoxPlot } from '@rokkit/chart'
+	import { Graph, GraphState } from '@rokkit/graph'
+	import { EntityView } from '@rokkit/graph/schema'
+	import { datasets } from '$lib/koan/demos/graph/datasets'
+
+	/* density 'full' so node titles, row names, row types AND badges are all present and
+	   measurable — at the default 'keys' most rows are hidden and the sweep would pass by
+	   simply having less text on the page. A selection is made so the selected/related/dim
+	   node states and the highlight/dim edge states are measured too. */
+	const graphState = new GraphState({
+		nodes: datasets.ecommerce.nodes,
+		edges: datasets.ecommerce.edges,
+		fields: datasets.ecommerce.fields,
+		density: 'full'
+	})
+	graphState.select('public.orders')
 
 	const style = $derived(page.url.searchParams.get('style') ?? 'zen-sumi')
 	const skin = $derived(page.url.searchParams.get('skin') ?? 'default')
@@ -281,6 +296,15 @@
 	<div data-gallery-comp="chart-box" class="cell">
 		<BoxPlot data={boxData} x="group" y="value" width={260} height={160} />
 	</div>
+
+	<!-- Graph at density full with a live selection, so titles, row names, row types, badges
+	     and every node/edge state are all on the page and measurable. -->
+	<div data-gallery-comp="graph" class="cell graph-cell">
+		<Graph state={graphState} />
+	</div>
+	<div data-gallery-comp="graph-entity" class="cell">
+		<EntityView state={graphState} />
+	</div>
 </div>
 
 <style>
@@ -288,6 +312,11 @@
 	:global(body) {
 		margin: 0;
 		padding: 0;
+	}
+	/* Graph's viewport fills its nearest positioned ancestor, so its cell needs a size. */
+	.graph-cell {
+		position: relative;
+		height: 320px;
 	}
 	.gallery {
 		background: var(--paper);

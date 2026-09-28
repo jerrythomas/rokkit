@@ -1,0 +1,36 @@
+/**
+ * The STATE layer's demo half.
+ *
+ * This holds only the explorer's own chrome — which dataset, which view, which control
+ * values. The package's `GraphState` holds everything derived from them, and is NOT
+ * reimplemented here. Keeping the two apart is the thing the demo is meant to show.
+ */
+
+import type { DatasetId } from './datasets'
+
+export type GraphViewId = 'diagram' | 'entity' | 'entities'
+export type LayoutId = 'cluster' | 'neighborhood'
+export type DensityId = 'names' | 'keys' | 'full'
+export type ArrangeId = 'untangle' | 'a-z'
+export type EdgeStyleId = 'curved' | 'orthogonal'
+export type ChannelId = 'color' | 'pattern'
+
+class GraphExplorerStore {
+	dataset = $state<DatasetId>('ecommerce')
+	view = $state<GraphViewId>('diagram')
+	layout = $state<LayoutId>('cluster')
+	density = $state<DensityId>('keys')
+	arrange = $state<ArrangeId>('untangle')
+	edgeStyle = $state<EdgeStyleId>('curved')
+	using = $state<ChannelId>('color')
+
+	/**
+	 * Switching dataset drops the selection: an id from the previous dataset names nothing in
+	 * the new one, which would leave the entity view empty with no visible reason why.
+	 */
+	selectDataset(id: DatasetId): void {
+		this.dataset = id
+	}
+}
+
+export const explorer = new GraphExplorerStore()

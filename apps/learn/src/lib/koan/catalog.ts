@@ -13,6 +13,7 @@ import form from './demos/form/meta'
 import select from './demos/select/meta'
 import chart from './demos/chart/meta'
 import sparkline from './demos/sparkline/meta'
+import graph from './demos/graph/meta'
 import combo from './demos/combo/meta'
 import datePicker from './demos/date-picker/meta'
 import stepper from './demos/stepper/meta'
@@ -70,6 +71,7 @@ export const catalog: DemoMeta[] = [
 	select,
 	chart,
 	sparkline,
+	graph,
 	combo,
 	datePicker,
 	stepper,
@@ -154,6 +156,7 @@ export const DEMO_ROUTE: Record<string, string> = {
 	select: '/app/select',
 	chart: '/app/chart',
 	sparkline: '/app/sparkline',
+	graph: '/app/graph',
 	combo: '/app/combo',
 	'date-picker': '/app/date',
 	stepper: '/app/stepper',

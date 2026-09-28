@@ -20,6 +20,7 @@ export type ShellDemoType =
 	| 'select'
 	| 'chart'
 	| 'sparkline'
+	| 'graph'
 	| 'combo'
 	| 'date-picker'
 	| 'stepper'

@@ -40,9 +40,12 @@ export const defaultGraphPreset: GraphPreset = {
 		enum: 'rose'
 	},
 	groups: ['blue', 'emerald', 'rose', 'amber', 'violet', 'sky', 'pink', 'teal'],
+	// The label shade is measured against the FILL shade, not against paper: the cluster label
+	// sits on the cluster. 700-on-100 came out at 3.63:1 for green — under the 4.5 text bar —
+	// so the label sits two more steps away from its own background.
 	shades: {
-		light: { fill: '100', stroke: '400', label: '700' },
-		dark: { fill: '900', stroke: '600', label: '200' }
+		light: { fill: '100', stroke: '400', label: '900' },
+		dark: { fill: '900', stroke: '600', label: '100' }
 	},
 	patterns: ['diagonal', 'dots', 'triangles', 'hatch', 'lattice', 'swell', 'checkerboard', 'waves'],
 	using: 'color'

@@ -54,6 +54,7 @@
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
         "@rokkit/forms": "workspace:latest",
+        "@rokkit/graph": "workspace:latest",
         "@rokkit/icons": "workspace:latest",
         "@rokkit/states": "workspace:latest",
         "@rokkit/themes": "workspace:latest",
