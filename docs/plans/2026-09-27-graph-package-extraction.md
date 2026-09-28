@@ -371,10 +371,13 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
 }
 ```
 
-`packages/graph/src/index.ts` (placeholder barrel, filled by later tasks):
+`packages/graph/src/index.ts` — a placeholder barrel, filled from Task 3 onward. It must not
+reference `./types.js` yet: that file does not exist until Task 3, and an unresolvable specifier
+fails `check:types` and `svelte-check` for the two tasks in between.
 
 ```ts
-export {} from './types.js'
+// Public surface for `@rokkit/graph`. Populated by Tasks 3-13.
+export {}
 ```
 
 `packages/graph/README.md`:
@@ -426,7 +429,13 @@ to include `packages/graph`:
 - [ ] **Step 6: Install and run the test to verify it passes**
 
 Run: `bun install && bun run test:ci --project graph`
-Expected: PASS — 3 tests in `spec/dependencies.spec.js`.
+Expected: PASS — 5 tests in `spec/dependencies.spec.js`.
+
+Then confirm the new package does not break the repo-wide gates, since Step 5 just added it to
+`check:svelte` and a package with a near-empty `src/` is exactly where that goes wrong:
+
+Run: `bun run check:types && bun run check:svelte`
+Expected: 0 errors from `packages/graph`.
 
 - [ ] **Step 7: Commit**
 
