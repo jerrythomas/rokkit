@@ -37,6 +37,7 @@
 		zoom = $bindable(1),
 		zoomable = true,
 		densityToggle = true,
+		arrows = true,
 		label = undefined,
 		onselect = undefined,
 		icons: userIcons = undefined,
@@ -100,6 +101,17 @@
 	let paper = $state<HTMLElement | null>(null)
 
 	const clampZoom = (value: number) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, value))
+
+	/**
+	 * Writes the STATE, then mirrors into the bindable prop. Both halves matter: the state is
+	 * what renders (and may be caller-supplied, where the prop never reaches it), and the
+	 * prop is what a `bind:density` consumer observes — without the mirror its own effect
+	 * would re-apply the stale value and undo the click.
+	 */
+	function setDensity(next: typeof density) {
+		graph.setDensity(next)
+		density = next
+	}
 
 	function zoomBy(factor: number) {
 		zoom = clampZoom(zoom * factor)
@@ -227,7 +239,20 @@
 				<g data-graph-edge data-edge-kind={edge.kind} data-edge-state={graph.edgeState(edge)}>
 					<path d={graph.edgePath(edge)} />
 					<circle data-graph-edge-dot="from" cx={edge.x1} cy={edge.y1} r="3.2" />
-					<circle data-graph-edge-dot="to" cx={edge.x2} cy={edge.y2} r="3.2" />
+					{#if arrows}
+						<!-- An edge HAS a direction — source to target — and two identical dots threw
+						     that away. The tangent of both path shapes is horizontal at the endpoint,
+						     so the heading is just the side the curve arrives from: -s2. No angle
+						     maths, and it stays correct for a self-loop. -->
+						{@const d = -edge.s2}
+						<polygon
+							data-graph-edge-arrow
+							points="{edge.x2},{edge.y2} {edge.x2 - d * 9},{edge.y2 - 4.5} {edge.x2 -
+								d * 9},{edge.y2 + 4.5}"
+						/>
+					{:else}
+						<circle data-graph-edge-dot="to" cx={edge.x2} cy={edge.y2} r="3.2" />
+					{/if}
 				</g>
 			{/each}
 		</svg>
@@ -299,10 +324,10 @@
 				<button
 					type="button"
 					data-graph-density={value}
-					data-selected={density === value ? '' : undefined}
-					aria-pressed={density === value}
+					data-selected={graph.density === value ? '' : undefined}
+					aria-pressed={graph.density === value}
 					{title}
-					onclick={() => (density = value as typeof density)}>{short}</button
+					onclick={() => setDensity(value as typeof density)}>{short}</button
 				>
 			{/each}
 		</div>

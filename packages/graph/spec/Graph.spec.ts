@@ -299,6 +299,47 @@ describe('Graph — accessibility and construction', () => {
 		expect(container.querySelector('[data-graph-density="keys"][data-selected]')).not.toBeNull()
 	})
 
+	it('draws a directional arrowhead at the target, not a second anchor dot', () => {
+		// An edge is directed; two identical dots discarded that.
+		const { container } = render(Graph, { state: state() })
+
+		expect(container.querySelector('[data-graph-edge-arrow]')).not.toBeNull()
+		expect(container.querySelector('[data-graph-edge-dot="to"]')).toBeNull()
+		expect(container.querySelector('[data-graph-edge-dot="from"]')).not.toBeNull()
+	})
+
+	it('points the arrowhead against the side the curve arrives from', () => {
+		// Heading is -s2, so a target approached on its left (-1) points right and vice
+		// versa. A fixed direction would have every arrow right on half the diagram.
+		const s = state()
+		const { container } = render(Graph, { state: s })
+		const edge = s.routedEdges[0]
+		const points = container.querySelector('[data-graph-edge-arrow]')?.getAttribute('points')
+		const tailX = edge.x2 - -edge.s2 * 9
+
+		expect(points).toContain(`${edge.x2},${edge.y2}`)
+		expect(points).toContain(`${tailX},`)
+	})
+
+	it('falls back to an anchor dot when arrows are off', () => {
+		const { container } = render(Graph, { state: state(), arrows: false })
+
+		expect(container.querySelector('[data-graph-edge-arrow]')).toBeNull()
+		expect(container.querySelector('[data-graph-edge-dot="to"]')).not.toBeNull()
+	})
+
+	it('the density toggle drives a CALLER-SUPPLIED state, not just its own prop', () => {
+		// `density` as a prop only ever reaches the state Graph owns. With a shared state —
+		// which is how all three views compose — a control that set the prop would render,
+		// click, and change nothing at all.
+		const s = state({ density: 'names' })
+		const { container } = render(Graph, { state: s })
+
+		;(container.querySelector('[data-graph-density="full"]') as HTMLElement).click()
+
+		expect(s.density).toBe('full')
+	})
+
 	it('renders zoom controls on the canvas', () => {
 		// On the canvas, not in a host app's settings drawer — a zoom control a reader has to
 		// go looking for is one they never find.

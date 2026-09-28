@@ -84,6 +84,11 @@ export type GraphProps = {
 	zoomable?: boolean
 	/** Built-in names/keys/all detail toggle on the canvas. Default true. */
 	densityToggle?: boolean
+	/**
+	 * Draw an arrowhead at each edge's target instead of a plain anchor dot. Default true —
+	 * an edge is directed, and two identical dots discard that.
+	 */
+	arrows?: boolean
 	label?: string
 	onselect?: (id: string) => void
 	/** Icon class per node kind and row badge, merged over the built-in map. */

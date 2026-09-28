@@ -253,6 +253,17 @@ export class GraphState {
 		return this.#expanded.has(id)
 	}
 
+	/**
+	 * Change the detail level from inside the component.
+	 *
+	 * Needed because `Graph`'s `density` PROP only ever reaches the state it owns. With a
+	 * caller-supplied state — which is how all three views share one — a control that set the
+	 * prop would render, click, and change nothing.
+	 */
+	setDensity(density: Density): void {
+		this.#density = density
+	}
+
 	// ─── per-item lookups the templates need ───────────────────────────────────
 	nodeState(id: string): 'selected' | 'related' | 'dim' | null {
 		if (!this.#value) return null

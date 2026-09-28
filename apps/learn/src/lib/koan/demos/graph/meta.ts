@@ -97,7 +97,8 @@ const meta: DemoMeta = {
 			{ selector: '[data-graph-edge]', desc: 'Routed edge group' },
 			{ selector: '[data-edge-kind]', desc: 'reference | dependency — dependency renders dashed' },
 			{ selector: '[data-edge-state]', desc: 'highlight | dim' },
-			{ selector: '[data-graph-edge-dot]', desc: 'from | to endpoint dot' },
+			{ selector: '[data-graph-edge-dot]', desc: 'Source anchor dot (and the target anchor when arrows are off)' },
+			{ selector: '[data-graph-edge-arrow]', desc: 'Directional arrowhead at the edge target' },
 			// Schema views
 			{ selector: '[data-graph-entity]', desc: 'EntityView root' },
 			{ selector: '[data-graph-entity-head]', desc: 'Entity header' },

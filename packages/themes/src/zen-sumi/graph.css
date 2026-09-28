@@ -122,11 +122,13 @@
   stroke: var(--graph-edge, var(--paper-edge));
 }
 
-[data-style='zen-sumi'] [data-graph-edge] [data-graph-edge-dot] {
+[data-style='zen-sumi'] [data-graph-edge] [data-graph-edge-dot],
+[data-style='zen-sumi'] [data-graph-edge] [data-graph-edge-arrow] {
   fill: var(--graph-edge, var(--paper-edge));
 }
 
 [data-style='zen-sumi'] [data-edge-state='highlight'] path,
+[data-style='zen-sumi'] [data-edge-state='highlight'] [data-graph-edge-arrow],
 [data-style='zen-sumi'] [data-edge-state='highlight'] [data-graph-edge-dot] {
   --graph-edge: var(--primary);
 }
@@ -224,6 +226,25 @@
 
 /* ─── zoom controls ─────────────────────────────────────────────────────── */
 
+[data-style='zen-sumi'] [data-graph-density-controls] {
+  background-color: var(--paper-soft);
+  border-color: var(--paper-edge);
+}
+
+[data-style='zen-sumi'] [data-graph-density-controls] button {
+  background-color: transparent;
+  color: var(--ink);
+}
+
+[data-style='zen-sumi'] [data-graph-density-controls] button[data-selected] {
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+[data-style='zen-sumi'] [data-graph-density-controls] button:hover:not([data-selected]) {
+  background-color: var(--paper-mute);
+}
+
 [data-style='zen-sumi'] [data-graph-zoom-controls] {
   background-color: var(--paper);
   border-color: var(--paper-mute);
@@ -250,4 +271,11 @@
 [data-style='zen-sumi'] [data-graph-more]:hover,
 [data-style='zen-sumi'] [data-graph-more]:focus-visible {
   background-color: var(--paper-mute);
+}
+
+/* A dot's label floats over the canvas and over other dots, so it carries a surface. */
+[data-style='zen-sumi'] [data-graph-layout='points'] [data-graph-node-title] {
+  background-color: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--paper-edge);
 }

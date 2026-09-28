@@ -36,6 +36,33 @@
   user-select: none;
 }
 
+[data-graph-density-controls] {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 1;
+  display: flex;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+[data-graph-density-controls] button {
+  min-width: 2.5rem;
+  padding: 0.25rem 0.5rem;
+  font: inherit;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  border: 0;
+  cursor: pointer;
+}
+
+/* A dot has no rows, so the detail toggle would have nothing to toggle. */
+[data-graph-viewport]:has([data-graph-layout='points']) [data-graph-density-controls] {
+  display: none;
+}
+
 [data-graph-zoom-controls] {
   position: absolute;
   right: 0.75rem;
@@ -82,31 +109,59 @@
   justify-content: center;
 }
 
+/* The more-row is hidden outright. A dot has no rows to reveal, so "+2 more" was not just
+   useless — it was the ONLY text on the dot, sitting exactly where the name belongs. */
 [data-graph-layout='points'] [data-graph-node-icon],
 [data-graph-layout='points'] [data-graph-node-count],
-[data-graph-layout='points'] [data-graph-node-title] {
+[data-graph-layout='points'] [data-graph-more] {
   display: none;
 }
 
-/* The name on hover or keyboard focus — the only way to read a dot. */
+/* Zoomed in, the label is just THERE, beneath its dot. Hover-only is a poor deal when
+   there is room to read: it hides what you came for and makes you sweep for it. It stays
+   the fallback for the tiers where a label genuinely cannot fit. */
+[data-graph-layout='points'] [data-graph-node-title] {
+  display: none;
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 50%;
+  z-index: 2;
+  max-width: 14ch;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+[data-graph-detail='full'] [data-graph-layout='points'] [data-graph-node-title],
+[data-graph-detail='compact'] [data-graph-layout='points'] [data-graph-node-title] {
+  display: block;
+}
+
+/* Below that, hover or keyboard focus brings it back — counter-scaled, since at those
+   tiers a label drawn at the card's scale is exactly as unreadable as the hidden one. */
 [data-graph-layout='points'] [data-graph-node]:hover [data-graph-node-title],
 [data-graph-layout='points'] [data-graph-node]:focus-visible [data-graph-node-title] {
   display: block;
-  position: absolute;
-  bottom: calc(100% + 4px);
-  left: 50%;
-  z-index: 2;
-  padding: 2px 6px;
-  border-radius: 3px;
+  z-index: 3;
+  max-width: none;
   font-size: 12px;
-  white-space: nowrap;
-  pointer-events: none;
   transform: translateX(-50%) scale(var(--graph-label-counter-scale, 2));
-  transform-origin: 50% 100%;
+  transform-origin: 50% 0;
 }
 
 [data-graph-layout='points'] [data-graph-cluster] {
   border-radius: 50%;
+}
+
+/* A hovered dot lifts above its neighbours so its label is not overlapped by them. */
+[data-graph-layout='points'] [data-graph-node]:hover,
+[data-graph-layout='points'] [data-graph-node]:focus-visible {
+  z-index: 2;
 }
 
 /* ─── level of detail ───────────────────────────────────────────────────────
@@ -315,6 +370,10 @@
 }
 
 [data-graph-edge-dot] {
+  stroke: none;
+}
+
+[data-graph-edge-arrow] {
   stroke: none;
 }
 

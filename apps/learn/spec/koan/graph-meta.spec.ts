@@ -16,7 +16,12 @@ const css = ['base', 'rokkit']
  * `data-style` is the theme's own scoping attribute — it prefixes every rule in every
  * rokkit/*.css and is not a component hook, so it is not part of the override contract.
  */
-const NOT_A_HOOK = new Set(['data-style'])
+const NOT_A_HOOK = new Set([
+	'data-style',
+	// A generic selected-state marker shared across the design system's controls, not a
+	// graph-specific hook — documenting it here would imply it is ours.
+	'data-selected'
+])
 
 describe('graph demo meta', () => {
 	it('publishes every data-attribute the theme CSS targets', () => {
