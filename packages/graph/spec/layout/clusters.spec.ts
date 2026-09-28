@@ -277,6 +277,12 @@ describe('flow', () => {
 		expect(size).toEqual({ w: 2060, h: 320 })
 	})
 
+	it('reports a zero canvas for no clusters rather than -Infinity', () => {
+		// New: `Math.max(...[])` is -Infinity, so the unguarded size was -Infinity + 60. An
+		// empty model has no canvas, not a backwards one.
+		expect(flow([], {})).toEqual({ w: 0, h: 0 })
+	})
+
 	it('treats a cluster with no packed positions as placeable', () => {
 		// New: `pos` is optional on Cluster, and flow is called on clusters that have not
 		// been packed (orderClusters can hand back an unpacked cluster). It must place the

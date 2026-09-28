@@ -205,6 +205,10 @@ function placeCluster(c: Cluster, cursor: FlowCursor, cards: Cards): void {
 
 /** Flow clusters into rows (wrapping at MAX_ROW_W), place each card, return canvas size. */
 export function flow(clusters: Cluster[], cards: Cards): Size {
+	// `Math.max(...[])` is -Infinity, which would report a canvas of -Infinity + 60 and render
+	// as an SVG with a negative viewBox. An empty model has no canvas, not a backwards one.
+	if (clusters.length === 0) return { w: 0, h: 0 }
+
 	const cursor: FlowCursor = { x: 0, y: 0, rowH: 0 }
 	for (const c of clusters) placeCluster(c, cursor, cards)
 
