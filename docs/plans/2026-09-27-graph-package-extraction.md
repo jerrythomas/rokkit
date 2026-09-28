@@ -196,7 +196,7 @@ Plus, outside the package:
   `packages/graph/src/index.ts`, `packages/graph/spec/setup.js`
 - Modify: `vitest.config.ts`, `package.json`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/graph/spec/dependencies.spec.js`:
 
@@ -253,12 +253,12 @@ describe('@rokkit/graph — manifest', () => {
 })
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — no `graph` project exists yet ("No test files found").
 
-- [ ] **Step 3: Create the manifest**
+- [x] **Step 3: Create the manifest**
 
 `packages/graph/package.json`:
 
@@ -394,7 +394,7 @@ layouts, plus schema/ER views built on top.
 See `docs/design/23-graph.md`.
 ```
 
-- [ ] **Step 4: Register the vitest project**
+- [x] **Step 4: Register the vitest project**
 
 In `vitest.config.ts`, add to the `projects` array immediately after the `forms` entry:
 
@@ -416,7 +416,7 @@ In the same file's `coverage.thresholds`, add after the `packages/forms` entries
 				'packages/graph/**/*.svelte': { statements: 90, lines: 90 },
 ```
 
-- [ ] **Step 5: Add the package to `check:svelte`**
+- [x] **Step 5: Add the package to `check:svelte`**
 
 In root `package.json`, change the `check:svelte` script's package list from
 `packages/ui packages/app packages/chart packages/forms packages/blocks apps/learn`
@@ -426,7 +426,7 @@ to include `packages/graph`:
     "check:svelte": "for d in packages/ui packages/app packages/chart packages/forms packages/blocks packages/graph apps/learn; do echo \"→ svelte-check ${d}\"; (cd \"${d}\" && bun run check) || exit 1; done",
 ```
 
-- [ ] **Step 6: Install and run the test to verify it passes**
+- [x] **Step 6: Install and run the test to verify it passes**
 
 Run: `bun install && bun run test:ci --project graph`
 Expected: PASS — 5 tests in `spec/dependencies.spec.js`.
@@ -437,7 +437,7 @@ Then confirm the new package does not break the repo-wide gates, since Step 5 ju
 Run: `bun run check:types && bun run check:svelte`
 Expected: 0 errors from `packages/graph`.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add packages/graph vitest.config.ts package.json bun.lock
@@ -682,7 +682,7 @@ pairs across the move to prove it didn't."
 - Create: `packages/graph/src/types.ts`, `packages/graph/src/model/path.ts`,
   `packages/graph/spec/path.spec.ts`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/graph/spec/path.spec.ts`:
 
@@ -724,12 +724,12 @@ describe('readPath', () => {
 })
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 Run: `bun run test:ci --project graph`
 Expected: FAIL — `Cannot find module '../src/model/path.js'`.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 Create `packages/graph/src/model/path.ts`:
 
@@ -847,12 +847,12 @@ export type GraphFields = {
 }
 ```
 
-- [ ] **Step 4: Run to verify it passes**
+- [x] **Step 4: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
 Expected: PASS — 7 `readPath` tests plus the 3 manifest tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/graph/src/types.ts packages/graph/src/model/path.ts packages/graph/spec/path.spec.ts
