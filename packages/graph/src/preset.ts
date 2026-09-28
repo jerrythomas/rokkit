@@ -12,9 +12,16 @@ export type GraphChannel = 'color' | 'pattern'
 
 export type GraphShades = { fill: string; stroke: string; label: string }
 
+/*
+ * Node KINDS are deliberately absent from this type. The design splits the two
+ * vocabularies: a kind is a closed set known at build time, so it is themed in pure CSS
+ * (`[data-node-kind='table'] { --node-accent: … }`) with a rule per style. A group name is
+ * open-ended and cannot be pre-written, which is the entire reason this preset exists.
+ *
+ * An earlier draft carried a `kinds` map here. Nothing ever read it — config that looks
+ * live and silently does nothing is worse than no config at all.
+ */
 export type GraphPreset = {
-	/** Palette family per KNOWN node kind. Kinds are also themeable in pure CSS. */
-	kinds: Record<string, string>
 	/** Ordered ramp assigned to open-ended group names, wrapping when exhausted. */
 	groups: string[]
 	shades: { light: GraphShades; dark: GraphShades }
@@ -31,14 +38,6 @@ export type GraphPreset = {
  * chart's order, so a graph and a chart on one page differentiate alike.
  */
 export const defaultGraphPreset: GraphPreset = {
-	kinds: {
-		table: 'blue',
-		view: 'emerald',
-		matview: 'teal',
-		function: 'amber',
-		procedure: 'violet',
-		enum: 'rose'
-	},
 	groups: ['blue', 'emerald', 'rose', 'amber', 'violet', 'sky', 'pink', 'teal'],
 	// The label shade is measured against the FILL shade, not against paper: the cluster label
 	// sits on the cluster. 700-on-100 came out at 3.63:1 for green — under the 4.5 text bar —
@@ -55,7 +54,6 @@ export function createGraphPreset(overrides: Partial<GraphPreset> = {}): GraphPr
 	return {
 		...defaultGraphPreset,
 		...overrides,
-		kinds: { ...defaultGraphPreset.kinds, ...overrides.kinds },
 		shades: {
 			light: { ...defaultGraphPreset.shades.light, ...overrides.shades?.light },
 			dark: { ...defaultGraphPreset.shades.dark, ...overrides.shades?.dark }

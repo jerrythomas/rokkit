@@ -4,6 +4,20 @@ import { join } from 'node:path'
 
 const read = (p) => readFileSync(join(process.cwd(), 'packages/themes/src', p), 'utf-8')
 
+/**
+ * The file with comments stripped. Rule-level guards below match on declarations, and a
+ * comment that merely *describes* a property ("the utility sets background-color") would
+ * otherwise read as the property itself.
+ */
+const declarations = (p) => read(p).replace(/\/\*[\s\S]*?\*\//g, '')
+
+/**
+ * Every style that ships a graph. The colour rules below run against ALL of them: each
+ * style is self-contained (zen-sumi imports its own component CSS, never rokkit's), so a
+ * guard that only checked rokkit would let the same contrast bug ship four more times.
+ */
+const STYLES = ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']
+
 /** Rules mentioning `selector`, split on `}` so a multi-line rule stays intact. */
 const rulesFor = (file, selector) =>
 	read(file)
@@ -11,9 +25,65 @@ const rulesFor = (file, selector) =>
 		.filter((rule) => rule.includes(selector))
 
 describe('graph theme CSS', () => {
-	it('is imported by both index files', () => {
+	it('is imported by base and by every style', () => {
 		expect(read('base/index.css')).toContain('graph.css')
-		expect(read('rokkit/index.css')).toContain('graph.css')
+		for (const style of STYLES) {
+			expect(read(`${style}/index.css`), style).toContain('graph.css')
+		}
+	})
+
+	it.each(STYLES)('%s styles every node kind the preset names', (style) => {
+		const css = read(`${style}/graph.css`)
+
+		for (const kind of ['table', 'view', 'matview', 'function', 'procedure', 'enum']) {
+			expect(css, `${style} / ${kind}`).toContain(`[data-node-kind='${kind}']`)
+		}
+	})
+
+	it.each(STYLES)('%s never uses a brand colour as a FOREGROUND colour', (style) => {
+		// The 500 sits around 2.4:1 on paper, so `color: var(--primary)` fails WCAG AA as text
+		// wherever it lands. Measured at 2.39:1 on the rokkit relationship label before this
+		// rule existed; the other four styles were written against it from the start.
+		const offenders = declarations(`${style}/graph.css`)
+			.split('}')
+			.filter((rule) =>
+				/(^|[;{\s])color:\s*var\(--(primary|accent|success|warning|danger|error|info)\b/.test(rule)
+			)
+
+		expect(offenders, style).toEqual([])
+	})
+
+	it.each(STYLES)('%s pairs a primary fill with its auto on-color', (style) => {
+		const rules = read(`${style}/graph.css`)
+			.split('}')
+			.filter((rule) => /background-color:\s*var\(--primary\)/.test(rule))
+
+		expect(rules.length, style).toBeGreaterThan(0)
+		for (const rule of rules) expect(rule, style).toMatch(/color:\s*var\(--on-primary\)/)
+	})
+
+	it.each(STYLES)('%s colours the icon badge rather than filling it', (style) => {
+		// Inside a node card the badge is a masked icon whose UnoCSS utility sets
+		// `background-color: currentColor`, so a chip fill never lands — it measured 1.02:1,
+		// near-black on near-black, when rokkit tried it.
+		const rules = declarations(`${style}/graph.css`)
+			.split('}')
+			.filter((rule) => rule.includes('[data-graph-row] [data-row-badge]'))
+
+		expect(rules.length, style).toBeGreaterThan(0)
+		for (const rule of rules) expect(rule, style).not.toMatch(/background-color/)
+	})
+
+	it.each(STYLES)('%s gives every --group-* read a named-token fallback', (style) => {
+		// resolveGroupStyles only sets --group-* for nodes that HAVE a group, so an ungrouped
+		// graph would otherwise paint with an empty value and render invisible.
+		const css = read(`${style}/graph.css`)
+
+		for (const prop of ['--group-fill', '--group-stroke', '--group-label']) {
+			const uses = css.match(new RegExp(`var\\(${prop}[^)]*\\)`, 'g')) ?? []
+			expect(uses.length, `${style} / ${prop}`).toBeGreaterThan(0)
+			for (const use of uses) expect(use, `${style} / ${prop} needs a fallback`).toContain(',')
+		}
 	})
 
 	// A colour token or literal in base/ bleeds into every style and makes a missing theme

@@ -1,0 +1,205 @@
+/**
+ * Graph - Minimal Theme Styles
+ *
+ * Clean and flat: paper-edge borders, one soft shadow to lift a card off the canvas,
+ * no decoration beyond that.
+ *
+ * Colour only; structure lives in base/graph.css.
+ *
+ * Contrast rules carried over from the gates, not from taste:
+ *  - A brand token (primary/accent/success/…) is a FILL or a BORDER, never a
+ *    foreground. The 500 sits around 2.4:1 on paper.
+ *  - Inside a node card the row badge is a masked icon whose utility owns
+ *    `background-color`, so the glyph's own colour has to carry contrast. Only the
+ *    entity panel's text badges can be chips.
+ *  - Every `--group-*` read carries a named-token fallback: resolveGroupStyles sets
+ *    those only for nodes that have a group.
+ */
+
+[data-style='minimal'] [data-graph-paper] {
+  background-color: var(--paper);
+  --graph-paper-color: var(--paper-mute);
+}
+
+/* ─── clusters ──────────────────────────────────────────────────────────── */
+
+[data-style='minimal'] [data-graph-cluster] {
+  background-color: var(--group-fill, var(--paper-soft));
+  border-color: var(--group-stroke, var(--paper-edge));
+}
+
+[data-style='minimal'] [data-graph-cluster-label] {
+  color: var(--group-label, var(--ink));
+}
+
+/* ─── node cards ────────────────────────────────────────────────────────── */
+
+[data-style='minimal'] [data-graph-node] {
+  background-color: var(--paper-soft);
+  border-color: var(--paper-edge);
+  color: var(--ink);
+  box-shadow: 0 1px 2px 0 var(--shadow-tint);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+[data-style='minimal'] [data-graph-node-head] {
+  background-color: var(--paper);
+  border-bottom-color: var(--node-accent, var(--paper-edge));
+}
+
+[data-style='minimal'] [data-graph-node-title],
+[data-style='minimal'] [data-graph-node-count],
+[data-style='minimal'] [data-graph-more],
+[data-style='minimal'] [data-graph-node-icon],
+[data-style='minimal'] [data-graph-row-name] {
+  color: var(--ink);
+}
+
+[data-style='minimal'] [data-graph-row-type] {
+  color: var(--ink-mute);
+}
+
+[data-style='minimal'] [data-graph-node]:hover {
+  border-color: var(--ink-soft);
+  box-shadow: 0 1px 3px 0 var(--shadow-tint);
+}
+
+/* ─── row badges ────────────────────────────────────────────────────────── */
+
+[data-style='minimal'] [data-graph-row] [data-row-badge] {
+  color: var(--ink);
+}
+
+[data-style='minimal'] [data-graph-column-badges] [data-row-badge] {
+  background-color: var(--paper-mute);
+  color: var(--ink);
+}
+
+[data-style='minimal'] [data-graph-column-badges] [data-row-badge='pk'] {
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+/* ─── selection ─────────────────────────────────────────────────────────── */
+
+[data-style='minimal'] [data-node-state='selected'] {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+
+[data-style='minimal'] [data-node-state='related'] {
+  border-color: var(--accent);
+}
+
+[data-style='minimal'] [data-node-state='dim'] {
+  opacity: 0.35;
+}
+
+/* ─── edges ─────────────────────────────────────────────────────────────── */
+
+[data-style='minimal'] [data-graph-edge] path {
+  stroke: var(--graph-edge, var(--paper-edge));
+}
+
+[data-style='minimal'] [data-graph-edge] [data-graph-edge-dot] {
+  fill: var(--graph-edge, var(--paper-edge));
+}
+
+[data-style='minimal'] [data-edge-state='highlight'] path,
+[data-style='minimal'] [data-edge-state='highlight'] [data-graph-edge-dot] {
+  --graph-edge: var(--primary);
+  stroke-width: 1.75;
+}
+
+[data-style='minimal'] [data-edge-state='dim'] {
+  opacity: 0.25;
+}
+
+[data-style='minimal'] [data-edge-kind='dependency'] path {
+  stroke-dasharray: 5 4;
+}
+
+/* ─── node kinds ────────────────────────────────────────────────────────── */
+
+[data-style='minimal'] [data-node-kind='table'] {
+  --node-accent: var(--primary);
+}
+
+[data-style='minimal'] [data-node-kind='view'] {
+  --node-accent: var(--success);
+}
+
+[data-style='minimal'] [data-node-kind='matview'] {
+  --node-accent: var(--info);
+}
+
+[data-style='minimal'] [data-node-kind='function'] {
+  --node-accent: var(--warning);
+}
+
+[data-style='minimal'] [data-node-kind='procedure'] {
+  --node-accent: var(--accent);
+}
+
+[data-style='minimal'] [data-node-kind='enum'] {
+  --node-accent: var(--danger);
+}
+
+/* ─── schema views ──────────────────────────────────────────────────────── */
+
+[data-style='minimal'] [data-graph-entity] {
+  color: var(--ink);
+}
+
+[data-style='minimal'] [data-graph-entity-group],
+[data-style='minimal'] [data-graph-section-title],
+[data-style='minimal'] [data-graph-column-size],
+[data-style='minimal'] [data-graph-column-note],
+[data-style='minimal'] [data-graph-column-type],
+[data-style='minimal'] [data-graph-index-name] {
+  color: var(--ink-mute);
+}
+
+[data-style='minimal'] [data-graph-entity-kind] {
+  color: var(--ink);
+}
+
+[data-style='minimal'] [data-graph-column],
+[data-style='minimal'] [data-graph-index],
+[data-style='minimal'] [data-graph-relationship] {
+  border-bottom-color: var(--paper-edge);
+}
+
+[data-style='minimal'] [data-graph-index-unique] {
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+[data-style='minimal'] [data-graph-relationship] {
+  color: var(--ink);
+}
+
+[data-style='minimal'] [data-graph-relationship]:hover {
+  background-color: var(--paper-mute);
+}
+
+[data-style='minimal'] [data-graph-relationship-label] {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+[data-style='minimal'] [data-graph-relationship-action],
+[data-style='minimal'] [data-graph-relationships-empty] {
+  color: var(--ink);
+}
+
+[data-style='minimal'] [data-graph-note] {
+  color: var(--ink-mute);
+}
+
+[data-style='minimal'] [data-graph-note-code] {
+  background-color: var(--paper-mute);
+  color: var(--ink);
+}

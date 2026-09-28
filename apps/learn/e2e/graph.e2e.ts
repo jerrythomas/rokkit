@@ -61,24 +61,43 @@ test.describe('graph demo', () => {
 		}
 	})
 
-	test('the rokkit theme tells the node kinds apart', async ({ page }) => {
-		// Pinned to rokkit: slice 1 ships graph.css for `base` and `rokkit` only, and each style
-		// in this repo is self-contained (zen-sumi imports its own component CSS, never rokkit's).
-		// The app defaults to zen-sumi, where graph has structure but no colour — so running this
-		// unpinned would assert the gap rather than the theme.
-		await setStyle(page, 'rokkit')
+	// Every style ships its own graph.css — each is self-contained, so a style with none
+	// would render structure and no colour at all. Swept per style rather than pinned to one.
+	for (const style of ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi'] as const) {
+		test(`the ${style} theme tells the node kinds apart`, async ({ page }) => {
+			await setStyle(page, style)
 
-		const accents = new Set<string>()
-		for (const kind of ['table', 'view', 'matview', 'function', 'procedure', 'enum']) {
-			const node = page.locator(`[data-graph-node][data-node-kind="${kind}"]`).first()
-			accents.add(
-				await node.evaluate((el) => getComputedStyle(el).getPropertyValue('--node-accent').trim())
-			)
-		}
+			const accents = new Set<string>()
+			for (const kind of ['table', 'view', 'matview', 'function', 'procedure', 'enum']) {
+				const node = page.locator(`[data-graph-node][data-node-kind="${kind}"]`).first()
+				accents.add(
+					await node.evaluate((el) =>
+						getComputedStyle(el).getPropertyValue('--node-accent').trim()
+					)
+				)
+			}
 
-		// Rendered is not enough — the theme must actually distinguish them.
-		expect(accents.size).toBeGreaterThan(1)
-	})
+			// Rendered is not enough — the theme must actually distinguish them. zen-sumi is
+			// deliberately the narrowest (single accent, ink tones elsewhere), so 1 would mean
+			// the stylesheet never loaded rather than a deliberate choice.
+			expect(accents.size, style).toBeGreaterThan(1)
+		})
+
+		test(`the ${style} theme paints the node card`, async ({ page }) => {
+			// The failure this catches is a MISSING stylesheet: without one, the card keeps the
+			// base structure and falls back to a transparent background, which reads as "looks
+			// a bit plain" rather than as an error.
+			await setStyle(page, style)
+
+			const background = await page
+				.locator('[data-graph-node]')
+				.first()
+				.evaluate((el) => getComputedStyle(el).backgroundColor)
+
+			expect(background, style).not.toBe('rgba(0, 0, 0, 0)')
+			expect(background, style).not.toBe('transparent')
+		})
+	}
 
 	test('differentiating by pattern sets a pattern instead of a group fill', async ({ page }) => {
 		await openControls(page)
@@ -139,17 +158,23 @@ test.describe('graph demo', () => {
 	test('a one-rule data-node-kind override actually changes the rendered colour', async ({
 		page
 	}) => {
-		// The docs demonstrate the SYNTAX; this proves the mechanism.
+		// The docs demonstrate the SYNTAX; this proves the mechanism — including the
+		// specificity, which is the part a consumer gets wrong. Each style scopes its rules
+		// under [data-style], so a bare `[data-node-kind='table']` is (0,1,1) against the
+		// theme's (0,2,0) and silently loses. The documented snippet matches it.
 		const table = page.locator('[data-graph-node][data-node-kind="table"]').first()
 		const read = () =>
 			table.evaluate((el) => getComputedStyle(el).getPropertyValue('--node-accent').trim())
 
 		const before = await read()
-		await page.addStyleTag({ content: "[data-node-kind='table'] { --node-accent: rgb(1, 2, 3); }" })
 
-		const after = await read()
-		expect(after).toBe('rgb(1, 2, 3)')
-		expect(after).not.toBe(before)
+		await page.addStyleTag({ content: "[data-node-kind='table'] { --node-accent: rgb(1, 2, 3); }" })
+		expect(await read(), 'an under-specific override must NOT win').toBe(before)
+
+		await page.addStyleTag({
+			content: "[data-style] [data-node-kind='table'] { --node-accent: rgb(1, 2, 3); }"
+		})
+		expect(await read()).toBe('rgb(1, 2, 3)')
 	})
 
 	test('the entity table is keyboard reachable and drives the entity view', async ({ page }) => {

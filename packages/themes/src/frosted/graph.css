@@ -1,0 +1,216 @@
+/**
+ * Graph - Frosted Glass Theme Styles
+ *
+ * Liquid frosted glass: milky translucent surfaces, a specular top-edge shine, deep
+ * backdrop blur.
+ *
+ * Colour only; structure lives in base/graph.css.
+ *
+ * Two things this style has to be careful about that the opaque styles do not:
+ *  - a translucent card lets the canvas through, so text sits on an UNKNOWN
+ *    background. Every label here is `--ink`, not `--ink-mute`, because the
+ *    effective contrast is whatever happens to be behind the glass.
+ *  - the cluster fill is the one place a `--group-*` colour shows through, so it is
+ *    mixed down rather than used at full strength, keeping card text readable over it.
+ *
+ * Contrast rules carried over from the gates:
+ *  - A brand token is a FILL or a BORDER, never a foreground.
+ *  - Inside a node card the row badge is a masked icon whose utility owns
+ *    `background-color`; only the entity panel's text badges can be chips.
+ */
+
+[data-style='frosted'] [data-graph-paper] {
+  background-color: var(--paper);
+  --graph-paper-color: var(--paper-mute);
+}
+
+/* ─── clusters ──────────────────────────────────────────────────────────── */
+
+/* Mixed down to 22%: a full-strength group fill under a translucent card would stack
+   two colours behind the card's text and make its contrast unpredictable. */
+[data-style='frosted'] [data-graph-cluster] {
+  background-color: color-mix(
+    in oklch,
+    var(--group-fill, var(--paper-mute)) 22%,
+    transparent
+  );
+  /* The glass white is the DEFAULT, not the only option: an explicit group stroke still
+     wins, so a consumer's preset reaches this style like any other. */
+  border-color: var(--group-stroke, rgba(255, 255, 255, 0.18));
+  backdrop-filter: blur(6px);
+}
+
+[data-style='frosted'] [data-graph-cluster-label] {
+  color: var(--group-label, var(--ink));
+}
+
+/* ─── node cards ────────────────────────────────────────────────────────── */
+
+[data-style='frosted'] [data-graph-node] {
+  background-color: color-mix(in oklch, var(--paper-soft) 72%, transparent);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--ink);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 8px 32px var(--shadow-tint);
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+[data-style='frosted'] [data-graph-node-head] {
+  background-color: color-mix(in oklch, var(--paper-mute) 55%, transparent);
+  border-bottom-color: var(--node-accent, rgba(255, 255, 255, 0.18));
+}
+
+/* `--ink` throughout: the glass is translucent, so the effective background is
+   whatever sits behind it — ink-mute has no guaranteed ratio here. */
+[data-style='frosted'] [data-graph-node-title],
+[data-style='frosted'] [data-graph-node-count],
+[data-style='frosted'] [data-graph-more],
+[data-style='frosted'] [data-graph-node-icon],
+[data-style='frosted'] [data-graph-row-name],
+[data-style='frosted'] [data-graph-row-type] {
+  color: var(--ink);
+}
+
+[data-style='frosted'] [data-graph-node]:hover {
+  background-color: color-mix(in oklch, var(--paper-soft) 88%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 12px 40px var(--shadow-tint);
+}
+
+/* ─── row badges ────────────────────────────────────────────────────────── */
+
+[data-style='frosted'] [data-graph-row] [data-row-badge] {
+  color: var(--ink);
+}
+
+[data-style='frosted'] [data-graph-column-badges] [data-row-badge] {
+  background-color: var(--paper-mute);
+  color: var(--ink);
+}
+
+[data-style='frosted'] [data-graph-column-badges] [data-row-badge='pk'] {
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+/* ─── selection ─────────────────────────────────────────────────────────── */
+
+[data-style='frosted'] [data-node-state='selected'] {
+  border-color: var(--primary);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 0 2px var(--focus-ring),
+    0 12px 40px var(--shadow-tint);
+}
+
+[data-style='frosted'] [data-node-state='related'] {
+  border-color: var(--accent);
+}
+
+[data-style='frosted'] [data-node-state='dim'] {
+  opacity: 0.3;
+}
+
+/* ─── edges ─────────────────────────────────────────────────────────────── */
+
+[data-style='frosted'] [data-graph-edge] path {
+  stroke: var(--graph-edge, var(--ink-soft));
+}
+
+[data-style='frosted'] [data-graph-edge] [data-graph-edge-dot] {
+  fill: var(--graph-edge, var(--ink-soft));
+}
+
+[data-style='frosted'] [data-edge-state='highlight'] path,
+[data-style='frosted'] [data-edge-state='highlight'] [data-graph-edge-dot] {
+  --graph-edge: var(--primary);
+  stroke-width: 1.75;
+}
+
+[data-style='frosted'] [data-edge-state='dim'] {
+  opacity: 0.2;
+}
+
+[data-style='frosted'] [data-edge-kind='dependency'] path {
+  stroke-dasharray: 5 4;
+}
+
+/* ─── node kinds ────────────────────────────────────────────────────────── */
+
+[data-style='frosted'] [data-node-kind='table'] {
+  --node-accent: var(--primary);
+}
+
+[data-style='frosted'] [data-node-kind='view'] {
+  --node-accent: var(--success);
+}
+
+[data-style='frosted'] [data-node-kind='matview'] {
+  --node-accent: var(--info);
+}
+
+[data-style='frosted'] [data-node-kind='function'] {
+  --node-accent: var(--warning);
+}
+
+[data-style='frosted'] [data-node-kind='procedure'] {
+  --node-accent: var(--accent);
+}
+
+[data-style='frosted'] [data-node-kind='enum'] {
+  --node-accent: var(--danger);
+}
+
+/* ─── schema views ──────────────────────────────────────────────────────── */
+
+[data-style='frosted'] [data-graph-entity],
+[data-style='frosted'] [data-graph-entity-group],
+[data-style='frosted'] [data-graph-section-title],
+[data-style='frosted'] [data-graph-column-size],
+[data-style='frosted'] [data-graph-column-note],
+[data-style='frosted'] [data-graph-column-type],
+[data-style='frosted'] [data-graph-index-name],
+[data-style='frosted'] [data-graph-entity-kind],
+[data-style='frosted'] [data-graph-note] {
+  color: var(--ink);
+}
+
+[data-style='frosted'] [data-graph-column],
+[data-style='frosted'] [data-graph-index],
+[data-style='frosted'] [data-graph-relationship] {
+  border-bottom-color: rgba(255, 255, 255, 0.18);
+}
+
+[data-style='frosted'] [data-graph-index-unique] {
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+[data-style='frosted'] [data-graph-relationship] {
+  color: var(--ink);
+  transition: background-color 0.2s ease;
+}
+
+[data-style='frosted'] [data-graph-relationship]:hover {
+  background-color: color-mix(in oklch, var(--paper-mute) 55%, transparent);
+}
+
+[data-style='frosted'] [data-graph-relationship-label] {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+[data-style='frosted'] [data-graph-relationship-action],
+[data-style='frosted'] [data-graph-relationships-empty] {
+  color: var(--ink);
+}
+
+[data-style='frosted'] [data-graph-note-code] {
+  background-color: var(--paper-mute);
+  color: var(--ink);
+}

@@ -1,0 +1,223 @@
+/**
+ * Graph - Zen-Sumi Theme Styles
+ *
+ * 禅墨 — ink on paper. No shadows, no gradients: depth comes from background tone
+ * alone. Hairline paper-mute borders. Selection darkens a border rather than adding
+ * a glow ring.
+ *
+ * Colour only; structure lives in base/graph.css.
+ *
+ * Contrast rules carried over from the gates, not from taste:
+ *  - A brand token (primary/accent/success/…) is a FILL or a BORDER, never a
+ *    foreground. The 500 sits around 2.4:1 on paper.
+ *  - Inside a node card the row badge is a masked icon whose utility owns
+ *    `background-color`, so the glyph's own colour has to carry contrast. Only the
+ *    entity panel's text badges can be chips.
+ *  - Every `--group-*` read carries a named-token fallback: resolveGroupStyles sets
+ *    those only for nodes that have a group.
+ */
+
+[data-style='zen-sumi'] [data-graph-paper] {
+  background-color: var(--paper);
+  --graph-paper-color: var(--paper-mute);
+}
+
+/* ─── clusters ──────────────────────────────────────────────────────────── */
+
+[data-style='zen-sumi'] [data-graph-cluster] {
+  background-color: var(--group-fill, var(--paper-soft));
+  border-color: var(--group-stroke, var(--paper-mute));
+}
+
+[data-style='zen-sumi'] [data-graph-cluster-label] {
+  color: var(--group-label, var(--ink));
+}
+
+/* ─── node cards ────────────────────────────────────────────────────────── */
+
+/* No shadow anywhere — the card separates from the canvas by tone and hairline. */
+[data-style='zen-sumi'] [data-graph-node] {
+  background-color: var(--paper-soft);
+  border-color: var(--paper-mute);
+  color: var(--ink);
+  box-shadow: none;
+  transition: border-color 0.2s ease;
+}
+
+[data-style='zen-sumi'] [data-graph-node-head] {
+  background-color: var(--paper);
+  border-bottom-color: var(--node-accent, var(--paper-mute));
+}
+
+[data-style='zen-sumi'] [data-graph-node-title] {
+  color: var(--ink);
+}
+
+[data-style='zen-sumi'] [data-graph-node-count],
+[data-style='zen-sumi'] [data-graph-more] {
+  color: var(--ink);
+}
+
+[data-style='zen-sumi'] [data-graph-node-icon] {
+  color: var(--ink);
+}
+
+[data-style='zen-sumi'] [data-graph-row-name] {
+  color: var(--ink);
+}
+
+[data-style='zen-sumi'] [data-graph-row-type] {
+  color: var(--ink-mute);
+}
+
+/* Depth through tone, never elevation: hover shifts the surface and darkens the edge. */
+[data-style='zen-sumi'] [data-graph-node]:hover {
+  background-color: var(--paper-mute);
+  border-color: var(--paper-edge);
+  box-shadow: none;
+}
+
+/* Hover must RAISE contrast, not spend it. Shifting the surface to paper-mute moves it
+   toward ink-mute in dark mode, where the pair measures 4.07:1 — under the 4.5 text bar.
+   The secondary tone stays at rest, where it passes, and lifts to full ink on hover. */
+[data-style='zen-sumi'] [data-graph-node]:hover [data-graph-row-type] {
+  color: var(--ink);
+}
+
+/* ─── row badges ────────────────────────────────────────────────────────── */
+
+[data-style='zen-sumi'] [data-graph-row] [data-row-badge] {
+  color: var(--ink);
+}
+
+[data-style='zen-sumi'] [data-graph-column-badges] [data-row-badge] {
+  background-color: var(--paper-mute);
+  color: var(--ink);
+}
+
+[data-style='zen-sumi'] [data-graph-column-badges] [data-row-badge='pk'] {
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+/* ─── selection ─────────────────────────────────────────────────────────── */
+
+/* The border darkens; no glow ring. That is the whole zen-sumi focus idiom. */
+[data-style='zen-sumi'] [data-node-state='selected'] {
+  border-color: var(--primary);
+  box-shadow: none;
+}
+
+[data-style='zen-sumi'] [data-node-state='related'] {
+  border-color: var(--ink-mute);
+}
+
+[data-style='zen-sumi'] [data-node-state='dim'] {
+  opacity: 0.3;
+}
+
+/* ─── edges ─────────────────────────────────────────────────────────────── */
+
+[data-style='zen-sumi'] [data-graph-edge] path {
+  stroke: var(--graph-edge, var(--paper-edge));
+}
+
+[data-style='zen-sumi'] [data-graph-edge] [data-graph-edge-dot] {
+  fill: var(--graph-edge, var(--paper-edge));
+}
+
+[data-style='zen-sumi'] [data-edge-state='highlight'] path,
+[data-style='zen-sumi'] [data-edge-state='highlight'] [data-graph-edge-dot] {
+  --graph-edge: var(--primary);
+}
+
+[data-style='zen-sumi'] [data-edge-state='dim'] {
+  opacity: 0.18;
+}
+
+[data-style='zen-sumi'] [data-edge-kind='dependency'] path {
+  stroke-dasharray: 2 4;
+}
+
+/* ─── node kinds ────────────────────────────────────────────────────────── */
+
+/* Single accent is the zen-sumi rule: primary marks the one thing that matters
+   (a table) and everything else is ink tone, rather than a rainbow of semantics. */
+[data-style='zen-sumi'] [data-node-kind='table'] {
+  --node-accent: var(--primary);
+}
+
+[data-style='zen-sumi'] [data-node-kind='view'],
+[data-style='zen-sumi'] [data-node-kind='matview'] {
+  --node-accent: var(--ink-mute);
+}
+
+[data-style='zen-sumi'] [data-node-kind='function'],
+[data-style='zen-sumi'] [data-node-kind='procedure'] {
+  --node-accent: var(--ink-soft);
+}
+
+[data-style='zen-sumi'] [data-node-kind='enum'] {
+  --node-accent: var(--paper-edge);
+}
+
+/* ─── schema views ──────────────────────────────────────────────────────── */
+
+[data-style='zen-sumi'] [data-graph-entity] {
+  color: var(--ink);
+}
+
+[data-style='zen-sumi'] [data-graph-entity-group],
+[data-style='zen-sumi'] [data-graph-section-title],
+[data-style='zen-sumi'] [data-graph-column-size] {
+  color: var(--ink-mute);
+}
+
+[data-style='zen-sumi'] [data-graph-entity-kind] {
+  color: var(--ink);
+}
+
+[data-style='zen-sumi'] [data-graph-column],
+[data-style='zen-sumi'] [data-graph-index],
+[data-style='zen-sumi'] [data-graph-relationship] {
+  border-bottom-color: var(--paper-mute);
+}
+
+[data-style='zen-sumi'] [data-graph-column-note],
+[data-style='zen-sumi'] [data-graph-column-type],
+[data-style='zen-sumi'] [data-graph-index-name] {
+  color: var(--ink-mute);
+}
+
+[data-style='zen-sumi'] [data-graph-index-unique] {
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+[data-style='zen-sumi'] [data-graph-relationship] {
+  color: var(--ink);
+  transition: background-color 0.2s ease;
+}
+
+[data-style='zen-sumi'] [data-graph-relationship]:hover {
+  background-color: var(--paper-mute);
+}
+
+[data-style='zen-sumi'] [data-graph-relationship-label] {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+[data-style='zen-sumi'] [data-graph-relationship-action],
+[data-style='zen-sumi'] [data-graph-relationships-empty] {
+  color: var(--ink);
+}
+
+[data-style='zen-sumi'] [data-graph-note] {
+  color: var(--ink-mute);
+}
+
+[data-style='zen-sumi'] [data-graph-note-code] {
+  background-color: var(--paper-mute);
+  color: var(--ink);
+}

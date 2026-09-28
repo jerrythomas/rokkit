@@ -38,7 +38,7 @@ const meta: DemoMeta = {
 			{ name: 'edgeStyle', type: "'curved' | 'orthogonal'", default: "'curved'", desc: 'Connector geometry' },
 			{ name: 'focus', type: 'string | null', default: 'null', desc: '`neighborhood` only — the node to centre. Defaults to the selection' },
 			{ name: 'value', type: 'string | null', desc: 'Selected node id. Input and output both' },
-			{ name: 'preset', type: 'GraphPreset', desc: 'createGraphPreset({ groups, kinds, shades, using }) — colour for the open-ended group vocabulary' },
+			{ name: 'preset', type: 'GraphPreset', desc: 'createGraphPreset({ groups, shades, using }) — colour for the open-ended GROUP vocabulary. Node kinds are a closed set and are themed in CSS instead' },
 			{ name: 'mode', type: "'light' | 'dark'", default: "'light'", desc: 'Which shade ladder the group ramp resolves against' },
 			{ name: 'label', type: 'string', desc: 'Accessible name. Derived from the node/edge counts when omitted' },
 			{ name: 'icons', type: 'Record<string, string>', desc: 'Icon class per node kind and row badge, merged over the built-ins' },
@@ -160,7 +160,6 @@ const meta: DemoMeta = {
 
   const preset = createGraphPreset({
     groups: ['teal', 'gold', 'violet'],   // the ramp, in assignment order
-    kinds: { trigger: 'rose' },            // merges over the built-ins
     shades: { dark: { fill: '800' } },     // partial, merges
     using: 'pattern'                       // colour-blind- and print-safe
   })
@@ -172,10 +171,18 @@ const meta: DemoMeta = {
 			id: 'css-override',
 			title: 'One-rule CSS override',
 			lang: 'css',
-			code: `/* Every visual hook is a data-attribute, so a single rule retones a kind.
-   No prop, no preset, no component change. */
-[data-node-kind='table'] {
+			code: `/* Every visual hook is a data-attribute, so one rule retones a kind — no prop,
+   no preset, no component change.
+
+   Match the theme's specificity. Each style scopes its rules under [data-style], so a
+   bare [data-node-kind='table'] is (0,1,1) against the theme's (0,2,0) and loses. */
+[data-style] [data-node-kind='table'] {
   --node-accent: var(--primary);
+}
+
+/* Or target one style, which is what you want when the tone is style-specific: */
+[data-style='zen-sumi'] [data-node-kind='view'] {
+  --node-accent: var(--accent);
 }`
 		}
 	],

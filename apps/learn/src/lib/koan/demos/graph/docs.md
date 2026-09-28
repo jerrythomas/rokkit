@@ -77,13 +77,25 @@ exhaustively without a renderer.
 
 Two vocabularies, deliberately handled differently.
 
-**Node kinds are a closed set**, so they are plain CSS. One rule retones one kind:
+**Node kinds are a closed set**, so they are plain CSS. One rule retones one kind — but
+match the theme's specificity. Every style scopes its rules under `[data-style]`, so a bare
+`[data-node-kind='table']` is `(0,1,1)` against the theme's `(0,2,0)` and silently loses:
 
 ```css
-[data-node-kind='table'] {
+/* wins everywhere */
+[data-style] [data-node-kind='table'] {
   --node-accent: var(--primary);
 }
+
+/* or target one style, when the tone is style-specific */
+[data-style='zen-sumi'] [data-node-kind='view'] {
+  --node-accent: var(--accent);
+}
 ```
+
+There is no `kinds` map on the preset. The two vocabularies are split deliberately: a kind is
+known at build time and belongs in CSS; a group name is not, which is the entire reason the
+preset exists.
 
 **Group names are open** — they are not knowable at build time, so they cannot be pre-written.
 `createGraphPreset` assigns them from a ramp, by *sorted* group name so a group keeps its colour
@@ -98,6 +110,10 @@ createGraphPreset({
 
 It resolves to CSS custom properties rather than concrete fills, so an attribute rule still
 wins. JS picks the default; CSS keeps the final say.
+
+Every style ships its own `graph.css` — `rokkit`, `minimal`, `material`, `frosted` and
+`zen-sumi` — each with its own character rather than a shared default: zen-sumi has no
+shadows and a single accent, material carries elevation, frosted goes translucent.
 
 ## Theming hooks
 

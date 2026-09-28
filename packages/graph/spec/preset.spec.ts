@@ -15,11 +15,12 @@ describe('createGraphPreset', () => {
 		expect(preset.shades.dark).toEqual(defaultGraphPreset.shades.dark)
 	})
 
-	it('merges kinds so an override adds without dropping the built-ins', () => {
-		const preset = createGraphPreset({ kinds: { trigger: 'rose' } })
-
-		expect(preset.kinds.trigger).toBe('rose')
-		expect(preset.kinds.table).toBe(defaultGraphPreset.kinds.table)
+	it('carries no `kinds` map — node kinds are themed in CSS, not here', () => {
+		// The two vocabularies are split on purpose: a kind is a closed set known at build
+		// time and lives in `[data-node-kind='…']` rules per style; a group name is open-ended,
+		// which is why this preset exists at all. An earlier draft had a `kinds` field that
+		// nothing read.
+		expect('kinds' in defaultGraphPreset).toBe(false)
 	})
 
 	it('replaces the groups ramp wholesale — order is the assignment', () => {
@@ -35,7 +36,7 @@ describe('createGraphPreset', () => {
 	it('names only families that exist in the categorical palette', () => {
 		// A typo here is invisible: resolveGroupStyles would index `undefined` and throw only
 		// for the group unlucky enough to land on that ramp position.
-		const named = [...Object.values(defaultGraphPreset.kinds), ...defaultGraphPreset.groups]
+		const named = [...defaultGraphPreset.groups]
 
 		expect(named.length).toBeGreaterThan(0)
 		for (const family of named) {
