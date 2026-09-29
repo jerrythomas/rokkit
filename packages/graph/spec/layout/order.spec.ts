@@ -123,6 +123,16 @@ describe('order', () => {
 
 		expect(order(m, ranks, back)).toEqual([])
 	})
+
+	it('puts a node with no rank in the first column rather than losing it', () => {
+		// `rank()` ranks every node, so this cannot happen from the layout — but `order` takes
+		// the map as an argument, and a node silently vanishing from the diagram is a far worse
+		// failure than one appearing in the wrong column.
+		const m = model(['a', 'b'], [['a', 'b']])
+		const partial = new Map([['b', 1]])
+
+		expect(order(m, partial, new Set()).flat()).toContain('a')
+	})
 })
 
 describe('countCrossings', () => {
@@ -150,6 +160,24 @@ describe('countCrossings', () => {
 		const { back } = rank(m)
 
 		expect(countCrossings([['a', 'b'], ['d', 'c']], m, back)).toBe(0)
+	})
+
+	it('does not count two edges that land in DIFFERENT layers as crossing', () => {
+		// a→c and b→d where c and d are in different columns. Their endpoints are in opposite
+		// relative order, so a comparison that ignored which layers they span would score a
+		// crossing that cannot happen — and the sweep optimises this number, so a wrong one
+		// makes it choose the worse arrangement.
+		const m = model(
+			['a', 'b', 'c', 'd'],
+			[
+				['a', 'c'],
+				['b', 'd'],
+				['c', 'd']
+			]
+		)
+		const { back } = rank(m)
+
+		expect(countCrossings([['a', 'b'], ['c'], ['d']], m, back)).toBe(0)
 	})
 
 	it('ignores a back edge, which is not drawn between adjacent layers', () => {

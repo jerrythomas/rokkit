@@ -39,6 +39,50 @@ describe('flow layout', () => {
 			expect(edge.x2).toBeCloseTo(b.x, 5)
 		})
 
+		it('anchors on the ROW an edge names, not the card head', () => {
+			// A foreign key joins two columns, and landing both ends on the head throws away
+			// which ones. `edges.ts` anchors this way and the two must agree, or the same edge
+			// moves when the layout changes.
+			const withRows = [
+				{
+					id: 'orders',
+					label: 'orders',
+					rows: [{ name: 'id' }, { name: 'user_id' }]
+				},
+				{ id: 'users', label: 'users', rows: [{ name: 'id' }] }
+			]
+			const s = state(
+				withRows,
+				[{ source: 'orders', target: 'users', sourceRow: 'user_id', targetRow: 'id' }],
+				{ density: 'full' }
+			)
+			const [edge] = s.routedEdges
+
+			// Below the head, since `user_id` is the second row rather than the first.
+			expect(edge.y1).toBeGreaterThan(s.cards.orders.y + 40)
+			expect(edge.y1).not.toBe(edge.y2)
+		})
+
+		it('keeps a self-loop between the two rows it names', () => {
+			// A parent_id pointing at the same table's id is a real shape, and collapsing both
+			// ends onto one point turns the loop into a dot.
+			const s = state(
+				[
+					{
+						id: 'tree',
+						label: 'tree',
+						rows: [{ name: 'id' }, { name: 'parent_id' }]
+					}
+				],
+				[{ source: 'tree', target: 'tree', sourceRow: 'parent_id', targetRow: 'id' }],
+				{ density: 'full' }
+			)
+			const [edge] = s.routedEdges
+
+			expect(edge.self).toBe(true)
+			expect(edge.y1).not.toBe(edge.y2)
+		})
+
 		it('keeps the ports fixed even for a BACK edge, whose target is to the left', () => {
 			// The one case where a fixed port costs a visible sweep. Paying it for the minority
 			// is the point of breaking cycles rather than letting them dictate the arrangement.

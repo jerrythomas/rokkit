@@ -39,10 +39,15 @@ function anchorY(card: Cards[string], rowName: string | undefined): number {
 	return card.y + HEAD_H / 2
 }
 
-/** Place each column left to right, centring every column on a shared axis. */
+/**
+ * Place each column left to right, centring every column on a shared axis.
+ *
+ * Every id in `layers` has a card without checking: both come from `model.nodes`, and
+ * `buildCards` keys one entry per node. A guard here would be a branch no input can reach.
+ */
 function place(layers: string[][], cards: Cards): Size {
 	const heights = layers.map((layer) =>
-		layer.reduce((total, id) => total + (cards[id]?.h ?? 0) + GAP_Y, -GAP_Y)
+		layer.reduce((total, id) => total + cards[id].h + GAP_Y, -GAP_Y)
 	)
 	const tallest = Math.max(0, ...heights)
 
@@ -53,7 +58,6 @@ function place(layers: string[][], cards: Cards): Size {
 		let y = (tallest - heights[i]) / 2
 		for (const id of layer) {
 			const card = cards[id]
-			if (!card) continue
 			card.x = x
 			card.y = y
 			y += card.h + GAP_Y
