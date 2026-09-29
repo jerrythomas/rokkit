@@ -47,8 +47,12 @@
   background-color: color-mix(in oklch, var(--paper-mute) 50%, transparent);
 }
 
+/* The brand marks the active item as a FILL, not as text. `text-primary` on a 10% tint of
+   itself measured 2.12:1 against a 4.5 threshold — unreadable, and the same mistake the graph
+   rules already forbid: a brand colour is a fill or a border, never a foreground. The tint
+   still carries "this one is active"; the label just stays legible. */
 [data-style='frosted'] [data-floating-nav-item][data-active] {
-  @apply text-primary bg-primary/10;
+  @apply text-ink bg-primary/10;
 }
 
 [data-style='frosted'] [data-floating-nav-item]:focus-visible {

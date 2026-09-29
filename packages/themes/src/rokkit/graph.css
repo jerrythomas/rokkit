@@ -389,7 +389,7 @@
 [data-style='rokkit'] [data-graph-depth-controls] button[data-selected],
 [data-style='rokkit'] [data-graph-edge-style][aria-pressed='true'] {
   background-color: var(--primary);
-  color: var(--on-primary, var(--paper));
+  color: var(--on-primary);
 }
 
 [data-style='rokkit'] [data-graph-legend] {
@@ -427,7 +427,7 @@
 
 [data-style='rokkit'] [data-graph-bundle][aria-pressed='true'] {
   background-color: var(--primary);
-  color: var(--on-primary, var(--paper));
+  color: var(--on-primary);
 }
 
 /* A call that leaves its package is the one worth seeing; a local one is texture. */

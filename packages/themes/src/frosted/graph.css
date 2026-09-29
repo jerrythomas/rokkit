@@ -346,7 +346,7 @@
 [data-style='frosted'] [data-graph-depth-controls] button[data-selected],
 [data-style='frosted'] [data-graph-edge-style][aria-pressed='true'] {
   background-color: var(--primary);
-  color: var(--on-primary, var(--paper));
+  color: var(--on-primary);
 }
 
 [data-style='frosted'] [data-graph-legend] {
@@ -384,7 +384,7 @@
 
 [data-style='frosted'] [data-graph-bundle][aria-pressed='true'] {
   background-color: var(--primary);
-  color: var(--on-primary, var(--paper));
+  color: var(--on-primary);
 }
 
 /* A call that leaves its package is the one worth seeing; a local one is texture. */

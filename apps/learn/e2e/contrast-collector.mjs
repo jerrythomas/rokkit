@@ -313,7 +313,8 @@ export function mergeFinding(uniq, f, cfg) {
  * plenty with seven other workers competing, which is exactly when the gate runs.
  *
  * `interaction-collector` and `state-snapshot-collector` already wait on content, and neither
- * has ever flaked.
+ * has ever flaked — and both also freeze transitions, which is the other half this was
+ * missing.
  */
 async function collectConfig(page, base, { style, mode, skin }) {
 	await page.goto(`${base}/embed/gallery?style=${style}&skin=${skin}&mode=${mode}`, {
@@ -324,6 +325,12 @@ async function collectConfig(page, base, { style, mode, skin }) {
 		timeout: 20000
 	})
 	await page.waitForSelector('.gallery [data-gallery-comp]', { timeout: 20000 })
+	// The remaining half of the same race. Waiting for hydration gets the right theme APPLIED,
+	// but every style animates `background-color`/`color`, so a sample taken immediately after
+	// reads a value mid-interpolation — one nobody ever sees at rest, and indistinguishable
+	// from a new contrast failure. Added per load because a style tag does not survive a
+	// navigation.
+	await freezeTransitions(page)
 
 	return page.evaluate(collectContrast, { mode })
 }
