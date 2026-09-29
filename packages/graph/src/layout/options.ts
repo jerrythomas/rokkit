@@ -12,7 +12,10 @@ export const LAYOUT_OPTION_KEYS = [
 	'focus',
 	'expanded',
 	'groupBy',
-	'nestBy'
+	'nestBy',
+	'sizeBy',
+	'sizeScale',
+	'depth'
 ] as const
 
 /** Warn once per unknown key, ever. A layout re-runs on every render. */

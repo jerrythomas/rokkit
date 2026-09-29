@@ -185,6 +185,16 @@
   color: var(--ink-mute);
 }
 
+/* A heading is orientation, not content: mute against the canvas, and the focus column takes
+   full ink because it names the thing the reader came for. */
+[data-style='rokkit'] [data-graph-column] {
+  color: var(--ink-mute);
+}
+
+[data-style='rokkit'] [data-graph-column][data-column-side='focus'] {
+  color: var(--ink);
+}
+
 /* ─── node kinds ────────────────────────────────────────────────────────── */
 
 [data-style='rokkit'] [data-node-kind='table'] {

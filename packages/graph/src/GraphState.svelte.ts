@@ -8,6 +8,7 @@ import type {
 	Arrange,
 	Cards,
 	Cluster,
+	Column,
 	Density,
 	EdgeStyle,
 	LayoutFn,
@@ -49,6 +50,12 @@ export type GraphStateConfig = {
 	groupBy?: NodeAxis
 	/** Second axis subdividing each outer cluster. Unset means one level. */
 	nestBy?: NodeAxis | null
+	/** `points` only — what a node's size encodes. Defaults to `degree`. */
+	sizeBy?: 'degree' | 'weight'
+	/** How the measure maps onto area. Defaults to `linear`. */
+	sizeScale?: 'linear' | 'log'
+	/** `neighborhood` only — hops out from the focus. Defaults to 1. */
+	depth?: number
 	edgeStyle?: EdgeStyle
 	focus?: string | null
 	value?: string | null
@@ -137,6 +144,9 @@ export class GraphState {
 	#arrange = $state<Arrange>('untangle')
 	#groupBy = $state<NodeAxis>('group')
 	#nestBy = $state<NodeAxis | null>(null)
+	#sizeBy = $state<'degree' | 'weight'>('degree')
+	#sizeScale = $state<'linear' | 'log'>('linear')
+	#depth = $state<number>(1)
 	#edgeStyle = $state<EdgeStyle>('curved')
 	#focus = $state<string | null>(null)
 	#value = $state<string | null>(null)
@@ -158,6 +168,9 @@ export class GraphState {
 			arrange: this.#arrange,
 			groupBy: this.#groupBy,
 			nestBy: this.#nestBy ?? undefined,
+			sizeBy: this.#sizeBy,
+			sizeScale: this.#sizeScale,
+			depth: this.#depth,
 			edgeStyle: this.#edgeStyle,
 			focus: this.#focus ?? this.#value,
 			expanded: this.#expanded
@@ -272,10 +285,20 @@ export class GraphState {
 		this.#nestBy = config.nestBy === outer ? null : (config.nestBy ?? null)
 	}
 
+	/** What a node's size encodes, and how far a neighbourhood reaches. */
+	#applyMeasure(config: GraphStateConfig): void {
+		this.#sizeBy = config.sizeBy ?? 'degree'
+		this.#sizeScale = config.sizeScale ?? 'linear'
+		// Floored at 1: a depth of 0 or -1 is a request for nothing, and returning an empty
+		// canvas for it looks identical to a broken focus.
+		this.#depth = Math.max(1, Math.floor(config.depth ?? 1))
+	}
+
 	#applyView(config: GraphStateConfig): void {
 		this.#density = config.density ?? 'keys'
 		this.#arrange = config.arrange ?? 'untangle'
 		this.#applyGrouping(config)
+		this.#applyMeasure(config)
 		this.#edgeStyle = config.edgeStyle ?? 'curved'
 		this.#preset = config.preset ?? defaultGraphPreset
 		this.#mode = config.mode ?? 'light'
@@ -480,6 +503,29 @@ export class GraphState {
 
 	get nestBy(): NodeAxis | null {
 		return this.#nestBy
+	}
+
+	get sizeBy(): 'degree' | 'weight' {
+		return this.#sizeBy
+	}
+
+	get sizeScale(): 'linear' | 'log' {
+		return this.#sizeScale
+	}
+
+	get depth(): number {
+		return this.#depth
+	}
+
+	/**
+	 * Column headings for a multi-column layout, empty for the grid ones.
+	 *
+	 * Exposed so the view can render headings without knowing which layout is active or what
+	 * it means — the layout decides both the position and the wording, and the component
+	 * prints them.
+	 */
+	get columns(): Column[] {
+		return this.#result.columns ?? []
 	}
 
 	/**

@@ -17,6 +17,8 @@
 		arrange = 'untangle',
 		groupBy = 'group',
 		nestBy = undefined,
+		sizeBy = 'degree',
+		sizeScale = 'linear',
 		edgeStyle = 'curved',
 		focus = null,
 		value = undefined,
@@ -43,6 +45,8 @@
 		arrange,
 		groupBy,
 		nestBy,
+		sizeBy,
+		sizeScale,
 		edgeStyle,
 		focus,
 		value,
@@ -204,6 +208,19 @@
 		data-graph-layout={graph.layoutName}
 		style="width: {graph.size.w}px; height: {graph.size.h}px; transform: translate({tx}px, {ty}px) scale({scale}); --graph-label-counter-scale: {(1 / scale).toFixed(3)};"
 	>
+		<!-- Column headings. Three columns get away without them — the focus is visibly
+		     central — but a depth-2 portrait is five columns and ambiguous without one.
+		     Position, width and wording all come from the layout; this only prints them. -->
+		{#each graph.columns as column (column.side + column.depth)}
+			<span
+				data-graph-column
+				data-column-side={column.side}
+				data-column-depth={column.depth}
+				style:left="{column.x}px"
+				style:width="{column.w}px">{column.label}</span
+			>
+		{/each}
+
 		{#each graph.clusters as cluster (graph.clusterKey(cluster))}
 			<div
 				data-graph-cluster

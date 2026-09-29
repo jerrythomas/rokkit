@@ -148,6 +148,41 @@ describe('Graph — published attributes', () => {
 		)
 	})
 
+	it('renders a heading per column when the layout reports them', () => {
+		// The component decides nothing: position and wording both come from the state.
+		const nodes = [
+			{ schema: 'p', name: 'focus', kind: 'table', columns: [] },
+			{ schema: 'p', name: 'caller', kind: 'table', columns: [] },
+			{ schema: 'p', name: 'callee', kind: 'table', columns: [] }
+		]
+		const edges = [
+			{ from: { s: 'p', t: 'caller' }, to: { s: 'p', t: 'focus' } },
+			{ from: { s: 'p', t: 'focus' }, to: { s: 'p', t: 'callee' } }
+		]
+		const s = new GraphState({
+			nodes,
+			edges,
+			fields: FIELDS,
+			layout: 'neighborhood',
+			focus: 'p.focus'
+		})
+		const { container } = render(Graph, { state: s })
+		const heads = [...container.querySelectorAll('[data-graph-column]')]
+
+		expect(heads.map((el) => el.textContent)).toEqual(s.columns.map((c) => c.label))
+		expect(heads.map((el) => el.getAttribute('data-column-side'))).toEqual([
+			'in',
+			'focus',
+			'out'
+		])
+	})
+
+	it('renders no column headings for a layout that reports none', () => {
+		const { container } = render(Graph, { state: state() })
+
+		expect(container.querySelectorAll('[data-graph-column]')).toHaveLength(0)
+	})
+
 	it('renders two same-named inner boxes under different parents', () => {
 		// `table` exists under public AND under billing. Keyed by name alone that is a duplicate
 		// key: Svelte throws each_key_duplicate, the render aborts, and NO inner box appears —

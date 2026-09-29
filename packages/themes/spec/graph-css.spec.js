@@ -79,6 +79,12 @@ describe('graph theme CSS', () => {
 		expect(css, style).toContain("[data-cluster-depth='1']")
 	})
 
+	it.each(STYLES)('%s colours the column headings', (style) => {
+		// base positions them but cannot colour them (headless-base rule), so a style that
+		// forgets leaves a depth-2 portrait's headings at full ink, competing with the cards.
+		expect(read(`${style}/graph.css`), style).toContain('[data-graph-column]')
+	})
+
 	it.each(STYLES)('%s tones the kind tag down from the title', (style) => {
 		// base/graph.css sizes it but cannot colour it (headless-base rule), so a style that
 		// forgets it inherits full-contrast ink and the tag competes with the node's NAME.

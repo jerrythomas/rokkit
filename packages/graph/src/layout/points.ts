@@ -31,6 +31,8 @@
 import { buildEdges } from './edges.js'
 import { warnUnknownOptions } from './options.js'
 import type { Cards, Cluster, LayoutFn, LayoutResult } from './types.js'
+type SizeBy = NonNullable<import('./types.js').LayoutOptions['sizeBy']>
+type Scale = NonNullable<import('./types.js').LayoutOptions['sizeScale']>
 import type { GraphModel, GraphNode } from '../types.js'
 
 /**
@@ -73,12 +75,46 @@ function degreeOf(model: GraphModel): Map<string, number> {
 
 type Sized = { node: GraphNode; w: number; h: number }
 
-/** Size by degree. Area is linear in degree, so width grows as its square root. */
-function sizeFor(degree: number, maxDegree: number): { w: number; h: number } {
-	const t = maxDegree <= 0 ? 0 : degree / maxDegree
+/**
+ * Position of `value` between `min` and `max`, as 0..1.
+ *
+ * `log` is for a measure spanning orders of magnitude: declaration counts across a real repo
+ * span three or four, and a linear map puts everything below the top few on the floor. `+1`
+ * shifts the domain off zero, which has no logarithm.
+ *
+ * A flat measure — every node equal, so `max === min` — is 0, not a division by zero.
+ */
+function normalise(value: number, min: number, max: number, scale: Scale): number {
+	if (max <= min) return 0
+	if (scale === 'log') {
+		return Math.log(value - min + 1) / Math.log(max - min + 1)
+	}
+
+	return (value - min) / (max - min)
+}
+
+/** Area is LINEAR in the measure, so width grows as its square root — ten reads as ten. */
+function sizeFor(t: number): { w: number; h: number } {
 	const area = MIN_AREA + (MAX_AREA - MIN_AREA) * t
 
 	return { w: Math.sqrt(area * ASPECT), h: Math.sqrt(area / ASPECT) }
+}
+
+/**
+ * The number each node is sized by.
+ *
+ * A node with no weight under `sizeBy: 'weight'` floors rather than vanishing or exploding —
+ * "unknown" is a normal state in a partially-indexed graph, and the alternative is a NaN
+ * width that renders as nothing at all.
+ */
+function measureOf(
+	node: GraphNode,
+	degree: Map<string, number>,
+	sizeBy: SizeBy
+): number {
+	if (sizeBy === 'weight') return node.weight ?? 0
+
+	return degree.get(node.id) ?? 0
 }
 
 type Packed = { nodes: { node: GraphNode; w: number; h: number; dx: number; dy: number }[]; w: number; h: number }
@@ -169,18 +205,23 @@ function placeGroups(packs: Placement[]): Cluster[] {
 	return clusters
 }
 
-/** Nodes bucketed by group, each carrying the size its degree earns it. */
-function sizeByGroup(model: GraphModel): Map<string, Sized[]> {
+/** Nodes bucketed by group, each carrying the size its measure earns it. */
+function sizeByGroup(model: GraphModel, sizeBy: SizeBy, scale: Scale): Map<string, Sized[]> {
 	const degree = degreeOf(model)
-	const maxDegree = Math.max(0, ...degree.values())
+	const measures = model.nodes.map((n) => measureOf(n, degree, sizeBy))
+	// Normalised against the range PRESENT, not against zero: a graph whose smallest module
+	// holds 400 declarations should still show its internal spread, not one flat block.
+	const min = Math.min(0, ...measures)
+	const max = Math.max(0, ...measures)
+
 	const byGroup = new Map<string, Sized[]>()
 
-	for (const node of model.nodes) {
+	model.nodes.forEach((node, i) => {
 		const key = node.group ?? ''
 		const list = byGroup.get(key) ?? []
-		list.push({ node, ...sizeFor(degree.get(node.id) ?? 0, maxDegree) })
+		list.push({ node, ...sizeFor(normalise(measures[i], min, max, scale)) })
 		byGroup.set(key, list)
-	}
+	})
 
 	return byGroup
 }
@@ -231,7 +272,7 @@ export const points: LayoutFn = (model, _options): LayoutResult => {
 		return { clusters: [], cards: {}, edges: [], size: { w: 0, h: 0 } }
 	}
 
-	const byGroup = sizeByGroup(model)
+	const byGroup = sizeByGroup(model, _options.sizeBy ?? 'degree', _options.sizeScale ?? 'linear')
 
 	const packs = [...byGroup.entries()].map(([name, members]) => ({
 		name,

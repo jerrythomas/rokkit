@@ -24,6 +24,14 @@ export type GraphNode = {
 	group?: string
 	/** Closed vocabulary — table | view | matview | function | procedure | enum. */
 	kind?: string
+	/**
+	 * A quantity this node carries — declarations in a module, rows in a table, bytes in a
+	 * bundle. Drives size in `points` (`sizeBy: 'weight'`) and the sequential colour channel.
+	 *
+	 * Optional because most graphs have no such number, and degree stays the default so no
+	 * existing caller changes. A node without one sizes at the floor rather than vanishing.
+	 */
+	weight?: number
 	rows: GraphRow[]
 	note?: string
 	/** Source fields the map did not claim, passed through untouched. */
@@ -93,6 +101,10 @@ export type GraphProps = {
 	groupBy?: import('./layout/types.js').NodeAxis
 	/** Subdivide each cluster by a second axis. Omit for one level. */
 	nestBy?: import('./layout/types.js').NodeAxis
+	/** `points` only — `degree` (default) or `weight` (reads `GraphNode.weight`). */
+	sizeBy?: 'degree' | 'weight'
+	/** How the measure maps onto area — `linear` (default) or `log`. */
+	sizeScale?: 'linear' | 'log'
 	edgeStyle?: import('./layout/types.js').EdgeStyle
 	/** `neighborhood` only — the node the view centres on. Defaults to the selection. */
 	focus?: string | null
@@ -131,6 +143,8 @@ export type GraphFields = {
 	label?: string
 	group?: string
 	kind?: string
+	/** Path to a per-node quantity — see `GraphNode.weight`. */
+	weight?: string
 	rows?: string
 	note?: string
 	/** Row-level paths, read against each entry of the `rows` array. */

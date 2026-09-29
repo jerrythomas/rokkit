@@ -349,6 +349,36 @@
   border-radius: 0.375rem;
 }
 
+/* A column heading sits ABOVE its stack, in world coordinates, so it scales and pans with the
+   cards it labels rather than floating over them. Positioned at the column's own x/width,
+   which the layout reports — the component owns no geometry. */
+[data-graph-column] {
+  position: absolute;
+  top: 0;
+  text-align: center;
+  font-size: 0.65rem;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* The focus column names the node itself, so it is the one heading that is a proper noun. */
+[data-graph-column][data-column-side='focus'] {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Headings are the first thing to go when the cards stop being readable — at these tiers
+   there is no room, and the column positions still read from the layout. */
+[data-graph-detail='minimal'] [data-graph-column],
+[data-graph-detail='dot'] [data-graph-column] {
+  display: none;
+}
+
 /* Secondary to the title: it answers "what IS this" once, then gets out of the way. Sized like
    the row count at the other end of the head, because that is what it is — a small fact about
    the node, not part of its name.

@@ -66,6 +66,9 @@ const meta: DemoMeta = {
 			{ name: 'density', type: "'names' | 'keys' | 'full'", default: "'keys'", desc: 'How much of each node’s row list a card shows' },
 			{ name: 'arrange', type: "'untangle' | 'a-z'", default: "'untangle'", desc: 'Cluster ordering. untangle chains heavily-linked groups; a-z is area-descending' },
 			{ name: 'groupBy', type: "'group' | 'kind'", default: "'group'", desc: 'Outer grouping axis. Schema suits an ER diagram; kind suits a dependency graph, where one schema holds a table, a trigger and a procedure' },
+			{ name: 'sizeBy', type: "'degree' | 'weight'", default: "'degree'", desc: '`points` only — what a node’s size encodes. `weight` reads GraphNode.weight, for when the picture is about a quantity rather than connectivity' },
+			{ name: 'sizeScale', type: "'linear' | 'log'", default: "'linear'", desc: 'How the measure maps onto area. `log` for a measure spanning orders of magnitude' },
+			{ name: 'depth', type: 'number', default: '1', desc: '`neighborhood` only — hops out from the focus. 1 answers “what touches this”, 2 answers “what does changing this reach”' },
 			{ name: 'nestBy', type: "'group' | 'kind'", desc: 'Subdivide each cluster by a second axis, so both facts are visible at once. Omit for one level; the same axis as groupBy is ignored' },
 			{ name: 'edgeStyle', type: "'curved' | 'orthogonal'", default: "'curved'", desc: 'Connector geometry' },
 			{ name: 'focus', type: 'string | null', default: 'null', desc: '`neighborhood` only — the node to centre. Defaults to the selection' },
@@ -88,6 +91,9 @@ const meta: DemoMeta = {
 			{ selector: '[data-graph-density-controls]', desc: 'On-canvas detail toggle; buttons carry data-graph-density="names|keys|full"' },
 			// Clusters
 			{ selector: '[data-graph-cluster]', desc: 'One group box. Reads --group-fill / --group-stroke' },
+			{ selector: '[data-graph-column]', desc: 'A column heading in a multi-column layout. Position, width and wording all come from the layout' },
+			{ selector: '[data-column-side]', desc: 'in | out | focus — which side of the focus a column sits on. `focus` names the node itself, so it is styled as a proper noun' },
+			{ selector: '[data-column-depth]', desc: 'Hops from the focus. 0 is the focus column' },
 			{ selector: '[data-cluster-depth]', desc: '0 for an outer box, 1 for one nested inside it. Outer boxes are emitted first, so paint order nests them with no DOM tree' },
 			{ selector: '[data-graph-cluster-label]', desc: 'Group name + count. Reads --group-label' },
 			// Node card

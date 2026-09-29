@@ -169,6 +169,16 @@
   color: var(--ink-mute);
 }
 
+/* A heading is orientation, not content: mute against the canvas, and the focus column takes
+   full ink because it names the thing the reader came for. */
+[data-style='zen-sumi'] [data-graph-column] {
+  color: var(--ink-mute);
+}
+
+[data-style='zen-sumi'] [data-graph-column][data-column-side='focus'] {
+  color: var(--ink);
+}
+
 /* ─── node kinds ────────────────────────────────────────────────────────── */
 
 /* Single accent is the zen-sumi rule: primary marks the one thing that matters

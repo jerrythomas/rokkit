@@ -15,6 +15,11 @@ function str(value: unknown): string | undefined {
 	return typeof value === 'string' ? value : undefined
 }
 
+/** A finite number, or nothing. NaN and Infinity are not measures. */
+function num(value: unknown): number | undefined {
+	return typeof value === 'number' && Number.isFinite(value) ? value : undefined
+}
+
 function pick(row: unknown, path: string | undefined, fallbackKey: string): unknown {
 	return readPath(row, path ?? fallbackKey)
 }
@@ -42,7 +47,7 @@ function buildRows(source: unknown, fields: GraphFields): GraphRow[] {
 
 // Every node-level field the canonical model reads. A claimed key must NOT also
 // land in `meta`, or the same value sits in two places and the two can drift.
-const CLAIMED_NODE_KEYS = ['id', 'label', 'group', 'kind', 'rows', 'note'] as const
+const CLAIMED_NODE_KEYS = ['id', 'label', 'group', 'kind', 'weight', 'rows', 'note'] as const
 
 function buildMeta(source: unknown, fields: GraphFields): Record<string, unknown> {
 	if (source === null || typeof source !== 'object') return {}
@@ -71,6 +76,7 @@ function buildNode(source: unknown, fields: GraphFields): GraphNode {
 		label,
 		group,
 		kind: str(pick(source, fields.kind, 'kind')),
+		weight: num(pick(source, fields.weight, 'weight')),
 		rows: buildRows(source, fields),
 		note: str(pick(source, fields.note, 'note')),
 		meta: buildMeta(source, fields)

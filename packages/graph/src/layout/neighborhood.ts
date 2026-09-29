@@ -14,8 +14,9 @@
 import { buildCards } from './cards.js'
 import { buildEdges } from './edges.js'
 import { warnUnknownOptions } from './options.js'
+import { rings, type Ring, type Side } from './rings.js'
 import { CARD_W } from './constants.js'
-import type { Card, Cards, LayoutFn, LayoutResult } from './types.js'
+import type { Card, Cards, Column, LayoutFn, LayoutResult, Size } from './types.js'
 import type { GraphEdge, GraphModel, GraphNode } from '../types.js'
 
 /* Local to this layout and deliberately NOT the cluster gaps in constants.ts: this is
@@ -30,7 +31,26 @@ const H_PAD = 20
 /** Extra width reserved to the right of the focus card for self-loop bows. */
 const LOOP_W = 60
 
-const EMPTY: LayoutResult = { clusters: [], cards: {}, edges: [], size: { w: 0, h: 0 } }
+const EMPTY: LayoutResult = { clusters: [], cards: {}, edges: [], size: { w: 0, h: 0 }, columns: [] }
+
+/**
+ * Column headings, worded for the KIND of graph rather than configured.
+ *
+ * The same layout draws a call graph and an ER diagram, and "calls" is simply wrong for the
+ * latter. The model already knows which it is, so the wording follows the edges instead of
+ * asking the consumer to supply strings that must then be kept in step.
+ */
+function headings(dependency: boolean): { in: string[]; out: string[] } {
+	return dependency
+		? { in: ['called by', 'callers of callers'], out: ['calls', 'which call'] }
+		: { in: ['referenced by', 'their references'], out: ['references', 'which reference'] }
+}
+
+function headingFor(side: Side, depth: number, dependency: boolean): string {
+	const words = headings(dependency)[side]
+
+	return words[depth - 1] ?? `${words[0]} · ${depth} hops`
+}
 
 /** Edges touching the focus, split by direction. `out` = the focus references the neighbour. */
 type Neighbour = { id: string; in: GraphEdge[]; out: GraphEdge[] }
@@ -77,10 +97,15 @@ function referencedRows(neighbour: Neighbour): Set<string> {
 	return names
 }
 
-/** Stack height of a column of cards, gaps between but not after. */
+/**
+ * Stack height of a column of cards — gaps between them, not after the last.
+ *
+ * Seeded at `-STACK_GAP` so the trailing gap cancels without a subtraction, and clamped at 0
+ * so an empty column is 0 rather than a negative height. No early return: the callers filter
+ * empty rings already, so a guard here would be a branch no test could reach.
+ */
 function stackHeight(cards: Card[]): number {
-	if (cards.length === 0) return 0
-	return cards.reduce((total, card) => total + card.h + STACK_GAP, 0) - STACK_GAP
+	return Math.max(0, cards.reduce((total, card) => total + card.h + STACK_GAP, -STACK_GAP))
 }
 
 /** Place a column of cards at `x`, vertically centred within `height`. */
@@ -113,6 +138,168 @@ function buildNeighbourCards(
 }
 
 /**
+ * Place every ring, size the canvas, and name the columns.
+ *
+ * An EMPTY ring costs no width: a depth-2 request on a graph with nothing at depth 2 must not
+ * leave a gap where that column would have been, so the width is measured from the rightmost
+ * column that actually exists rather than from the depth asked for.
+ */
+function arrange(
+	built: Ring[],
+	cards: Cards,
+	ctx: { focus: GraphNode; hasLoop: boolean; dependency: boolean }
+): { columns: Column[]; size: Size } {
+	const occupied = built.filter((r) => r.ids.length > 0)
+	const { focusX, xFor } = geometry(occupied)
+	const focusCard = cards[ctx.focus.id]
+
+	const height = placeRings(occupied, cards, { focusCard, focusX, xFor })
+	const columns = buildColumns(occupied, {
+		focusX,
+		focusLabel: ctx.focus.label,
+		xFor,
+		dependency: ctx.dependency
+	})
+	const width =
+		xFor('out', furthest(occupied, 'out')) + CARD_W + (ctx.hasLoop ? LOOP_W : 0) + 4
+
+	return { columns, size: { w: width, h: height } }
+}
+
+/**
+ * Which side ring 1 puts each neighbour on.
+ *
+ * The DOMINANT direction, not "has an out edge at all" (#160). A node with edges both ways is
+ * routine in a call graph — mutual recursion, a callback registered with its invoker, a
+ * visitor dispatching back into its walker — and testing `out.length > 0` put every one of
+ * them on the right, drawing its inbound edge right-to-left against the convention this
+ * layout states.
+ *
+ * One card per node is the constraint, so a TIE still draws one edge backwards whichever side
+ * wins. `in` is the deliberate pick: that column reads "things that reach this", which is what
+ * a reader scans for before changing something.
+ */
+function sideOf(neighbours: Neighbour[]): (id: string) => Side {
+	const outward = new Set(neighbours.filter((n) => n.out.length > n.in.length).map((n) => n.id))
+
+	return (id) => (outward.has(id) ? 'out' : 'in')
+}
+
+/**
+ * Edges with BOTH ends placed, rather than "touches the focus".
+ *
+ * At depth 1 those are the same set — everything on the canvas is a direct neighbour — so the
+ * one-hop picture is unchanged. At depth 2 they differ: an edge from ring 1 to ring 2 touches
+ * no focus, and showing it is exactly what the second ring is for.
+ */
+function drawableIn(model: GraphModel, cards: Cards) {
+	return model.edges.filter((e) => cards[e.source] !== undefined && cards[e.target] !== undefined)
+}
+
+/**
+ * Where each ring sits. Ring d on the `in` side is d steps left of the focus; on the `out`
+ * side, d steps right. The focus is pushed right by however deep the inbound side goes.
+ */
+function geometry(occupied: Ring[]): {
+	focusX: number
+	xFor: (side: Side, depth: number) => number
+} {
+	const columnStep = CARD_W + COL_GAP
+	const focusX = furthest(occupied, 'in') * columnStep
+
+	return {
+		focusX,
+		xFor: (side, d) => (side === 'in' ? focusX - d * columnStep : focusX + d * columnStep)
+	}
+}
+
+/**
+ * Cards for everything on the canvas.
+ *
+ * Three populations, three treatments: the focus shows up to 16 rows unfiltered, a direct
+ * neighbour shows its keys plus the rows the focus references, and a node further out shows
+ * keys only — at two hops the reader is tracing reach, not reading columns.
+ */
+function buildRingCards(
+	model: GraphModel,
+	neighbours: Neighbour[],
+	ring: { placed: GraphNode[]; focus: GraphNode; expanded: ReadonlySet<string> | undefined }
+): Cards {
+	const { placed, focus, expanded } = ring
+	const direct = new Set(neighbours.map((n) => n.id))
+
+	return {
+		...buildNeighbourCards(model, neighbours, expanded),
+		...buildCards(
+			placed.filter((n) => !direct.has(n.id)),
+			'keys',
+			{ expanded }
+		),
+		...buildCards([focus], 'full', { limit: 16, expanded })
+	}
+}
+
+/**
+ * Stack every ring into its column and centre the focus beside them. Returns the canvas
+ * height, which is the tallest stack — every column is vertically centred against it, so a
+ * short ring beside a long one reads as beside rather than above.
+ */
+function placeRings(
+	occupied: Ring[],
+	cards: Cards,
+	ctx: { focusCard: Card; focusX: number; xFor: (side: Side, depth: number) => number }
+): number {
+	const stacks = occupied.map((ring) => ({
+		ring,
+		cards: ring.ids.map((id) => cards[id]).filter((c) => c !== undefined)
+	}))
+	const height =
+		Math.max(ctx.focusCard.h, ...stacks.map((s) => stackHeight(s.cards)), MIN_H) + H_PAD
+
+	for (const { ring, cards: column } of stacks) {
+		placeColumn(column, ctx.xFor(ring.side, ring.depth), height)
+	}
+	placeColumn([ctx.focusCard], ctx.focusX, height)
+
+	return height
+}
+
+/** Deepest occupied ring on one side, or 0 when that side is empty. */
+function furthest(occupied: Ring[], side: Side): number {
+	const depths = occupied.filter((r) => r.side === side).map((r) => r.depth)
+
+	return depths.length > 0 ? Math.max(...depths) : 0
+}
+
+type ColumnContext = {
+	focusX: number
+	focusLabel: string
+	xFor: (side: Side, depth: number) => number
+	dependency: boolean
+}
+
+/** Headings left-to-right: inbound rings, the focus, then outbound rings. */
+function buildColumns(occupied: Ring[], ctx: ColumnContext): Column[] {
+	const side = (which: Side): Column[] =>
+		occupied
+			.filter((r) => r.side === which)
+			.map((r) => ({
+				x: ctx.xFor(which, r.depth),
+				w: CARD_W,
+				depth: r.depth,
+				side: which,
+				label: headingFor(which, r.depth, ctx.dependency)
+			}))
+			.sort((a, b) => a.x - b.x)
+
+	return [
+		...side('in'),
+		{ x: ctx.focusX, w: CARD_W, depth: 0, side: 'focus' as const, label: ctx.focusLabel },
+		...side('out')
+	]
+}
+
+/**
  * Entity-centric layout. `options.focus` names the node to centre; without it, or with
  * an id the model does not know, the result is empty.
  *
@@ -126,47 +313,28 @@ export const neighborhood: LayoutFn = (model, options): LayoutResult => {
 	if (!focus) return EMPTY
 
 	const { neighbours, selfEdges } = partition(model, focus.id)
-	const cards: Cards = {
-		...buildNeighbourCards(model, neighbours, options.expanded),
-		...buildCards([focus], 'full', { limit: 16, expanded: options.expanded })
-	}
+	const built = rings(
+		model,
+		focus.id,
+		Math.max(1, Math.floor(options.depth ?? 1)),
+		sideOf(neighbours)
+	)
 
-	const focusCard = cards[focus.id]
-	/*
-	 * A neighbour the focus points at sits right; one that points at the focus sits left.
-	 *
-	 * Split on the DOMINANT direction, not on "has an out edge at all" (#160). A node with
-	 * edges both ways is routine in a call graph — mutual recursion, a callback registered
-	 * with its invoker, a visitor dispatching back into its walker — and testing
-	 * `out.length > 0` put every one of them on the right, drawing its inbound edge
-	 * right-to-left against the convention this layout states.
-	 *
-	 * One card per node is the constraint, so a TIE still draws one edge backwards whichever
-	 * side wins. Left is the deliberate pick: that column reads "things that reach this",
-	 * which is what a reader scans for before changing something.
-	 */
-	const isRight = (n: (typeof neighbours)[number]) => n.out.length > n.in.length
-	const right = neighbours.filter(isRight).map((n) => cards[n.id])
-	const left = neighbours.filter((n) => !isRight(n)).map((n) => cards[n.id])
+	const placedNodes = built
+		.flatMap((r) => r.ids)
+		.map((id) => model.byId.get(id))
+		.filter((n) => n !== undefined)
+	const cards = buildRingCards(model, neighbours, {
+		placed: placedNodes,
+		focus,
+		expanded: options.expanded
+	})
 
-	const height = Math.max(focusCard.h, stackHeight(left), stackHeight(right), MIN_H) + H_PAD
-	const hasRight = right.length > 0 || selfEdges.length > 0
-	const focusX = left.length > 0 ? CARD_W + COL_GAP : 0
+	const { columns, size } = arrange(built, cards, {
+		focus,
+		hasLoop: selfEdges.length > 0,
+		dependency: model.edges.some((e) => e.kind === 'dependency')
+	})
 
-	placeColumn(left, 0, height)
-	placeColumn([focusCard], focusX, height)
-	placeColumn(right, focusX + CARD_W + COL_GAP, height)
-
-	const width =
-		focusX +
-		CARD_W +
-		(hasRight ? COL_GAP + CARD_W : 0) +
-		(selfEdges.length > 0 ? LOOP_W : 0) +
-		4
-
-	// Only edges touching the focus. buildEdges would otherwise connect two neighbours
-	// that happen to both be laid out, which this view never shows.
-	const touching = model.edges.filter((e) => e.source === focus.id || e.target === focus.id)
-
-	return { clusters: [], cards, edges: buildEdges(touching, cards), size: { w: width, h: height } }
+	return { clusters: [], cards, edges: buildEdges(drawableIn(model, cards), cards), size, columns }
 }

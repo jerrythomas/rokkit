@@ -31,10 +31,18 @@ afterEach(() => warn.mockRestore())
 
 describe('unknown layout options', () => {
 	it('warns instead of silently discarding', () => {
-		neighborhood(model(), { focus: 'a', depth: 2 } as never)
+		// `depth` was the original report (#162) and is now a real option, so this uses a key
+		// that genuinely is not one — the behaviour under test is the silence, not the key.
+		neighborhood(model(), { focus: 'a', hops: 2 } as never)
 
 		expect(warn).toHaveBeenCalledTimes(1)
-		expect(warn.mock.calls[0][0]).toContain('depth')
+		expect(warn.mock.calls[0][0]).toContain('hops')
+	})
+
+	it('accepts depth, which the report that prompted this asked for', () => {
+		neighborhood(model(), { focus: 'a', depth: 2 })
+
+		expect(warn).not.toHaveBeenCalled()
 	})
 
 	it('names the layout that ignored it, since the option may be valid elsewhere', () => {

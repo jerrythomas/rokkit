@@ -75,6 +75,23 @@ export type RoutedEdge = {
 	s2: number
 }
 
+/**
+ * One column of a multi-column layout, with the heading it needs to be readable.
+ *
+ * Three columns get away with none — the focus is visibly central, so the sides are obvious.
+ * Five do not: without headings a depth-2 portrait is ambiguous about which direction is
+ * which, and the reader has to trace an arrow to find out.
+ */
+export type Column = {
+	x: number
+	/** Carried here so the view needs no layout constant to size a heading. */
+	w: number
+	depth: number
+	/** `in` = things that reach the focus, `out` = things it reaches, `focus` = the centre. */
+	side: 'in' | 'out' | 'focus'
+	label: string
+}
+
 export type Cards = Record<string, Card>
 export type Size = { w: number; h: number }
 
@@ -102,12 +119,36 @@ export type LayoutOptions = {
 	 * and the layout runs its original single-level path untouched.
 	 */
 	nestBy?: NodeAxis
+	/**
+	 * What `points` sizes a node by. `degree` (the default) counts edges; `weight` reads
+	 * `GraphNode.weight`.
+	 *
+	 * Degree is a good default and is not always the measure the reader is asking about — a
+	 * 40-file module with few cross-edges should not render smaller than a 2-file one that
+	 * happens to be chatty.
+	 */
+	sizeBy?: 'degree' | 'weight'
+	/**
+	 * How the measure maps onto area. `linear` (the default), or `log` for a measure spanning
+	 * orders of magnitude — declaration counts across a real repo span three or four, and
+	 * linear flattens everything below the top few onto the minimum.
+	 */
+	sizeScale?: 'linear' | 'log'
+	/**
+	 * `neighborhood` only — how many hops out from the focus. Defaults to 1.
+	 *
+	 * One hop answers "what touches this". Two answers "what does changing this reach", which
+	 * is the question a reader has before editing something.
+	 */
+	depth?: number
 }
 
 export type LayoutResult = {
 	clusters: Cluster[]
 	cards: Cards
 	edges: RoutedEdge[]
+	/** Column headings, when the layout has columns. Empty for the grid layouts. */
+	columns?: Column[]
 	size: Size
 }
 
