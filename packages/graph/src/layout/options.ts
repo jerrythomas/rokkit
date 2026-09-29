@@ -20,6 +20,36 @@ export const LAYOUT_OPTION_KEYS = [
 	'levels'
 ] as const
 
+/**
+ * Which options have an EFFECT under each built-in layout.
+ *
+ * A control wired to an option the active layout ignores is worse than a missing one: it looks
+ * like a knob, it moves, and the picture does not change — so the reader concludes the view is
+ * broken rather than that the control does not apply. `names | keys | full` over a treemap is
+ * the plainest case, since a treemap box has no row list to thin.
+ *
+ * Exported because it is a fact about the layout, not about any one consumer's control panel.
+ * A hand-maintained copy in a UI drifts the first time a layout gains or drops an option.
+ *
+ * Two entries are not simply "what the layout function reads", and both are deliberate:
+ *   - `edgeStyle` is applied by `GraphState` when it draws a path, not by the layout. It
+ *     therefore applies wherever a layout produces edges — which `world` does not.
+ *   - `neighborhood` takes no `density`: it builds its cards at `full` unconditionally, because
+ *     a portrait of one node's surroundings that hides the columns the edges land on defeats
+ *     its own purpose.
+ */
+export const LAYOUT_OPTIONS: Record<string, readonly (typeof LAYOUT_OPTION_KEYS)[number][]> = {
+	cluster: ['density', 'arrange', 'edgeStyle', 'expanded', 'groupBy', 'nestBy'],
+	neighborhood: ['edgeStyle', 'expanded', 'focus', 'depth'],
+	points: ['edgeStyle', 'sizeBy', 'sizeScale'],
+	world: ['sizeBy', 'focusPath', 'levels']
+}
+
+/** Whether a control for `option` should be offered while `layout` is active. */
+export function appliesTo(layout: string, option: string): boolean {
+	return LAYOUT_OPTIONS[layout]?.includes(option as never) ?? true
+}
+
 /** Warn once per unknown key, ever. A layout re-runs on every render. */
 const warned = new Set<string>()
 

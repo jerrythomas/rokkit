@@ -296,7 +296,9 @@
 
 /* Hover label — it floats over the canvas, so it carries its own surface. */
 [data-style='frosted'] [data-graph-node]:hover [data-graph-node-title],
-[data-style='frosted'] [data-graph-node]:focus-visible [data-graph-node-title] {
+[data-style='frosted'] [data-graph-node]:focus-visible [data-graph-node-title],
+[data-style='frosted'] [data-graph-layout='world'] [data-graph-cluster]:hover > [data-graph-cluster-label],
+[data-style='frosted'] [data-graph-layout='world'] [data-graph-cluster]:focus-visible > [data-graph-cluster-label] {
   background-color: var(--paper);
   color: var(--ink);
   border: 1px solid var(--paper-edge);

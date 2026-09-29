@@ -742,4 +742,100 @@ describe('Graph — accessibility and construction', () => {
 
 		expect(container.querySelectorAll('[data-graph-row]')).toHaveLength(0)
 	})
+
+	describe('the world layout renders one box shape', () => {
+		/* A treemap nests ONE thing. Rendering a leaf as a node card put a card's furniture
+		 * inside a hierarchy of label boxes — and a codebase module has no rows, so every leaf
+		 * showed a literal `0` where a card would show its column count. */
+
+		const WORLD_NODES = [
+			{ schema: 'p', name: 'parse', kind: 'table', path: ['dbd', 'parse'], columns: [] },
+			{ schema: 'p', name: 'emit', kind: 'view', path: ['dbd', 'emit'], columns: [] }
+		]
+		const world = () =>
+			render(Graph, {
+				nodes: WORLD_NODES,
+				edges: [],
+				fields: { ...FIELDS, path: 'path' },
+				layout: 'world',
+				levels: 2
+			})
+
+		it('renders every box as a cluster, with no node cards', () => {
+			const { container } = world()
+
+			expect(container.querySelectorAll('[data-graph-node]')).toHaveLength(0)
+			expect(container.querySelectorAll('[data-graph-cluster]').length).toBeGreaterThan(1)
+		})
+
+		it('shows no row count — the number beside a box is its measure', () => {
+			const { container } = world()
+
+			expect(container.querySelector('[data-graph-node-count]')).toBeNull()
+		})
+
+		it('carries the node id and kind on a leaf box, so it stays addressable', () => {
+			const { container } = world()
+			const leaf = container.querySelector('[data-graph-node-id="p.parse"]')
+
+			expect(leaf).not.toBeNull()
+			expect(leaf?.getAttribute('data-node-kind')).toBe('table')
+			expect(leaf?.hasAttribute('data-graph-cluster')).toBe(true)
+		})
+
+		it('leaves a region box unaddressable, because it is not a node', () => {
+			const { container } = world()
+			const region = [...container.querySelectorAll('[data-graph-cluster]')].find(
+				(el) => el.getAttribute('data-node-group') === 'dbd'
+			)
+
+			expect(region).toBeDefined()
+			expect(region?.hasAttribute('data-graph-node-id')).toBe(false)
+		})
+
+		it('hides the on-canvas density toggle, which controls nothing here', () => {
+			// A treemap box has no row list to thin, so the toggle moves and the picture does not
+			// change — which reads as a broken view rather than an inapplicable control.
+			const { container } = world()
+
+			expect(container.querySelector('[data-graph-density-controls]')).toBeNull()
+		})
+
+		it('hides it for a PASSED state too, not only a prop-built one', () => {
+			// The `layout` prop keeps its default when a caller hands over a ready-made state, so
+			// reading the prop answers for a layout that is not on screen. Every real consumer
+			// passes a state, which is exactly the case a prop-built fixture cannot catch.
+			const s = new GraphState({
+				nodes: WORLD_NODES,
+				edges: [],
+				fields: { ...FIELDS, path: 'path' },
+				layout: 'world'
+			})
+			const { container } = render(Graph, { state: s })
+
+			expect(container.querySelector('[data-graph-density-controls]')).toBeNull()
+		})
+
+		it('still offers the density toggle where it does something', () => {
+			const { container } = render(Graph, { nodes: NODES, edges: EDGES, fields: FIELDS })
+
+			expect(container.querySelector('[data-graph-density-controls]')).not.toBeNull()
+		})
+
+		it('selects the node when its leaf box is clicked', async () => {
+			const s = new GraphState({
+				nodes: WORLD_NODES,
+				edges: [],
+				fields: { ...FIELDS, path: 'path' },
+				layout: 'world',
+				levels: 2
+			})
+			const { container } = render(Graph, { state: s })
+			const leaf = container.querySelector('[data-graph-node-id="p.parse"]') as HTMLElement
+
+			leaf.click()
+			await tick()
+			expect(s.value).toBe('p.parse')
+		})
+	})
 })

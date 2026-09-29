@@ -101,7 +101,8 @@ const meta: DemoMeta = {
 			{ selector: '[data-column-side]', desc: 'in | out | focus — which side of the focus a column sits on. `focus` names the node itself, so it is styled as a proper noun' },
 			{ selector: '[data-column-depth]', desc: 'Hops from the focus. 0 is the focus column' },
 			{ selector: '[data-cluster-depth]', desc: '0 for an outer box, 1 for one nested inside it. Outer boxes are emitted first, so paint order nests them with no DOM tree' },
-			{ selector: '[data-graph-cluster-label]', desc: 'Group name + count. Reads --group-label' },
+			{ selector: '[data-graph-cluster-label]', desc: 'Group name + count, or name + measure where the layout sizes by one. Truncates with an ellipsis rather than hiding, so how much is readable follows the zoom' },
+			{ selector: '[data-graph-node-id]', desc: 'The node a box IS, on a containment layout where a leaf is still a box rather than a card. Makes it selectable; absent on a region, which is not a node' },
 			// Node card
 			{ selector: '[data-graph-node]', desc: 'Node card — a <button>' },
 			{ selector: '[data-node-kind]', desc: 'table | view | matview | materialized_view | function | procedure | trigger | enum — sets --node-accent. matview and materialized_view are the same object under rokkit’s short name and dbd’s wire name' },

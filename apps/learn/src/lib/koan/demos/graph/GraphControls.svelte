@@ -8,10 +8,29 @@
 	 * drives them with getByLabel().selectOption(). Select has its own demo page; this one's
 	 * job is verifying @rokkit/graph.
 	 */
+	import { appliesTo } from '@rokkit/graph'
 	import { explorer } from './store.svelte'
 	import { datasets } from './datasets'
 
-	const rows = [
+	/**
+	 * `option` names the layout option a row drives, so the package decides whether the row is
+	 * offered. A control the active layout ignores looks like a knob, moves, and changes
+	 * nothing — which reads as a broken view rather than as an inapplicable control. Density is
+	 * the plainest case: a treemap box has no row list to thin out.
+	 *
+	 * Rows with no `option` are not layout options at all (dataset, view, the colour channel)
+	 * and always apply.
+	 */
+	type Row = {
+		id: string
+		label: string
+		option?: string
+		options: { value: string; label: string }[]
+		get: () => string
+		set: (value: string) => void
+	}
+
+	const rows: Row[] = [
 		{
 			id: 'dataset',
 			label: 'Dataset',
@@ -45,6 +64,7 @@
 		{
 			id: 'density',
 			label: 'Density',
+			option: 'density',
 			options: [
 				{ value: 'names', label: 'Names' },
 				{ value: 'keys', label: 'Keys' },
@@ -56,6 +76,7 @@
 		{
 			id: 'size-by',
 			label: 'Size by',
+			option: 'sizeBy',
 			options: [
 				{ value: 'degree', label: 'Degree' },
 				{ value: 'declarations', label: 'Declarations' },
@@ -69,6 +90,7 @@
 		{
 			id: 'grouping',
 			label: 'Group by',
+			option: 'groupBy',
 			options: [
 				{ value: 'schema', label: 'Schema' },
 				{ value: 'kind', label: 'Kind' },
@@ -81,6 +103,7 @@
 		{
 			id: 'arrange',
 			label: 'Arrange',
+			option: 'arrange',
 			options: [
 				{ value: 'untangle', label: 'Untangle' },
 				{ value: 'a-z', label: 'A–Z' }
@@ -91,6 +114,7 @@
 		{
 			id: 'edge-style',
 			label: 'Edge style',
+			option: 'edgeStyle',
 			options: [
 				{ value: 'curved', label: 'Curved' },
 				{ value: 'orthogonal', label: 'Orthogonal' }
@@ -112,7 +136,7 @@
 </script>
 
 <div data-graph-controls class="controls">
-	{#each rows as row (row.id)}
+	{#each rows.filter((r) => !r.option || appliesTo(explorer.layout, r.option)) as row (row.id)}
 		<!-- Explicit for/id, NOT a wrapping <label>. An implicit label computes the control's
 		     accessible name from all of its text content, so a wrapped <select> is announced as
 		     "View Diagram Entity Entities" — the whole option list read as the field's name. -->

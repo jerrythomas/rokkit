@@ -10,4 +10,5 @@ export const layouts: Record<string, LayoutFn> = { cluster, neighborhood, points
 export type LayoutName = keyof typeof layouts
 
 export { cluster, neighborhood, points, world }
+export { LAYOUT_OPTIONS, appliesTo } from './options.js'
 export * from './types.js'

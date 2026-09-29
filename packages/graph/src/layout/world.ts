@@ -22,7 +22,7 @@ import type { TreeNode } from '../model/tree.js'
 import { squarify } from './squarify.js'
 import type { Rect } from './squarify.js'
 import { warnUnknownOptions } from './options.js'
-import type { Cards, Cluster, LayoutFn, LayoutResult } from './types.js'
+import type { Cluster, LayoutFn, LayoutResult } from './types.js'
 
 /** Canvas the layout lays out into. Fit-to-container scales it; the ratios are what matter. */
 const CANVAS = { w: 1200, h: 800 }
@@ -31,12 +31,19 @@ const PAD = 4
 /** Room above a container's children for its label. */
 const TITLE = 16
 /**
- * Area floor, as a share of the total.
+ * Area floor, as a share of one child's EQUAL slice of its parent.
  *
  * Exact proportion gives a zero-measure node no box at all, which reads as missing rather than
- * as unmeasured — and "unmeasured" is a normal state in a partially-indexed graph.
+ * as unmeasured — and "unmeasured" is a normal state in a partially-indexed graph: 79 of
+ * rokkit's own 470 modules have degree 0.
+ *
+ * Measured against the equal slice rather than against the TOTAL, because the floor is applied
+ * per child and so sums with the child count. A flat `total * k` is therefore self-defeating
+ * exactly where it is needed: at two children it costs 2k of the canvas and leaves a 2px
+ * hairline, and at 470 it claims 470k — nearly the whole canvas — and proportion stops reading
+ * altogether. Against the equal slice the total floor is at most `k` whatever n is.
  */
-const MIN_SHARE = 0.002
+const MIN_EQUAL_SHARE = 0.12
 
 type Placed = { tree: TreeNode; rect: Rect; depth: number; parent?: string }
 
@@ -60,7 +67,8 @@ function place(
 	if (inner.w <= 0 || inner.h <= 0) return
 
 	const total = node.children.reduce((sum, c) => sum + Math.max(c.value, 0), 0)
-	const placed = squarify(node.children, inner, total * MIN_SHARE)
+	const equal = total / node.children.length
+	const placed = squarify(node.children, inner, equal * MIN_EQUAL_SHARE)
 
 	for (const { item, rect: box } of placed) {
 		// Depth is RELATIVE to the focus, so the outermost rendered box is always 0 whatever
@@ -79,7 +87,21 @@ function compact(value: number): string {
 	return String(Math.round(value))
 }
 
+/**
+ * Every placed box, leaf or region, as the SAME shape.
+ *
+ * A treemap is a hierarchy of one thing: a box with a label and an area. Emitting a leaf as a
+ * node card and a region as a label box put two visual structures inside one nesting, which
+ * reads as two unrelated kinds of object rather than as depth — and it dragged the card's
+ * furniture along: icon, kind tag and a row count, where a codebase module has no rows and so
+ * showed a literal `0` beside its name.
+ *
+ * A childless box keeps its node's id and kind, so uniform structure costs no identity: the
+ * box is still selectable and still colours by what it is.
+ */
 function clusterOf(entry: Placed, groupIndex: number): Cluster {
+	const leaf = entry.tree.children.length === 0 ? entry.tree.node : undefined
+
 	return {
 		name: entry.tree.label,
 		// The measure, not the child count: this box's area IS its value, so that is the
@@ -87,6 +109,8 @@ function clusterOf(entry: Placed, groupIndex: number): Cluster {
 		caption: compact(entry.tree.value),
 		parent: entry.parent,
 		depth: entry.depth,
+		nodeId: leaf?.id,
+		kind: leaf?.kind,
 		list: entry.tree.children.map((c) => c.node).filter((n) => n !== undefined),
 		count: entry.tree.children.length,
 		groupIndex,
@@ -98,43 +122,11 @@ function clusterOf(entry: Placed, groupIndex: number): Cluster {
 }
 
 /**
- * A box with children is a region; one without is the thing itself, and the thing is what
- * carries a node, a kind and a click. A childless box always has a node — leaves come from the
- * tree's own attach step — so the split is total rather than guarded.
- */
-function split(placed: Placed[]): { clusters: Cluster[]; cards: Cards } {
-	const clusters: Cluster[] = []
-	const cards: Cards = {}
-
-	placed.forEach((entry, i) => {
-		const leaf = entry.tree.children.length === 0 ? entry.tree.node : undefined
-		if (!leaf) {
-			clusters.push(clusterOf(entry, i))
-
-			return
-		}
-
-		cards[leaf.id] = {
-			node: leaf,
-			vis: [],
-			more: leaf.rows.length,
-			w: entry.rect.w,
-			h: entry.rect.h,
-			x: entry.rect.x,
-			y: entry.rect.y,
-			groupIndex: i
-		}
-	})
-
-	return { clusters, cards }
-}
-
-/**
  * Containment as area.
  *
  * `focusPath` scopes the canvas to a subtree — the drill-down operation — and `levels` caps
- * how far below it is built. A box with children becomes a cluster; a box without becomes a
- * card, so the outermost materialised level is what a reader clicks.
+ * how far below it is built. Every box is a cluster whatever its depth, so the outermost
+ * materialised level is what a reader clicks.
  */
 export const world: LayoutFn = (model, options): LayoutResult => {
 	warnUnknownOptions(options, 'world')
@@ -154,5 +146,13 @@ export const world: LayoutFn = (model, options): LayoutResult => {
 
 	// Edges are deliberately absent: containment IS the relationship here, and at world scale
 	// the adjacency graph cannot be drawn. Cross-container aggregation is its own design.
-	return { ...split(placed), edges: [], size: CANVAS }
+	//
+	// `cards` is empty by construction rather than by filtering — there is no box in this
+	// layout that a card could represent.
+	return {
+		clusters: placed.map(clusterOf),
+		cards: {},
+		edges: [],
+		size: CANVAS
+	}
 }

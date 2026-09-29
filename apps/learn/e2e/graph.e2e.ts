@@ -222,7 +222,15 @@ test.describe('graph demo', () => {
 		// A box per package, each holding its own modules.
 		const outer = page.locator('[data-graph-cluster][data-cluster-depth="0"]')
 		expect(await outer.count()).toBeGreaterThan(8)
-		expect(await page.locator('[data-graph-node]').count()).toBeGreaterThan(50)
+
+		// Every box is a cluster at every depth — a treemap nests ONE shape. A leaf is marked by
+		// carrying the node it is, not by being a different element: rendering leaves as node
+		// cards put a card's furniture inside a hierarchy of label boxes, down to a row count
+		// that reads `0` for anything without rows, which is every module here.
+		await expect(page.locator('[data-graph-node]')).toHaveCount(0)
+		expect(
+			await page.locator('[data-graph-cluster][data-graph-node-id]').count()
+		).toBeGreaterThan(50)
 
 		// Area encodes declarations, so the boxes must NOT all be the same size — an even
 		// split is what a measure the tree does not understand produces.
@@ -230,6 +238,76 @@ test.describe('graph demo', () => {
 			els.map((el) => (el as HTMLElement).offsetWidth * (el as HTMLElement).offsetHeight)
 		)
 		expect(Math.max(...areas) / Math.min(...areas)).toBeGreaterThan(3)
+	})
+
+	test('no treemap label spills out of the box it names', async ({ page }) => {
+		// A label wider than its box ran across the neighbours, and two of them interleaved into
+		// one unreadable string — `UTILS.JS · 1INDEX.JS · 11` was two boxes. Measured on screen,
+		// after the fit transform, because that is where the overflow actually happens.
+		await page.goto('/app/graph?variant=codebase')
+		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+
+		const spills = await page
+			.locator('[data-graph-cluster]')
+			.evaluateAll((boxes) =>
+				boxes
+					.map((box) => {
+						const label = box.querySelector('[data-graph-cluster-label]')
+						if (!label || getComputedStyle(label).display === 'none') return null
+						const b = box.getBoundingClientRect()
+						const l = label.getBoundingClientRect()
+						// A box narrower than the label's own inset truncates to nothing. There is no
+						// text on screen, so there is nothing to spill — only a rectangle of zero
+						// width sitting past the edge.
+						if (l.width === 0) return null
+
+						// 1px for sub-pixel rounding at a fractional fit scale.
+						return l.right > b.right + 1 || l.bottom > b.bottom + 1
+							? `${label.textContent} in ${b.width.toFixed(0)}x${b.height.toFixed(0)}`
+							: null
+					})
+					.filter(Boolean)
+			)
+
+		expect(spills).toEqual([])
+	})
+
+	test('zooming in reveals more of the treemap labels, rather than all-or-nothing', async ({
+		page
+	}) => {
+		// Labels ellipsise instead of disappearing, and the budget is in counter-scaled units,
+		// so each zoom step buys characters. A pixel-threshold `display: none` made visibility a
+		// property of the DATA instead: a small box was nameless at every zoom, because a
+		// container query measures canvas units and zooming does not change those.
+		await page.goto('/app/graph?variant=codebase')
+		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+
+		const textWidth = () =>
+			page
+				.locator('[data-graph-cluster-label]')
+				.evaluateAll((els) =>
+					els.reduce((total, el) => total + el.getBoundingClientRect().width, 0)
+				)
+
+		const atFit = await textWidth()
+		for (let i = 0; i < 4; i++) {
+			await page.locator('[data-graph-zoom-controls] button', { hasText: '+' }).click()
+		}
+		const zoomedIn = await textWidth()
+
+		expect(atFit).toBeGreaterThan(0)
+		expect(zoomedIn).toBeGreaterThan(atFit * 1.3)
+	})
+
+	test('the treemap offers no density control, which would change nothing', async ({ page }) => {
+		// A box here has no row list to thin. A control that moves while the picture does not
+		// reads as a broken view rather than as one that does not apply.
+		await page.goto('/app/graph?variant=codebase')
+		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+
+		await expect(page.locator('[data-graph-density-controls]')).toHaveCount(0)
+		await openControls(page)
+		await expect(page.getByLabel('Density')).toHaveCount(0)
 	})
 
 	test('switching to the neighborhood layout drops the clusters', async ({ page }) => {

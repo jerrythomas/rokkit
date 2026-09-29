@@ -47,7 +47,7 @@ vocabulary lives entirely in the optional `./schema` entry point.
 
 | Import | Contains |
 |--------|----------|
-| `@rokkit/graph` | `Graph`, `GraphState`, layouts, presets, `normalizeGraph`, `DEFAULT_ICONS`, types |
+| `@rokkit/graph` | `Graph`, `GraphState`, layouts, presets, `normalizeGraph`, `DEFAULT_ICONS`, `appliesTo`, types |
 | `@rokkit/graph/schema` | `EntityView`, `EntitiesView`, `NoteBlocks`, `fromSchemaModel`, `toGraphInput`, `SCHEMA_FIELDS`, `DEPS_FIELDS` |
 | `@rokkit/graph/icons` | `DEFAULT_ICONS` alone, with no Svelte imports — for your UnoCSS safelist |
 
@@ -59,12 +59,26 @@ Your own slots in the same way.
 - **`cluster`** — cards in group boxes. The default; entity diagrams.
 - **`neighborhood`** — one focus node and its 1-hop neighbours.
 - **`points`** — degree-sized rects, shelf-packed. Dense graphs, 1000+ nodes.
+- **`world`** — nested rectangles, area proportional to a measure. Where the mass is.
 
 Two-level clustering shows both grouping axes at once, which matters for a dependency graph
 where one schema holds a table, a trigger and a procedure:
 
 ```svelte
 <Graph {nodes} {edges} {fields} groupBy="group" nestBy="kind" />
+```
+
+`world` returns no cards: a treemap nests one shape, so a leaf is a `Cluster` too, carrying
+`nodeId` and `kind` so it stays selectable. Its caption is the measure driving its area, not a
+child count.
+
+Not every option reaches every layout, and a control wired to one that does not is worse than a
+missing one — it moves and nothing happens:
+
+```js
+import { appliesTo } from '@rokkit/graph'
+
+appliesTo('world', 'density')  // false — a treemap box has no row list to thin
 ```
 
 ## Two things worth knowing

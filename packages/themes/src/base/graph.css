@@ -383,49 +383,61 @@
    A box's area IS its measure, so the picture carries the information and the text is
    annotation. Two rules keep the annotation honest. */
 
+/* Every box here is a cluster, at every depth — a treemap nests ONE shape, and a leaf that
+   rendered as a node card put a card's furniture inside a hierarchy of label boxes. That is
+   why each rule below names one selector where it used to name two. */
+
 /* Counter-scaled, because the world is fitted to the viewport and a 10px label inside a
    1200px canvas shown at 0.58 renders at 6px. The label should be the same size on screen
    whatever the fit, exactly as the points layout's hover label already is. */
-[data-graph-layout='world'] [data-graph-cluster-label],
-[data-graph-layout='world'] [data-graph-node-title] {
+[data-graph-layout='world'] [data-graph-cluster-label] {
   transform: scale(var(--graph-label-counter-scale, 1));
   transform-origin: 0 0;
+
+  /* Clipped to its own box, or a long name runs across its neighbours and the two labels
+     interleave into one unreadable string — `UTILS.JS · 1INDEX.JS · 11` was two boxes, not a
+     typo. `white-space: nowrap` plus an absolutely-positioned label has no natural stop.
+
+     Divided by the counter-scale because `transform` does not affect layout: the box lays out
+     at canvas width w and paints at `w * scale`, while the label lays out at its natural width
+     and paints at that same width (counter-scale is 1/scale, which is the whole point of it).
+     So the label FITS when its layout width is at most `w * scale`, i.e. `100% / counter`. */
+  max-width: calc((100% - 0.65rem) / var(--graph-label-counter-scale, 1));
+  /* Same divisor vertically, so a box too short for a line of text clips it instead of
+     letting it spill across the boxes underneath. */
+  max-height: calc((100% - 0.35rem) / var(--graph-label-counter-scale, 1));
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* A box smaller than its own label rendered the text CLIPPED — one or two characters, or a
-   sliver of a glyph — which reads as "some boxes have labels and some do not" rather than as
-   a size. Below a threshold the label is dropped outright; the box keeps its colour, its
-   area and its hover, which is what still carries meaning at that size. */
-[data-graph-layout='world'] [data-graph-cluster],
-[data-graph-layout='world'] [data-graph-node] {
+/* Truncated, never dropped. A hard `display: none` below a pixel threshold made label
+   visibility a property of the DATA — a small box was silently nameless at every zoom, because
+   a container query measures the box in CANVAS units and zooming does not change those.
+
+   The max-width above is in counter-scaled units, so it tracks the zoom for free: at fit the
+   box is worth few characters and the name ellipsises, and each zoom step buys real estate
+   until it fits. How much you can read is a property of how far in you are, which is the
+   question the reader is actually asking. */
+[data-graph-layout='world'] [data-graph-cluster] {
   container-type: size;
 }
 
-@container (max-width: 90px) {
-  [data-graph-cluster-label],
-  [data-graph-node-title],
-  [data-graph-node-kind],
-  [data-graph-node-icon] {
-    display: none;
-  }
+/* A leaf box IS a node, so it takes the click that a region does not — clusters are
+   pointer-transparent by default precisely because a region is scenery. */
+[data-graph-layout='world'] [data-graph-cluster][data-graph-node-id] {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
-@container (max-height: 34px) {
-  [data-graph-cluster-label],
-  [data-graph-node-title] {
-    display: none;
-  }
-}
-
-/* Hover brings it back at any size, over the neighbours rather than inside a box too small
-   to hold it — the same deal the points layout makes. */
-[data-graph-layout='world'] [data-graph-node]:hover,
-[data-graph-layout='world'] [data-graph-node]:focus-visible {
+/* Hover brings the label back at any size, over the neighbours rather than inside a box too
+   small to hold it — the same deal the points layout makes. */
+[data-graph-layout='world'] [data-graph-cluster]:hover,
+[data-graph-layout='world'] [data-graph-cluster]:focus-visible {
   z-index: 3;
 }
 
-[data-graph-layout='world'] [data-graph-node]:hover [data-graph-node-title],
-[data-graph-layout='world'] [data-graph-node]:focus-visible [data-graph-node-title] {
+[data-graph-layout='world'] [data-graph-cluster]:hover > [data-graph-cluster-label],
+[data-graph-layout='world'] [data-graph-cluster]:focus-visible > [data-graph-cluster-label] {
   display: block;
   position: absolute;
   top: 100%;

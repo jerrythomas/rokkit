@@ -4,6 +4,7 @@
 	import type { GraphStateConfig } from './GraphState.svelte.js'
 	import type { GraphProps } from './types.js'
 	import { DEFAULT_ICONS } from './icons.js'
+	import { appliesTo } from './layout/options.js'
 
 	// Aliased: a local binding literally named `state` makes the compiler read the `$state`
 	// rune below as a store subscription on it. The PUBLIC prop name is still `state`.
@@ -222,15 +223,39 @@
 		{/each}
 
 		{#each graph.clusters as cluster (graph.clusterKey(cluster))}
+			<!-- One box shape at every depth. A containment layout nests boxes inside boxes, so a
+			     childless one is still a box — rendering it as a node CARD instead put two
+			     structures in one hierarchy and brought the card's furniture with it, down to a
+			     row count that is `0` for anything without rows.
+
+			     A leaf keeps its identity as attributes rather than as a different element:
+			     `data-graph-node-id` makes it addressable and selectable, `data-node-kind` lets a
+			     theme colour it, and a region — which is not a node — simply has neither. -->
 			<div
 				data-graph-cluster
 				data-cluster-depth={cluster.depth ?? 0}
 				data-node-group={cluster.name}
+				data-graph-node-id={cluster.nodeId}
+				data-node-kind={cluster.kind}
+				data-node-state={cluster.nodeId ? graph.nodeState(cluster.nodeId) : undefined}
+				role={cluster.nodeId ? 'button' : undefined}
+				tabindex={cluster.nodeId ? 0 : undefined}
 				style:left="{cluster.x}px"
 				style:top="{cluster.y}px"
 				style:width="{cluster.w}px"
 				style:height="{cluster.h}px"
 				style={graph.groupStyleAttr(cluster.name)}
+				onclick={(event) => {
+					if (!cluster.nodeId) return
+					event.stopPropagation()
+					graph.select(cluster.nodeId)
+				}}
+				onkeydown={(event) => {
+					if (!cluster.nodeId || (event.key !== 'Enter' && event.key !== ' ')) return
+					event.preventDefault()
+					event.stopPropagation()
+					graph.select(cluster.nodeId)
+				}}
 			>
 				<span data-graph-cluster-label>{cluster.name} · {cluster.caption ?? cluster.count}</span>
 			</div>
@@ -343,9 +368,16 @@
 		</div>
 	</div>
 
-	{#if densityToggle}
+	<!-- `graph.layoutName`, NOT the `layout` prop: when a caller passes a ready-made state the
+	     prop keeps its default and would answer for a layout that is not on screen. -->
+	{#if densityToggle && appliesTo(graph.layoutName, 'density')}
 		<!-- On the canvas for the same reason zoom is: "+3 more" tells a reader something is
-		     hidden; this is the control that does something about it for every card at once. -->
+		     hidden; this is the control that does something about it for every card at once.
+
+		     Offered only where it does something. A treemap box has no row list to thin, and
+		     `neighborhood` builds its cards at full detail unconditionally — in both, the
+		     toggle moves and the picture does not, which reads as a broken view rather than
+		     as a control that does not apply. -->
 		<div data-graph-density-controls role="group" aria-label="Detail level">
 			{#each [['names', 'Names', 'Titles only'], ['keys', 'Keys', 'Key rows only'], ['full', 'All', 'All rows']] as [value, short, title] (value)}
 				<button

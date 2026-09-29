@@ -24,6 +24,8 @@ const state = (config = {}) =>
 
 const boxes = (s: GraphState) => s.clusters.map((c) => c.name)
 const areaOf = (box: { w?: number; h?: number }) => (box.w ?? 0) * (box.h ?? 0)
+/** A leaf box by the node it is. Every box is a cluster; only a leaf carries `nodeId`. */
+const leafOf = (s: GraphState, nodeId: string) => s.clusters.find((c) => c.nodeId === nodeId)
 
 describe('world layout', () => {
 	it('materialises two levels by default, not the whole tree', () => {
@@ -31,8 +33,8 @@ describe('world layout', () => {
 		// cost this layout exists to refuse.
 		const s = state()
 
-		expect(Object.keys(s.cards)).not.toContain('a')
-		expect(Object.keys(s.cards)).not.toContain('b')
+		expect(leafOf(s, 'a')).toBeUndefined()
+		expect(leafOf(s, 'b')).toBeUndefined()
 	})
 
 	it('shows the focus’s children as boxes and their children inside', () => {
@@ -43,7 +45,7 @@ describe('world layout', () => {
 	})
 
 	it('goes deeper only when asked', () => {
-		expect(Object.keys(state({ levels: 4 }).cards)).toContain('a')
+		expect(leafOf(state({ levels: 4 }), 'a')).toBeDefined()
 	})
 
 	it('scopes to a subtree, which is what drilling renders', () => {
@@ -51,7 +53,7 @@ describe('world layout', () => {
 		const s = state({ focusPath: ['dbd', 'core'] })
 
 		expect(boxes(s)).not.toContain('dbd')
-		expect(Object.keys(s.cards)).toContain('c')
+		expect(leafOf(s, 'c')).toBeDefined()
 	})
 
 	it('gives a bigger measure a bigger area', () => {
@@ -65,8 +67,8 @@ describe('world layout', () => {
 		})
 
 		// parser 900, lexer 300, util 60
-		expect(areaOf(s.cards.parser)).toBeGreaterThan(areaOf(s.cards.lexer))
-		expect(areaOf(s.cards.lexer)).toBeGreaterThan(areaOf(s.cards.util))
+		expect(areaOf(leafOf(s, 'parser')!)).toBeGreaterThan(areaOf(leafOf(s, 'lexer')!))
+		expect(areaOf(leafOf(s, 'lexer')!)).toBeGreaterThan(areaOf(leafOf(s, 'util')!))
 	})
 
 	it('keeps area roughly PROPORTIONAL, not merely ordered', () => {
@@ -78,7 +80,7 @@ describe('world layout', () => {
 			sizeBy: 'declarations',
 			levels: 2
 		})
-		const ratio = areaOf(s.cards.parser) / areaOf(s.cards.lexer)
+		const ratio = areaOf(leafOf(s, 'parser')!) / areaOf(leafOf(s, 'lexer')!)
 
 		// 900 / 300 = 3. Padding and the minimum cell blur it; an order of magnitude out
 		// would mean the area is not encoding the measure at all.
@@ -98,8 +100,8 @@ describe('world layout', () => {
 			levels: 2
 		})
 
-		expect(s.cards.bare.w).toBeGreaterThan(0)
-		expect(s.cards.bare.h).toBeGreaterThan(0)
+		expect(leafOf(s, 'bare')?.w).toBeGreaterThan(0)
+		expect(leafOf(s, 'bare')?.h).toBeGreaterThan(0)
 	})
 
 	it('contains every child box inside its parent', () => {
@@ -135,23 +137,15 @@ describe('world layout', () => {
 	})
 
 	it('fills the canvas it declares — a treemap has no gutters to spare', () => {
-		// Top-level boxes are clusters AND cards: a root-level leaf has no children, so it is
-		// a card. Counting only clusters measures half the canvas and passes for the wrong
-		// reason — which it did, until an even-split fallback made every box equal.
+		// Every top-level box counts, leaf or region alike. Missing half of them measured half
+		// the canvas and passed for the wrong reason — which it did, until an even-split
+		// fallback made every box equal.
 		const s = state()
-		const top = [
-			...s.clusters.filter((c) => (c.depth ?? 0) === 0),
-			...Object.values(s.cards).filter((c) => c.groupIndex !== undefined)
-		]
-		const used = s.clusters
-			.filter((c) => (c.depth ?? 0) === 0)
-			.reduce((total, c) => total + areaOf(c), 0)
-		const leaves = Object.values(s.cards)
-			.filter((c) => !s.clusters.some((cl) => cl.name === c.node.label))
-			.reduce((total, c) => total + c.w * c.h, 0)
+		const top = s.clusters.filter((c) => (c.depth ?? 0) === 0)
+		const used = top.reduce((total, c) => total + areaOf(c), 0)
 
 		expect(top.length).toBeGreaterThan(0)
-		expect((used + leaves) / (s.size.w * s.size.h)).toBeGreaterThan(0.8)
+		expect(used / (s.size.w * s.size.h)).toBeGreaterThan(0.8)
 	})
 
 	it('encodes the measure even when the caller never set one', () => {
@@ -160,9 +154,55 @@ describe('world layout', () => {
 		// 27:1 ratio as 1:1 with no error anywhere.
 		const s = state()
 		const dbd = s.clusters.find((c) => c.name === 'dbd')
-		const orphan = Object.values(s.cards).find((c) => c.node.label === 'orphan')
 
-		expect(areaOf(dbd!)).toBeGreaterThan((orphan!.w * orphan!.h) * 2)
+		expect(areaOf(dbd!)).toBeGreaterThan(areaOf(leafOf(s, 'e')!) * 2)
+	})
+
+	describe('the floor under a zero measure', () => {
+		/* "Unmeasured" is a normal state in a partially-indexed graph, so a zero-measure node
+		 * keeps a box. The floor that guarantees it has to be relative to an EQUAL SHARE, not to
+		 * the total: a per-child floor of `total * k` sums to `n * k * total`, which is
+		 * negligible at two children and swamps the whole canvas at 470 — backwards from what
+		 * real data needs. Against the equal share it caps at `k` whatever n is. */
+
+		it('gives a zero-measure box a legible size, not a 2px sliver', () => {
+			// `orphan` has no edges, so it measures 0 under the default `degree`. It rendered
+			// 2px wide beside `dbd` — a box in the data and a hairline on screen.
+			const orphan = leafOf(state(), 'e')!
+			const aspect = orphan.w! / orphan.h!
+
+			expect(Math.min(orphan.w!, orphan.h!)).toBeGreaterThan(20)
+			expect(aspect).toBeGreaterThan(0.06)
+		})
+
+		it('caps total distortion regardless of how many children there are', () => {
+			// 470 zero-measure siblings — the size of the real codebase dataset — must not crowd
+			// out the one node that has a measure. The old floor gave them 0.002 * total EACH,
+			// so together they took almost the whole canvas and proportion stopped reading.
+			const many = [
+				{ id: 'big', label: 'big', path: ['r', 'big'], weight: 1000 },
+				...Array.from({ length: 470 }, (_, i) => ({
+					id: `z${i}`,
+					label: `z${i}`,
+					path: ['r', `z${i}`],
+					weight: 0
+				}))
+			]
+			const s = new GraphState({
+				nodes: many,
+				edges: [],
+				fields: FIELDS,
+				layout: 'world',
+				sizeBy: 'weight',
+				levels: 2
+			})
+			const big = areaOf(leafOf(s, 'big')!)
+			const zeros = Array.from({ length: 470 }, (_, i) => areaOf(leafOf(s, `z${i}`)!))
+			const total = big + zeros.reduce((sum, a) => sum + a, 0)
+
+			// The floors are a minority share of the canvas, so proportion still reads.
+			expect(big / total).toBeGreaterThan(0.8)
+		})
 	})
 
 	it('keeps boxes squarish rather than slivers', () => {
@@ -236,7 +276,7 @@ describe('world layout', () => {
 	})
 
 	it('is deterministic', () => {
-		expect(state().cards).toEqual(state().cards)
+		expect(state().clusters).toEqual(state().clusters)
 	})
 
 	it('handles an unknown focusPath by rendering nothing rather than throwing', () => {
@@ -276,8 +316,7 @@ describe('world layout', () => {
 	})
 
 	it('floors a nonsense level count at one', () => {
-		expect(state({ levels: 0 }).clusters.length + Object.keys(state({ levels: 0 }).cards).length)
-			.toBeGreaterThan(0)
+		expect(state({ levels: 0 }).clusters.length).toBeGreaterThan(0)
 	})
 
 	it('handles an empty model', () => {
@@ -285,5 +324,67 @@ describe('world layout', () => {
 
 		expect(s.clusters).toEqual([])
 		expect(s.size).toEqual({ w: 0, h: 0 })
+	})
+
+	describe('one box structure, whatever the depth', () => {
+		/* A treemap is a hierarchy of ONE thing: a box with a label and an area. Emitting a leaf
+		 * as a node CARD — icon, kind tag, row count — and a container as a label box put two
+		 * visual structures in one nesting, and the card's furniture was meaningless here: a
+		 * codebase module has no rows, so every leaf rendered a literal `0` beside its name. */
+
+		it('emits no cards at all — every box is a cluster', () => {
+			const s = state({ levels: 3 })
+
+			expect(s.cards).toEqual({})
+			expect(s.clusters.length).toBeGreaterThan(3)
+		})
+
+		it('gives a leaf box the same fields a container box has', () => {
+			const s = state({ levels: 4 })
+			const leaf = s.clusters.find((c) => c.name === 'parse')
+
+			expect(leaf).toBeDefined()
+			expect(leaf?.caption).toBeDefined()
+			expect(leaf?.w).toBeGreaterThan(0)
+			expect(leaf?.h).toBeGreaterThan(0)
+		})
+
+		it('keeps a leaf selectable by carrying its node id and kind', () => {
+			// Uniform structure must not cost identity: the box is still the thing itself, so it
+			// still answers a click and still colours by what it is.
+			const s = new GraphState({
+				nodes: [
+					{ id: 'a', label: 'parse', kind: 'module', path: ['dbd', 'parse'], weight: 40 },
+					{ id: 'b', label: 'emit', kind: 'module', path: ['dbd', 'emit'], weight: 10 }
+				],
+				edges: [],
+				fields: FIELDS,
+				layout: 'world',
+				sizeBy: 'weight'
+			})
+			const leaf = s.clusters.find((c) => c.name === 'parse')
+
+			expect(leaf?.nodeId).toBe('a')
+			expect(leaf?.kind).toBe('module')
+		})
+
+		it('leaves nodeId unset on a container, which is not a node', () => {
+			// A synthesised container has nothing to select — `dbd` is implied by the paths under
+			// it and exists in no `nodes` array.
+			expect(state().clusters.find((c) => c.name === 'dbd')?.nodeId).toBeUndefined()
+		})
+
+		it('captions a leaf with its measure, exactly as it captions a container', () => {
+			const s = new GraphState({
+				nodes: measured.nodes,
+				edges: measured.edges,
+				fields: FIELDS,
+				layout: 'world',
+				sizeBy: 'declarations',
+				levels: 2
+			})
+
+			expect(s.clusters.find((c) => c.name === 'parser')?.caption).toBe('900')
+		})
 	})
 })

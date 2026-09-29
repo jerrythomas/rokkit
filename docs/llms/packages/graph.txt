@@ -95,9 +95,10 @@ Your own slots in exactly the same way.
 | `cluster` | Cards in group boxes | The default. Entity diagrams |
 | `neighborhood` | One focus node + its 1-hop neighbours | Walking a graph one step at a time |
 | `points` | Degree-sized rounded rects, shelf-packed | Dense graphs — a code index, 1000+ nodes |
+| `world` | Nested rectangles, area proportional to a measure | Containment — where the mass of a codebase is |
 
 ```js
-import { cluster, neighborhood, points, layouts } from '@rokkit/graph'
+import { cluster, neighborhood, points, world, layouts } from '@rokkit/graph'
 ```
 
 ### Options
@@ -110,6 +111,11 @@ import { cluster, neighborhood, points, layouts } from '@rokkit/graph'
 | `nestBy` | — | Subdivide each cluster by a second axis. Omit for one level |
 | `edgeStyle` | `'curved'` | `curved` \| `orthogonal` |
 | `focus` | — | `neighborhood` only — the node to centre |
+| `depth` | `1` | `neighborhood` only — how many hops out from the focus |
+| `sizeBy` | `'degree'` | `points` / `world` — the measure area encodes |
+| `sizeScale` | `'linear'` | `points` only — `log` for a measure spanning orders of magnitude |
+| `focusPath` | `[]` | `world` only — the subtree to render as the whole canvas |
+| `levels` | `2` | `world` only — how many levels below the focus to materialise |
 | `expanded` | — | Node ids shown at full detail whatever `density` says |
 
 ### Two-level clustering
@@ -125,6 +131,33 @@ Clusters come back as a FLAT list with `depth` (0 outer, 1 inner) and `parent`. 
 absolutely positioned, so every outer box is emitted first and paint order does the nesting —
 there is no DOM tree. Passing the same axis for both is ignored, not rendered: a box
 subdivided by itself yields one child holding everything.
+
+### The world view is boxes all the way down
+
+`world` returns **no cards at all**. A treemap nests one shape — a box with a label and an area
+— so a leaf comes back as a `Cluster` too, carrying `nodeId` and `kind` so it stays selectable
+and themeable. Rendering leaves as node cards instead put a card's furniture inside a hierarchy
+of label boxes, down to a row count that reads `0` for anything without rows.
+
+A box's caption is its MEASURE, not its child count. Where area encodes a quantity, a number
+beside the box reads as the thing driving its size, and a child count is a different number
+that occasionally coincides.
+
+### Applicability
+
+Not every option reaches every layout, and a control wired to one that does not is worse than a
+missing control — it moves and nothing happens, which reads as a broken view:
+
+```js
+import { appliesTo, LAYOUT_OPTIONS } from '@rokkit/graph'
+
+appliesTo('world', 'density')  // false — a treemap box has no row list to thin
+LAYOUT_OPTIONS.world           // ['sizeBy', 'focusPath', 'levels']
+```
+
+Two entries are not simply "what the layout reads": `edgeStyle` is applied when a path is
+drawn, so it belongs to every layout that produces edges (`world` produces none), and
+`neighborhood` takes no `density` because it builds cards at `full` unconditionally.
 
 ## Using it with dbd
 

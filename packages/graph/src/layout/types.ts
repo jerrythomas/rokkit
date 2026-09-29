@@ -57,6 +57,18 @@ export type Cluster = {
 	 * sizes by a measure says so here; one that does not leaves it unset and the count stands.
 	 */
 	caption?: string
+	/**
+	 * The node this box IS, when it is one. Set on a childless box in a containment layout;
+	 * absent on a region, which is not selectable because it is not a thing.
+	 *
+	 * A treemap is a hierarchy of ONE shape — a box with a label and an area — so a leaf is a
+	 * cluster too rather than a node card. Emitting the card put two structures in one nesting
+	 * and dragged the card's furniture in with it: a codebase module has no rows, so every leaf
+	 * rendered a literal `0` beside its name. Identity survives here instead.
+	 */
+	nodeId?: string
+	/** The node's kind, for colour, when this box is a node. */
+	kind?: string
 }
 
 /**
