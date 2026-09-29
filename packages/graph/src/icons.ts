@@ -1,6 +1,11 @@
 /**
  * Default glyph per node kind and row badge.
  *
+ * Reachable as `@rokkit/graph/icons` — a subpath with NO Svelte imports, because the one
+ * place a consumer is REQUIRED to use it is a UnoCSS config, which Node loads directly and
+ * which therefore cannot import the main barrel (that re-exports `Graph.svelte`, and Node
+ * cannot parse `.svelte`). Found by dbd wiring its safelist.
+ *
  * `i-glyph:<name>` is the vocabulary this repo actually ships — `packages/icons/lib/glyph.json`,
  * 697 names, safelisted wholesale by the app's UnoCSS config. An earlier version of this map
  * used `i-graph-<kind>`, which is defined nowhere: UnoCSS emitted no rule, so every kind

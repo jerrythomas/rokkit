@@ -44,7 +44,16 @@ describe('@rokkit/graph — manifest', () => {
 		}
 	})
 
-	it('exposes exactly the two designed entry points', () => {
-		expect(Object.keys(pkg.exports).sort()).toEqual(['.', './package.json', './schema'])
+	it('exposes exactly the designed entry points', () => {
+		// `./icons` is deliberately its own subpath rather than a re-export of the barrel: a
+		// consumer MUST safelist the icon classes (the component picks them at runtime, so
+		// UnoCSS purges them), and the config that does it is loaded by NODE, which cannot
+		// parse the `.svelte` the barrel re-exports. Found by dbd wiring its safelist.
+		expect(Object.keys(pkg.exports).sort()).toEqual([
+			'.',
+			'./icons',
+			'./package.json',
+			'./schema'
+		])
 	})
 })

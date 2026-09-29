@@ -49,6 +49,7 @@ vocabulary lives entirely in the optional `./schema` entry point.
 |--------|----------|
 | `@rokkit/graph` | `Graph`, `GraphState`, layouts, presets, `normalizeGraph`, `DEFAULT_ICONS`, types |
 | `@rokkit/graph/schema` | `EntityView`, `EntitiesView`, `NoteBlocks`, `fromSchemaModel`, `toGraphInput`, `SCHEMA_FIELDS`, `DEPS_FIELDS` |
+| `@rokkit/graph/icons` | `DEFAULT_ICONS` alone, with no Svelte imports — for your UnoCSS safelist |
 
 ## Layouts
 
@@ -82,6 +83,18 @@ import { toGraphInput } from '@rokkit/graph/schema'
 
 const er = toGraphInput(model, 'er')             // tables + refs
 const deps = toGraphInput(model, 'dependencies') // tables + entities, deps as edges
+```
+
+## Icons need a safelist
+
+The component picks a node's icon at runtime from its kind, so the class names never appear in
+your source and UnoCSS purges them — cards render a blank box. Safelist them from the
+Node-safe subpath (a `uno.config.ts` runs in Node and cannot parse `.svelte`):
+
+```js
+import { DEFAULT_ICONS } from '@rokkit/graph/icons'
+
+export default defineConfig({ safelist: Object.values(DEFAULT_ICONS) })
 ```
 
 ## Theming

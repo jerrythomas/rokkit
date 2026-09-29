@@ -22,6 +22,7 @@ npm install @rokkit/graph
 |--------|----------|
 | `@rokkit/graph` | `Graph`, `GraphState`, layouts, presets, the normalizer, icons, types |
 | `@rokkit/graph/schema` | ER-flavoured views and the dbd adapter: `EntityView`, `EntitiesView`, `NoteBlocks`, `fromSchemaModel`, `toGraphInput`, `SCHEMA_FIELDS`, `DEPS_FIELDS` |
+| `@rokkit/graph/icons` | `DEFAULT_ICONS` alone, with no Svelte imports — for a UnoCSS safelist, which Node loads |
 
 ## The data contract
 
@@ -185,10 +186,27 @@ against a theme's (0,2,0) and silently loses:
 }
 ```
 
-## Icons
+## Icons — you must safelist them
 
-`DEFAULT_ICONS` maps every node kind and row badge to an `i-glyph:*` class. Override per-kind
-through the `icons` prop to adopt a different collection:
+`DEFAULT_ICONS` maps every node kind and row badge to an `i-glyph:*` class. The component
+picks one at RUNTIME from a node's kind, so those class names never appear in your source and
+**UnoCSS's extractor purges them** — the icons silently vanish and every card renders a blank
+box, with a perfectly correct-looking class attribute.
+
+Safelist them from `@rokkit/graph/icons`, a subpath with no Svelte imports (a `uno.config.ts`
+is loaded by Node, which cannot parse the `.svelte` the main barrel re-exports):
+
+```js
+import { DEFAULT_ICONS } from '@rokkit/graph/icons'
+
+export default defineConfig({
+  presets: [presetRokkit(config)],
+  safelist: Object.values(DEFAULT_ICONS)
+})
+```
+
+`presetRokkit` already exposes the `glyph` collection, so nothing else is needed. Override
+per-kind through the `icons` prop to adopt a different collection:
 
 ```svelte
 <Graph {nodes} {edges} icons={{ view: 'i-lucide-eye' }} />
