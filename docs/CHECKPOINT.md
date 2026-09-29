@@ -24,15 +24,26 @@ layout. `density` was dead in `world`, `points` AND `neighborhood` (which builds
 `full` unconditionally). The toggle reads `graph.layoutName`, not the `layout` prop — every
 real consumer passes a state, leaving the prop answering for a layout not on screen.
 
-**`63bdfa55` / `6ba66953` — the `flow` layout.** Columns ranked by reference direction, so
-every edge leaves the RIGHT and enters the LEFT with no side calculation at all. On the demo's
-ER diagram, edges passing over a foreign card went **5 of 9 → 2 of 9**. `rank.ts` (longest
-path + DFS cycle breaking, back-edges kept and marked), `order.ts` (barycentre sweeps scored
-by an explicit crossing count, best-seen kept so it never returns worse than it was given),
-`flow.ts` (columns, centred, fixed ports). A NEW layout, not a change to `cluster`: ranking and
-schema grouping compete for the same axis. The world leaf box is now a real `<button>` via
-`<svelte:element>` — one attribute list, one child, correct semantics, and it cleared an a11y
-compile warning no unit test could see.
+**`63bdfa55` / `6ba66953` — the `flow` layout.** Columns ranked by reference direction, every
+edge leaves RIGHT and enters LEFT. Demo ER diagram: edges over a foreign card **5 of 9 → 2 of
+9**. `rank.ts` (longest path + DFS cycle breaking), `order.ts` (barycentre sweeps scored by an
+explicit crossing count, best-seen kept), `flow.ts` (columns, centred, fixed ports).
+
+**`bfdd91c0` — `flow` is now the DEFAULT layout (breaking).** `layout="cluster"` restores the
+old arrangement. Schema survives the change via **`groupTint`**, which paints a spine down each
+card's leading edge: `--group-fill` was already on every card but only `[data-graph-cluster]`
+consumed it, so group identity vanished the moment you left `cluster`.
+
+**`43329bee` — `radial` and `sunburst`.** `points` packed a call graph into boxes and at seven
+services read as a stack of colliding labels; `radial` puts angle on the subtrees and radius on
+the depth, with `radialMode: 'tree' | 'dendrogram'`. `hierarchy.ts` spanning-tree keeps every
+non-tree edge, marked `back`, and walks cycles no root reaches. `sunburst` is the treemap's
+question asked radially — same tree, same measure, wedges as `{r0,r1,a0,a1}` turned into paths
+by `arc.ts`. **The dot treatment now keys on `data-graph-node-shape`**, not on a layout name,
+so `radial` inherited all fifteen rules by declaring a shape; `sizing.ts` is shared, proven
+faithful by points' 17 characterization tests still passing. Two defects found by the new
+tests: the sunburst drew NOTHING on an all-zero measure, and every containment box took colour
+from its OWN name so only the outer ring was coloured (now `Cluster.ramp` inherits).
 
 ## Remains
 

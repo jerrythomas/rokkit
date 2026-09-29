@@ -9700,3 +9700,77 @@ the old build and concluding a correct fix had not applied.
 
 811 unit (graph + learn) and 41 graph e2e green; lint/types 0/0; graph coverage
 gate passes with `src/layout` at 100%. Design in `docs/design/25-flow-layout.md`.
+
+---
+
+## 2026-09-29 (2) — a layout per question: flow, radial, sunburst
+
+`bfdd91c0`, `43329bee`. Four asks off the demo, and each one turned into a fact
+the package had been getting wrong.
+
+**`flow` became the default, and that was only safe because of `groupTint`.**
+`--group-fill` and `--group-stroke` were already set on every card — and only
+`[data-graph-cluster]` consumed them. So the group ramp had nothing to land on
+the moment you left `cluster`, and schema membership silently vanished. Now a
+spine down the card's leading edge carries it: a spine rather than a fill,
+because the card's surface is already doing three jobs (kind accent, selection,
+dim) and a fourth wash muddies all of them. Width in `base`, colour per style —
+the headless-base rule, and also what stops a style's own `border-color`
+shorthand resetting it at equal specificity.
+
+Nine unit specs and six e2e tests had been using the implicit default to test
+CLUSTER behaviour. They now name it. A test that relies on a default to exercise
+a specific layout is fragile whichever way the default points.
+
+**The call graph was illegible, and `points` was the wrong tool rather than a
+broken one.** Seven services rendered as near-invisible rects with each label
+colliding with the row beneath. Packing answers "how much is there". A call
+graph asks "who calls whom, and how deep", which is a SHAPE — so `radial` puts
+angle on the subtrees and radius on the depth, with a dendrogram mode that pins
+every leaf to the rim instead.
+
+**A call graph is not a tree**, and `hierarchy.ts` refuses to pretend. A
+breadth-first spanning tree picks one parent; every edge it could not use is
+still drawn and marked `back`. "b also calls this" is precisely what a reader is
+looking for, and a tree that drops half its edges looks complete while being a
+quarter of one. A cycle no root can reach gets its own walk — without it, two
+mutually-referencing modules are simply absent, which reads as missing data.
+
+**`sunburst` is the treemap's question asked radially** — same tree, same
+measure, same captions, so the two are one dataset drawn twice rather than two
+features that drift. A wedge comes back as four numbers, not a path string, so
+the layout stays DOM-free; `arc.ts` builds the path and handles the case a
+single `A` command cannot draw at all — a full turn, where the two endpoints
+coincide and the wedge silently disappears.
+
+**The best structural fix was the one nobody asked for.** Fifteen theme
+selectors said `[data-graph-layout='points']`, so `radial` rendered full card
+chrome — head, kind tag, more-row — inside a box sized for a dot. The rules were
+never about `points`; they were about the SHAPE. Keying them on
+`data-graph-node-shape` made `radial` inherit every one of them by declaring
+what it draws, and `sizing.ts` moved out of `points` so the same node is the
+same size in both views. `points`' 17 characterization tests passing unchanged
+is what proves that extraction faithful.
+
+**Two defects the new tests found, both invisible until then:**
+
+- The sunburst drew **nothing** when the measure was zero everywhere — a
+  codebase under `sizeBy: 'degree'` where no module imports another. `squarify`
+  had always fallen back to an even split; the sunburst returned early. A blank
+  canvas reads as broken, not as unmeasured. Caught by a COMPONENT test, because
+  the layout fixtures all happened to have edges.
+- Every containment box took its colour from its own name, so only the outermost
+  ring was a key the group ramp knew and everything inside fell through to the
+  default — a bright inner ring above a uniformly grey outer one. `Cluster.ramp`
+  now inherits the outermost ancestor's key, in the treemap as well.
+
+**Lessons.** Both render paths now branch on a STATIC role — a leaf is a real
+`<button>`, a region is scenery — rather than one element with a conditional
+role. That cleared two a11y warnings the build had been emitting the whole time;
+I had grepped for the specific warning I fixed rather than for warnings at all,
+which is how the second one survived. And the 100% coverage gate paid again:
+it is what surfaced the all-zero sunburst, the unreachable cycle, and three
+map-read fallbacks that are now one tested helper instead of scattered `??`.
+
+909 unit (graph + learn) and 44 graph e2e green; lint/types 0/0; graph coverage
+100% statements, functions and lines; zero a11y compile warnings.
