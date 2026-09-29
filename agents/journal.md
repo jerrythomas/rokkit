@@ -9855,3 +9855,62 @@ the source rather than quietly duplicated.
 
 1078 unit and 44 graph e2e green; lint/types 0/0; graph coverage gate passes;
 zero a11y compile warnings.
+
+---
+
+## 2026-09-29 (4) — v1.7.0 released, and two gates that earned their keep
+
+Released all 15 packages at 1.7.0 and verified by a real `npm install` rather
+than by the workflow's success line. dbd migration raised as sensei-hq/dbd#25.
+
+**Two things went wrong in the release itself, and both were caught by
+machinery rather than by me.**
+
+`bumpp` only moved the ROOT manifest. Passing `--files` on the command line
+REPLACED the globs in `config/bump.config.js` instead of adding to them, and the
+quoted pattern never expanded. The tag pushed, the publish ran, and every
+package was skipped as "already published" at 1.6.0 — the workflow's
+idempotency guard is the only reason nothing landed on npm half-released. Fixed
+forward: bump the manifests properly, move the tag, let it re-run. No branch
+force-push, only the tag.
+
+Then `npm install` said `notarget` for a version whose own version-doc returned
+200. The packument had it and my LOCAL cache did not — I had queried
+`npm view` before publishing, which caches the negative. Second time this
+session. `--prefer-online` is the answer; the lesson is not to probe the
+registry for a version you are about to create.
+
+**The contrast gate flaked one run in three, and the flake was hiding a real
+failure.** I fixed half of that race earlier — sampling before hydration applied
+the theme. The other half is that every style ANIMATES `background-color` and
+`color`, so a sample taken straight after hydration reads a value
+mid-interpolation. `freezeTransitions` already existed and both the interaction
+and state-snapshot collectors called it; the contrast collector did not.
+
+Adding it turned the flake into a consistent failure, which is what it should
+have been all along:
+
+    floating-navigation · data-floating-nav-item · "Overview"
+    rgb(232,85,44) on rgb(248,230,220) — 2.12 against a 4.5 threshold
+    frosted and material, both modes, 13 of 50 configs
+
+`[data-active] { @apply text-primary bg-primary/10 }` — the brand orange as text
+on a 10% tint of itself. Exactly the mistake the graph rules already forbid and
+`graph-css.spec.js` enforces: **a brand colour is a fill or a border, never a
+foreground.** Fixed rather than baselined, per the standing rule. Not new debt
+and not from the graph work; the race had simply never let anyone see it.
+
+`graph-css.spec.js` also caught my own version of the same thing — I had written
+`var(--on-primary, var(--paper))` on the new controls, and `--on-primary` is
+auto-computed from the fill's luminance, so a hardcoded stand-in is a colour
+nobody measured against the brand underneath it.
+
+**Also traced, not fixed:** four packages depend on `@rokkit/ui` — `forms` and
+`app` as hard dependencies, `blocks` as a peer, `graph` as an optional peer —
+which inverts the intended layering, since ui is meant to be the wrapper. The
+root cause is that ui OWNS its components and re-exports nothing, so "nothing
+depends on ui" cannot hold until the shared primitives move below it. Recorded
+in the checkpoint as the repo-wide refactor it is.
+
+7435 unit and 115 e2e green twice consecutively; lint/types 0/0; graph coverage
+gate passes; zero a11y compile warnings.

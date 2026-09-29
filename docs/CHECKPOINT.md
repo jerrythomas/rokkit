@@ -1,9 +1,9 @@
 # CHECKPOINT
 
-**Slice #159/#163** — `@rokkit/graph`. Package **published**; the API has since moved to named
-diagrams over a bare canvas (BREAKING — dbd needs updating). Tree clean on `develop`, **not
-pushed**. **1078 unit (graph+learn), 44 graph e2e, lint/types 0/0, graph coverage gate passes,
-zero a11y compile warnings.**
+**`@rokkit/graph` — RELEASED as part of rokkit v1.7.0.** All 15 packages published and verified
+by a real `npm install`; tag `v1.7.0` and `develop` both pushed. dbd migration raised as
+[sensei-hq/dbd#25](https://github.com/sensei-hq/dbd/issues/25). **7435 unit, 115 e2e green
+twice consecutively, lint/types 0/0, graph coverage gate passes, zero a11y compile warnings.**
 
 **`0d331a06` — a treemap nests ONE box shape.** `world` returned a leaf as a node CARD and a
 container as a label box: two structures in one hierarchy, and the card's furniture came with
@@ -62,19 +62,21 @@ aborts the whole render). Strokes are `non-scaling-stroke` — a repo's canvas f
 
 ## Remains
 
-1. **`flow` slice 2 — dummy-node routing.** A long edge is still drawn straight over any box
+1. **`@rokkit/ui` is depended on by four packages, which inverts the intended layering** —
+   ui is meant to be the wrapper. `forms` (Table/Swatch/Switch/Select/Toggle, hard dep), `app`
+   (Toggle, hard dep), `blocks` (List/Stepper/CodeBlock/Frame, peer), `graph` (Table in
+   `./schema` only, optional peer). Root cause: ui OWNS the components
+   (`packages/ui/src/components/`) and re-exports nothing, so "nothing depends on ui" cannot
+   hold until the shared primitives move below it. Repo-wide refactor, not started.
+2. **`flow` slice 2 — dummy-node routing.** A long edge is still drawn straight over any box
    between its endpoints; that is the remaining 2 of 9 on the ER diagram. Needs dummy nodes on
    the intervening ranks and a polyline router. Stated as a limit in `docs/design/25-flow-layout.md`.
-2. **Legend reuse.** `@rokkit/graph` ships its own because chart carries 8 d3 packages + ramda
+3. **Legend reuse.** `@rokkit/graph` ships its own because chart carries 8 d3 packages + ramda
    against this package's ONE dependency, and chart does not depend on `@rokkit/ui` either — so
    there is no package both already share. Real reuse means promoting a generic legend
    somewhere both can reach. Flagged in `GraphLegend.svelte` as what it replaces.
-3. **World/sunburst drill** (design step 4: `drillPath`, breadcrumbs) and step 5 (`shade`
+4. **World/sunburst drill** (design step 4: `drillPath`, breadcrumbs) and step 5 (`shade`
    channel). Issues **#163**, **#164** still open.
-4. **Release order:** rokkit first (dbd needs a `@rokkit/themes` carrying `graph.css`), then
-   bump dbd and publish a minor. dbd is on `feat/rokkit-graph`, unmerged. **dbd will need
-   updating for the breaking API change** — `Graph` no longer ships controls, and the named
-   diagrams are the intended entry point.
 5. **Open note:** a shared table is a fan-in hub in the dependency view; `neighborhood` +
    selection dimming answer it but are not discoverable there.
 
