@@ -130,6 +130,24 @@ export const weighted = {
 }
 
 /**
+ * #164 — two INDEPENDENT measures over one picture.
+ *
+ * `declarations` is absolute and drives area; `unresolved` and `tests` are 0..1 shares and
+ * drive shade. A reader asks both at once — "this module is huge AND half its calls go
+ * nowhere" — which is why one field cannot serve both.
+ */
+export const measured = {
+	nodes: [
+		{ id: 'parser', label: 'parser', path: ['src'], m: { declarations: 900, unresolved: 0.9, tests: 0.1 } },
+		{ id: 'lexer', label: 'lexer', path: ['src'], m: { declarations: 300, unresolved: 0.1, tests: 0.8 } },
+		{ id: 'util', label: 'util', path: ['src'], m: { declarations: 60, unresolved: 0.5, tests: 0.5 } },
+		// No measures at all — must floor, not break the normalisation.
+		{ id: 'bare', label: 'bare', path: ['src'] }
+	],
+	edges: [{ source: 'parser', target: 'lexer' }]
+}
+
+/**
  * #163 — containment deeper than two levels.
  *
  * `path` carries the chain a codebase actually has: repo › folder › module. Two axes cannot
@@ -137,11 +155,17 @@ export const weighted = {
  */
 export const nestedPath = {
 	nodes: [
-		{ id: 'a', label: 'parse', path: ['dbd', 'core', 'lexer'], group: 'core', kind: 'function' },
-		{ id: 'b', label: 'tokenize', path: ['dbd', 'core', 'lexer'], group: 'core', kind: 'function' },
-		{ id: 'c', label: 'plan', path: ['dbd', 'core', 'apply'], group: 'core', kind: 'function' },
-		{ id: 'd', label: 'render', path: ['dbd', 'site', 'view'], group: 'site', kind: 'function' },
-		{ id: 'e', label: 'orphan', path: ['dbd'], group: 'core', kind: 'function' }
+		// Two leaves in one container, so `dbd/core/lexer` is a real level.
+		{ id: 'a', label: 'parse', path: ['dbd', 'core', 'lexer'], weight: 40 },
+		{ id: 'b', label: 'tokenize', path: ['dbd', 'core', 'lexer'], weight: 60 },
+		// A container that CLAIMS its synthesised box, carrying its own label and note.
+		{ id: 'dbd/core/lexer', label: 'Lexer', note: 'Tokeniser and parser.' },
+		// One leaf under its own container → that container is a wrapper and folds away.
+		{ id: 'c', label: 'plan', path: ['dbd', 'core', 'apply'], weight: 25 },
+		// A chain of wrappers, all single-child: three levels collapsing to one.
+		{ id: 'd', label: 'render', path: ['dbd', 'site', 'ui', 'view'], weight: 10 },
+		// No path at all → sits at the root.
+		{ id: 'e', label: 'orphan', weight: 5 }
 	],
 	edges: [
 		{ source: 'a', target: 'b' },

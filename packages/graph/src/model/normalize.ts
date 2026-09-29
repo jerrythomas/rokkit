@@ -15,6 +15,30 @@ function str(value: unknown): string | undefined {
 	return typeof value === 'string' ? value : undefined
 }
 
+/**
+ * Named quantities, keeping only the finite numbers — a measure is a quantity, and a string
+ * or a NaN reaching a size calculation produces a card with no width at all.
+ */
+function measures(value: unknown): Record<string, number> | undefined {
+	if (value === null || typeof value !== 'object') return undefined
+
+	const out: Record<string, number> = {}
+	for (const [key, raw] of Object.entries(value)) {
+		const n = num(raw)
+		if (n !== undefined) out[key] = n
+	}
+
+	return Object.keys(out).length > 0 ? out : undefined
+}
+
+/** A non-empty array of strings, or nothing. */
+function segments(value: unknown): string[] | undefined {
+	if (!Array.isArray(value)) return undefined
+	const parts = value.filter((v): v is string => typeof v === 'string' && v.length > 0)
+
+	return parts.length > 0 ? parts : undefined
+}
+
 /** A finite number, or nothing. NaN and Infinity are not measures. */
 function num(value: unknown): number | undefined {
 	return typeof value === 'number' && Number.isFinite(value) ? value : undefined
@@ -47,7 +71,17 @@ function buildRows(source: unknown, fields: GraphFields): GraphRow[] {
 
 // Every node-level field the canonical model reads. A claimed key must NOT also
 // land in `meta`, or the same value sits in two places and the two can drift.
-const CLAIMED_NODE_KEYS = ['id', 'label', 'group', 'kind', 'weight', 'rows', 'note'] as const
+const CLAIMED_NODE_KEYS = [
+	'id',
+	'label',
+	'group',
+	'kind',
+	'weight',
+	'path',
+	'measures',
+	'rows',
+	'note'
+] as const
 
 function buildMeta(source: unknown, fields: GraphFields): Record<string, unknown> {
 	if (source === null || typeof source !== 'object') return {}
@@ -77,6 +111,8 @@ function buildNode(source: unknown, fields: GraphFields): GraphNode {
 		group,
 		kind: str(pick(source, fields.kind, 'kind')),
 		weight: num(pick(source, fields.weight, 'weight')),
+		path: segments(pick(source, fields.path, 'path')),
+		measures: measures(pick(source, fields.measures, 'measures')),
 		rows: buildRows(source, fields),
 		note: str(pick(source, fields.note, 'note')),
 		meta: buildMeta(source, fields)

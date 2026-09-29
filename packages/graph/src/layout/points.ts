@@ -31,7 +31,6 @@
 import { buildEdges } from './edges.js'
 import { warnUnknownOptions } from './options.js'
 import type { Cards, Cluster, LayoutFn, LayoutResult } from './types.js'
-type SizeBy = NonNullable<import('./types.js').LayoutOptions['sizeBy']>
 type Scale = NonNullable<import('./types.js').LayoutOptions['sizeScale']>
 import type { GraphModel, GraphNode } from '../types.js'
 
@@ -107,14 +106,11 @@ function sizeFor(t: number): { w: number; h: number } {
  * "unknown" is a normal state in a partially-indexed graph, and the alternative is a NaN
  * width that renders as nothing at all.
  */
-function measureOf(
-	node: GraphNode,
-	degree: Map<string, number>,
-	sizeBy: SizeBy
-): number {
+function measureOf(node: GraphNode, degree: Map<string, number>, sizeBy: string): number {
+	if (sizeBy === 'degree') return degree.get(node.id) ?? 0
 	if (sizeBy === 'weight') return node.weight ?? 0
 
-	return degree.get(node.id) ?? 0
+	return node.measures?.[sizeBy] ?? 0
 }
 
 type Packed = { nodes: { node: GraphNode; w: number; h: number; dx: number; dy: number }[]; w: number; h: number }
@@ -206,7 +202,7 @@ function placeGroups(packs: Placement[]): Cluster[] {
 }
 
 /** Nodes bucketed by group, each carrying the size its measure earns it. */
-function sizeByGroup(model: GraphModel, sizeBy: SizeBy, scale: Scale): Map<string, Sized[]> {
+function sizeByGroup(model: GraphModel, sizeBy: string, scale: Scale): Map<string, Sized[]> {
 	const degree = degreeOf(model)
 	const measures = model.nodes.map((n) => measureOf(n, degree, sizeBy))
 	// Normalised against the range PRESENT, not against zero: a graph whose smallest module

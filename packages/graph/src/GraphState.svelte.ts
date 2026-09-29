@@ -50,8 +50,11 @@ export type GraphStateConfig = {
 	groupBy?: NodeAxis
 	/** Second axis subdividing each outer cluster. Unset means one level. */
 	nestBy?: NodeAxis | null
-	/** `points` only — what a node's size encodes. Defaults to `degree`. */
-	sizeBy?: 'degree' | 'weight'
+	/**
+	 * `points` only — what a node's size encodes. `degree` (default), `weight`, or any key in
+	 * `GraphNode.measures`.
+	 */
+	sizeBy?: string
 	/** How the measure maps onto area. Defaults to `linear`. */
 	sizeScale?: 'linear' | 'log'
 	/** `neighborhood` only — hops out from the focus. Defaults to 1. */
@@ -144,7 +147,7 @@ export class GraphState {
 	#arrange = $state<Arrange>('untangle')
 	#groupBy = $state<NodeAxis>('group')
 	#nestBy = $state<NodeAxis | null>(null)
-	#sizeBy = $state<'degree' | 'weight'>('degree')
+	#sizeBy = $state<string>('degree')
 	#sizeScale = $state<'linear' | 'log'>('linear')
 	#depth = $state<number>(1)
 	#edgeStyle = $state<EdgeStyle>('curved')
@@ -505,7 +508,7 @@ export class GraphState {
 		return this.#nestBy
 	}
 
-	get sizeBy(): 'degree' | 'weight' {
+	get sizeBy(): string {
 		return this.#sizeBy
 	}
 

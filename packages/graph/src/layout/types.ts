@@ -127,7 +127,7 @@ export type LayoutOptions = {
 	 * 40-file module with few cross-edges should not render smaller than a 2-file one that
 	 * happens to be chatty.
 	 */
-	sizeBy?: 'degree' | 'weight'
+	sizeBy?: string
 	/**
 	 * How the measure maps onto area. `linear` (the default), or `log` for a measure spanning
 	 * orders of magnitude — declaration counts across a real repo span three or four, and

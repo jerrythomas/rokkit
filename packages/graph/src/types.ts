@@ -32,6 +32,27 @@ export type GraphNode = {
 	 * existing caller changes. A node without one sizes at the floor rather than vanishing.
 	 */
 	weight?: number
+	/**
+	 * Named quantities this node carries — `{ declarations: 900, unresolved: 0.9 }`.
+	 *
+	 * A bag rather than more fields because size and shade are INDEPENDENT measures with
+	 * different ranges, and the control that motivates them switches between several at
+	 * runtime: naming a key re-runs the layout, where re-mapping `fields` would re-normalize
+	 * the whole model on every toggle. `weight` remains the named default for size.
+	 */
+	measures?: Record<string, number>
+	/**
+	 * Containment, outermost first — `['dbd', 'core', 'lexer']`.
+	 *
+	 * `group` is one flat key and a codebase is containment six deep: project › repository ›
+	 * folder › module › file › symbol. A path needs nothing to exist that does not (the
+	 * containers are synthesised from it) and cannot dangle the way a `parent` id can. A node
+	 * without one sits at the root.
+	 *
+	 * A node whose `id` equals a path joined by `/` CLAIMS that container, lending it a label
+	 * and a note — so a consumer that does index its folders loses nothing.
+	 */
+	path?: string[]
 	rows: GraphRow[]
 	note?: string
 	/** Source fields the map did not claim, passed through untouched. */
@@ -101,8 +122,11 @@ export type GraphProps = {
 	groupBy?: import('./layout/types.js').NodeAxis
 	/** Subdivide each cluster by a second axis. Omit for one level. */
 	nestBy?: import('./layout/types.js').NodeAxis
-	/** `points` only — `degree` (default) or `weight` (reads `GraphNode.weight`). */
-	sizeBy?: 'degree' | 'weight'
+	/**
+	 * `points` only — what a node's size encodes. `degree` (default) counts edges, `weight`
+	 * reads `GraphNode.weight`, and any other string names a key in `GraphNode.measures`.
+	 */
+	sizeBy?: string
 	/** How the measure maps onto area — `linear` (default) or `log`. */
 	sizeScale?: 'linear' | 'log'
 	edgeStyle?: import('./layout/types.js').EdgeStyle
@@ -145,6 +169,10 @@ export type GraphFields = {
 	kind?: string
 	/** Path to a per-node quantity — see `GraphNode.weight`. */
 	weight?: string
+	/** Path to a containment chain — see `GraphNode.path`. */
+	path?: string
+	/** Path to an object of named quantities — see `GraphNode.measures`. */
+	measures?: string
 	rows?: string
 	note?: string
 	/** Row-level paths, read against each entry of the `rows` array. */
