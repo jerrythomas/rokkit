@@ -4,7 +4,7 @@ import { normalizeGraph } from '../../src/model/normalize.js'
 
 describe('layout registry', () => {
 	it('registers exactly the built-in layouts', () => {
-		expect(Object.keys(layouts).sort()).toEqual(['cluster', 'neighborhood', 'points', 'world'])
+		expect(Object.keys(layouts).sort()).toEqual(['cluster', 'flow', 'neighborhood', 'points', 'world'])
 	})
 
 	it('maps each name to the layout of that name, not merely to some layout', () => {

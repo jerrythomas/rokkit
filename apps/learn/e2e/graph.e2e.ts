@@ -307,7 +307,81 @@ test.describe('graph demo', () => {
 
 		await expect(page.locator('[data-graph-density-controls]')).toHaveCount(0)
 		await openControls(page)
-		await expect(page.getByLabel('Density')).toHaveCount(0)
+		// Scoped to the demo's own panel: the site chrome has a global DENSITY control of its
+		// own, and an unscoped getByLabel matches that instead — passing, or in this case
+		// failing, for a reason that has nothing to do with the graph.
+		await expect(
+			page.locator('[data-graph-controls]').getByLabel('Density', { exact: true })
+		).toHaveCount(0)
+	})
+
+	test.describe('the flow layout makes links traceable', () => {
+		/* Raised from this diagram: incoming should always enter on the LEFT and outgoing leave
+		 * from the RIGHT, and the boxes should be arranged so links are not buried behind
+		 * entities. Measured on the ER diagram before the layout existed: 5 of 9 edges passed
+		 * over a card that was not one of their endpoints. */
+
+		/** Edges whose path crosses a card that is neither of its endpoints. */
+		const buriedEdges = (page: Page) =>
+			page.evaluate(() => {
+				const cards = [...document.querySelectorAll('[data-graph-node]')].map((el) => ({
+					id: el.getAttribute('data-graph-node'),
+					r: el.getBoundingClientRect()
+				}))
+
+				return [...document.querySelectorAll('[data-graph-edge]')].filter((g) => {
+					const e = g.querySelector('path')!.getBoundingClientRect()
+					const from = g.getAttribute('data-edge-from')
+					const to = g.getAttribute('data-edge-to')
+
+					return cards.some(
+						({ id, r }) =>
+							id !== from &&
+							id !== to &&
+							!(r.right < e.x || r.x > e.right || r.bottom < e.y || r.y > e.bottom)
+					)
+				}).length
+			})
+
+		test('buries fewer links than the schema-grouped arrangement', async ({ page }) => {
+			const grouped = await buriedEdges(page)
+
+			await openControls(page)
+			await setControl(page, 'Layout', 'flow')
+			await expect(page.locator('[data-graph-cluster]')).toHaveCount(0)
+
+			expect(grouped).toBeGreaterThan(0)
+			expect(await buriedEdges(page)).toBeLessThan(grouped)
+		})
+
+		test('leaves every source on the right and enters every target on the left', async ({
+			page
+		}) => {
+			// Direction readable from the geometry, with no arrowhead to follow. `cluster` picks
+			// a side by relative POSITION, so there an exit side says where the other box sits.
+			await openControls(page)
+			await setControl(page, 'Layout', 'flow')
+
+			const wrongSide = await page.evaluate(() => {
+				const box = (id: string | null) =>
+					document.querySelector(`[data-graph-node="${id}"]`)?.getBoundingClientRect()
+
+				return [...document.querySelectorAll('[data-graph-edge]')].filter((g) => {
+					const from = box(g.getAttribute('data-edge-from'))
+					const to = box(g.getAttribute('data-edge-to'))
+					if (!from || !to || from === to) return false
+					const dot = g.querySelector('[data-graph-edge-dot="from"]')!.getBoundingClientRect()
+					const head = g.querySelector('[data-graph-edge-arrow]')?.getBoundingClientRect()
+					if (!head) return false
+
+					// 2px of tolerance for stroke width and the fit scale's rounding.
+					return Math.abs(dot.x + dot.width / 2 - from.right) > 2 ||
+						Math.abs(head.x + head.width / 2 - to.left) > 2
+				}).length
+			})
+
+			expect(wrongSide).toBe(0)
+		})
 	})
 
 	test('switching to the neighborhood layout drops the clusters', async ({ page }) => {

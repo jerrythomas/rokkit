@@ -92,13 +92,14 @@ Your own slots in exactly the same way.
 
 | Name | Shape | For |
 |------|-------|-----|
-| `cluster` | Cards in group boxes | The default. Entity diagrams |
+| `cluster` | Cards in group boxes | The default. Entity diagrams, grouped by schema |
+| `flow` | Cards in columns by reference direction | Tracing links. Every edge leaves right, enters left |
 | `neighborhood` | One focus node + its 1-hop neighbours | Walking a graph one step at a time |
 | `points` | Degree-sized rounded rects, shelf-packed | Dense graphs — a code index, 1000+ nodes |
 | `world` | Nested rectangles, area proportional to a measure | Containment — where the mass of a codebase is |
 
 ```js
-import { cluster, neighborhood, points, world, layouts } from '@rokkit/graph'
+import { cluster, flow, neighborhood, points, world, layouts } from '@rokkit/graph'
 ```
 
 ### Options
@@ -131,6 +132,29 @@ Clusters come back as a FLAT list with `depth` (0 outer, 1 inner) and `parent`. 
 absolutely positioned, so every outer box is emitted first and paint order does the nesting —
 there is no DOM tree. Passing the same axis for both is ignored, not rendered: a box
 subdivided by itself yields one child holding everything.
+
+### `flow` — direction you can read, links you can trace
+
+Raised from an ER diagram where connectors were buried behind entities: **5 of 9 edges passed
+over a card that was not one of their endpoints.**
+
+`cluster` picks a connector's side by relative POSITION, so an edge's exit side tells a reader
+where the other box happens to sit, not which way the reference points. `flow` ranks nodes by
+reference direction — the referenced table sits right of the one referencing it — and then
+every edge leaves the **right** and enters the **left**, unconditionally.
+
+Those are one feature, not two. Fixed ports on a schema-grouped arrangement make burial worse:
+a right-exit connector reaching a left-hand table has to sweep out and back across everything
+between. Ranking is what makes x-position mean direction, and only then are fixed ports honest.
+
+Cycles — a real schema has mutual foreign keys — are broken for ranking, kept for drawing, and
+marked `back` on the routed edge so a theme can distinguish the one connector that doubles back.
+
+`flow` emits **no clusters**: ranking and schema grouping compete for the same axis, and a box
+cannot be both "in the `public` box" and "in column 3". `cluster` remains the schema view.
+
+**What it does not do yet:** a long edge is still drawn straight over any box between its
+endpoints. Routing around needs dummy nodes on the intervening ranks, which is its own slice.
 
 ### The world view is boxes all the way down
 

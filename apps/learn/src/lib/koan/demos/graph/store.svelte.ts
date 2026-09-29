@@ -9,7 +9,7 @@
 import type { DatasetId } from './datasets'
 
 export type GraphViewId = 'diagram' | 'entity' | 'entities'
-export type LayoutId = 'cluster' | 'neighborhood' | 'points' | 'world'
+export type LayoutId = 'cluster' | 'flow' | 'neighborhood' | 'points' | 'world'
 export type DensityId = 'names' | 'keys' | 'full'
 export type ArrangeId = 'untangle' | 'a-z'
 export type EdgeStyleId = 'curved' | 'orthogonal'

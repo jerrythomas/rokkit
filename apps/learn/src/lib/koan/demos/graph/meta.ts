@@ -5,7 +5,7 @@ const meta: DemoMeta = {
 	id: 'graph',
 	title: 'Graph',
 	description:
-		'Node-link diagram explorer — ER diagrams, schema entity tables and call graphs from the same component. Pluggable layouts (cluster, neighborhood), density, arrange, edge style and a colour|pattern channel, all driven by field-mapped data rather than a fixed schema type.',
+		'Node-link diagram explorer — ER diagrams, schema entity tables and call graphs from the same component. Pluggable layouts (cluster, flow, neighborhood, points, world), density, arrange, edge style and a colour|pattern channel, all driven by field-mapped data rather than a fixed schema type.',
 	keywords: [
 		'graph', 'graphs', 'diagram', 'diagrams', 'er-diagram', 'erd',
 		'schema', 'entity', 'entities', 'relationship', 'relationships',
@@ -68,7 +68,7 @@ const meta: DemoMeta = {
 			{ name: 'edges', type: 'unknown[]', default: '[]', desc: 'Any edge shape — endpoints resolved through `fields.source` / `fields.target`' },
 			{ name: 'fields', type: 'GraphFields', default: '{}', desc: 'Dotted-path map from your shape to the canonical model. Omitted keys fall back to the same-named key' },
 			{ name: 'state', type: 'GraphState', desc: 'Share one state across Graph / EntityView / EntitiesView. Must keep stable identity — drive it with its methods, do not swap instances' },
-			{ name: 'layout', type: "'cluster' | 'neighborhood' | LayoutFn", default: "'cluster'", desc: 'A built-in by name, or your own pure (model, options) => LayoutResult' },
+			{ name: 'layout', type: "'cluster' | 'flow' | 'neighborhood' | 'points' | 'world' | LayoutFn", default: "'cluster'", desc: 'A built-in by name, or your own pure (model, options) => LayoutResult. `flow` ranks by reference direction so every link leaves right and enters left' },
 			{ name: 'density', type: "'names' | 'keys' | 'full'", default: "'keys'", desc: 'How much of each node’s row list a card shows' },
 			{ name: 'arrange', type: "'untangle' | 'a-z'", default: "'untangle'", desc: 'Cluster ordering. untangle chains heavily-linked groups; a-z is area-descending' },
 			{ name: 'groupBy', type: "'group' | 'kind'", default: "'group'", desc: 'Outer grouping axis. Schema suits an ER diagram; kind suits a dependency graph, where one schema holds a table, a trigger and a procedure' },

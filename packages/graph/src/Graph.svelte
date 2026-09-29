@@ -231,34 +231,34 @@
 			     A leaf keeps its identity as attributes rather than as a different element:
 			     `data-graph-node-id` makes it addressable and selectable, `data-node-kind` lets a
 			     theme colour it, and a region — which is not a node — simply has neither. -->
-			<div
+			<!-- The TAG varies, everything else does not: one attribute list, one child, one box
+			     on screen. A leaf is clickable and focusable, so it is a real <button> and gets
+			     Enter/Space, focus order and the right announcement for free; a region is
+			     scenery, so it is a <div> that says so. Faking it with role/tabindex on a div
+			     describes an interactive element to a screen reader while leaving the keyboard
+			     handling to be reimplemented by hand. -->
+			<svelte:element
+				this={cluster.nodeId ? 'button' : 'div'}
+				type={cluster.nodeId ? 'button' : undefined}
 				data-graph-cluster
 				data-cluster-depth={cluster.depth ?? 0}
 				data-node-group={cluster.name}
 				data-graph-node-id={cluster.nodeId}
 				data-node-kind={cluster.kind}
 				data-node-state={cluster.nodeId ? graph.nodeState(cluster.nodeId) : undefined}
-				role={cluster.nodeId ? 'button' : undefined}
-				tabindex={cluster.nodeId ? 0 : undefined}
 				style:left="{cluster.x}px"
 				style:top="{cluster.y}px"
 				style:width="{cluster.w}px"
 				style:height="{cluster.h}px"
 				style={graph.groupStyleAttr(cluster.name)}
-				onclick={(event) => {
+				onclick={(event: Event) => {
 					if (!cluster.nodeId) return
-					event.stopPropagation()
-					graph.select(cluster.nodeId)
-				}}
-				onkeydown={(event) => {
-					if (!cluster.nodeId || (event.key !== 'Enter' && event.key !== ' ')) return
-					event.preventDefault()
 					event.stopPropagation()
 					graph.select(cluster.nodeId)
 				}}
 			>
 				<span data-graph-cluster-label>{cluster.name} · {cluster.caption ?? cluster.count}</span>
-			</div>
+			</svelte:element>
 		{/each}
 
 		<svg

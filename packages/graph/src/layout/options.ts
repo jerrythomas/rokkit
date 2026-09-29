@@ -40,6 +40,7 @@ export const LAYOUT_OPTION_KEYS = [
  */
 export const LAYOUT_OPTIONS: Record<string, readonly (typeof LAYOUT_OPTION_KEYS)[number][]> = {
 	cluster: ['density', 'arrange', 'edgeStyle', 'expanded', 'groupBy', 'nestBy'],
+	flow: ['density', 'edgeStyle', 'expanded'],
 	neighborhood: ['edgeStyle', 'expanded', 'focus', 'depth'],
 	points: ['edgeStyle', 'sizeBy', 'sizeScale'],
 	world: ['sizeBy', 'focusPath', 'levels']

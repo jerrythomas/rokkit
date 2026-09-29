@@ -56,7 +56,9 @@ vocabulary lives entirely in the optional `./schema` entry point.
 A layout is a pure `(model, options) => LayoutResult` — DOM-free, synchronous, deterministic.
 Your own slots in the same way.
 
-- **`cluster`** — cards in group boxes. The default; entity diagrams.
+- **`cluster`** — cards in group boxes. The default; entity diagrams, grouped by schema.
+- **`flow`** — cards in columns by reference direction. Every edge leaves right and enters
+  left, so direction reads off the geometry and links stay traceable.
 - **`neighborhood`** — one focus node and its 1-hop neighbours.
 - **`points`** — degree-sized rects, shelf-packed. Dense graphs, 1000+ nodes.
 - **`world`** — nested rectangles, area proportional to a measure. Where the mass is.

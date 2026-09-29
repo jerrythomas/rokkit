@@ -87,6 +87,13 @@ export type RoutedEdge = {
 	/** GraphEdge.relation — the consumer's own verb, carried through for theming. */
 	relation?: string
 	self: boolean
+	/**
+	 * Set when a layered layout had to reverse this edge to rank the graph — a mutual foreign
+	 * key, which a real schema has. It is still drawn, and still leaves right and enters left,
+	 * so it is the one connector that visibly doubles back. A theme distinguishes it rather
+	 * than the reader wondering why one link behaves differently.
+	 */
+	back?: boolean
 	x1: number
 	y1: number
 	x2: number

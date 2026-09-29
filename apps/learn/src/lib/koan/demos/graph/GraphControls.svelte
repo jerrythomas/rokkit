@@ -54,6 +54,7 @@
 			label: 'Layout',
 			options: [
 				{ value: 'cluster', label: 'Cluster (cards)' },
+				{ value: 'flow', label: 'Flow (layered)' },
 				{ value: 'points', label: 'Points (dense)' },
 				{ value: 'neighborhood', label: 'Neighborhood' },
 				{ value: 'world', label: 'World (treemap)' }

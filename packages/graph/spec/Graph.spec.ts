@@ -783,6 +783,21 @@ describe('Graph — accessibility and construction', () => {
 			expect(leaf?.hasAttribute('data-graph-cluster')).toBe(true)
 		})
 
+		it('makes a leaf box a real button, and a region box not', () => {
+			// One box shape on screen, honest semantics underneath: a leaf is clickable and
+			// focusable so it is a <button> — Enter/Space, focus order and the announcement come
+			// free. A region is scenery. role+tabindex on a div would describe an interactive
+			// element to a screen reader and leave the keyboard handling to be rebuilt by hand.
+			const { container } = world()
+			const leaf = container.querySelector('[data-graph-node-id="p.parse"]')
+			const region = [...container.querySelectorAll('[data-graph-cluster]')].find(
+				(el) => el.getAttribute('data-node-group') === 'dbd'
+			)
+
+			expect(leaf?.tagName).toBe('BUTTON')
+			expect(region?.tagName).toBe('DIV')
+		})
+
 		it('leaves a region box unaddressable, because it is not a node', () => {
 			const { container } = world()
 			const region = [...container.querySelectorAll('[data-graph-cluster]')].find(
