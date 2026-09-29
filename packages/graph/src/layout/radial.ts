@@ -140,6 +140,9 @@ function place(
 	const cards: Cards = {}
 
 	for (const node of model.nodes) {
+		// Only what the hierarchy materialised. A pruned node has no angle and no radius, and
+		// placing it anyway would stack every dropped node on the centre point.
+		if (!h.depthOf.has(node.id)) continue
 		const size = read(sizeOf, node.id, { w: 1, h: 1 })
 		const r = (read(radius, node.id, 0) / RING) * spacing
 		const a = read(angle, node.id, 0)
@@ -237,7 +240,7 @@ export const radial: LayoutFn = (model, options): LayoutResult => {
 		return { clusters: [], cards: {}, edges: [], size: { w: 0, h: 0 } }
 	}
 
-	const h = hierarchy(model)
+	const h = hierarchy(model, { focus: options.root, levels: options.levels })
 	const sizeOf = nodeSizes(model, options.sizeBy ?? 'degree', options.sizeScale ?? 'linear')
 	const { cards, size } = place(h, sizeOf, options.radialMode ?? 'tree', model)
 

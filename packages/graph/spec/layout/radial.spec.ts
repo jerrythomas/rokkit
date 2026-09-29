@@ -192,6 +192,88 @@ describe('radial layout', () => {
 		})
 	})
 
+	describe('depth and drilling — a dendrogram of dendrograms', () => {
+		/* A radial dendrogram over a whole codebase puts every leaf on one rim, each a fraction
+		 * of a degree wide, and nothing is legible. Depth is what makes it readable: show the
+		 * crates, then drill into one. `levels` caps how far DOWN, `focus` moves where you
+		 * START — the same idea from two directions. */
+
+		const deep = () =>
+			state(
+				nodes('crate', 'mod', 'file', 'fn'),
+				edges(['crate', 'mod'], ['mod', 'file'], ['file', 'fn'])
+			)
+
+		it('shows the whole chain when nothing caps it', () => {
+			expect(Object.keys(deep({}).cards).sort()).toEqual(['crate', 'file', 'fn', 'mod'])
+		})
+
+		it('materialises only the levels it is asked for', () => {
+			const s = state(
+				nodes('crate', 'mod', 'file', 'fn'),
+				edges(['crate', 'mod'], ['mod', 'file'], ['file', 'fn']),
+				{ levels: 2 }
+			)
+
+			expect(Object.keys(s.cards).sort()).toEqual(['crate', 'mod'])
+		})
+
+		it('keeps the root when asked for a single level', () => {
+			const s = state(nodes('crate', 'mod'), edges(['crate', 'mod']), { levels: 1 })
+
+			expect(Object.keys(s.cards)).toEqual(['crate'])
+		})
+
+		it('re-roots on a focus, which is what drilling into a crate does', () => {
+			const s = state(
+				nodes('crate', 'mod', 'file', 'other'),
+				edges(['crate', 'mod'], ['mod', 'file'], ['crate', 'other']),
+				{ root: 'mod' }
+			)
+
+			expect(Object.keys(s.cards).sort()).toEqual(['file', 'mod'])
+		})
+
+		it('puts the focused node at the centre', () => {
+			const s = state(
+				nodes('crate', 'mod', 'file'),
+				edges(['crate', 'mod'], ['mod', 'file']),
+				{ root: 'mod' }
+			)
+
+			expect(radiusOf(s, 'mod')).toBeLessThan(1)
+		})
+
+		it('combines the two — drill in, then cap the depth', () => {
+			const s = state(
+				nodes('crate', 'mod', 'file', 'fn'),
+				edges(['crate', 'mod'], ['mod', 'file'], ['file', 'fn']),
+				{ root: 'mod', levels: 2 }
+			)
+
+			expect(Object.keys(s.cards).sort()).toEqual(['file', 'mod'])
+		})
+
+		it('renders the whole graph when the focus names nothing', () => {
+			// A stale drill target must not blank the canvas.
+			const s = state(nodes('a', 'b'), edges(['a', 'b']), { root: 'gone' })
+
+			expect(Object.keys(s.cards).sort()).toEqual(['a', 'b'])
+		})
+
+		it('drops the edges of nodes it did not materialise', () => {
+			// An edge to a node with no card has nothing to join, and drawing it to a phantom
+			// point is worse than not drawing it.
+			const s = state(
+				nodes('crate', 'mod', 'file'),
+				edges(['crate', 'mod'], ['mod', 'file']),
+				{ levels: 2 }
+			)
+
+			expect(s.routedEdges).toHaveLength(1)
+		})
+	})
+
 	describe('the usual contracts', () => {
 		it('emits no clusters', () => {
 			const s = state(nodes('a', 'b'), edges(['a', 'b']))

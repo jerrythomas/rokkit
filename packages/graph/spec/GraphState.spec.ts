@@ -141,6 +141,15 @@ describe('GraphState — model', () => {
 })
 
 describe('GraphState — layout', () => {
+	it('setDensity drives density from outside, now that the control is a component', () => {
+		// The canvas no longer owns a density bar, so this is how `DensityControl` — or any
+		// caller's own chrome — reaches the value.
+		const state = make({ layout: 'cluster', density: 'keys' })
+		state.setDensity('full')
+
+		expect(state.density).toBe('full')
+	})
+
 	it('defaults to the flow layout — direction readable, no cluster boxes', () => {
 		// Changed from `cluster`: an ER diagram's job is showing how tables reference each
 		// other, and `flow` makes that readable off the geometry. Schema is still visible via

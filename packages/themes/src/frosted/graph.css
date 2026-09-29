@@ -333,3 +333,44 @@
 [data-style='frosted'] [data-graph-wedge][data-node-state='selected'] {
   fill: color-mix(in oklch, var(--group-fill, var(--paper-mute)) 90%, transparent);
 }
+
+/* The depth and edge-style controls read like the density bar they sit beside — one control
+   strip, not three visual languages. */
+[data-style='frosted'] [data-graph-depth-controls],
+[data-style='frosted'] [data-graph-edge-style] {
+  background-color: var(--paper-mute);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--ink-mute);
+}
+
+[data-style='frosted'] [data-graph-depth-controls] button[data-selected],
+[data-style='frosted'] [data-graph-edge-style][aria-pressed='true'] {
+  background-color: var(--primary);
+  color: var(--on-primary, var(--paper));
+}
+
+[data-style='frosted'] [data-graph-legend] {
+  color: var(--ink-mute);
+}
+
+/* A relation swatch inherits the edge stroke, so a dashed dependency is dashed in the key. */
+[data-style='frosted'] svg[data-legend-swatch] line {
+  stroke: var(--ink-mute);
+  stroke-width: 1.5;
+}
+
+[data-style='frosted'] svg[data-legend-swatch][data-edge-relation='reads'] line,
+[data-style='frosted'] svg[data-legend-swatch][data-edge-relation='writes'] line,
+[data-style='frosted'] svg[data-legend-swatch][data-edge-relation='calls'] line,
+[data-style='frosted'] svg[data-legend-swatch][data-edge-relation='member'] line {
+  stroke-dasharray: 4 3;
+}
+
+[data-style='frosted'] [data-legend-group] [data-legend-swatch] {
+  background-color: var(--group-fill, var(--paper-mute));
+  border: 1px solid var(--group-stroke, rgba(255, 255, 255, 0.18));
+}
+
+[data-style='frosted'] button[data-graph-legend-entry]:hover {
+  background-color: var(--paper-mute);
+}

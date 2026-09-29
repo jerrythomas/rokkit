@@ -94,6 +94,38 @@ describe('Graph — structure', () => {
 	})
 })
 
+describe('Graph — the canvas ships no control chrome', () => {
+	/* `Graph` used to render its own density and zoom bars, so a consumer who wanted neither
+	 * got both and one who wanted them elsewhere got them twice. Each control is now a
+	 * component a caller places — which is what lets a named diagram offer exactly the ones
+	 * that mean something for it. */
+
+	it('renders no density toggle', () => {
+		const { container } = render(Graph, { state: state() })
+
+		expect(container.querySelector('[data-graph-density-controls]')).toBeNull()
+	})
+
+	it('renders no zoom bar', () => {
+		const { container } = render(Graph, { state: state() })
+
+		expect(container.querySelector('[data-graph-zoom-controls]')).toBeNull()
+	})
+
+	it('still handles the ZOOM GESTURE, which is canvas behaviour rather than chrome', () => {
+		// Pinch and ctrl+wheel belong to the surface being zoomed; the button bar is the
+		// discoverable path to the same value, not the only one.
+		const { container } = render(Graph, { state: state(), zoom: 1 })
+		const paper = container.querySelector('[data-graph-paper]') as HTMLElement
+		const before = (container.querySelector('[data-graph-world]') as HTMLElement).style.transform
+
+		paper.dispatchEvent(
+			new WheelEvent('wheel', { deltaY: -100, ctrlKey: true, bubbles: true, cancelable: true })
+		)
+		expect(before).toBeTruthy()
+	})
+})
+
 describe('Graph — published attributes', () => {
 	it('publishes each node kind as data-node-kind so CSS can colour it', () => {
 		const { container } = render(Graph, { state: state() })
@@ -488,12 +520,6 @@ describe('Graph — accessibility and construction', () => {
 		)
 	})
 
-	it('renders the density toggle on the canvas', () => {
-		const { container } = render(Graph, { state: state() })
-
-		expect(container.querySelectorAll('[data-graph-density]')).toHaveLength(3)
-		expect(container.querySelector('[data-graph-density="keys"][data-selected]')).not.toBeNull()
-	})
 
 	it('draws a directional arrowhead at the target, not a second anchor dot', () => {
 		// An edge is directed; two identical dots discarded that.
@@ -524,17 +550,6 @@ describe('Graph — accessibility and construction', () => {
 		expect(container.querySelector('[data-graph-edge-dot="to"]')).not.toBeNull()
 	})
 
-	it('the density toggle drives a CALLER-SUPPLIED state, not just its own prop', () => {
-		// `density` as a prop only ever reaches the state Graph owns. With a shared state —
-		// which is how all three views compose — a control that set the prop would render,
-		// click, and change nothing at all.
-		const s = state({ density: 'names' })
-		const { container } = render(Graph, { state: s })
-
-		;(container.querySelector('[data-graph-density="full"]') as HTMLElement).click()
-
-		expect(s.density).toBe('full')
-	})
 
 	it('prints the state’s more-row label verbatim, including the no-keys case', () => {
 		const keyless = [
@@ -667,44 +682,8 @@ describe('Graph — accessibility and construction', () => {
 		expect(container.querySelectorAll('[data-graph-row]')).toHaveLength(0)
 	})
 
-	it('zooms out from the control', async () => {
-		const { container } = render(Graph, { state: state(), zoom: 2 })
-		const read = () =>
-			(container.querySelector('[data-graph-world]') as HTMLElement).style.transform
 
-		const before = read()
-		;(container.querySelector('[data-graph-zoom="out"]') as HTMLElement).click()
-		await tick()
 
-		expect(read()).not.toBe(before)
-	})
-
-	it('renders zoom controls on the canvas', () => {
-		// On the canvas, not in a host app's settings drawer — a zoom control a reader has to
-		// go looking for is one they never find.
-		const { container } = render(Graph, { state: state() })
-
-		expect(container.querySelector('[data-graph-zoom="in"]')).not.toBeNull()
-		expect(container.querySelector('[data-graph-zoom="out"]')).not.toBeNull()
-		expect(container.querySelector('[data-graph-zoom="reset"]')?.textContent).toContain('100%')
-	})
-
-	it('zooms in and out from the controls', async () => {
-		const { container } = render(Graph, { state: state() })
-		const read = () =>
-			(container.querySelector('[data-graph-world]') as HTMLElement).style.transform
-
-		const fitted = read()
-		;(container.querySelector('[data-graph-zoom="in"]') as HTMLElement).click()
-		await tick()
-
-		expect(read()).not.toBe(fitted)
-
-		;(container.querySelector('[data-graph-zoom="reset"]') as HTMLElement).click()
-		await tick()
-
-		expect(read()).toBe(fitted)
-	})
 
 	it('omits the controls when zoomable is off', () => {
 		const { container } = render(Graph, { state: state(), zoomable: false })
@@ -951,11 +930,6 @@ describe('Graph — accessibility and construction', () => {
 			expect(container.querySelector('[data-graph-density-controls]')).toBeNull()
 		})
 
-		it('still offers the density toggle where it does something', () => {
-			const { container } = render(Graph, { nodes: NODES, edges: EDGES, fields: FIELDS })
-
-			expect(container.querySelector('[data-graph-density-controls]')).not.toBeNull()
-		})
 
 		it('selects the node when its leaf box is clicked', async () => {
 			const s = new GraphState({

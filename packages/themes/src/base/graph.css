@@ -688,3 +688,142 @@
   font-family: var(--font-mono, monospace);
   font-size: 0.85em;
 }
+
+/* ─── named diagrams: canvas, overlay, footer ───────────────────────────────
+   A diagram is a canvas with controls over it and a key under it. The canvas takes the space
+   the footer leaves rather than being overlaid by it — a legend that covers the picture it
+   explains is worse than no legend. Structure only; colour lives in each style. */
+
+[data-graph-diagram] {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+/* `min-height: 0` is what lets the canvas shrink inside a flex column. Without it the canvas
+   keeps its content height, the footer is pushed out of the box, and the diagram silently
+   overflows whatever it was placed in. */
+[data-graph-diagram-canvas] {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Anchored bottom-left, where the old built-in bar sat, so a reader's hand goes to the same
+   place. `pointer-events: none` on the strip and `auto` on the controls: the gaps between
+   them still reach the canvas, so a click there clears the selection. */
+[data-graph-diagram-overlay] {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+[data-graph-diagram-overlay] > * {
+  pointer-events: auto;
+}
+
+/* The zoom bar goes to the far end, away from the data controls — it is navigation, not a
+   property of the picture. */
+[data-graph-diagram-overlay] [data-graph-zoom-controls] {
+  margin-inline-start: auto;
+}
+
+/* Overlaid controls are positioned by the strip, not by themselves. */
+[data-graph-diagram-overlay] [data-graph-density-controls],
+[data-graph-diagram-overlay] [data-graph-zoom-controls] {
+  position: static;
+  inset: auto;
+}
+
+[data-graph-diagram-footer] {
+  flex: 0 0 auto;
+  padding: 0.5rem 0.75rem 0;
+}
+
+/* ─── controls ──────────────────────────────────────────────────────────── */
+
+[data-graph-depth-controls] {
+  display: flex;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+[data-graph-depth-controls] button {
+  min-width: 2rem;
+  padding: 0.25rem 0.5rem;
+  font: inherit;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  border: 0;
+  cursor: pointer;
+}
+
+[data-graph-edge-style] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.55rem;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.375rem;
+  font: inherit;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  cursor: pointer;
+}
+
+/* ─── legend ────────────────────────────────────────────────────────────── */
+
+[data-graph-legend] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.9rem;
+  font-size: 0.7rem;
+}
+
+[data-graph-legend-entry] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.1rem 0.2rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: none;
+  font: inherit;
+  font-size: inherit;
+}
+
+/* A button only when it DOES something — an inert key should not offer a pointer. */
+button[data-graph-legend-entry] {
+  cursor: pointer;
+}
+
+[data-legend-swatch] {
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 0.2rem;
+}
+
+/* A relation swatch is the stroke itself, so the key and the canvas cannot disagree. */
+svg[data-legend-swatch] {
+  width: 22px;
+  height: 8px;
+  border-radius: 0;
+}
+
+[data-legend-label] {
+  white-space: nowrap;
+}

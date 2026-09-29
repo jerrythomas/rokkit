@@ -11,7 +11,12 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import { LAYOUT_OPTIONS, LAYOUT_OPTION_KEYS, nodeShapeOf } from '../../src/layout/options.js'
+import {
+	LAYOUT_OPTIONS,
+	LAYOUT_OPTION_KEYS,
+	appliesTo,
+	nodeShapeOf
+} from '../../src/layout/options.js'
 import { layouts } from '../../src/layout/index.js'
 
 describe('per-layout option applicability', () => {
@@ -41,6 +46,17 @@ describe('per-layout option applicability', () => {
 		// A custom LayoutFn gets full card chrome rather than a head-only box with its rows
 		// invisible — wrong in the recoverable direction.
 		expect(nodeShapeOf('something-custom')).toBe('card')
+	})
+
+	it('answers per layout, which is what a control panel asks', () => {
+		expect(appliesTo('cluster', 'density')).toBe(true)
+		expect(appliesTo('world', 'density')).toBe(false)
+	})
+
+	it('assumes an unknown layout supports an option, rather than hiding controls', () => {
+		// A custom LayoutFn the package knows nothing about gets the full panel. Wrong in the
+		// recoverable direction: a control too many is visible, where a control too few is not.
+		expect(appliesTo('something-custom', 'density')).toBe(true)
 	})
 
 	it('excludes density from the treemap, which has no row lists to thin', () => {

@@ -100,6 +100,44 @@ function walk(roots: string[], w: Walk): void {
 	}
 }
 
+/**
+ * The node to re-root on, when there is one.
+ *
+ * A focus makes its subtree the whole picture — that is drilling. One naming no node is
+ * ignored rather than blanking the canvas: a stale drill target is a normal state once the
+ * data changes underneath it.
+ */
+function drillRoot(model: GraphModel, focus: string | null | undefined): string | undefined {
+	return focus && model.byId.has(focus) ? focus : undefined
+}
+
+/** Edge ids the spanning tree did not use as parent links. */
+function nonTreeEdges(links: GraphEdge[], childrenOf: Map<string, string[]>): Set<string> {
+	const tree = new Set<string>()
+	for (const [parent, kids] of childrenOf) {
+		for (const kid of kids) tree.add(`${parent}->${kid}`)
+	}
+
+	return new Set(links.filter((e) => !tree.has(`${e.source}->${e.target}`)).map((e) => e.id))
+}
+
+/**
+ * Every node the natural roots could not reach, each seeding its own walk.
+ *
+ * A cycle nothing points into is unreachable from any root, and without this its members are
+ * simply absent from the diagram — which reads as missing DATA rather than as a layout choice.
+ */
+function sweepUnreached(model: GraphModel, w: Walk): string[] {
+	const stragglers: string[] = []
+	for (const node of model.nodes) {
+		if (w.claimed.has(node.id)) continue
+		stragglers.push(node.id)
+		walk([node.id], w)
+	}
+
+	return stragglers
+}
+
 /** Childless nodes in walk order, so a parent's children stay adjacent on the rim. */
 function leavesOf(roots: string[], childrenOf: Map<string, string[]>): string[] {
 	const leaves: string[] = []
@@ -125,41 +163,77 @@ function leavesOf(roots: string[], childrenOf: Map<string, string[]>): string[] 
  * Every node is placed: a disconnected one becomes its own root rather than disappearing, and
  * a cycle terminates because a claimed node is never re-claimed.
  */
-export function hierarchy(model: GraphModel): Hierarchy {
+export type HierarchyOptions = {
+	/**
+	 * Start the walk here instead of at the natural roots — what drilling into a crate does.
+	 * A focus naming no node is ignored rather than blanking the canvas, because a stale drill
+	 * target is a normal state after the data changes underneath it.
+	 */
+	focus?: string | null
+	/**
+	 * How many levels to keep, counting the root as one. Everything deeper is dropped.
+	 *
+	 * The control that makes a large tree readable at all: a dendrogram over a whole codebase
+	 * puts every leaf on one rim, each a fraction of a degree wide.
+	 */
+	levels?: number
+}
+
+/** Everything outside `levels` hops of the roots, pruned. */
+function prune(h: Hierarchy, levels: number): Hierarchy {
+	const kept = new Set<string>()
+	for (const [id, depth] of h.depthOf) {
+		if (depth < levels) kept.add(id)
+	}
+
+	const childrenOf = new Map<string, string[]>()
+	for (const [parent, kids] of h.childrenOf) {
+		if (!kept.has(parent)) continue
+		const visible = kids.filter((kid) => kept.has(kid))
+		if (visible.length > 0) childrenOf.set(parent, visible)
+	}
+
+	const roots = h.roots.filter((id) => kept.has(id))
+
+	return {
+		roots,
+		depthOf: new Map([...h.depthOf].filter(([id]) => kept.has(id))),
+		childrenOf,
+		leaves: leavesOf(roots, childrenOf),
+		extra: h.extra
+	}
+}
+
+export function hierarchy(model: GraphModel, options: HierarchyOptions = {}): Hierarchy {
 	const links = model.edges.filter((e) => usable(e, model.byId))
 	const out = outgoing(links)
 
 	const claimed = new Map<string, number>()
 	const childrenOf = new Map<string, string[]>()
-	const roots = rootsOf(model, links)
+	const focused = drillRoot(model, options.focus)
+	const roots = focused ? [focused] : rootsOf(model, links)
 
 	const w: Walk = { out, claimed, childrenOf }
 	walk(roots, w)
 
 	// A node inside a cycle that no root reaches is still a node. Each unclaimed one seeds its
 	// own walk, so the whole model is covered however tangled it is.
-	const stragglers: string[] = []
-	for (const node of model.nodes) {
-		if (claimed.has(node.id)) continue
-		stragglers.push(node.id)
-		walk([node.id], w)
-	}
+	// Skipped entirely when a focus is set: drilling means "this subtree and nothing else", so
+	// sweeping up everything the focus cannot reach would undo the drill.
+	const stragglers = focused ? [] : sweepUnreached(model, w)
 
 	const allRoots = [...roots, ...stragglers]
-	const tree = new Set<string>()
-	for (const [parent, kids] of childrenOf) {
-		for (const kid of kids) tree.add(`${parent}->${kid}`)
-	}
 
-	return {
+	const full: Hierarchy = {
 		roots: allRoots,
 		depthOf: claimed,
 		childrenOf,
 		leaves: leavesOf(allRoots, childrenOf),
 		// An edge whose endpoints are not a parent/child pair in the tree. It is real and the
 		// view draws it; it simply did not get to decide where anything sits.
-		extra: new Set(
-			links.filter((e) => !tree.has(`${e.source}->${e.target}`)).map((e) => e.id)
-		)
+		extra: nonTreeEdges(links, childrenOf)
 	}
+
+	const levels = options.levels
+	return levels !== undefined && levels > 0 ? prune(full, levels) : full
 }

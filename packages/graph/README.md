@@ -51,6 +51,27 @@ vocabulary lives entirely in the optional `./schema` entry point.
 | `@rokkit/graph/schema` | `EntityView`, `EntitiesView`, `NoteBlocks`, `fromSchemaModel`, `toGraphInput`, `SCHEMA_FIELDS`, `DEPS_FIELDS` |
 | `@rokkit/graph/icons` | `DEFAULT_ICONS` alone, with no Svelte imports — for your UnoCSS safelist |
 
+## Named diagrams
+
+`Graph` is the canvas and ships no chrome. A named diagram is the composition already made —
+one layout, the controls that mean something for it, an opt-in legend. The same shape
+`@rokkit/chart` uses, where `BarChart` and `LineChart` sit over one `Plot`.
+
+```svelte
+<script>
+  import { ErDiagram, CallTree, Treemap, Sunburst } from '@rokkit/graph'
+</script>
+
+<ErDiagram {nodes} {edges} {fields} controls legend />
+```
+
+`ErDiagram` · `DependencyDiagram` · `CallTree` · `Treemap` · `Sunburst` · `Neighborhood`.
+Both `controls` and `legend` default to off: the default is the bare picture.
+
+Composing your own is the same parts in a different box — `DensityControl`, `EdgeStyleControl`,
+`DepthControl`, `ZoomControl` and `GraphLegend` are all exported, and none of them stores a
+value. They report what was chosen and you own it.
+
 ## Layouts
 
 A layout is a pure `(model, options) => LayoutResult` — DOM-free, synchronous, deterministic.

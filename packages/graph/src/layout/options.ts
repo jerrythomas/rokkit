@@ -18,7 +18,8 @@ export const LAYOUT_OPTION_KEYS = [
 	'depth',
 	'focusPath',
 	'levels',
-	'radialMode'
+	'radialMode',
+	'root'
 ] as const
 
 /**
@@ -44,7 +45,7 @@ export const LAYOUT_OPTIONS: Record<string, readonly (typeof LAYOUT_OPTION_KEYS)
 	flow: ['density', 'edgeStyle', 'expanded'],
 	neighborhood: ['edgeStyle', 'expanded', 'focus', 'depth'],
 	points: ['edgeStyle', 'sizeBy', 'sizeScale'],
-	radial: ['edgeStyle', 'sizeBy', 'sizeScale', 'radialMode'],
+	radial: ['edgeStyle', 'sizeBy', 'sizeScale', 'radialMode', 'levels', 'root'],
 	sunburst: ['sizeBy', 'focusPath', 'levels'],
 	world: ['sizeBy', 'focusPath', 'levels']
 }

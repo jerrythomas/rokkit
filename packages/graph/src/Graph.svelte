@@ -4,7 +4,7 @@
 	import type { GraphStateConfig } from './GraphState.svelte.js'
 	import type { GraphProps } from './types.js'
 	import { DEFAULT_ICONS } from './icons.js'
-	import { appliesTo } from './layout/options.js'
+	import { ZOOM_STEP, clampZoom } from './controls/zoom.js'
 
 	// Aliased: a local binding literally named `state` makes the compiler read the `$state`
 	// rune below as a store subscription on it. The PUBLIC prop name is still `state`.
@@ -28,7 +28,6 @@
 		mode = 'light',
 		zoom = $bindable(1),
 		zoomable = true,
-		densityToggle = true,
 		arrows = true,
 		label = undefined,
 		onselect = undefined,
@@ -89,26 +88,10 @@
 	// `fit` alone shrinks a real schema until its labels are unreadable, which is the whole
 	// reason zoom exists.
 	const PAD = 28
-	const ZOOM_MIN = 0.25
-	const ZOOM_MAX = 4
-	const ZOOM_STEP = 1.25
 
 	let vw = $state(0)
 	let vh = $state(0)
 	let paper = $state<HTMLElement | null>(null)
-
-	const clampZoom = (value: number) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, value))
-
-	/**
-	 * Writes the STATE, then mirrors into the bindable prop. Both halves matter: the state is
-	 * what renders (and may be caller-supplied, where the prop never reaches it), and the
-	 * prop is what a `bind:density` consumer observes — without the mirror its own effect
-	 * would re-apply the stale value and undo the click.
-	 */
-	function setDensity(next: typeof density) {
-		graph.setDensity(next)
-		density = next
-	}
 
 	function zoomBy(factor: number) {
 		zoom = clampZoom(zoom * factor)
@@ -161,7 +144,6 @@
 	// padding offset so scrolling reaches the far edge instead of clipping it.
 	const tx = $derived(Math.max(PAD, (vw - graph.contentSize.w * scale) / 2))
 	const ty = $derived(Math.max(PAD, (vh - graph.contentSize.h * scale) / 2))
-	const zoomPercent = $derived(Math.round(zoom * 100))
 
 	/**
 	 * Level of detail, from the EFFECTIVE scale rather than from `zoom` — a diagram fitted to
@@ -429,52 +411,4 @@
 		</div>
 	</div>
 
-	<!-- `graph.layoutName`, NOT the `layout` prop: when a caller passes a ready-made state the
-	     prop keeps its default and would answer for a layout that is not on screen. -->
-	{#if densityToggle && appliesTo(graph.layoutName, 'density')}
-		<!-- On the canvas for the same reason zoom is: "+3 more" tells a reader something is
-		     hidden; this is the control that does something about it for every card at once.
-
-		     Offered only where it does something. A treemap box has no row list to thin, and
-		     `neighborhood` builds its cards at full detail unconditionally — in both, the
-		     toggle moves and the picture does not, which reads as a broken view rather than
-		     as a control that does not apply. -->
-		<div data-graph-density-controls role="group" aria-label="Detail level">
-			{#each [['names', 'Names', 'Titles only'], ['keys', 'Keys', 'Key rows only'], ['full', 'All', 'All rows']] as [value, short, title] (value)}
-				<button
-					type="button"
-					data-graph-density={value}
-					data-selected={graph.density === value ? '' : undefined}
-					aria-pressed={graph.density === value}
-					{title}
-					onclick={() => setDensity(value as typeof density)}>{short}</button
-				>
-			{/each}
-		</div>
-	{/if}
-
-	{#if zoomable}
-		<!-- On-canvas, because a zoom control that lives in someone else's settings drawer is
-		     a control a reader never finds. Buttons rather than a slider: each is one tab stop
-		     and one keypress, so this works without a trackpad. -->
-		<div data-graph-zoom-controls>
-			<button
-				type="button"
-				data-graph-zoom="out"
-				aria-label="Zoom out"
-				disabled={zoom <= ZOOM_MIN}
-				onclick={() => zoomBy(1 / ZOOM_STEP)}>−</button
-			>
-			<button type="button" data-graph-zoom="reset" aria-label="Reset zoom to fit" onclick={() => (zoom = 1)}
-				>{zoomPercent}%</button
-			>
-			<button
-				type="button"
-				data-graph-zoom="in"
-				aria-label="Zoom in"
-				disabled={zoom >= ZOOM_MAX}
-				onclick={() => zoomBy(ZOOM_STEP)}>+</button
-			>
-		</div>
-	{/if}
 </div>

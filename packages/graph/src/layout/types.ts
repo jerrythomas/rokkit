@@ -203,6 +203,14 @@ export type LayoutOptions = {
 	 * leaf to the rim so leaves are compared against each other.
 	 */
 	radialMode?: 'tree' | 'dendrogram'
+	/**
+	 * `radial` only — the node to treat as the centre, which is what drilling into a crate
+	 * does. Its subtree becomes the whole picture.
+	 *
+	 * Deliberately NOT `focus`: that one defaults to the SELECTION, so clicking a node to
+	 * highlight it would silently re-root the diagram.
+	 */
+	root?: string | null
 }
 
 export type LayoutResult = {

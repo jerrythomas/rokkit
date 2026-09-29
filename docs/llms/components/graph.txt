@@ -42,8 +42,7 @@ height** or it collapses.
 | `preset` | `GraphPreset` | — | `createGraphPreset({ groups, shades, using })` — colour for the open-ended GROUP vocabulary |
 | `mode` | `'light' \| 'dark'` | `'light'` | Which shade ladder the group ramp resolves against |
 | `zoom` | `number` | `1` | Multiplier on the fit-to-container scale. **Bindable** |
-| `zoomable` | `boolean` | `true` | Built-in zoom controls, ctrl/pinch-wheel zoom, drag-to-pan |
-| `densityToggle` | `boolean` | `true` | On-canvas names/keys/all toggle. Suppressed where density does nothing |
+| `zoomable` | `boolean` | `true` | Ctrl/pinch-wheel zoom and drag-to-pan. The BUTTON bar is `ZoomControl`, which you place |
 | `arrows` | `boolean` | `true` | Arrowhead at each edge target instead of a plain dot |
 | `label` | `string` | — | Accessible name. Derived from node/edge counts when omitted |
 | `icons` | `Record<string, string>` | — | Icon class per node kind and row badge, merged over `DEFAULT_ICONS` |
@@ -68,6 +67,57 @@ the existing instance through its methods and `update()` rather than swapping in
 
 Expansion is per node on purpose: a reader clicking "+3 more" is asking about that card, and
 expanding all of them answers a question they did not ask.
+
+## Reach for a named diagram first
+
+`Graph` is the canvas: it draws what a layout hands it and ships **no chrome at all**. A named
+diagram is the composition already made — one layout, the controls that mean something for that
+picture, an opt-in legend. Same shape as `@rokkit/chart`, where `BarChart` and `LineChart` sit
+over one `Plot`.
+
+```svelte
+<script>
+  import { ErDiagram, CallTree, Treemap } from '@rokkit/graph'
+</script>
+
+<ErDiagram {nodes} {edges} {fields} controls legend />
+<CallTree {nodes} {edges} {fields} levels={2} controls />
+```
+
+| Component | Draws | Controls it offers |
+|-----------|-------|--------------------|
+| `ErDiagram` | Table entities and foreign keys, ranked left to right | density, edge style, zoom |
+| `DependencyDiagram` | Reads / writes / calls / contains | density, edge style, zoom |
+| `CallTree` | A call graph as a radial tidy tree or dendrogram | depth, zoom |
+| `Treemap` | Containment as nested rectangles | depth, zoom |
+| `Sunburst` | The same containment as wedges | depth, zoom |
+| `Neighborhood` | One node and what reaches it | depth, edge style, zoom |
+
+`controls` and `legend` are both **off by default** — the default is the bare picture, because
+a consumer embedding a diagram in their own shell wants their own chrome, not two sets.
+
+### Composing your own
+
+Every control is a component taking the value it drives, so a bespoke arrangement is the same
+parts in a different box:
+
+```svelte
+<script>
+  import { Graph, GraphState, DensityControl, ZoomControl, GraphLegend } from '@rokkit/graph'
+
+  const graph = new GraphState({ nodes, edges, fields, layout: 'flow' })
+  let zoom = $state(1)
+  let density = $state('keys')
+</script>
+
+<Graph state={graph} bind:zoom />
+<DensityControl {density} onchange={(v) => (density = v)} />
+<ZoomControl {zoom} onchange={(v) => (zoom = v)} />
+<GraphLegend state={graph} kinds relations />
+```
+
+A control stores nothing: it reports what was chosen and the caller owns the value. That is
+what lets the same control drive a diagram, a URL parameter or a saved view.
 
 ## The default is `flow`, not `cluster`
 
@@ -116,8 +166,8 @@ Two entries are not simply "what the layout function reads":
 - `neighborhood` takes no `density`: it builds cards at `full` unconditionally, because a
   portrait of one node's surroundings that hides the columns its edges land on defeats itself.
 
-`densityToggle` follows the same rule, so the built-in on-canvas control disappears rather than
-sitting there doing nothing.
+This is what a **named diagram** settles for you: `ErDiagram` offers density and edge style,
+`Treemap` offers depth, and neither renders a control the other needs.
 
 ## Level of detail
 

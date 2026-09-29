@@ -149,9 +149,8 @@ export type GraphProps = {
 	 */
 	zoom?: number
 	/** Built-in zoom controls, ctrl/pinch-wheel zoom and drag-to-pan. Default true. */
+	/** Ctrl/pinch-wheel zoom and drag-to-pan. The BUTTON bar is `ZoomControl`, placed by you. */
 	zoomable?: boolean
-	/** Built-in names/keys/all detail toggle on the canvas. Default true. */
-	densityToggle?: boolean
 	/**
 	 * Draw an arrowhead at each edge's target instead of a plain anchor dot. Default true —
 	 * an edge is directed, and two identical dots discard that.

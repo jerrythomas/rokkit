@@ -67,6 +67,8 @@ export type GraphStateConfig = {
 	levels?: number
 	/** `radial` only — `tree` ranks by depth, `dendrogram` pins leaves to the rim. */
 	radialMode?: 'tree' | 'dendrogram'
+	/** `radial` only — the node to centre on. Drilling; NOT the selection. */
+	root?: string | null
 	/**
 	 * Paint each CARD with its group's ramp, not just the cluster box around it.
 	 *
@@ -154,6 +156,31 @@ function extentOf(boxes: { x: number; y: number; w: number; h: number }[]): Size
  * Deliberately NOT `PlotState.update`, which guards each field with
  * `if (config.X !== undefined)` and therefore merges.
  */
+/**
+ * Sorted unique strings, dropping empties.
+ *
+ * Sort-then-dedupe rather than a `Set`: these vocabularies are tiny and the result has to be
+ * sorted anyway, so the Set would be an extra structure for nothing — and a plain Set inside a
+ * reactive class is exactly what `svelte/prefer-svelte-reactivity` is right to flag.
+ */
+/**
+ * A level cap, or nothing.
+ *
+ * Left UNDEFINED when the caller said nothing: a state-level default of 2 is indistinguishable
+ * from an explicit 2, and `radial` needs "no cap" to mean the whole tree — inventing a number
+ * here silently pruned a codebase dendrogram to two rings.
+ */
+function floorLevels(levels: number | undefined): number | undefined {
+	return levels === undefined ? undefined : Math.max(1, Math.floor(levels))
+}
+
+function unique(values: (string | undefined)[]): string[] {
+	return values
+		.filter((v): v is string => Boolean(v))
+		.sort()
+		.filter((v, i, all) => i === 0 || v !== all[i - 1])
+}
+
 export class GraphState {
 	#nodes = $state<unknown[]>([])
 	#edges = $state<unknown[]>([])
@@ -161,6 +188,7 @@ export class GraphState {
 	#layout = $state<string | LayoutFn>('flow')
 	#groupTint = $state(false)
 	#radialMode = $state<'tree' | 'dendrogram'>('tree')
+	#root = $state<string | null>(null)
 	#density = $state<Density>('keys')
 	#arrange = $state<Arrange>('untangle')
 	#groupBy = $state<NodeAxis>('group')
@@ -169,7 +197,7 @@ export class GraphState {
 	#sizeScale = $state<'linear' | 'log'>('linear')
 	#depth = $state<number>(1)
 	#focusPath = $state<string[]>([])
-	#levels = $state<number>(2)
+	#levels = $state<number | undefined>(undefined)
 	#edgeStyle = $state<EdgeStyle>('curved')
 	#focus = $state<string | null>(null)
 	#value = $state<string | null>(null)
@@ -197,6 +225,7 @@ export class GraphState {
 			focusPath: this.#focusPath,
 			levels: this.#levels,
 			radialMode: this.#radialMode,
+			root: this.#root,
 			edgeStyle: this.#edgeStyle,
 			focus: this.#focus ?? this.#value,
 			expanded: this.#expanded
@@ -320,7 +349,8 @@ export class GraphState {
 		// canvas for it looks identical to a broken focus.
 		this.#depth = Math.max(1, Math.floor(config.depth ?? 1))
 		this.#focusPath = config.focusPath ?? []
-		this.#levels = Math.max(1, Math.floor(config.levels ?? 2))
+		this.#levels = floorLevels(config.levels)
+		this.#root = config.root ?? null
 		this.#radialMode = config.radialMode ?? 'tree'
 	}
 
@@ -574,6 +604,32 @@ export class GraphState {
 		return this.#groupBy
 	}
 
+	/**
+	 * The node kinds actually present, sorted.
+	 *
+	 * What a LEGEND needs: naming the whole vocabulary over a diagram that uses three of it is
+	 * a key to a different picture, and the reader hunts for a `trigger` that is not there.
+	 */
+	get kindsPresent(): string[] {
+		return unique(this.#model.nodes.map((n) => n.kind))
+	}
+
+	/**
+	 * The edge relations present, sorted — the producer's verb where it gave one, else the
+	 * coarse kind.
+	 *
+	 * A plain foreign key carries no verb, and listing nothing for it would leave the one
+	 * stroke actually on the canvas unexplained.
+	 */
+	get relationsPresent(): string[] {
+		return unique(this.#model.edges.map((e) => e.relation ?? e.kind))
+	}
+
+	/** The group names present, sorted. Same reasoning as `kindsPresent`. */
+	get groupsPresent(): string[] {
+		return unique(this.#model.nodes.map((n) => n.group))
+	}
+
 	/** Whether cards carry the group ramp themselves. See `GraphStateConfig.groupTint`. */
 	/** `dot` or `card` — what the active layout draws a node as. */
 	get nodeShape(): 'dot' | 'card' {
@@ -604,8 +660,9 @@ export class GraphState {
 		return this.#focusPath
 	}
 
+	/** The configured cap, or the package default of 2 when none was set. */
 	get levels(): number {
-		return this.#levels
+		return this.#levels ?? 2
 	}
 
 	/**
