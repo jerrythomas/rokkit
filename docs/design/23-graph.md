@@ -610,6 +610,11 @@ its own. Plus `SchemaModel`/`validateModel`, the Rust mirror.
 
 ## Slice 2 — the world view (designed, not built)
 
+> **Full design: [`24-world-view.md`](./24-world-view.md).** That doc takes the decisions this
+> section only names — how containment arrives (`path`, not `parent`), what it looks like
+> (nested rects, and why not force or circles), how drilling differs from zooming, and where
+> the second measure lives. It also closes #163 and #164 on paper.
+
 Studied against `~/Downloads/Sensei/Sensei Schema and Call Graph v3.dc.html`, which drives
 **1.18M nodes / 4.08M edges**. Two views, and the repo's own numbers make the gap concrete.
 

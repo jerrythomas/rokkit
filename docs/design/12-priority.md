@@ -76,8 +76,11 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
     largest dot, plus a circular cluster discarding 21% of its box), which read as a zoom bug;
     and clusters keyed by name alone threw `each_key_duplicate` once nesting put a `table` box
     under two schemas, aborting the whole render. See journal 2026-09-28.
-  - **Remaining:** dbd consumes the package (acceptance), then publish. Slice 2 — the
-    hierarchical world view — stays open; `docs/design/23-graph.md` records the design.
+  - **Remaining:** publish (done for graph@1.6.0; themes needs a release carrying `graph.css`
+    before dbd can leave `link:`). Slice 2 — the hierarchical world view — is **designed** in
+    `docs/design/24-world-view.md` and not built: it closes #163 (containment beyond two
+    levels, drill-down) and #164 (a sequential colour channel), and its first two steps are
+    model work (`path` on the canonical node, a `measures` bag) that everything else waits on.
 
 - [x] **List / Tree honour `bind:value`** — Shipped 2026-08-21 (`653fe415`, **breaking**). Both declared `value = $bindable()` and documented it `bindable: true` but never wrote it — only Select did — so consumers needed an `onselect={(v) => (mine = v)}` workaround for a binding they had already asked for. Selection now routes through a `handleSelect` interceptor. Race contract, since `value` is input *and* output: the write happens in a DOM event handler (never an effect, so it cannot re-enter the effects reading `value`); it is skipped when unchanged (an unconditional write would re-run `syncExpandedGroups` and collapse groups the user expanded by hand); it lands *before* the consumer callback, so a consumer assigning its own value still wins — which is what makes it backward compatible. Disabled and group/parent rows never write. 14 tests + 2 DOM-observable fixtures, break-it verified. `Table`/`TreeTable` unaffected (their bindable prop is `values`). See journal 2026-08-21.
   - **Open:** should `List` honour item-level `expanded: true` as a first-paint seed under `collapsible`? It cannot today — accordion semantics re-derive expansion from `value` on every change, overwriting the flag. `Tree` does honour it. Documented and pinned by tests; needs an owner decision.
