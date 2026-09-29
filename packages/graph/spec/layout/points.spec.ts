@@ -190,6 +190,28 @@ describe('points layout', () => {
 		for (const card of Object.values(result.cards)) expect(card.w).toBeGreaterThan(0)
 	})
 
+	it('reserves room under each node for its label', () => {
+		// The label is drawn below the dot and outside it. Without an allowance a 6px dot's
+		// 19px label lands in the shelf beneath, and every row of a dense graph overlaps the
+		// next — which is what it did.
+		// Per CLUSTER: separate groups sit at their own grid offsets, so comparing across them
+		// measures the grid, not the shelves.
+		const result = points(model(), {})
+
+		for (const cluster of result.clusters) {
+			const tops = cluster.list
+				.map((n) => result.cards[n.id].y)
+				.sort((a, b) => a - b)
+
+			for (let i = 1; i < tops.length; i++) {
+				const gap = tops[i] - tops[i - 1]
+				// Same shelf, or far enough apart for a label to sit between. The tolerance is
+				// for float accumulation across a row — a 1.4e-14 gap IS the same shelf.
+				expect(gap < 0.001 || gap >= 18, `${cluster.name}: gap ${gap}`).toBe(true)
+			}
+		}
+	})
+
 	it('is deterministic — no simulation, no random seed', () => {
 		expect(points(model(), {})).toEqual(points(model(), {}))
 	})

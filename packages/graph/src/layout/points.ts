@@ -45,6 +45,15 @@ const MAX_AREA = Math.PI * 26 * 26
 const ASPECT = 2
 
 const NODE_GAP = 6
+/**
+ * Vertical allowance under each node for its label.
+ *
+ * The label is drawn BELOW the dot and outside it — at these sizes there is no inside to put
+ * text in — so the shelf has to reserve for it or a 6px dot's 19px label lands in the row
+ * beneath. Reserved unconditionally: at the `minimal` and `dot` tiers the label is hidden and
+ * this is simply air, which costs a little density in exchange for never colliding.
+ */
+const LABEL_H = 18
 const CLUSTER_PAD = 20
 /** Room for the group's own label above its first shelf. */
 const CLUSTER_TITLE = 26
@@ -129,7 +138,10 @@ function packGroup(members: Sized[]): Packed {
 		(a, b) => b.h - a.h || b.w - a.w || a.node.id.localeCompare(b.node.id)
 	)
 
-	const ink = ordered.reduce((sum, m) => sum + (m.w + NODE_GAP) * (m.h + NODE_GAP), 0)
+	const ink = ordered.reduce(
+		(sum, m) => sum + (m.w + NODE_GAP) * (m.h + LABEL_H + NODE_GAP),
+		0
+	)
 	// At least one node wide, or a single oversized hub would wrap onto its own shelf forever.
 	const limit = Math.max(ordered[0].w, Math.sqrt(ink * SHELF_ASPECT))
 
@@ -148,7 +160,8 @@ function packGroup(members: Sized[]): Packed {
 
 		nodes.push({ ...member, dx: x + member.w / 2, dy: y + member.h / 2 })
 		x += member.w + NODE_GAP
-		shelfHeight = Math.max(shelfHeight, member.h)
+		// The SHELF is as tall as the node plus its label; the node itself is not.
+		shelfHeight = Math.max(shelfHeight, member.h + LABEL_H)
 		widest = Math.max(widest, x - NODE_GAP)
 	}
 

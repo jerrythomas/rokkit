@@ -284,6 +284,7 @@
 				style:left="{card.x}px"
 				style:top="{card.y}px"
 				style:width="{card.w}px"
+				style:height="{card.h}px"
 				style={graph.groupStyleAttr(card.node.group)}
 				onclick={(event) => {
 					event.stopPropagation()

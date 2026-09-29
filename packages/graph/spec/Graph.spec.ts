@@ -205,6 +205,25 @@ describe('Graph — published attributes', () => {
 		expect(inner.map((el) => el.getAttribute('data-node-group'))).toEqual(['table', 'table'])
 	})
 
+	it('paints a card at the HEIGHT the layout reserved for it', () => {
+		// `points` and `world` compute a geometric box and pack around it. Applying only the
+		// width left every dot 2px tall — the height the empty head happened to collapse to —
+		// so the shelf packing reserved space nothing occupied, and each dot's label spilled
+		// into the row below it.
+		const s = new GraphState({
+			nodes: NODES,
+			edges: EDGES,
+			fields: FIELDS,
+			layout: 'points'
+		})
+		const { container } = render(Graph, { state: s })
+		const el = container.querySelector('[data-graph-node]') as HTMLElement
+		const id = el.getAttribute('data-graph-node') as string
+
+		expect(el.style.height).toBe(`${s.cards[id].h}px`)
+		expect(el.style.width).toBe(`${s.cards[id].w}px`)
+	})
+
 	it('publishes cluster depth, and paints every outer box before any inner one', () => {
 		// Absolutely positioned siblings: an outer box emitted after its subdivisions would
 		// cover them. Depth is also what lets CSS draw an inner box as a faint subdivision
