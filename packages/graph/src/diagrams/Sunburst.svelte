@@ -19,6 +19,12 @@
 	import type { GraphPreset } from '../preset.js'
 
 	type Props = {
+		/**
+		 * Share one state across this diagram and, say, an entity table beside it. Given one,
+		 * the caller owns it: this component reads it and never calls `update`, exactly as
+		 * `Graph` does — two owners writing one state fight on every render.
+		 */
+		state?: GraphState
 		nodes?: unknown[]
 		edges?: unknown[]
 		fields?: GraphFields
@@ -40,6 +46,7 @@
 	}
 
 	let {
+		state: provided,
 		nodes = [],
 		edges = [],
 		fields = {},
@@ -74,10 +81,23 @@
 		onselect
 	})
 
-	const graph = new GraphState(config())
+	// svelte-ignore state_referenced_locally
+	const graph = provided ?? new GraphState(config())
 
 	$effect(() => {
-		graph.update(config())
+		if (!provided) {
+			graph.update(config())
+
+			return
+		}
+
+		// A supplied state is the caller's: their data, preset, mode and selection stay theirs
+		// and are never reset here. What this component DOES own is the options its own
+		// controls drive — the layout above all, since choosing this component is choosing it.
+		// `apply` merges; `update` would revert everything it does not name.
+		const { nodes: _n, edges: _e, fields: _f, preset: _p, mode: _m, value: _v, ...mine } =
+			config()
+		graph.apply(mine)
 	})
 </script>
 

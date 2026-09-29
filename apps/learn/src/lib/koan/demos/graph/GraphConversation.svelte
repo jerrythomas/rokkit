@@ -7,7 +7,7 @@
 	import { datasets } from './datasets'
 	import meta from './meta'
 
-	const active = $derived(datasets[explorer.dataset])
+	const active = $derived(datasets[explorer.config.dataset])
 
 	/*
 	 * Variant chips have to be rendered HERE. The layout renders them only in its generic

@@ -189,6 +189,8 @@ export class GraphState {
 	#groupTint = $state(false)
 	#radialMode = $state<'tree' | 'dendrogram'>('tree')
 	#root = $state<string | null>(null)
+	/** The last FULL config, so `apply` can merge over it rather than reset around it. */
+	#last: GraphStateConfig = {}
 	#density = $state<Density>('keys')
 	#arrange = $state<Arrange>('untangle')
 	#groupBy = $state<NodeAxis>('group')
@@ -316,11 +318,24 @@ export class GraphState {
 	 * field by field.
 	 */
 	update(config: GraphStateConfig = {}): void {
+		this.#last = config
 		this.#applyData(config)
 		this.#applyView(config)
 		// `value` is input AND output, so it is only adopted when the caller supplies
 		// one — otherwise a re-render would wipe a selection the user just made.
 		if (config.value !== undefined) this.#value = config.value
+	}
+
+	/**
+	 * Merge a partial config, leaving every key it does not name alone.
+	 *
+	 * `update()` fully RE-APPLIES — an omitted key reverts to its default, which is what makes
+	 * it safe to call from a render. That is the wrong verb for a component writing the few
+	 * options its own controls drive into a state someone else owns: it would reset the
+	 * owner's data on every keystroke. This merges over the last full config instead.
+	 */
+	apply(config: Partial<GraphStateConfig>): void {
+		this.update({ ...this.#last, ...config })
 	}
 
 	#applyData(config: GraphStateConfig): void {

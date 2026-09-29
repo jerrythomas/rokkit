@@ -34,31 +34,55 @@ const setControl = async (page: Page, label: string, value: string) => {
 	await page.locator('[data-graph-controls]').getByLabel(label, { exact: true }).selectOption(value)
 }
 
+/**
+ * Pick a diagram by name.
+ *
+ * A diagram carries its own dataset, so this is the whole choice — the demo no longer has a
+ * separate dataset picker that could be pointed at a component the data does not suit.
+ */
+const setDiagram = async (page: Page, id: string) => {
+	await openControls(page)
+	await setControl(page, 'Diagram', id)
+	await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+}
+
+/** Density lives ON the canvas now, as a control the diagram publishes. */
+const setDensity = async (page: Page, value: string) => {
+	await page.locator(`[data-graph-density="${value}"]`).click()
+}
+
+/** Open the demo directly on one diagram, which is what a variant chip does. */
+const openDiagram = async (page: Page, variant: string) => {
+	await page.goto(`/app/graph?variant=${variant}`)
+	await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+}
+
 test.describe('graph demo', () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto('/app/graph')
 		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
 	})
 
-	test('renders nodes, edges and clusters', async ({ page }) => {
-		// `cluster` explicitly: the default is `flow`, which reports no cluster boxes at all.
-		// Leaning on the default would test whichever layout happens to be default rather than
-		// the one this case is about.
-		await openControls(page)
-		await setControl(page, 'Layout', 'cluster')
-
+	test('the ER diagram renders nodes and the edges between them', async ({ page }) => {
+		// No cluster boxes: `flow` ranks by reference direction, and grouping wants the same
+		// axis. Schema shows through `groupTint` instead — asserted separately below.
 		await expect(page.locator('[data-graph-node]').first()).toBeVisible()
 		await expect(page.locator('[data-graph-edge]').first()).toBeAttached()
-		await expect(page.locator('[data-graph-cluster]').first()).toBeVisible()
+		await expect(page.locator('[data-graph-cluster]')).toHaveCount(0)
+	})
+
+	test('the ER diagram tints its cards by schema, since it has no group boxes', async ({
+		page
+	}) => {
+		await expect(page.locator('[data-graph-group-tint]')).toBeAttached()
+		await expect(page.locator('[data-graph-node][data-node-group="public"]').first()).toBeAttached()
 	})
 
 	test('density full shows more rows than density names', async ({ page }) => {
-		await openControls(page)
-
-		await setControl(page, 'Density', 'names')
+		await setDensity(page, 'names')
 		await expect(page.locator('[data-graph-row]')).toHaveCount(0)
 
-		await setControl(page, 'Density', 'full')
+		await setDensity(page, 'full')
 		expect(await page.locator('[data-graph-row]').count()).toBeGreaterThan(0)
 	})
 
@@ -148,8 +172,7 @@ test.describe('graph demo', () => {
 		// An enum's labels are not keys, so at 'keys' its card collapses to a title plus
 		// "+5 more" — indistinguishable from a card the reader collapsed, and reading as a
 		// rendering failure rather than as a fact about the entity.
-		await openControls(page)
-		await setControl(page, 'Density', 'keys')
+		await setDensity(page, 'keys')
 
 		const view = page.locator('[data-graph-node="public.order_status"] [data-graph-more]')
 		await expect(view).toHaveText('no keys · 5 rows')
@@ -164,15 +187,23 @@ test.describe('graph demo', () => {
 	})
 
 	test('a keyless card still expands to its rows', async ({ page }) => {
+		await setDensity(page, 'keys')
+		// Controls off: they are an OVERLAY, so at this zoom the card being tested sits under
+		// the zoom bar and the bar takes the click. Turning them off is the point of them
+		// being opt-in — and it keeps this case about the card rather than about z-order.
 		await openControls(page)
-		await setControl(page, 'Density', 'keys')
+		await setControl(page, 'On-canvas controls', 'off')
 
 		// The schema is wider than the canvas, so it opens at a fit scale whose LOD tier hides
 		// the more-row outright. Zooming in is what makes the control clickable at all — the
 		// control is only an affordance once the reader is close enough to read it.
-		const zoomIn = page.locator('[data-graph-zoom="in"]')
-		for (let i = 0; i < 7; i++) await zoomIn.click()
-		await expect(page.locator('[data-graph-paper]')).toHaveAttribute('data-graph-detail', 'full')
+		// Ctrl+wheel rather than the button bar, which is now off: the canvas owns the gesture
+		// whether or not anyone rendered a control for it.
+		const paper = page.locator('[data-graph-paper]')
+		for (let i = 0; i < 7; i++) {
+			await paper.dispatchEvent('wheel', { deltaY: -100, ctrlKey: true })
+		}
+		await expect(paper).toHaveAttribute('data-graph-detail', 'full')
 
 		const card = page.locator('[data-graph-node="public.order_status"]')
 		await expect(card.locator('[data-graph-row]')).toHaveCount(0)
@@ -182,50 +213,18 @@ test.describe('graph demo', () => {
 		await expect(card.locator('[data-graph-more]')).toHaveText('show less')
 	})
 
-	test('the dependency view nests kind inside schema, and the axes reverse', async ({ page }) => {
-		// Schema alone is a poor axis for a dependency graph — `audit` holds a table, a trigger
-		// and a procedure. Nesting shows both facts at once instead of trading one for the
-		// other, and which is outer is the reader's choice.
-		await page.goto('/app/graph?variant=schema-deps')
-		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
-		await openControls(page)
-		await setControl(page, 'Layout', 'cluster')
+	/* The two-level clustering and cluster-ordering cases lived here only because the old demo
+	   exposed a `cluster` layout with `Group by` and `Arrange` pickers. The demo now offers
+	   named diagrams, none of which is that arrangement, so there is no UI to drive — the
+	   behaviour itself is pinned in packages/graph/spec/layout/{cluster,nested}.spec.ts, which
+	   assert the exact pixel output rather than merely that something rendered. */
 
-		const outer = page.locator('[data-graph-cluster][data-cluster-depth="0"]')
-		const inner = page.locator('[data-graph-cluster][data-cluster-depth="1"]')
-		await expect(outer).toHaveCount(3)
-		expect(await inner.count()).toBeGreaterThan(3)
 
-		// `table` appears under more than one schema — keyed by name alone that is a duplicate
-		// key, and Svelte aborts the whole render rather than drawing any inner box.
-		expect(
-			await page.locator('[data-cluster-depth="1"][data-node-group="table"]').count()
-		).toBeGreaterThan(1)
-
-		// The drawer is already open — `openControls` is a TOGGLE, so a second call closes it.
-		await setControl(page, 'Group by', 'kind-schema')
-		await expect(
-			page.locator('[data-graph-cluster][data-cluster-depth="0"][data-node-group="table"]')
-		).toHaveCount(1)
-	})
-
-	test('grouping flattens to one level when a single axis is chosen', async ({ page }) => {
-		await page.goto('/app/graph?variant=schema-deps')
-		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
-		await openControls(page)
-		await setControl(page, 'Layout', 'cluster')
-		await setControl(page, 'Group by', 'kind')
-
-		await expect(page.locator('[data-graph-cluster][data-cluster-depth="1"]')).toHaveCount(0)
-		expect(
-			await page.locator('[data-graph-cluster][data-cluster-depth="0"]').count()
-		).toBeGreaterThan(3)
-	})
 
 	test('the codebase renders as a treemap, sized by a real measure', async ({ page }) => {
 		// 470 modules and 801 imports generated from this repo — the dataset the world layout
 		// exists for, and the only one in the demo with containment more than two deep.
-		await page.goto('/app/graph?variant=codebase')
+		await page.goto('/app/graph?variant=treemap')
 		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
 
 		// A box per package, each holding its own modules.
@@ -253,7 +252,7 @@ test.describe('graph demo', () => {
 		// A label wider than its box ran across the neighbours, and two of them interleaved into
 		// one unreadable string — `UTILS.JS · 1INDEX.JS · 11` was two boxes. Measured on screen,
 		// after the fit transform, because that is where the overflow actually happens.
-		await page.goto('/app/graph?variant=codebase')
+		await page.goto('/app/graph?variant=treemap')
 		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
 
 		const spills = await page
@@ -288,7 +287,7 @@ test.describe('graph demo', () => {
 		// so each zoom step buys characters. A pixel-threshold `display: none` made visibility a
 		// property of the DATA instead: a small box was nameless at every zoom, because a
 		// container query measures canvas units and zooming does not change those.
-		await page.goto('/app/graph?variant=codebase')
+		await page.goto('/app/graph?variant=treemap')
 		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
 
 		const textWidth = () =>
@@ -311,7 +310,7 @@ test.describe('graph demo', () => {
 	test('the treemap offers no density control, which would change nothing', async ({ page }) => {
 		// A box here has no row list to thin. A control that moves while the picture does not
 		// reads as a broken view rather than as one that does not apply.
-		await page.goto('/app/graph?variant=codebase')
+		await page.goto('/app/graph?variant=treemap')
 		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
 
 		await expect(page.locator('[data-graph-density-controls]')).toHaveCount(0)
@@ -352,20 +351,13 @@ test.describe('graph demo', () => {
 				}).length
 			})
 
-		test('buries fewer links than the schema-grouped arrangement', async ({ page }) => {
-			// The baseline is the CLUSTER arrangement, named explicitly — `flow` is the default
-			// now, so reading the opening layout would compare flow against itself and pass for
-			// no reason.
-			await openControls(page)
-			await setControl(page, 'Layout', 'cluster')
-			const grouped = await buriedEdges(page)
+		/* The 5-of-9 -> 2-of-9 measurement that justified this layout compared it against the
+		   schema-grouped `cluster` arrangement, which the demo no longer offers as a diagram —
+		   so there is no UI to drive both halves from. The claim and its numbers are recorded
+		   in docs/design/25-flow-layout.md, and the properties that produce it (ranking, fixed
+		   ports, crossing reduction) are pinned in packages/graph/spec/layout/flow.spec.ts.
+		   What remains testable here is that no link is buried, asserted below. */
 
-			await setControl(page, 'Layout', 'flow')
-			await expect(page.locator('[data-graph-cluster]')).toHaveCount(0)
-
-			expect(grouped).toBeGreaterThan(0)
-			expect(await buriedEdges(page)).toBeLessThan(grouped)
-		})
 
 		test('leaves every source on the right and enters every target on the left', async ({
 			page
@@ -373,7 +365,7 @@ test.describe('graph demo', () => {
 			// Direction readable from the geometry, with no arrowhead to follow. `cluster` picks
 			// a side by relative POSITION, so there an exit side says where the other box sits.
 			await openControls(page)
-			await setControl(page, 'Layout', 'flow')
+			await setControl(page, 'Diagram', 'er')
 
 			const wrongSide = await page.evaluate(() => {
 				const box = (id: string | null) =>
@@ -436,10 +428,10 @@ test.describe('graph demo', () => {
 	test('the sunburst draws wedges that carry their package’s colour', async ({ page }) => {
 		// Looked up by its own name every descendant falls through to the default, which left
 		// the outer ring uniformly grey under a correctly coloured inner one.
-		await page.goto('/app/graph?variant=codebase')
+		await page.goto('/app/graph?variant=treemap')
 		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
 		await openControls(page)
-		await setControl(page, 'Layout', 'sunburst')
+		await setControl(page, 'Diagram', 'sunburst')
 
 		const wedges = page.locator('[data-graph-wedge]')
 		expect(await wedges.count()).toBeGreaterThan(20)
@@ -461,7 +453,7 @@ test.describe('graph demo', () => {
 	test('switching to the neighborhood layout drops the clusters', async ({ page }) => {
 		await page.locator('[data-graph-node]').first().click()
 		await openControls(page)
-		await setControl(page, 'Layout', 'neighborhood')
+		await setControl(page, 'Diagram', 'neighborhood')
 
 		await expect(page.locator('[data-graph-cluster]')).toHaveCount(0)
 		await expect(page.locator('[data-graph-node]').first()).toBeVisible()
@@ -520,11 +512,12 @@ test.describe('graph demo', () => {
 	}
 
 	test('differentiating by pattern sets a pattern instead of a group fill', async ({ page }) => {
+		// On the CARDS now: `flow` has no cluster boxes for the ramp to land on, which is the
+		// whole reason `groupTint` exists.
 		await openControls(page)
-		await setControl(page, 'Layout', 'cluster')
 		await setControl(page, 'Differentiate by', 'pattern')
 
-		await expect(page.locator('[data-graph-cluster]').first()).toHaveAttribute(
+		await expect(page.locator('[data-graph-node]').first()).toHaveAttribute(
 			'style',
 			/--group-pattern/
 		)
@@ -532,7 +525,7 @@ test.describe('graph demo', () => {
 
 	test('the non-dbd dataset renders through field mapping alone', async ({ page }) => {
 		await openControls(page)
-		await setControl(page, 'Dataset', 'service-calls')
+		await setControl(page, 'Diagram', 'calls')
 
 		await expect(page.locator('[data-graph-node]').first()).toBeVisible()
 		await expect(page.locator('[data-graph-edge]').first()).toBeAttached()
@@ -548,24 +541,6 @@ test.describe('graph demo', () => {
 		await expect(page.locator('[data-node-state="dim"]').first()).toBeAttached()
 	})
 
-	test('switching arrange visibly changes the layout', async ({ page }) => {
-		const positions = () =>
-			page
-				.locator('[data-graph-node]')
-				.evaluateAll((els) =>
-					els.map((el) => `${(el as HTMLElement).style.left},${(el as HTMLElement).style.top}`).join('|')
-				)
-
-		await openControls(page)
-		// `arrange` is a cluster-ordering option, so the control only appears for `cluster` —
-		// `appliesTo` hides it elsewhere, which is the behaviour, not a workaround.
-		await setControl(page, 'Layout', 'cluster')
-		await setControl(page, 'Arrange', 'untangle')
-		const untangled = await positions()
-
-		await setControl(page, 'Arrange', 'a-z')
-		expect(await positions()).not.toBe(untangled)
-	})
 
 	test('the zoom controls are on the canvas and change the scale', async ({ page }) => {
 		// On the canvas, not in a host app's drawer — driven here through the component's own
@@ -617,7 +592,7 @@ test.describe('graph demo', () => {
 	}) => {
 		// The variants were declared in meta and surfaced nowhere: the layout renders variant
 		// chips only in its GENERIC demo branch, and graph has its own conversation component.
-		for (const label of ['ER diagram', 'Schema dependencies', 'Call graph', 'This codebase']) {
+		for (const label of ['ER diagram', 'Schema dependencies', 'Call tree', 'Treemap']) {
 			await expect(page.getByRole('button', { name: label }), label).toBeVisible()
 		}
 
@@ -625,7 +600,7 @@ test.describe('graph demo', () => {
 		await expect(page).toHaveURL(/variant=schema-deps/)
 		await expect(page.locator('[data-graph-node][data-node-kind="view"]').first()).toBeAttached()
 
-		await page.getByRole('button', { name: 'Call graph' }).click()
+		await page.getByRole('button', { name: 'Call tree' }).click()
 		await expect(page).toHaveURL(/variant=call-graph/)
 		await expect(page.locator('[data-node-group="commerce"]').first()).toBeAttached()
 	})
@@ -637,9 +612,8 @@ test.describe('graph demo', () => {
 		// calls it, step onto one of those, repeat. It works because `focus` defaults to the
 		// selection — but nothing pinned it, so a future change to that default could quietly
 		// turn the view into a dead end.
+		await openDiagram(page, 'neighbourhood')
 		await page.locator('[data-graph-node]').first().click()
-		await openControls(page)
-		await setControl(page, 'Layout', 'neighborhood')
 
 		const focused = () => page.locator('[data-node-state="selected"]').getAttribute('data-graph-node')
 		const before = await focused()
@@ -654,11 +628,11 @@ test.describe('graph demo', () => {
 		const firstPath = () =>
 			page.locator('[data-graph-edge] path').first().getAttribute('d')
 
-		await openControls(page)
-		await setControl(page, 'Edge style', 'curved')
+		// A toggle the ER diagram publishes on its own canvas, not a select in someone's
+		// drawer — which is what makes it absent from a diagram that draws no edges.
 		const curved = await firstPath()
 
-		await setControl(page, 'Edge style', 'orthogonal')
+		await page.locator('[data-graph-edge-style]').click()
 		expect(await firstPath()).not.toBe(curved)
 	})
 

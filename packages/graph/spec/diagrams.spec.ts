@@ -287,11 +287,117 @@ describe('a control a diagram offers actually drives its canvas', () => {
 })
 
 describe('a diagram with no data is an empty canvas, not a crash', () => {
+	it.each([
+		['ErDiagram', ErDiagram],
+		['DependencyDiagram', DependencyDiagram],
+		['CallTree', CallTree],
+		['Treemap', Treemap],
+		['Sunburst', Sunburst],
+		['Neighborhood', Neighborhood]
+	] as const)('%s renders with no props at all', (_name, Component) => {
+		const { container } = render(Component)
+
+		expect(container.querySelector('[data-graph-diagram-canvas]')).not.toBeNull()
+		expect(container.querySelectorAll('[data-graph-node]')).toHaveLength(0)
+	})
+
 	it('renders with no props at all', () => {
 		const { container } = render(DependencyDiagram)
 
 		expect(container.querySelector('[data-graph-diagram-canvas]')).not.toBeNull()
 		expect(container.querySelectorAll('[data-graph-node]')).toHaveLength(0)
+	})
+})
+
+describe('a diagram can share a state, so views beside it see the same selection', () => {
+	it('renders through a supplied state instead of building its own', async () => {
+		const { GraphState } = await import('../src/GraphState.svelte.js')
+		const shared = new GraphState({ nodes: TABLES, edges: REFS, fields: {}, layout: 'flow' })
+		const { container } = render(ErDiagram, { state: shared })
+
+		expect(container.querySelector('[data-graph-node="users"]')).not.toBeNull()
+	})
+
+	it('writes the selection into the state the caller owns', async () => {
+		// The point of sharing: an entity table beside the canvas reads `state.value`, so
+		// clicking a node in one view drives the other with no wiring between them.
+		const { GraphState } = await import('../src/GraphState.svelte.js')
+		const shared = new GraphState({ nodes: TABLES, edges: REFS, fields: {}, layout: 'flow' })
+		const { container } = render(ErDiagram, { state: shared })
+
+		;(container.querySelector('[data-graph-node="users"]') as HTMLElement).click()
+		expect(shared.value).toBe('users')
+	})
+
+	it('applies its OWN layout to a supplied state — that is what the name means', async () => {
+		// Choosing `<Treemap>` is choosing the layout. A shared state carrying someone else's
+		// would draw a different diagram than the one written down, which is exactly the
+		// mismatch this whole split exists to remove.
+		const { GraphState } = await import('../src/GraphState.svelte.js')
+		const shared = new GraphState({ nodes: TREE, edges: [], fields: {}, layout: 'cluster' })
+		render(Treemap, { state: shared })
+		await tick()
+
+		expect(shared.layoutName).toBe('world')
+	})
+
+	it('writes the options its OWN controls drive, so they are not inert', async () => {
+		// The trap this replaced: with a shared state the diagram wrote nothing, so clicking
+		// its density control moved the button and changed nothing on the canvas — the exact
+		// dead knob the whole restructure exists to remove.
+		const { GraphState } = await import('../src/GraphState.svelte.js')
+		const shared = new GraphState({ nodes: TABLES, edges: REFS, fields: {}, density: 'full' })
+		render(ErDiagram, { state: shared, density: 'names' })
+		await tick()
+
+		expect(shared.density).toBe('names')
+	})
+
+	it('never touches the caller’s DATA, preset or selection', async () => {
+		// Where the line is: the diagram owns how the picture is drawn, the caller owns what is
+		// in it. A component that re-applied the data would fight its owner on every render.
+		const { GraphState } = await import('../src/GraphState.svelte.js')
+		const shared = new GraphState({ nodes: TABLES, edges: REFS, fields: {} })
+		shared.select('users')
+		render(ErDiagram, { state: shared })
+		await tick()
+
+		expect(shared.model.nodes).toHaveLength(2)
+		expect(shared.value).toBe('users')
+	})
+})
+
+describe('every diagram drives a SHARED state, not just one it built', () => {
+	/* Table-driven: with a shared state each diagram has to write the options its own controls
+	 * expose, or those controls are inert — the button moves and the canvas does not. That
+	 * failure is per component, because each declares a different set. */
+
+	const shared = [
+		['ErDiagram', ErDiagram, { nodes: TABLES, edges: REFS }, 'flow'],
+		['DependencyDiagram', DependencyDiagram, { nodes: TABLES, edges: REFS }, 'flow'],
+		['CallTree', CallTree, { nodes: CALLS, edges: CALL_EDGES }, 'radial'],
+		['Treemap', Treemap, { nodes: TREE, edges: [] }, 'world'],
+		['Sunburst', Sunburst, { nodes: TREE, edges: [] }, 'sunburst'],
+		['Neighborhood', Neighborhood, { nodes: CALLS, edges: CALL_EDGES, focus: 'a' }, 'neighborhood']
+	] as const
+
+	it.each(shared)('%s applies its layout to a supplied state', async (_n, Component, props, layout) => {
+		const { GraphState } = await import('../src/GraphState.svelte.js')
+		const state = new GraphState({ ...props, fields: {}, layout: 'cluster' })
+		render(Component, { ...props, state, controls: true })
+		await tick()
+
+		expect(state.layoutName).toBe(layout)
+	})
+
+	it.each(shared)('%s still renders its controls over a supplied state', async (_n, Component, props) => {
+		const { GraphState } = await import('../src/GraphState.svelte.js')
+		const state = new GraphState({ ...props, fields: {} })
+		const { container } = render(Component, { ...props, state, controls: true, legend: true })
+		await tick()
+
+		expect(container.querySelector('[data-graph-zoom-controls]')).not.toBeNull()
+		expect(container.querySelector('[data-graph-legend]')).not.toBeNull()
 	})
 })
 

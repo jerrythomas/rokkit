@@ -2,18 +2,24 @@
 	/**
 	 * The COMPONENT layer. It renders and routes intent; it derives nothing.
 	 *
-	 * ONE GraphState is built from the store's choices and shared by all three views. That is
-	 * what makes selection two-way for free: clicking a node in the diagram sets state.value,
-	 * and EntityView already reads it — no wiring between the views at all.
+	 * The diagram is chosen from the registry, which carries its dataset with it — so the
+	 * component and the shape of data it reads cannot be mismatched. Each named diagram brings
+	 * the controls that mean something for it, which is why there is no layout picker here any
+	 * more: switching diagram IS switching layout, and doing it by name keeps the data with it.
+	 *
+	 * ONE GraphState is built here and handed to the diagram, so the entity views beside it
+	 * share the selection for free: clicking a node sets `state.value`, and `EntityView`
+	 * already reads it. That is what the diagrams' `state` prop is for.
 	 */
 	import { untrack } from 'svelte'
 	import { vibe } from '@rokkit/states'
-	import { Graph, GraphState, createGraphPreset } from '@rokkit/graph'
+	import { GraphState, createGraphPreset } from '@rokkit/graph'
 	import { EntitiesView, EntityView } from '@rokkit/graph/schema'
-	import { explorer, GROUPING } from './store.svelte'
+	import { explorer } from './store.svelte'
 	import { datasets } from './datasets'
 
-	const dataset = $derived(datasets[explorer.dataset])
+	const config = $derived(explorer.config)
+	const dataset = $derived(datasets[config.dataset])
 
 	// Named `graph`, not `state`: a local binding literally called `state` makes the compiler
 	// read the `$state` rune below as a store subscription on it ("s.subscribe is not a
@@ -36,17 +42,11 @@
 			nodes: dataset.nodes,
 			edges: dataset.edges,
 			fields: dataset.fields,
-			layout: explorer.layout,
-			groupTint: explorer.groupTint,
-			radialMode: explorer.radialMode,
-			density: explorer.density,
-			arrange: explorer.arrange,
-			...GROUPING[explorer.grouping],
-			sizeBy: explorer.sizeBy,
-			// The whole repo sits under one root, so focusing past it gives the packages the
-			// canvas instead of spending a level on a box with one child.
-			focusPath: explorer.dataset === 'codebase' ? ['rokkit'] : [],
-			edgeStyle: explorer.edgeStyle,
+			// From the registry, not from the component: `update()` fully re-applies, so a
+			// layout the diagram set for itself would be reset here on the next run. The spec
+			// compares the two so they cannot drift.
+			layout: config.layout,
+			...config.props,
 			preset: createGraphPreset({ using: explorer.using }),
 			// Without this the group ramp resolves from the LIGHT ladder forever, so every
 			// cluster keeps its pale shade-100 fill in dark mode and the canvas reads as
@@ -59,25 +59,31 @@
 		})
 	})
 
-	// Switching dataset leaves a selection that names nothing in the new one, which would show
-	// an empty entity panel with no visible reason. Clear it as the dataset changes.
-	let lastDataset = $state(explorer.dataset)
+	// Switching diagram leaves a selection that names nothing in the new dataset, which would
+	// show an empty entity panel with no visible reason.
+	let lastDiagram = $state(explorer.diagram)
 	$effect(() => {
-		if (explorer.dataset !== lastDataset) {
-			lastDataset = explorer.dataset
+		if (explorer.diagram !== lastDiagram) {
+			lastDiagram = explorer.diagram
 			graph.clear()
 		}
 	})
 </script>
 
-<!-- No control panel here on purpose. The knobs live in the composer's toggled details slab,
-     the same place chart and sparkline put theirs, so the canvas stays undisturbed when they
-     are closed. -->
+<!-- The diagram's OWN controls sit on its canvas; the composer's details slab holds only the
+     choices the demo adds around it (which diagram, which view, the colour channel). -->
 <div data-graph-explorer class="explorer">
+	<p data-graph-blurb class="blurb">{config.blurb}</p>
 	<div class="stage">
 		{#if explorer.view === 'diagram'}
+			{@const Diagram = config.component}
 			<div class="canvas">
-				<Graph state={graph} bind:zoom={explorer.zoom} bind:density={explorer.density} />
+				<Diagram
+					state={graph}
+					{...config.props}
+					controls={explorer.controls}
+					legend={explorer.legend}
+				/>
 			</div>
 		{:else if explorer.view === 'entity'}
 			<div class="scroll">
@@ -97,6 +103,13 @@
 		flex-direction: column;
 		min-height: 0;
 		height: 100%;
+	}
+
+	.blurb {
+		flex: none;
+		margin: 0 0 0.5rem;
+		font-size: 0.8125rem;
+		color: var(--ink-mute);
 	}
 
 	.stage {

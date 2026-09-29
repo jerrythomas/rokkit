@@ -37,30 +37,22 @@ const meta: DemoMeta = {
 	 * shape's key names and is adapted entirely by a `fields` map.
 	 */
 	variants: [
-		{
-			id: 'er-diagram',
-			label: 'ER diagram',
-			mode: 'dynamic',
-			props: { dataset: 'ecommerce' }
-		},
+		{ id: 'er-diagram', label: 'ER diagram', mode: 'dynamic', props: { diagram: 'er' } },
 		{
 			id: 'schema-deps',
 			label: 'Schema dependencies',
 			mode: 'dynamic',
-			props: { dataset: 'schema-deps' }
+			props: { diagram: 'dependencies' }
 		},
 		{
-			id: 'call-graph',
-			label: 'Call graph',
+			id: 'neighbourhood',
+			label: 'Neighbourhood',
 			mode: 'dynamic',
-			props: { dataset: 'service-calls' }
+			props: { diagram: 'neighborhood' }
 		},
-		{
-			id: 'codebase',
-			label: 'This codebase',
-			mode: 'dynamic',
-			props: { dataset: 'codebase' }
-		}
+		{ id: 'call-graph', label: 'Call tree', mode: 'dynamic', props: { diagram: 'calls' } },
+		{ id: 'treemap', label: 'Treemap', mode: 'dynamic', props: { diagram: 'treemap' } },
+		{ id: 'sunburst', label: 'Sunburst', mode: 'dynamic', props: { diagram: 'sunburst' } }
 	],
 	api: {
 		props: [

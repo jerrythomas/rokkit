@@ -15,3 +15,17 @@ vi.stubGlobal('localStorage', {
 	},
 	key: (index: number) => [...storage.keys()][index] ?? null
 })
+
+/**
+ * `bind:clientWidth` compiles to a ResizeObserver, which JSDOM does not implement — so any
+ * spec rendering a component that measures its own box dies on a ReferenceError rather than
+ * on anything to do with the test. The package projects get this from
+ * `packages/helpers/src/mocks`; this app's project loads only this file.
+ */
+if (typeof globalThis.ResizeObserver === 'undefined') {
+	globalThis.ResizeObserver = class {
+		observe() {}
+		unobserve() {}
+		disconnect() {}
+	} as unknown as typeof ResizeObserver
+}
