@@ -114,7 +114,8 @@ export type GraphProps = {
 	 */
 	arrows?: boolean
 	label?: string
-	onselect?: (id: string) => void
+	/** Fires on selection AND on clear, where it receives `null`. */
+	onselect?: (id: string | null) => void
 	/** Icon class per node kind and row badge, merged over the built-in map. */
 	icons?: Record<string, string>
 	class?: string

@@ -40,7 +40,7 @@ height** or it collapses.
 | `arrows` | `boolean` | `true` | Arrowhead at each edge target instead of a plain dot |
 | `label` | `string` | — | Accessible name. Derived from node/edge counts when omitted |
 | `icons` | `Record<string, string>` | — | Icon class per node kind and row badge, merged over `DEFAULT_ICONS` |
-| `onselect` | `(id: string) => void` | — | Fires when a node is activated |
+| `onselect` | `(id: string \| null) => void` | — | Fires when a node is activated, and with `null` when the selection is cleared |
 
 **`mode` does not infer itself.** Left at `'light'` in a dark app, the group ramp resolves
 from the light ladder forever and every cluster keeps a pale fill — the canvas reads as light

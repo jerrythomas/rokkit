@@ -240,6 +240,29 @@ describe('GraphState — layout', () => {
 		expect(make().moreLabel('public.nope')).toBeNull()
 	})
 
+	it('notifies the consumer when the selection is CLEARED, not only when it is set', () => {
+		// Found by dbd consuming the package. dbd owns `selected` in its route and branches on
+		// it to show the entity panel, so a silent clear leaves that panel open over nothing.
+		// Invisible to every test that drives the state directly — it only surfaces when the
+		// component is controlled from outside.
+		const onselect = vi.fn()
+		const state = make({ onselect })
+		state.select('public.users')
+		state.clear()
+
+		expect(onselect).toHaveBeenNthCalledWith(2, null)
+	})
+
+	it('does not re-notify when clearing an already-empty selection', () => {
+		// Otherwise a background click on an unselected canvas round-trips through the
+		// consumer's setter on every stray click.
+		const onselect = vi.fn()
+		const state = make({ onselect })
+		state.clear()
+
+		expect(onselect).not.toHaveBeenCalled()
+	})
+
 	it('refuses to subdivide a box by its own axis', () => {
 		// One child holding everything is not a no-op, it is a picture of a bug.
 		const state = make({ groupBy: 'kind', nestBy: 'kind' })

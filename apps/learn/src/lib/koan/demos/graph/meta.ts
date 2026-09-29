@@ -74,7 +74,7 @@ const meta: DemoMeta = {
 			{ name: 'mode', type: "'light' | 'dark'", default: "'light'", desc: 'Which shade ladder the group ramp resolves against' },
 			{ name: 'label', type: 'string', desc: 'Accessible name. Derived from the node/edge counts when omitted' },
 			{ name: 'icons', type: 'Record<string, string>', desc: 'Icon class per node kind and row badge, merged over DEFAULT_ICONS. The built-ins name i-glyph:* entries — override to adopt a different collection' },
-			{ name: 'onselect', type: '(id: string) => void', desc: 'Fires when a node is activated' }
+			{ name: 'onselect', type: '(id: string | null) => void', desc: 'Fires when a node is activated, and with null when the selection is cleared — a controlled consumer has no other way to learn it was dropped' }
 		],
 		attrs: [
 			// Canvas

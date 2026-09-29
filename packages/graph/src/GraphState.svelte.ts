@@ -55,7 +55,7 @@ export type GraphStateConfig = {
 	preset?: GraphPreset
 	mode?: 'light' | 'dark'
 	label?: string
-	onselect?: (id: string) => void
+	onselect?: (id: string | null) => void
 }
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
@@ -144,7 +144,7 @@ export class GraphState {
 	#preset = $state<GraphPreset>(defaultGraphPreset)
 	#mode = $state<'light' | 'dark'>('light')
 	#label = $state<string | undefined>(undefined)
-	#onselect = $state<((id: string) => void) | undefined>(undefined)
+	#onselect = $state<((id: string | null) => void) | undefined>(undefined)
 
 	#model = $derived(normalizeGraph(this.#nodes, this.#edges, this.#fields))
 
@@ -289,8 +289,21 @@ export class GraphState {
 		this.#onselect?.(id)
 	}
 
+	/**
+	 * Drop the selection, and SAY SO.
+	 *
+	 * Found by dbd consuming the package: it owns `selected` in its route and branches on it
+	 * to show the entity panel, so a silent clear left that panel open over nothing. A
+	 * controlled consumer cannot observe an internal `#value` — the callback is the only
+	 * channel, which is why it carries `null` rather than being skipped.
+	 *
+	 * Guarded on an actual change, or a background click on an already-empty canvas
+	 * round-trips through the consumer's setter on every stray click.
+	 */
 	clear(): void {
+		if (this.#value === null) return
 		this.#value = null
+		this.#onselect?.(null)
 	}
 
 	/**
