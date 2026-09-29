@@ -1,8 +1,9 @@
 # CHECKPOINT
 
-**Slice #159/#163** — `@rokkit/graph`. Slice 1 done (Tasks 1–22), package **published**, world
-view built and now corrected. Tree clean on `develop`, **not pushed**. **7126 unit green
-(775 across graph+learn on the last targeted run), lint/types 0/0, docs+meta gates green.**
+**Slice #159/#163** — `@rokkit/graph`. Package **published**; the API has since moved to named
+diagrams over a bare canvas (BREAKING — dbd needs updating). Tree clean on `develop`, **not
+pushed**. **1078 unit (graph+learn), 44 graph e2e, lint/types 0/0, graph coverage gate passes,
+zero a11y compile warnings.**
 
 **`0d331a06` — a treemap nests ONE box shape.** `world` returned a leaf as a node CARD and a
 container as a label box: two structures in one hierarchy, and the card's furniture came with
@@ -34,33 +35,51 @@ old arrangement. Schema survives the change via **`groupTint`**, which paints a 
 card's leading edge: `--group-fill` was already on every card but only `[data-graph-cluster]`
 consumed it, so group identity vanished the moment you left `cluster`.
 
-**`43329bee` — `radial` and `sunburst`.** `points` packed a call graph into boxes and at seven
-services read as a stack of colliding labels; `radial` puts angle on the subtrees and radius on
-the depth, with `radialMode: 'tree' | 'dendrogram'`. `hierarchy.ts` spanning-tree keeps every
-non-tree edge, marked `back`, and walks cycles no root reaches. `sunburst` is the treemap's
-question asked radially — same tree, same measure, wedges as `{r0,r1,a0,a1}` turned into paths
-by `arc.ts`. **The dot treatment now keys on `data-graph-node-shape`**, not on a layout name,
-so `radial` inherited all fifteen rules by declaring a shape; `sizing.ts` is shared, proven
-faithful by points' 17 characterization tests still passing. Two defects found by the new
-tests: the sunburst drew NOTHING on an all-zero measure, and every containment box took colour
-from its OWN name so only the outer ring was coloured (now `Cluster.ramp` inherits).
+**`43329bee` — `radial` and `sunburst`.** Call graph as a tidy tree/dendrogram; sunburst as the
+treemap's question asked radially. Dot treatment keys on `data-graph-node-shape`, not a layout
+name. `sizing.ts` shared with `points`.
+
+**`d7e8addf` — named diagrams over a bare canvas (BREAKING).** `Graph` ships no chrome.
+`ErDiagram` · `DependencyDiagram` · `CallTree` · `Treemap` · `Sunburst` · `Neighborhood` ·
+`StructureDiagram`, each usable alone, each offering only the controls that mean something for
+it. `controls`/`legend` default OFF. Controls are components that store nothing.
+
+**`4ec67db1` — one demo example per diagram (#159).** A registry pairs each diagram with the
+dataset it reads, so an ER dataset can no longer be pointed at a radial tree. Found two real
+defects: with a SHARED state a diagram wrote nothing so its controls were inert (fixed by
+`GraphState.apply()`, a merge where `update()` reverts), and the layout has to come from the
+registry because `update()` fully re-applies — `graph-registry.spec.ts` compares the two.
+
+**`50783403` — the `structure` view.** What `CallTree` could not be over a real repo: a call
+graph's spanning tree has hundreds of roots, so depth prunes nothing. Containment is a real
+tree — `buildTree` over `path`, leaves on a rim, ancestor bands as wedges, calls BUNDLED
+through the hierarchy (Holten). Modelled on Sensei's Structure board. Four bugs the specs
+caught: a declared leaf's id is not its joined path (every edge started at its parent);
+depth-based radii broke the rim because the tree folds single-child wrappers; `bundleTension`
+never reached `GraphState`'s options object; bands keyed by label collided (`each_key_duplicate`
+aborts the whole render). Strokes are `non-scaling-stroke` — a repo's canvas fits ~1700px into
+~700px.
 
 ## Remains
 
 1. **`flow` slice 2 — dummy-node routing.** A long edge is still drawn straight over any box
-   between its endpoints; that is the remaining 2 of 9. Routing around needs dummy nodes on the
-   intervening ranks, the ordering pass treating them as orderable, and a polyline router.
-   Stated as a limit in `docs/design/25-flow-layout.md`, not as completeness.
-2. World design steps **4** (drill: `drillPath`/`drillInto`/`drillOut`/breadcrumbs) and **5**
-   (`shade` channel + label-contrast flip). Issues **#163**, **#164** still open.
-3. **Release order:** rokkit first (dbd needs a `@rokkit/themes` carrying `graph.css` before it
-   can drop `link:`), then bump dbd and publish a minor. dbd is on `feat/rokkit-graph`,
-   unmerged/unpushed.
-4. **Open note:** a shared table is a fan-in hub in the dependency view; `neighborhood` +
+   between its endpoints; that is the remaining 2 of 9 on the ER diagram. Needs dummy nodes on
+   the intervening ranks and a polyline router. Stated as a limit in `docs/design/25-flow-layout.md`.
+2. **Legend reuse.** `@rokkit/graph` ships its own because chart carries 8 d3 packages + ramda
+   against this package's ONE dependency, and chart does not depend on `@rokkit/ui` either — so
+   there is no package both already share. Real reuse means promoting a generic legend
+   somewhere both can reach. Flagged in `GraphLegend.svelte` as what it replaces.
+3. **World/sunburst drill** (design step 4: `drillPath`, breadcrumbs) and step 5 (`shade`
+   channel). Issues **#163**, **#164** still open.
+4. **Release order:** rokkit first (dbd needs a `@rokkit/themes` carrying `graph.css`), then
+   bump dbd and publish a minor. dbd is on `feat/rokkit-graph`, unmerged. **dbd will need
+   updating for the breaking API change** — `Graph` no longer ships controls, and the named
+   diagrams are the intended entry point.
+5. **Open note:** a shared table is a fan-in hub in the dependency view; `neighborhood` +
    selection dimming answer it but are not discoverable there.
 
-**Design decisions are locked in `docs/design/23-graph.md` and `24-world-view.md` — read them
-before relitigating one.**
+**Design decisions are locked in `docs/design/23-graph.md`, `24-world-view.md` and
+`25-flow-layout.md` — read them before relitigating one.**
 
 ## Invariants the executor must not violate
 

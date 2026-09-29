@@ -9774,3 +9774,84 @@ map-read fallbacks that are now one tested helper instead of scattered `??`.
 
 909 unit (graph + learn) and 44 graph e2e green; lint/types 0/0; graph coverage
 100% statements, functions and lines; zero a11y compile warnings.
+
+---
+
+## 2026-09-29 (3) — a component per diagram, and the view a codebase needs
+
+`d7e8addf`, `4ec67db1`, `50783403`. Three reports, and each exposed a structural
+mistake rather than a cosmetic one.
+
+**"The controls are mixed up — an ER dataset does not work with a radial chart."**
+It could be pointed at one, because the demo offered component, dataset and
+layout as three independent choices. The fix is the charts shape: `Graph` is the
+canvas — it draws what a layout hands it and ships **no chrome at all** — and a
+named diagram is the composition already made. `ErDiagram`, `DependencyDiagram`,
+`CallTree`, `Treemap`, `Sunburst`, `Neighborhood`, `StructureDiagram`. Each
+picks its layout, offers only the controls that mean something for it, and takes
+an opt-in legend. A registry pairs each with the dataset it reads, and a spec
+renders every component standalone to check the pairing cannot drift.
+
+**Controls became components that store nothing.** Each reports what was chosen
+and the caller owns the value — which is what lets the same control drive a
+diagram, a URL parameter or a saved view, and what makes "if the user does not
+want the line-type option it is not there" true rather than a prop that hides it.
+
+**Two defects that only appear with a SHARED state**, which every unit test had
+avoided by building its own:
+
+- A diagram wrote nothing to a state it did not own, so its controls were
+  **inert** — the density button moved and the canvas did not. Precisely the dead
+  knob this restructure exists to remove, recreated by my own design. The fix is
+  `GraphState.apply()`: a merge that leaves keys it does not name alone, where
+  `update()` deliberately reverts them. A diagram now applies the options its own
+  controls drive and never touches the caller's data, preset or selection.
+- The LAYOUT has to come from the registry, not the component, because
+  `update()` fully re-applies and would reset one the component set. Restating it
+  is drift waiting to happen, so a spec compares the two.
+
+**"The dendrogram is invisible because of the scale."** The real answer was not
+a scale fix. `CallTree` builds its tree from CALL edges, and a call graph over
+470 modules has hundreds of roots — so capping depth prunes almost nothing. A
+codebase's structure is CONTAINMENT, and that is a real tree with one root, which
+is what makes "two levels, then drill" mean anything. I dropped the mismatched
+example rather than ship it, then built the view it needed.
+
+**`structure`** is `buildTree` over `path` with leaves on a rim, ancestor bands
+as wedges outside it, and the calls drawn ON the tree — each routed to its ends'
+lowest common ancestor and back, then relaxed toward the chord. Bundling is what
+makes it legible: 801 imports become visible flows instead of a disc of ink.
+Modelled on Sensei's Structure board, which is the same d3.cluster + lineRadial +
+curveBundle over the same hierarchy.
+
+**Four bugs the structure specs caught, all invisible by inspection:**
+
+- **A declared leaf's id is not its joined path** — `buildTree` gives a
+  synthesised box its path as an id but a declared node keeps its own, so walking
+  an ancestor chain by joined path silently missed every declared leaf. Every
+  edge started at its parent instead of at itself.
+- **Leaves placed by depth broke the rim**, because the tree folds single-child
+  wrappers: two files landed on different rings for a reason about the TREE
+  rather than about them.
+- **`bundleTension` reached `LayoutOptions` and `LAYOUT_OPTIONS` but never
+  `GraphState`'s options object**, so the toggle did nothing. A type and a
+  registry both accepting a key proves neither that it is passed.
+- **Bands keyed by label collided** — two crates can each hold a `lib`, and
+  `each_key_duplicate` aborts the whole render, so no band appeared at all. The
+  same bug the nested clusters had, in a new place.
+
+**Lessons.** Two test fixtures were wrong in the same way — one module per
+package — so the fold collapsed them and the tests passed on a shape the layout
+never sees. And `vector-effect: non-scaling-stroke` is to strokes what the
+counter-scale is to labels: a repo's canvas fits ~1700px into ~700px, so a 0.9px
+line renders at 0.36px and the whole diagram fades out.
+
+On the legend: `@rokkit/graph` ships its own, and the reason is measured rather
+than asserted. `@rokkit/chart` carries eight d3 modules plus ramda against this
+package's ONE dependency, and chart does not depend on `@rokkit/ui` either — so
+there is no package both already share. Real reuse means promoting a generic
+legend somewhere both can reach, which is a separate refactor and is flagged in
+the source rather than quietly duplicated.
+
+1078 unit and 44 graph e2e green; lint/types 0/0; graph coverage gate passes;
+zero a11y compile warnings.
