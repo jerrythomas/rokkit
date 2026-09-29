@@ -18,9 +18,10 @@
  */
 
 import { toGraphInput } from '@rokkit/graph/schema'
+import codebase from './codebase.json'
 import type { GraphFields } from '@rokkit/graph'
 
-export type DatasetId = 'ecommerce' | 'schema-deps' | 'service-calls'
+export type DatasetId = 'ecommerce' | 'schema-deps' | 'service-calls' | 'codebase'
 
 /* ─── 1. dbd v2-shaped ───────────────────────────────────────────────────────
    `tables` holds tables (plus the two enums — dbd flags an enum COLUMN via `Column.en`
@@ -396,6 +397,30 @@ export const serviceCallFields: GraphFields = {
 	defaultEdgeKind: 'dependency'
 }
 
+/* ─── 3. this repository ─────────────────────────────────────────────────────
+   Generated from every package's `src` by `scripts/build-codebase-graph.mjs`: 470 modules
+   and 801 imports, with real containment (rokkit › package › folder › module) and a measure
+   per module. Committed rather than scanned at build time so the demo works offline; re-run
+   the script when the shape of the repo changes enough to matter.
+
+   This is the dataset the `world` layout exists for. The other three are flat or two deep;
+   a codebase is containment several levels down with a quantity at every level, which is
+   what a treemap answers and a node-link diagram cannot. */
+
+export const codebaseFields: GraphFields = {
+	id: 'id',
+	label: 'label',
+	kind: 'kind',
+	path: 'path',
+	measures: 'm',
+	source: 'source',
+	target: 'target',
+	// Every edge here is an import. There is no per-row field saying so, which is what
+	// `defaultEdgeKind` is for.
+	defaultEdgeKind: 'dependency',
+	relation: 'kind'
+}
+
 export const datasets = {
 	ecommerce: {
 		id: 'ecommerce' as const,
@@ -417,5 +442,12 @@ export const datasets = {
 		nodes: serviceCallGraph.services as unknown[],
 		edges: serviceCallGraph.calls as unknown[],
 		fields: serviceCallFields
+	},
+	codebase: {
+		id: 'codebase' as const,
+		label: 'This codebase',
+		nodes: codebase.nodes as unknown[],
+		edges: codebase.edges as unknown[],
+		fields: codebaseFields
 	}
 }

@@ -44,9 +44,9 @@ type Placed = { tree: TreeNode; rect: Rect; depth: number; parent?: string }
 function place(
 	node: TreeNode,
 	rect: Rect,
-	ctx: { levels: number; out: Placed[]; parent?: string }
+	ctx: { levels: number; out: Placed[]; parent?: string; origin: number }
 ): void {
-	const { levels, out, parent } = ctx
+	const { levels, out, parent, origin } = ctx
 	if (levels <= 0 || node.children.length === 0) return
 
 	// Children are inset for the parent's border and label strip. Below that the box is all
@@ -63,8 +63,11 @@ function place(
 	const placed = squarify(node.children, inner, total * MIN_SHARE)
 
 	for (const { item, rect: box } of placed) {
-		out.push({ tree: item, rect: box, depth: node.path.length, parent })
-		place(item, box, { levels: levels - 1, out, parent: item.id })
+		// Depth is RELATIVE to the focus, so the outermost rendered box is always 0 whatever
+		// the reader has drilled into. A renderer styles by "how deep in this view", not by
+		// "how deep in the whole tree", and the same convention holds in `nested.ts`.
+		out.push({ tree: item, rect: box, depth: node.path.length - origin, parent })
+		place(item, box, { levels: levels - 1, out, parent: item.id, origin })
 	}
 }
 
@@ -133,7 +136,8 @@ export const world: LayoutFn = (model, options): LayoutResult => {
 	const placed: Placed[] = []
 	place(root, { x: 0, y: 0, w: CANVAS.w, h: CANVAS.h }, {
 		levels: options.levels ?? 2,
-		out: placed
+		out: placed,
+		origin: root.path.length
 	})
 
 	// Edges are deliberately absent: containment IS the relationship here, and at world scale

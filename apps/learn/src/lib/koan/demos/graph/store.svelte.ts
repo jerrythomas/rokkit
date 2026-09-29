@@ -9,7 +9,7 @@
 import type { DatasetId } from './datasets'
 
 export type GraphViewId = 'diagram' | 'entity' | 'entities'
-export type LayoutId = 'cluster' | 'neighborhood' | 'points'
+export type LayoutId = 'cluster' | 'neighborhood' | 'points' | 'world'
 export type DensityId = 'names' | 'keys' | 'full'
 export type ArrangeId = 'untangle' | 'a-z'
 export type EdgeStyleId = 'curved' | 'orthogonal'
@@ -39,6 +39,7 @@ class GraphExplorerStore {
 	edgeStyle = $state<EdgeStyleId>('curved')
 	using = $state<ChannelId>('color')
 	grouping = $state<GroupingId>('schema')
+	sizeBy = $state<string>('degree')
 	/** Multiplier on Graph's fit-to-container scale. 1 = fit the whole diagram. */
 	zoom = $state<number>(1)
 
@@ -56,7 +57,14 @@ class GraphExplorerStore {
 		// answer to "what does this look like with a thousand nodes". The two schema views keep
 		// cards, which are right when a node HAS columns worth reading — and a dependency node
 		// that has none still reads as a titled card among the tables it touches.
-		this.layout = id === 'service-calls' ? 'points' : 'cluster'
+		// Each dataset opens on the view it is FOR: a codebase is containment with a quantity
+		// at every level, which is the treemap's question and nothing else's.
+		if (id === 'codebase') {
+			this.layout = 'world'
+			this.sizeBy = 'declarations'
+		} else {
+			this.layout = id === 'service-calls' ? 'points' : 'cluster'
+		}
 	}
 }
 

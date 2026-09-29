@@ -22,7 +22,7 @@ const meta: DemoMeta = {
 			'Mount the interactive graph explorer on the canvas — a node-link diagram with pluggable layouts. Pass `dataset` to open a specific one.',
 		parameters: {
 			dataset:
-				'optional dataset: ecommerce | schema-deps | service-calls (defaults to ecommerce)'
+				'optional dataset: ecommerce | schema-deps | service-calls | codebase (defaults to ecommerce)'
 		}
 	},
 	inline: { capable: true },
@@ -54,6 +54,12 @@ const meta: DemoMeta = {
 			label: 'Call graph',
 			mode: 'dynamic',
 			props: { dataset: 'service-calls' }
+		},
+		{
+			id: 'codebase',
+			label: 'This codebase',
+			mode: 'dynamic',
+			props: { dataset: 'codebase' }
 		}
 	],
 	api: {

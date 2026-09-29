@@ -213,6 +213,25 @@ test.describe('graph demo', () => {
 		).toBeGreaterThan(3)
 	})
 
+	test('the codebase renders as a treemap, sized by a real measure', async ({ page }) => {
+		// 470 modules and 801 imports generated from this repo — the dataset the world layout
+		// exists for, and the only one in the demo with containment more than two deep.
+		await page.goto('/app/graph?variant=codebase')
+		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+
+		// A box per package, each holding its own modules.
+		const outer = page.locator('[data-graph-cluster][data-cluster-depth="0"]')
+		expect(await outer.count()).toBeGreaterThan(8)
+		expect(await page.locator('[data-graph-node]').count()).toBeGreaterThan(50)
+
+		// Area encodes declarations, so the boxes must NOT all be the same size — an even
+		// split is what a measure the tree does not understand produces.
+		const areas = await outer.evaluateAll((els) =>
+			els.map((el) => (el as HTMLElement).offsetWidth * (el as HTMLElement).offsetHeight)
+		)
+		expect(Math.max(...areas) / Math.min(...areas)).toBeGreaterThan(3)
+	})
+
 	test('switching to the neighborhood layout drops the clusters', async ({ page }) => {
 		await page.locator('[data-graph-node]').first().click()
 		await openControls(page)
@@ -363,12 +382,12 @@ test.describe('graph demo', () => {
 		expect(await scaleOf()).toBeGreaterThan(before)
 	})
 
-	test('all three examples are reachable as variant chips, not just via a control', async ({
+	test('every example is reachable as a variant chip, not just via a control', async ({
 		page
 	}) => {
 		// The variants were declared in meta and surfaced nowhere: the layout renders variant
 		// chips only in its GENERIC demo branch, and graph has its own conversation component.
-		for (const label of ['ER diagram', 'Schema dependencies', 'Call graph']) {
+		for (const label of ['ER diagram', 'Schema dependencies', 'Call graph', 'This codebase']) {
 			await expect(page.getByRole('button', { name: label }), label).toBeVisible()
 		}
 

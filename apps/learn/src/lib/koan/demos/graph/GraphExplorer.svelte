@@ -40,6 +40,10 @@
 			density: explorer.density,
 			arrange: explorer.arrange,
 			...GROUPING[explorer.grouping],
+			sizeBy: explorer.sizeBy,
+			// The whole repo sits under one root, so focusing past it gives the packages the
+			// canvas instead of spending a level on a box with one child.
+			focusPath: explorer.dataset === 'codebase' ? ['rokkit'] : [],
 			edgeStyle: explorer.edgeStyle,
 			preset: createGraphPreset({ using: explorer.using }),
 			// Without this the group ramp resolves from the LIGHT ladder forever, so every

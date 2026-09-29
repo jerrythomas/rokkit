@@ -300,13 +300,31 @@ export function mergeFinding(uniq, f, cfg) {
 	if (f.ratio < existing.ratio) existing.ratio = f.ratio
 }
 
-/** Collect the in-page findings for one gallery config. */
+/**
+ * Collect the in-page findings for one gallery config.
+ *
+ * Waits on the hydration marker and on real content, NOT on a fixed sleep. This used to
+ * `waitForTimeout(120)` and flaked roughly one full run in three — always in the suite, never
+ * in isolation, which is the signature of a timing race rather than a regression.
+ *
+ * The theme attributes are applied at hydration, so sampling before it returns the DEFAULT
+ * theme's colours for a config that asked for another — and a wrong colour read is
+ * indistinguishable from a new contrast failure. 120ms is plenty on an idle machine and not
+ * plenty with seven other workers competing, which is exactly when the gate runs.
+ *
+ * `interaction-collector` and `state-snapshot-collector` already wait on content, and neither
+ * has ever flaked.
+ */
 async function collectConfig(page, base, { style, mode, skin }) {
 	await page.goto(`${base}/embed/gallery?style=${style}&skin=${skin}&mode=${mode}`, {
 		waitUntil: 'networkidle',
 		timeout: 20000
 	})
-	await page.waitForTimeout(120)
+	await page.waitForFunction(() => document.body.dataset.hydrated === 'true', null, {
+		timeout: 20000
+	})
+	await page.waitForSelector('.gallery [data-gallery-comp]', { timeout: 20000 })
+
 	return page.evaluate(collectContrast, { mode })
 }
 

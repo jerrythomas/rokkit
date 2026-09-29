@@ -36,7 +36,8 @@
 			options: [
 				{ value: 'cluster', label: 'Cluster (cards)' },
 				{ value: 'points', label: 'Points (dense)' },
-				{ value: 'neighborhood', label: 'Neighborhood' }
+				{ value: 'neighborhood', label: 'Neighborhood' },
+				{ value: 'world', label: 'World (treemap)' }
 			],
 			get: () => explorer.layout,
 			set: (v: string) => (explorer.layout = v as typeof explorer.layout)
@@ -51,6 +52,19 @@
 			],
 			get: () => explorer.density,
 			set: (v: string) => (explorer.density = v as typeof explorer.density)
+		},
+		{
+			id: 'size-by',
+			label: 'Size by',
+			options: [
+				{ value: 'degree', label: 'Degree' },
+				{ value: 'declarations', label: 'Declarations' },
+				{ value: 'lines', label: 'Lines' },
+				{ value: 'files', label: 'Files' },
+				{ value: 'tested', label: 'Tested modules' }
+			],
+			get: () => explorer.sizeBy,
+			set: (v: string) => (explorer.sizeBy = v)
 		},
 		{
 			id: 'grouping',
