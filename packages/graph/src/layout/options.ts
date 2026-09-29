@@ -15,7 +15,9 @@ export const LAYOUT_OPTION_KEYS = [
 	'nestBy',
 	'sizeBy',
 	'sizeScale',
-	'depth'
+	'depth',
+	'focusPath',
+	'levels'
 ] as const
 
 /** Warn once per unknown key, ever. A layout re-runs on every render. */

@@ -59,6 +59,10 @@ export type GraphStateConfig = {
 	sizeScale?: 'linear' | 'log'
 	/** `neighborhood` only — hops out from the focus. Defaults to 1. */
 	depth?: number
+	/** `world` only — the subtree rendered as the whole canvas. `[]` is the root. */
+	focusPath?: string[]
+	/** `world` only — levels below the focus to materialise. Defaults to 2. */
+	levels?: number
 	edgeStyle?: EdgeStyle
 	focus?: string | null
 	value?: string | null
@@ -150,6 +154,8 @@ export class GraphState {
 	#sizeBy = $state<string>('degree')
 	#sizeScale = $state<'linear' | 'log'>('linear')
 	#depth = $state<number>(1)
+	#focusPath = $state<string[]>([])
+	#levels = $state<number>(2)
 	#edgeStyle = $state<EdgeStyle>('curved')
 	#focus = $state<string | null>(null)
 	#value = $state<string | null>(null)
@@ -174,6 +180,8 @@ export class GraphState {
 			sizeBy: this.#sizeBy,
 			sizeScale: this.#sizeScale,
 			depth: this.#depth,
+			focusPath: this.#focusPath,
+			levels: this.#levels,
 			edgeStyle: this.#edgeStyle,
 			focus: this.#focus ?? this.#value,
 			expanded: this.#expanded
@@ -295,6 +303,8 @@ export class GraphState {
 		// Floored at 1: a depth of 0 or -1 is a request for nothing, and returning an empty
 		// canvas for it looks identical to a broken focus.
 		this.#depth = Math.max(1, Math.floor(config.depth ?? 1))
+		this.#focusPath = config.focusPath ?? []
+		this.#levels = Math.max(1, Math.floor(config.levels ?? 2))
 	}
 
 	#applyView(config: GraphStateConfig): void {
@@ -518,6 +528,14 @@ export class GraphState {
 
 	get depth(): number {
 		return this.#depth
+	}
+
+	get focusPath(): string[] {
+		return this.#focusPath
+	}
+
+	get levels(): number {
+		return this.#levels
 	}
 
 	/**

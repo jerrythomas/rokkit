@@ -25,7 +25,7 @@ export type TreeNode = {
 	path: string[]
 	/** 0 at the root. A layout materialising N levels reads this. */
 	depth: number
-	/** The real node behind this box: a leaf always, a container only if one claims it. */
+	/** The real node behind this box. Absent only on a container nothing declared. */
 	node?: GraphNode
 	children: TreeNode[]
 	/** This subtree's summed measure, including its own leaves. */
@@ -34,7 +34,7 @@ export type TreeNode = {
 
 const ROOT = ''
 
-/** A container's id is its path joined — which is also what a claiming node's id must equal. */
+/** A synthesised box's id is its path joined. A declared node replaces it with its own. */
 const idOf = (path: string[]) => path.join('/')
 
 function container(path: string[]): TreeNode {
@@ -78,10 +78,31 @@ function ensure(root: TreeNode, path: string[]): TreeNode {
  * other name reads the measures bag. Absent is 0 rather than a break — "unknown" is a normal
  * state in a partially-indexed graph.
  */
-function measureOf(node: GraphNode, measure: string): number {
+function measureOf(node: GraphNode, measure: string, degree: Map<string, number>): number {
+	if (measure === 'degree') return degree.get(node.id) ?? 0
 	if (measure === 'weight') return node.weight ?? 0
 
 	return node.measures?.[measure] ?? 0
+}
+
+/**
+ * Edges touching each node.
+ *
+ * `degree` is the package-wide default for `sizeBy`, so the tree has to understand it or a
+ * caller that never set a measure gets a silent zero for every node — and a tree of zeroes
+ * falls through to an even split, which renders a 27:1 ratio as 1:1 with no error anywhere.
+ */
+function degreesIn(model: GraphModel): Map<string, number> {
+	const degree = new Map<string, number>()
+	for (const edge of model.edges) {
+		if (edge.unplaced) continue
+		degree.set(edge.source, (degree.get(edge.source) ?? 0) + 1)
+		if (edge.target !== edge.source) {
+			degree.set(edge.target, (degree.get(edge.target) ?? 0) + 1)
+		}
+	}
+
+	return degree
 }
 
 /**
@@ -91,7 +112,12 @@ function measureOf(node: GraphNode, measure: string): number {
  * this fills in its identity rather than creating a sibling. That is the whole of "a container
  * is an ordinary node": no claiming, no id convention, just the same walk.
  */
-function attach(root: TreeNode, node: GraphNode, measure: string): void {
+function attach(
+	root: TreeNode,
+	node: GraphNode,
+	measure: string,
+	degree: Map<string, number>
+): void {
 	const box = ensure(root, node.path ?? [])
 	if (box === root) {
 		// No path: a root-level leaf, not a redefinition of the root itself.
@@ -102,7 +128,7 @@ function attach(root: TreeNode, node: GraphNode, measure: string): void {
 			depth: 1,
 			node,
 			children: [],
-			value: measureOf(node, measure)
+			value: measureOf(node, measure, degree)
 		})
 
 		return
@@ -113,7 +139,7 @@ function attach(root: TreeNode, node: GraphNode, measure: string): void {
 	box.node = node
 	// A container can hold declarations of its OWN — a file has top-level code as well as the
 	// functions in it — so this is added to the subtree rather than replaced by it.
-	box.value += measureOf(node, measure)
+	box.value += measureOf(node, measure, degree)
 }
 
 /**
@@ -136,9 +162,9 @@ function summarise(node: TreeNode, depth: number): number {
 /**
  * Collapse a container that holds exactly one child and nothing of its own.
  *
- * NOT applied to a claimed container: a node that exists carries its own label, note and
- * status, and folding it would silently drop them. The rule is "a wrapper is not a level",
- * and a thing the data names is not a wrapper.
+ * NOT applied to a DECLARED container: a node that exists carries its own label, note and
+ * edges, and folding it would silently drop them. The rule is "a wrapper is not a level", and
+ * a thing the data names is not a wrapper.
  */
 function fold(node: TreeNode): TreeNode {
 	node.children = node.children.map(fold)
@@ -165,18 +191,19 @@ function sort(node: TreeNode): void {
 /**
  * The containment tree for a model.
  *
- * A node whose id equals a container's joined path CLAIMS it, lending its label and note —
- * checked before leaves are placed, so a claiming node becomes the box rather than a child
- * inside it.
+ * Containment is PREFIX: a node whose path extends past another's is inside it. That is what
+ * makes a container an ordinary node — it keeps its own id, label, note and edges, and there
+ * is no convention to satisfy. A prefix nothing declares is synthesised.
  */
 export function buildTree(model: GraphModel, options: { measure?: string } = {}): TreeNode {
 	const measure = options.measure ?? 'weight'
+	const degree = measure === 'degree' ? degreesIn(model) : new Map<string, number>()
 	const root = container([])
 	root.depth = 0
 
 	// One pass, one rule: every node is the box at its own path. Order does not matter —
 	// a descendant arriving first synthesises the box, and its owner fills in the identity.
-	for (const node of model.nodes) attach(root, node, measure)
+	for (const node of model.nodes) attach(root, node, measure, degree)
 
 	const folded = fold(root)
 	sort(folded)

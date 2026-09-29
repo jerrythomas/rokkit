@@ -3,8 +3,8 @@ import { cluster, layouts, neighborhood, points } from '../../src/layout/index.j
 import { normalizeGraph } from '../../src/model/normalize.js'
 
 describe('layout registry', () => {
-	it('registers exactly the two built-in layouts', () => {
-		expect(Object.keys(layouts).sort()).toEqual(['cluster', 'neighborhood', 'points'])
+	it('registers exactly the built-in layouts', () => {
+		expect(Object.keys(layouts).sort()).toEqual(['cluster', 'neighborhood', 'points', 'world'])
 	})
 
 	it('maps each name to the layout of that name, not merely to some layout', () => {

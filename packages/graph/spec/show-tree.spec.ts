@@ -3,6 +3,7 @@ import { writeFileSync } from 'node:fs'
 import { normalizeGraph } from '../src/model/normalize.js'
 import { buildTree } from '../src/model/tree.js'
 import type { TreeNode } from '../src/model/tree.js'
+import { GraphState } from '../src/GraphState.svelte.js'
 import { CALL_FIELDS, delimitedPath, nestedPath, measured } from './fixtures.js'
 
 const render = (root: TreeNode, lines: string[] = [], prefix = '', last = true) => {
@@ -30,6 +31,27 @@ it('show', () => {
 
 	out.push('', '=== same tree · measure = unresolved (0..1 share) ===')
 	out.push(...render(buildTree(m, { measure: 'unresolved' })))
+
+	const w = new GraphState({
+		nodes: nestedPath.nodes,
+		edges: nestedPath.edges,
+		fields: F,
+		layout: 'world',
+		sizeBy: 'weight',
+		levels: 3
+	})
+	out.push('', '=== world layout · nestedPath · sizeBy=weight · levels=3 ===')
+	out.push(`canvas ${w.size.w} x ${w.size.h}`)
+	for (const c of w.clusters) {
+		out.push(
+			`  box  ${c.name.padEnd(10)} d=${c.depth}  ${String(Math.round(c.x)).padStart(4)},${String(Math.round(c.y)).padStart(4)}  ${String(Math.round(c.w ?? 0)).padStart(4)}x${String(Math.round(c.h ?? 0)).padStart(3)}  area=${Math.round((c.w ?? 0) * (c.h ?? 0))}`
+		)
+	}
+	for (const [id, c] of Object.entries(w.cards)) {
+		out.push(
+			`  leaf ${c.node.label.padEnd(10)} (${id})  ${String(Math.round(c.x)).padStart(4)},${String(Math.round(c.y)).padStart(4)}  ${String(Math.round(c.w)).padStart(4)}x${String(Math.round(c.h)).padStart(3)}  area=${Math.round(c.w * c.h)}`
+		)
+	}
 
 	writeFileSync('/tmp/tree.txt', out.join('\n'))
 })

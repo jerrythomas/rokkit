@@ -176,6 +176,38 @@ describe('buildTree', () => {
 		expect(t.value).toBe(3)
 	})
 
+	it('counts degree without double-counting a self-edge', () => {
+		// A node that calls itself has ONE relationship, not two. Summed up a tree that error
+		// compounds at every level.
+		const self = [
+			{ id: 'a', label: 'a', path: ['p', 'a'] },
+			{ id: 'b', label: 'b', path: ['p', 'b'] }
+		]
+		const edges = [
+			{ source: 'a', target: 'a' },
+			{ source: 'a', target: 'b' }
+		]
+		const t = buildTree(normalizeGraph(self, edges, FIELDS), { measure: 'degree' })
+
+		// a: 1 self + 1 out = 2; b: 1 in = 1.
+		expect(findNode(t, ['p'])?.value).toBe(3)
+	})
+
+	it('excludes an unplaced edge from degree — it has no node at one end', () => {
+		const some = [
+			{ id: 'a', label: 'a', path: ['p', 'a'] },
+			{ id: 'b', label: 'b', path: ['p', 'b'] }
+		]
+		const edges = [
+			{ source: 'a', target: 'b' },
+			{ source: 'a', target: 'ghost' }
+		]
+		const t = buildTree(normalizeGraph(some, edges, FIELDS), { measure: 'degree' })
+
+		// Only the real edge counts: a 1, b 1.
+		expect(findNode(t, ['p'])?.value).toBe(2)
+	})
+
 	it('handles an empty model', () => {
 		const t = buildTree(normalizeGraph([], [], FIELDS))
 

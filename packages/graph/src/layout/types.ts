@@ -141,6 +141,16 @@ export type LayoutOptions = {
 	 * is the question a reader has before editing something.
 	 */
 	depth?: number
+	/**
+	 * `world` only — the subtree to render as the whole canvas. `[]` is the root.
+	 *
+	 * This is DRILLING, not zooming: it re-runs the layout with a new root so the subtree gets
+	 * the full canvas and its own children become visible. Zoom magnifies what is already
+	 * there, which at world scale is a field of sub-pixel boxes.
+	 */
+	focusPath?: string[]
+	/** `world` only — how many levels below the focus to MATERIALISE. Defaults to 2. */
+	levels?: number
 }
 
 export type LayoutResult = {
