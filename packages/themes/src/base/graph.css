@@ -827,3 +827,50 @@ svg[data-legend-swatch] {
 [data-legend-label] {
   white-space: nowrap;
 }
+
+/* ─── the structure view (radial dendrogram + bundled calls) ────────────────
+   Leaves on a rim, ancestor bands outside it, calls bundled through the tree between them.
+   The bands reuse the sunburst's wedge geometry, so they inherit its rules; what is specific
+   here is that an EDGE is the figure and the tree is the ground. */
+
+/* Thin and many. A bundled edge is one strand of a flow, and at a repo's scale there are
+   hundreds — drawn at a card diagram's weight they merge into a disc of ink. */
+[data-graph-layout='structure'] [data-graph-edge] path {
+  fill: none;
+  stroke-width: 0.9;
+  /* In SCREEN pixels, not canvas ones. The whole rim is fitted to the viewport — a repo's
+     canvas is ~1700px wide in a ~700px box — so a 0.9px stroke renders at 0.36px and the
+     whole diagram fades to a smudge. The same problem the counter-scaled labels have, with
+     the same shape of fix. */
+  vector-effect: non-scaling-stroke;
+}
+
+/* How far the call travels in the TREE, which is what a reader filters on. A local call is
+   background texture; one that leaves the package is the thing worth seeing. */
+[data-graph-layout='structure'] [data-edge-relation='local'] path {
+  stroke-width: 0.7;
+}
+
+[data-graph-layout='structure'] [data-edge-relation='cross'] path {
+  stroke-width: 1.2;
+}
+
+/* A leaf is a dot on the rim — the same treatment `points` and `radial` get, declared through
+   the shape rather than the layout name. */
+[data-graph-layout='structure'] [data-graph-cluster-label] {
+  display: none;
+}
+
+[data-graph-bundle] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.55rem;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.375rem;
+  font: inherit;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  cursor: pointer;
+}

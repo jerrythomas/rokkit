@@ -417,3 +417,31 @@
 [data-style='rokkit'] button[data-graph-legend-entry]:hover {
   background-color: var(--paper-soft);
 }
+
+/* The bundling toggle reads like the depth bar beside it. */
+[data-style='rokkit'] [data-graph-bundle] {
+  background-color: var(--paper-soft);
+  border-color: var(--paper-edge);
+  color: var(--ink-mute);
+}
+
+[data-style='rokkit'] [data-graph-bundle][aria-pressed='true'] {
+  background-color: var(--primary);
+  color: var(--on-primary, var(--paper));
+}
+
+/* A call that leaves its package is the one worth seeing; a local one is texture. */
+[data-style='rokkit'] [data-graph-layout='structure'] [data-graph-edge] path {
+  stroke: var(--ink-mute);
+  opacity: 0.5;
+}
+
+[data-style='rokkit'] [data-graph-layout='structure'] [data-edge-relation='cross'] path {
+  stroke: var(--ink);
+  opacity: 0.75;
+}
+
+[data-style='rokkit'] [data-graph-layout='structure'] [data-edge-state='highlight'] path {
+  stroke: var(--primary);
+  opacity: 1;
+}

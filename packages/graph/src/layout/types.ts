@@ -120,6 +120,14 @@ export type RoutedEdge = {
 	/** 1 = right side of the card, -1 = left. */
 	s1: number
 	s2: number
+	/**
+	 * A ready-made path, when the shape depends on more than the two endpoints.
+	 *
+	 * `edgePath` only ever sees the ends, which is enough for a curve or a right-angle route.
+	 * A bundled edge follows the whole chain of ancestors between its endpoints, so the layout
+	 * that knows that chain builds the path and the renderer draws what it is given.
+	 */
+	path?: string
 }
 
 /**
@@ -203,6 +211,13 @@ export type LayoutOptions = {
 	 * leaf to the rim so leaves are compared against each other.
 	 */
 	radialMode?: 'tree' | 'dendrogram'
+	/**
+	 * `structure` only — how hard edges are pulled onto the tree, 0..1.
+	 *
+	 * 0 is a straight chord and 1 is the full route through the hierarchy. The default of 0.85
+	 * is Holten's, and what the Sensei board's Straight/Bundled toggle switches between.
+	 */
+	bundleTension?: number
 	/**
 	 * `radial` only — the node to treat as the centre, which is what drilling into a crate
 	 * does. Its subtree becomes the whole picture.

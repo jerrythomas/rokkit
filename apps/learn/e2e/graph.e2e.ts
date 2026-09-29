@@ -450,6 +450,67 @@ test.describe('graph demo', () => {
 		expect(fillsByDepth['1'].length).toBeGreaterThan(3)
 	})
 
+	test('the structure view bundles a codebase’s imports through its hierarchy', async ({
+		page
+	}) => {
+		// The view `CallTree` could not be: a call graph's own spanning tree has hundreds of
+		// roots over a real repo. Containment is a real tree, and the calls are drawn ON it.
+		await openDiagram(page, 'structure')
+		await expect(page.locator('[data-graph-world]')).toHaveAttribute(
+			'data-graph-layout',
+			'structure'
+		)
+
+		// Crate bands outside the rim, one wedge each.
+		expect(await page.locator('[data-graph-wedge]').count()).toBeGreaterThan(5)
+		expect(await page.locator('[data-graph-edge]').count()).toBeGreaterThan(100)
+	})
+
+	test('the bundling toggle visibly changes every edge', async ({ page }) => {
+		await openDiagram(page, 'structure')
+
+		const first = () => page.locator('[data-graph-edge] path').first().getAttribute('d')
+		const bundled = await first()
+
+		await page.locator('[data-graph-bundle]').click()
+		const straight = await first()
+
+		expect(straight).not.toBe(bundled)
+
+		// Not a segment count: at zero tension the control points are COLLINEAR rather than
+		// fewer, so both paths have the same number of curves and only the coordinates move.
+		// What is testable is that the straight one hugs the chord between its endpoints.
+		const sag = (d: string | null) =>
+			page.evaluate((path) => {
+				const svg = document.querySelector('[data-graph-world] svg') as SVGSVGElement
+				const el = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+				el.setAttribute('d', path!)
+				svg.appendChild(el)
+				const len = el.getTotalLength()
+				const a = el.getPointAtLength(0)
+				const b = el.getPointAtLength(len)
+				const mid = el.getPointAtLength(len / 2)
+				el.remove()
+
+				// Distance from the curve's midpoint to the straight chord between its ends.
+				return Math.hypot(mid.x - (a.x + b.x) / 2, mid.y - (a.y + b.y) / 2)
+			}, d)
+
+		expect(await sag(straight)).toBeLessThan(await sag(bundled))
+	})
+
+	test('depth controls how many ancestor bands the structure draws', async ({ page }) => {
+		// The control that makes a whole repo legible — show the crates, then go deeper.
+		await openDiagram(page, 'structure')
+		const bands = () => page.locator('[data-graph-wedge]').count()
+
+		await page.locator('[data-graph-depth="1"]').click()
+		const shallow = await bands()
+
+		await page.locator('[data-graph-depth="3"]').click()
+		expect(await bands()).toBeGreaterThan(shallow)
+	})
+
 	test('switching to the neighborhood layout drops the clusters', async ({ page }) => {
 		await page.locator('[data-graph-node]').first().click()
 		await openControls(page)

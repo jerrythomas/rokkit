@@ -24,7 +24,7 @@ height** or it collapses.
 | `edges` | `unknown[]` | `[]` | Any edge shape — endpoints resolved through `fields.source` / `fields.target` |
 | `fields` | `GraphFields` | `{}` | Dotted-path map from your shape to the canonical model |
 | `state` | `GraphState` | — | Share one state across Graph / EntityView / EntitiesView |
-| `layout` | `'cluster' \| 'flow' \| 'neighborhood' \| 'points' \| 'radial' \| 'sunburst' \| 'world' \| LayoutFn` | `'flow'` | A built-in by name, or your own pure `(model, options) => LayoutResult` |
+| `layout` | `'cluster' \| 'flow' \| 'neighborhood' \| 'points' \| 'radial' \| 'structure' \| 'sunburst' \| 'world' \| LayoutFn` | `'flow'` | A built-in by name, or your own pure `(model, options) => LayoutResult` |
 | `density` | `'names' \| 'keys' \| 'full'` | `'keys'` | How much of each node's row list a card shows. `cluster` and `flow` — see Applicability. **Bindable** |
 | `arrange` | `'untangle' \| 'a-z'` | `'untangle'` | Cluster ordering |
 | `groupBy` | `'group' \| 'kind'` | `'group'` | Outer grouping axis |
@@ -91,6 +91,7 @@ over one `Plot`.
 | `CallTree` | A call graph as a radial tidy tree or dendrogram | depth, zoom |
 | `Treemap` | Containment as nested rectangles | depth, zoom |
 | `Sunburst` | The same containment as wedges | depth, zoom |
+| `StructureDiagram` | A codebase: containment on a rim, calls bundled through it | depth, bundling, zoom |
 | `Neighborhood` | One node and what reaches it | depth, edge style, zoom |
 
 `controls` and `legend` are both **off by default** — the default is the bare picture, because
@@ -157,6 +158,7 @@ LAYOUT_OPTIONS.world           // ['sizeBy', 'focusPath', 'levels']
 | `points` | `edgeStyle` `sizeBy` `sizeScale` |
 | `radial` | `edgeStyle` `sizeBy` `sizeScale` `radialMode` |
 | `sunburst` | `sizeBy` `focusPath` `levels` |
+| `structure` | `sizeBy` `sizeScale` `focusPath` `levels` `bundleTension` |
 | `world` | `sizeBy` `focusPath` `levels` |
 
 Two entries are not simply "what the layout function reads":

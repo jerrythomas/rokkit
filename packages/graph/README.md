@@ -65,7 +65,8 @@ one layout, the controls that mean something for it, an opt-in legend. The same 
 <ErDiagram {nodes} {edges} {fields} controls legend />
 ```
 
-`ErDiagram` · `DependencyDiagram` · `CallTree` · `Treemap` · `Sunburst` · `Neighborhood`.
+`ErDiagram` · `DependencyDiagram` · `CallTree` · `Treemap` · `Sunburst` · `StructureDiagram` ·
+`Neighborhood`.
 Both `controls` and `legend` default to off: the default is the bare picture.
 
 Composing your own is the same parts in a different box — `DensityControl`, `EdgeStyleControl`,
@@ -87,6 +88,8 @@ Your own slots in the same way.
 - **`points`** — degree-sized rects, shelf-packed. Dense graphs, 1000+ nodes.
 - **`world`** — nested rectangles, area proportional to a measure. Where the mass is.
 - **`sunburst`** — the same containment as nested wedges, with depth on the radius.
+- **`structure`** — a codebase as a radial dendrogram with its calls bundled through the
+  hierarchy. What `radial` cannot be: containment is a real tree where a call graph is not.
 
 Two-level clustering shows both grouping axes at once, which matters for a dependency graph
 where one schema holds a table, a trigger and a procedure:

@@ -4,6 +4,7 @@ import {
 	DependencyDiagram,
 	ErDiagram,
 	Neighborhood,
+	StructureDiagram,
 	Sunburst,
 	Treemap
 } from '@rokkit/graph'
@@ -20,17 +21,15 @@ import { datasets } from './datasets'
  * Same structure as the chart demo's registry, for the same reason: the registry is what lets
  * the controls ask "does this apply here" instead of showing every knob for every picture.
  *
- * NOT here yet, and deliberately: a radial view of the CODEBASE. `CallTree` builds its tree
- * from call edges, and a codebase's structure is CONTAINMENT (`path`) — 470 modules have
- * hundreds of roots, so capping depth prunes almost nothing and the rim is a grey smear. The
- * honest version needs a radial layout over `buildTree`, the same tree `Treemap` and
- * `Sunburst` use. Pairing the component with the data anyway would be exactly the mismatch
- * this registry exists to remove.
+ * The codebase gets `StructureDiagram`, not `CallTree`: a call graph's own spanning tree has
+ * hundreds of roots over a real repo, so capping its depth prunes almost nothing. Containment
+ * is the tree that makes it legible, and the calls are drawn ON it.
  */
 export type DiagramId =
 	| 'er'
 	| 'dependencies'
 	| 'calls'
+	| 'structure'
 	| 'treemap'
 	| 'sunburst'
 	| 'neighborhood'
@@ -109,6 +108,17 @@ export const registry: Record<DiagramId, DiagramConfig> = {
 		blurb:
 			'A call graph as a radial tidy tree. Angle separates the subtrees, radius carries the depth.',
 		props: { radialMode: 'tree' }
+	},
+	structure: {
+		id: 'structure',
+		layout: 'structure',
+		label: 'Structure',
+		group: 'Code',
+		component: StructureDiagram as Component<Record<string, unknown>>,
+		dataset: 'codebase',
+		blurb:
+			'The repo as a radial dendrogram — crates, then modules, then files on the rim — with every import bundled through the hierarchy it travels. Straight, the same 801 edges are a disc of ink.',
+		props: { levels: 2, sizeBy: 'degree', bundleTension: 0.85, focusPath: ['rokkit'], maxLevels: 4 }
 	},
 	treemap: {
 		id: 'treemap',

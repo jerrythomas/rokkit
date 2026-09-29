@@ -18,6 +18,7 @@ import CallTree from '../src/diagrams/CallTree.svelte'
 import Treemap from '../src/diagrams/Treemap.svelte'
 import Sunburst from '../src/diagrams/Sunburst.svelte'
 import Neighborhood from '../src/diagrams/Neighborhood.svelte'
+import StructureDiagram from '../src/diagrams/StructureDiagram.svelte'
 
 const TABLES = [
 	{ id: 'users', label: 'users', kind: 'table', group: 'public', rows: [{ name: 'id' }] },
@@ -69,6 +70,12 @@ describe('every diagram is a canvas plus its own controls', () => {
 		expect(layoutOf(container)).toBe('sunburst')
 	})
 
+	it('StructureDiagram draws the containment tree, with calls bundled through it', () => {
+		const { container } = render(StructureDiagram, { nodes: TREE, edges: [] })
+
+		expect(layoutOf(container)).toBe('structure')
+	})
+
 	it('Neighborhood centres on one node', () => {
 		const { container } = render(Neighborhood, {
 			nodes: CALLS,
@@ -98,6 +105,21 @@ describe('a diagram offers only the controls that mean something for it', () => 
 		expect(container.querySelector('[data-graph-depth-controls]')).not.toBeNull()
 		expect(container.querySelector('[data-graph-density-controls]')).toBeNull()
 		expect(container.querySelector('[data-graph-edge-style]')).toBeNull()
+	})
+
+	it('gives the structure view depth AND a bundling toggle', () => {
+		// The two controls that make a whole repo readable: how far down to draw, and whether
+		// the chords follow the hierarchy or cross the middle.
+		const { container } = render(StructureDiagram, { nodes: TREE, edges: [], controls: true })
+
+		expect(container.querySelector('[data-graph-depth-controls]')).not.toBeNull()
+		expect(container.querySelector('[data-graph-bundle]')).not.toBeNull()
+	})
+
+	it('offers the bundling toggle nowhere else — nothing else bundles', () => {
+		const { container } = render(Treemap, { nodes: TREE, edges: [], controls: true })
+
+		expect(container.querySelector('[data-graph-bundle]')).toBeNull()
 	})
 
 	it('gives the call tree depth — the control that makes a big tree legible', () => {
@@ -293,7 +315,8 @@ describe('a diagram with no data is an empty canvas, not a crash', () => {
 		['CallTree', CallTree],
 		['Treemap', Treemap],
 		['Sunburst', Sunburst],
-		['Neighborhood', Neighborhood]
+		['Neighborhood', Neighborhood],
+		['StructureDiagram', StructureDiagram]
 	] as const)('%s renders with no props at all', (_name, Component) => {
 		const { container } = render(Component)
 
@@ -378,7 +401,8 @@ describe('every diagram drives a SHARED state, not just one it built', () => {
 		['CallTree', CallTree, { nodes: CALLS, edges: CALL_EDGES }, 'radial'],
 		['Treemap', Treemap, { nodes: TREE, edges: [] }, 'world'],
 		['Sunburst', Sunburst, { nodes: TREE, edges: [] }, 'sunburst'],
-		['Neighborhood', Neighborhood, { nodes: CALLS, edges: CALL_EDGES, focus: 'a' }, 'neighborhood']
+		['Neighborhood', Neighborhood, { nodes: CALLS, edges: CALL_EDGES, focus: 'a' }, 'neighborhood'],
+		['StructureDiagram', StructureDiagram, { nodes: TREE, edges: [] }, 'structure']
 	] as const
 
 	it.each(shared)('%s applies its layout to a supplied state', async (_n, Component, props, layout) => {
@@ -412,7 +436,8 @@ describe('every diagram survives its own controls and legend', () => {
 		['CallTree', CallTree, { nodes: CALLS, edges: CALL_EDGES }],
 		['Treemap', Treemap, { nodes: TREE, edges: [] }],
 		['Sunburst', Sunburst, { nodes: TREE, edges: [] }],
-		['Neighborhood', Neighborhood, { nodes: CALLS, edges: CALL_EDGES, focus: 'a' }]
+		['Neighborhood', Neighborhood, { nodes: CALLS, edges: CALL_EDGES, focus: 'a' }],
+		['StructureDiagram', StructureDiagram, { nodes: TREE, edges: [] }]
 	] as const
 
 	it.each(cases)('%s draws a canvas with controls and a legend', (_name, Component, props) => {

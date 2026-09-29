@@ -99,9 +99,12 @@ Your own slots in exactly the same way.
 | `points` | Degree-sized rounded rects, shelf-packed | Dense graphs — a code index, 1000+ nodes |
 | `world` | Nested rectangles, area proportional to a measure | Containment — where the mass of a codebase is |
 | `sunburst` | Nested wedges, angle proportional to a measure | The same containment, with depth on the radius |
+| `structure` | Radial dendrogram + bundled edges | A codebase: containment on the rim, calls drawn through it |
 
 ```js
-import { cluster, flow, neighborhood, points, radial, sunburst, world, layouts } from '@rokkit/graph'
+import {
+  cluster, flow, neighborhood, points, radial, structure, sunburst, world, layouts
+} from '@rokkit/graph'
 ```
 
 ### Options
@@ -120,6 +123,7 @@ import { cluster, flow, neighborhood, points, radial, sunburst, world, layouts }
 | `focusPath` | `[]` | `world` / `sunburst` — the subtree to render as the whole canvas |
 | `levels` | `2` | `world` / `sunburst` — how many levels below the focus to materialise |
 | `radialMode` | `'tree'` | `radial` only — `tree` reads radius as depth, `dendrogram` pins leaves to the rim |
+| `bundleTension` | `0.85` | `structure` only — how hard edges are pulled onto the tree. 0 is a straight chord |
 | `groupTint` | `false` | Paint each card with its group's ramp — schema without cluster boxes |
 | `expanded` | — | Node ids shown at full detail whatever `density` says |
 
@@ -179,6 +183,35 @@ picks one parent per node — breadth-first, so a node sits at its shortest dist
 what a reader is looking for, and a tree that drops half its edges looks complete while being a
 quarter of one. Cycles terminate because a claimed node is never re-claimed; a disconnected
 node becomes its own root rather than vanishing.
+
+### `structure` — a codebase, and the calls drawn through it
+
+The view `radial` cannot be over a real repo. A call graph's own spanning tree has hundreds of
+roots, so capping its depth prunes almost nothing and the rim comes out a grey smear. A
+codebase's structure is CONTAINMENT — crate, module, file — and that is a real tree with one
+root, which is what makes "show two levels, then drill" mean something.
+
+So the hierarchy is `buildTree` over `path`, the same tree `world` and `sunburst` use, and the
+calls are drawn ON it rather than defining it:
+
+- every **leaf** sits on one rim, so leaves are comparable and the rim can hold labels
+- each ancestor level gets an **arc** outside that rim, naming the region under it
+- an **edge** routes up to its two ends' lowest common ancestor and back down, then relaxes
+  toward the straight chord by `bundleTension`
+
+```svelte
+<StructureDiagram {nodes} {edges} {fields} levels={2} controls legend />
+```
+
+Bundling is what makes it readable at scale — edges travelling the same way through the tree
+pull together, so rokkit's own 801 imports become visible flows between packages instead of a
+solid disc of ink. `bundleTension={0}` is the straight chord, which is what you switch to when
+you want to follow one edge exactly.
+
+An edge is classified by how far it travels in the tree — `local`, `crate`, `cross` — measured
+against each end's own depth rather than an absolute level, because the tree folds single-child
+wrappers and an absolute rule would classify the same file differently depending on how many
+siblings its module happened to have.
 
 ### `sunburst` — the treemap's question, asked radially
 

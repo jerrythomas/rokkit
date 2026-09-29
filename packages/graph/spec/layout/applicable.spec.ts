@@ -38,6 +38,7 @@ describe('per-layout option applicability', () => {
 		// at 20px across, overflowing a box the layout sized for a dot.
 		expect(nodeShapeOf('points')).toBe('dot')
 		expect(nodeShapeOf('radial')).toBe('dot')
+		expect(nodeShapeOf('structure')).toBe('dot')
 		expect(nodeShapeOf('cluster')).toBe('card')
 		expect(nodeShapeOf('flow')).toBe('card')
 	})

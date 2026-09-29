@@ -19,7 +19,8 @@ export const LAYOUT_OPTION_KEYS = [
 	'focusPath',
 	'levels',
 	'radialMode',
-	'root'
+	'root',
+	'bundleTension'
 ] as const
 
 /**
@@ -47,6 +48,7 @@ export const LAYOUT_OPTIONS: Record<string, readonly (typeof LAYOUT_OPTION_KEYS)
 	points: ['edgeStyle', 'sizeBy', 'sizeScale'],
 	radial: ['edgeStyle', 'sizeBy', 'sizeScale', 'radialMode', 'levels', 'root'],
 	sunburst: ['sizeBy', 'focusPath', 'levels'],
+	structure: ['sizeBy', 'sizeScale', 'focusPath', 'levels', 'bundleTension'],
 	world: ['sizeBy', 'focusPath', 'levels']
 }
 
@@ -58,7 +60,7 @@ export const LAYOUT_OPTIONS: Record<string, readonly (typeof LAYOUT_OPTION_KEYS)
  * as a fact about the layout so the theme can key on the SHAPE instead of naming every layout
  * that happens to have one — `radial` inherited the whole dot treatment by joining this set.
  */
-const DOT_LAYOUTS = new Set(['points', 'radial'])
+const DOT_LAYOUTS = new Set(['points', 'radial', 'structure'])
 
 /** `dot` or `card` — what shape this layout draws a node as. */
 export function nodeShapeOf(layout: string): 'dot' | 'card' {

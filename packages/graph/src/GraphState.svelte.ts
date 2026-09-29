@@ -69,6 +69,8 @@ export type GraphStateConfig = {
 	radialMode?: 'tree' | 'dendrogram'
 	/** `radial` only — the node to centre on. Drilling; NOT the selection. */
 	root?: string | null
+	/** `structure` only — how hard edges are pulled onto the tree, 0..1. */
+	bundleTension?: number
 	/**
 	 * Paint each CARD with its group's ramp, not just the cluster box around it.
 	 *
@@ -189,6 +191,7 @@ export class GraphState {
 	#groupTint = $state(false)
 	#radialMode = $state<'tree' | 'dendrogram'>('tree')
 	#root = $state<string | null>(null)
+	#bundleTension = $state<number | undefined>(undefined)
 	/** The last FULL config, so `apply` can merge over it rather than reset around it. */
 	#last: GraphStateConfig = {}
 	#density = $state<Density>('keys')
@@ -228,6 +231,7 @@ export class GraphState {
 			levels: this.#levels,
 			radialMode: this.#radialMode,
 			root: this.#root,
+			bundleTension: this.#bundleTension,
 			edgeStyle: this.#edgeStyle,
 			focus: this.#focus ?? this.#value,
 			expanded: this.#expanded
@@ -366,6 +370,7 @@ export class GraphState {
 		this.#focusPath = config.focusPath ?? []
 		this.#levels = floorLevels(config.levels)
 		this.#root = config.root ?? null
+		this.#bundleTension = config.bundleTension
 		this.#radialMode = config.radialMode ?? 'tree'
 	}
 
@@ -466,7 +471,9 @@ export class GraphState {
 	}
 
 	edgePath(edge: RoutedEdge): string {
-		return edgePath(edge, this.#edgeStyle)
+		// A layout that knows more than the endpoints builds its own — a bundled edge follows
+		// the whole chain of ancestors between them, which `edgePath` never sees.
+		return edge.path ?? edgePath(edge, this.#edgeStyle)
 	}
 
 	groupStyle(group: string | undefined): Record<string, string> {

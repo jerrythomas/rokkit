@@ -51,6 +51,7 @@ const meta: DemoMeta = {
 			props: { diagram: 'neighborhood' }
 		},
 		{ id: 'call-graph', label: 'Call tree', mode: 'dynamic', props: { diagram: 'calls' } },
+		{ id: 'structure', label: 'Structure', mode: 'dynamic', props: { diagram: 'structure' } },
 		{ id: 'treemap', label: 'Treemap', mode: 'dynamic', props: { diagram: 'treemap' } },
 		{ id: 'sunburst', label: 'Sunburst', mode: 'dynamic', props: { diagram: 'sunburst' } }
 	],
@@ -98,6 +99,7 @@ const meta: DemoMeta = {
 			{ selector: '[data-graph-diagram-canvas]', desc: 'The canvas within a diagram. Takes the space the footer leaves, so a legend never covers the picture it explains' },
 			{ selector: '[data-graph-diagram-overlay]', desc: 'Control strip over the canvas. Pointer-transparent between the controls, so the gaps still clear the selection' },
 			{ selector: '[data-graph-diagram-footer]', desc: 'Below the canvas, in the layout flow — where the legend sits' },
+			{ selector: '[data-graph-bundle]', desc: 'Straight/bundled toggle for the structure view. Bundled routes each edge through the hierarchy it travels; straight is a plain chord' },
 			{ selector: '[data-graph-depth-controls]', desc: 'How many levels of a containment tree to materialise. Buttons carry data-graph-depth="N"' },
 			{ selector: '[data-graph-edge-style]', desc: 'Curved/angled connector toggle. Carries the active style as its value and aria-pressed for the non-default' },
 			{ selector: '[data-graph-legend]', desc: 'The key. Sections are opt-in: kinds, relations, groups' },

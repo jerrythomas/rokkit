@@ -13,6 +13,7 @@ import DensityControl from '../src/controls/DensityControl.svelte'
 import EdgeStyleControl from '../src/controls/EdgeStyleControl.svelte'
 import ZoomControl from '../src/controls/ZoomControl.svelte'
 import DepthControl from '../src/controls/DepthControl.svelte'
+import BundleControl from '../src/controls/BundleControl.svelte'
 import { ZOOM_MAX, ZOOM_MIN } from '../src/controls/zoom.js'
 
 describe('DensityControl', () => {
@@ -171,5 +172,49 @@ describe('DepthControl', () => {
 		const { container } = render(DepthControl, { levels: 1, max: 3 })
 
 		expect(container.querySelector('[data-graph-depth="0"]')).toBeNull()
+	})
+})
+
+describe('BundleControl', () => {
+	/* Straight or bundled. A toggle rather than a slider: the useful values are the two ends —
+	 * bundled is what makes a few hundred chords readable, straight is what you switch to when
+	 * you want to follow one exactly. */
+
+	it('reads pressed while edges follow the hierarchy', () => {
+		const { container } = render(BundleControl, { bundleTension: 0.85 })
+
+		expect(container.querySelector('[data-graph-bundle]')?.getAttribute('aria-pressed')).toBe(
+			'true'
+		)
+	})
+
+	it('reads unpressed at zero tension, which IS the straight chord', () => {
+		const { container } = render(BundleControl, { bundleTension: 0 })
+
+		expect(container.querySelector('[data-graph-bundle="straight"]')).not.toBeNull()
+	})
+
+	it('drops to zero when switched off', async () => {
+		let picked: number | undefined
+		const { container } = render(BundleControl, {
+			bundleTension: 0.85,
+			onchange: (v: number) => (picked = v)
+		})
+
+		;(container.querySelector('[data-graph-bundle]') as HTMLElement).click()
+		await tick()
+		expect(picked).toBe(0)
+	})
+
+	it('restores the bundled tension when switched back on', async () => {
+		let picked: number | undefined
+		const { container } = render(BundleControl, {
+			bundleTension: 0,
+			onchange: (v: number) => (picked = v)
+		})
+
+		;(container.querySelector('[data-graph-bundle]') as HTMLElement).click()
+		await tick()
+		expect(picked).toBe(0.85)
 	})
 })
