@@ -24,10 +24,11 @@ height** or it collapses.
 | `edges` | `unknown[]` | `[]` | Any edge shape — endpoints resolved through `fields.source` / `fields.target` |
 | `fields` | `GraphFields` | `{}` | Dotted-path map from your shape to the canonical model |
 | `state` | `GraphState` | — | Share one state across Graph / EntityView / EntitiesView |
-| `layout` | `'cluster' \| 'flow' \| 'neighborhood' \| 'points' \| 'world' \| LayoutFn` | `'cluster'` | A built-in by name, or your own pure `(model, options) => LayoutResult` |
+| `layout` | `'cluster' \| 'flow' \| 'neighborhood' \| 'points' \| 'world' \| LayoutFn` | `'flow'` | A built-in by name, or your own pure `(model, options) => LayoutResult` |
 | `density` | `'names' \| 'keys' \| 'full'` | `'keys'` | How much of each node's row list a card shows. `cluster` and `flow` — see Applicability. **Bindable** |
 | `arrange` | `'untangle' \| 'a-z'` | `'untangle'` | Cluster ordering |
 | `groupBy` | `'group' \| 'kind'` | `'group'` | Outer grouping axis |
+| `groupTint` | `boolean` | `false` | Paint each CARD with its group's ramp. Schema stays visible in a layout with no cluster boxes |
 | `nestBy` | `'group' \| 'kind'` | — | Subdivide each cluster by a second axis |
 | `edgeStyle` | `'curved' \| 'orthogonal'` | `'curved'` | Connector geometry |
 | `focus` | `string \| null` | `null` | `neighborhood` only — the node to centre. Defaults to the selection |
@@ -66,6 +67,23 @@ the existing instance through its methods and `update()` rather than swapping in
 
 Expansion is per node on purpose: a reader clicking "+3 more" is asking about that card, and
 expanding all of them answers a question they did not ask.
+
+## The default is `flow`, not `cluster`
+
+A diagram's first job is showing how things reference each other, and `flow` makes that
+readable off the geometry: columns ranked by direction, every edge leaving right and entering
+left. `cluster` is one name away when schema boxes are what you want.
+
+Schema is not lost by the change. `flow` has no cluster boxes — ranking and grouping compete
+for the same axis — so `groupTint` paints each card's leading edge with its group's ramp
+instead:
+
+```svelte
+<Graph {nodes} {edges} {fields} groupTint />
+```
+
+A spine rather than a fill, because a card's surface is already carrying its kind accent, its
+selection state and its dim state, and a second wash over it muddies all three.
 
 ## Applicability — not every option reaches every layout
 

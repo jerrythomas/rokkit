@@ -13,10 +13,11 @@
 		nodes = [],
 		edges = [],
 		fields = {},
-		layout = 'cluster',
+		layout = 'flow',
 		density = $bindable('keys'),
 		arrange = 'untangle',
 		groupBy = 'group',
+		groupTint = false,
 		nestBy = undefined,
 		sizeBy = 'degree',
 		sizeScale = 'linear',
@@ -45,6 +46,7 @@
 		density,
 		arrange,
 		groupBy,
+		groupTint,
 		nestBy,
 		sizeBy,
 		sizeScale,
@@ -190,6 +192,7 @@
 	<div
 		data-graph-paper
 		data-graph-detail={detail}
+		data-graph-group-tint={graph.groupTint ? '' : undefined}
 		data-graph-panning={panning ? '' : undefined}
 		role="presentation"
 		bind:this={paper}

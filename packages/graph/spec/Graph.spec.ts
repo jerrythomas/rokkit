@@ -62,7 +62,9 @@ describe('Graph — structure', () => {
 	})
 
 	it('renders one cluster element per cluster the state reports', () => {
-		const { container } = render(Graph, { state: state() })
+		// Explicit layout: `flow` is the default and reports none, so relying on the default
+		// here would test the wrong thing rather than fail honestly.
+		const { container } = render(Graph, { state: state({ layout: 'cluster' }) })
 
 		expect(container.querySelectorAll('[data-graph-cluster]')).toHaveLength(2)
 	})
@@ -177,6 +179,30 @@ describe('Graph — published attributes', () => {
 		])
 	})
 
+	it('publishes group tint so a clusterless layout can still show schema', () => {
+		// `flow` has no cluster boxes — ranking and schema grouping want the same axis — so the
+		// group ramp has nothing to paint. The cards already carry `--group-fill` and
+		// `data-node-group`; this is the switch that tells CSS to use them.
+		const { container } = render(Graph, { state: state({ groupTint: true }) })
+
+		expect(container.querySelector('[data-graph-group-tint]')).not.toBeNull()
+	})
+
+	it('omits the tint attribute when it is off, so the selector does not match', () => {
+		const { container } = render(Graph, { state: state() })
+
+		expect(container.querySelector('[data-graph-group-tint]')).toBeNull()
+	})
+
+	it('puts the group ramp on each CARD, not only on a cluster box', () => {
+		// Without this the tint attribute would be a switch wired to nothing: the vars have to
+		// be on the element the rule targets.
+		const { container } = render(Graph, { state: state({ groupTint: true }) })
+		const card = container.querySelector('[data-graph-node]') as HTMLElement
+
+		expect(card.style.getPropertyValue('--group-fill')).not.toBe('')
+	})
+
 	it('renders no column headings for a layout that reports none', () => {
 		const { container } = render(Graph, { state: state() })
 
@@ -195,6 +221,7 @@ describe('Graph — published attributes', () => {
 			nodes: shared,
 			edges: [],
 			fields: FIELDS,
+			layout: 'cluster',
 			groupBy: 'group',
 			nestBy: 'kind'
 		})
@@ -232,6 +259,7 @@ describe('Graph — published attributes', () => {
 			nodes: NODES,
 			edges: EDGES,
 			fields: FIELDS,
+			layout: 'cluster',
 			groupBy: 'group',
 			nestBy: 'kind'
 		})
@@ -245,7 +273,7 @@ describe('Graph — published attributes', () => {
 	})
 
 	it('reports depth 0 for every cluster when nesting is off', () => {
-		const { container } = render(Graph, { state: state() })
+		const { container } = render(Graph, { state: state({ layout: 'cluster' }) })
 		const depths = [...container.querySelectorAll('[data-graph-cluster]')].map((el) =>
 			el.getAttribute('data-cluster-depth')
 		)
@@ -352,7 +380,7 @@ describe('Graph — state reflected into the DOM', () => {
 	})
 
 	it('spreads the state group style onto the cluster as custom properties', () => {
-		const { container } = render(Graph, { state: state() })
+		const { container } = render(Graph, { state: state({ layout: 'cluster' }) })
 		const cluster = container.querySelector('[data-graph-cluster]') as HTMLElement
 
 		expect(cluster.style.getPropertyValue('--group-fill')).not.toBe('')

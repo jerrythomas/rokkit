@@ -69,7 +69,7 @@ describe('GraphState — model', () => {
 		['arrange', { arrange: 'a-z' }, (s) => s.arrange, 'untangle'],
 		['edgeStyle', { edgeStyle: 'orthogonal' }, (s) => s.edgeStyle, 'curved'],
 		['mode', { mode: 'dark' }, (s) => s.mode, 'light'],
-		['layout', { layout: 'neighborhood' }, (s) => s.layoutName, 'cluster']
+		['layout', { layout: 'neighborhood' }, (s) => s.layoutName, 'flow']
 	]
 
 	it.each(revertCases)(
@@ -141,9 +141,19 @@ describe('GraphState — model', () => {
 })
 
 describe('GraphState — layout', () => {
-	it('defaults to the cluster layout', () => {
+	it('defaults to the flow layout — direction readable, no cluster boxes', () => {
+		// Changed from `cluster`: an ER diagram's job is showing how tables reference each
+		// other, and `flow` makes that readable off the geometry. Schema is still visible via
+		// `groupTint`, which is why the default could move without losing it.
+		const state = make()
+
+		expect(state.layoutName).toBe('flow')
+		expect(state.clusters).toEqual([])
+	})
+
+	it('still clusters by group when asked for it', () => {
 		expect(
-			make()
+			make({ layout: 'cluster' })
 				.clusters.map((c) => c.name)
 				.sort()
 		).toEqual(['audit', 'public'])
@@ -272,7 +282,7 @@ describe('GraphState — layout', () => {
 	})
 
 	it('nests when the two axes differ', () => {
-		const state = make({ groupBy: 'group', nestBy: 'kind' })
+		const state = make({ layout: 'cluster', groupBy: 'group', nestBy: 'kind' })
 
 		expect(state.nestBy).toBe('kind')
 		expect(state.clusters.some((c) => c.depth === 1)).toBe(true)
@@ -309,7 +319,7 @@ describe('GraphState — layout', () => {
 
 	it('reports a content extent tighter than size, since size adds a right/bottom margin', () => {
 		// A pure max over clusters — no viewport, so it is state's job and testable with no DOM.
-		const state = make()
+		const state = make({ layout: 'cluster' })
 
 		expect(state.contentSize.w).toBeLessThan(state.size.w)
 		expect(state.contentSize.h).toBeLessThan(state.size.h)

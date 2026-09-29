@@ -33,7 +33,9 @@ export type ChannelId = 'color' | 'pattern'
 class GraphExplorerStore {
 	dataset = $state<DatasetId>('ecommerce')
 	view = $state<GraphViewId>('diagram')
-	layout = $state<LayoutId>('cluster')
+	layout = $state<LayoutId>('flow')
+	/** Paint each card with its schema colour — `flow` has no cluster boxes to carry it. */
+	groupTint = $state(true)
 	density = $state<DensityId>('keys')
 	arrange = $state<ArrangeId>('untangle')
 	edgeStyle = $state<EdgeStyleId>('curved')
@@ -63,7 +65,7 @@ class GraphExplorerStore {
 			this.layout = 'world'
 			this.sizeBy = 'declarations'
 		} else {
-			this.layout = id === 'service-calls' ? 'points' : 'cluster'
+			this.layout = id === 'service-calls' ? 'points' : 'flow'
 		}
 	}
 }

@@ -266,6 +266,21 @@
   cursor: pointer;
 }
 
+/* Group tint — schema membership without a cluster box.
+   A ranked layout has no group boxes, because ranking and grouping want the same axis, so the
+   group ramp has nothing to land on and schema becomes invisible the moment you leave
+   `cluster`. This reserves a spine down the card's leading edge; each STYLE colours it from
+   `--group-stroke`, which the card already carries.
+
+   A spine rather than a fill: the card's surface is already carrying the kind accent, the
+   selection state and the dim state, and a second wash over it muddies all three.
+
+   Width only — no colour in base, and the colour rule living later in each style is also what
+   keeps a style's own `border-color` shorthand from overriding it. */
+[data-graph-group-tint] [data-graph-node] {
+  border-inline-start-width: var(--graph-group-spine, 3px);
+}
+
 [data-graph-node-head] {
   display: flex;
   align-items: center;

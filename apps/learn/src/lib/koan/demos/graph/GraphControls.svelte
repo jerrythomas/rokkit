@@ -124,6 +124,16 @@
 			set: (v: string) => (explorer.edgeStyle = v as typeof explorer.edgeStyle)
 		},
 		{
+			id: 'group-tint',
+			label: 'Tint by group',
+			options: [
+				{ value: 'on', label: 'On' },
+				{ value: 'off', label: 'Off' }
+			],
+			get: () => (explorer.groupTint ? 'on' : 'off'),
+			set: (v: string) => (explorer.groupTint = v === 'on')
+		},
+		{
 			id: 'using',
 			label: 'Differentiate by',
 			options: [

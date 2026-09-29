@@ -321,3 +321,9 @@
   color: var(--ink);
   border: 1px solid var(--paper-edge);
 }
+
+/* The group-tint spine. Base reserves the width; the colour is a style decision, and
+   living after the card's own `border-color` is what stops the shorthand resetting it. */
+[data-style='zen-sumi'] [data-graph-group-tint] [data-graph-node] {
+  border-inline-start-color: var(--group-stroke, var(--paper-mute));
+}

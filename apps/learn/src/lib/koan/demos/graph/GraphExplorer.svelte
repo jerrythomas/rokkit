@@ -37,6 +37,7 @@
 			edges: dataset.edges,
 			fields: dataset.fields,
 			layout: explorer.layout,
+			groupTint: explorer.groupTint,
 			density: explorer.density,
 			arrange: explorer.arrange,
 			...GROUPING[explorer.grouping],

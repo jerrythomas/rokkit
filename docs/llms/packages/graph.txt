@@ -92,8 +92,8 @@ Your own slots in exactly the same way.
 
 | Name | Shape | For |
 |------|-------|-----|
-| `cluster` | Cards in group boxes | The default. Entity diagrams, grouped by schema |
-| `flow` | Cards in columns by reference direction | Tracing links. Every edge leaves right, enters left |
+| `flow` | Cards in columns by reference direction | **The default.** Every edge leaves right, enters left |
+| `cluster` | Cards in group boxes | Entity diagrams grouped by schema |
 | `neighborhood` | One focus node + its 1-hop neighbours | Walking a graph one step at a time |
 | `points` | Degree-sized rounded rects, shelf-packed | Dense graphs — a code index, 1000+ nodes |
 | `world` | Nested rectangles, area proportional to a measure | Containment — where the mass of a codebase is |
@@ -117,6 +117,7 @@ import { cluster, flow, neighborhood, points, world, layouts } from '@rokkit/gra
 | `sizeScale` | `'linear'` | `points` only — `log` for a measure spanning orders of magnitude |
 | `focusPath` | `[]` | `world` only — the subtree to render as the whole canvas |
 | `levels` | `2` | `world` only — how many levels below the focus to materialise |
+| `groupTint` | `false` | Paint each card with its group's ramp — schema without cluster boxes |
 | `expanded` | — | Node ids shown at full detail whatever `density` says |
 
 ### Two-level clustering

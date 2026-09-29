@@ -63,6 +63,14 @@ export type GraphStateConfig = {
 	focusPath?: string[]
 	/** `world` only — levels below the focus to materialise. Defaults to 2. */
 	levels?: number
+	/**
+	 * Paint each CARD with its group's ramp, not just the cluster box around it.
+	 *
+	 * A clusterless layout — `flow`, `neighborhood` — has no box for the ramp to land on,
+	 * so schema membership becomes invisible the moment you leave `cluster`. The cards
+	 * already carry the custom properties; this is what tells CSS to use them.
+	 */
+	groupTint?: boolean
 	edgeStyle?: EdgeStyle
 	focus?: string | null
 	value?: string | null
@@ -146,7 +154,8 @@ export class GraphState {
 	#nodes = $state<unknown[]>([])
 	#edges = $state<unknown[]>([])
 	#fields = $state<GraphFields>({})
-	#layout = $state<string | LayoutFn>('cluster')
+	#layout = $state<string | LayoutFn>('flow')
+	#groupTint = $state(false)
 	#density = $state<Density>('keys')
 	#arrange = $state<Arrange>('untangle')
 	#groupBy = $state<NodeAxis>('group')
@@ -283,7 +292,7 @@ export class GraphState {
 		this.#nodes = config.nodes ?? []
 		this.#edges = config.edges ?? []
 		this.#fields = config.fields ?? {}
-		this.#layout = config.layout ?? 'cluster'
+		this.#layout = config.layout ?? 'flow'
 		this.#focus = config.focus ?? null
 	}
 
@@ -294,6 +303,7 @@ export class GraphState {
 		// Rejected rather than rendered: a box subdivided by its OWN axis yields exactly one
 		// child containing everything, which reads as a rendering fault, not a no-op.
 		this.#nestBy = config.nestBy === outer ? null : (config.nestBy ?? null)
+		this.#groupTint = config.groupTint ?? false
 	}
 
 	/** What a node's size encodes, and how far a neighbourhood reaches. */
@@ -512,6 +522,11 @@ export class GraphState {
 
 	get groupBy(): NodeAxis {
 		return this.#groupBy
+	}
+
+	/** Whether cards carry the group ramp themselves. See `GraphStateConfig.groupTint`. */
+	get groupTint(): boolean {
+		return this.#groupTint
 	}
 
 	get nestBy(): NodeAxis | null {

@@ -102,6 +102,7 @@ const meta: DemoMeta = {
 			{ selector: '[data-column-depth]', desc: 'Hops from the focus. 0 is the focus column' },
 			{ selector: '[data-cluster-depth]', desc: '0 for an outer box, 1 for one nested inside it. Outer boxes are emitted first, so paint order nests them with no DOM tree' },
 			{ selector: '[data-graph-cluster-label]', desc: 'Group name + count, or name + measure where the layout sizes by one. Truncates with an ellipsis rather than hiding, so how much is readable follows the zoom' },
+			{ selector: '[data-graph-group-tint]', desc: 'Set on the canvas when `groupTint` is on — cards carry a spine in their group colour, which is how schema stays visible in a layout with no cluster boxes' },
 			{ selector: '[data-graph-node-id]', desc: 'The node a box IS, on a containment layout where a leaf is still a box rather than a card. Makes it selectable; absent on a region, which is not a node' },
 			// Node card
 			{ selector: '[data-graph-node]', desc: 'Node card — a <button>' },

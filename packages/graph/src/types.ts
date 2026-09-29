@@ -126,6 +126,8 @@ export type GraphProps = {
 	arrange?: import('./layout/types.js').Arrange
 	/** Outer grouping axis — `group` (default) or `kind`. */
 	groupBy?: import('./layout/types.js').NodeAxis
+	/** Paint each card with its group's ramp — schema stays visible in a clusterless layout. */
+	groupTint?: boolean
 	/** Subdivide each cluster by a second axis. Omit for one level. */
 	nestBy?: import('./layout/types.js').NodeAxis
 	/**
