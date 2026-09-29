@@ -9629,3 +9629,74 @@ Task 21 (docs) closed here: `llms/{packages,components}/graph.txt`, the graphs
 guide, the index, both READMEs, `12-priority.md`, `agents/memory.md`. **Task 22 —
 dbd consuming the package — remains the acceptance gate, and nothing publishes
 before it passes.**
+
+---
+
+## 2026-09-29 — one box shape, and a layout where direction is readable
+
+`0d331a06`, `63bdfa55`, `6ba66953`. Two reports from the demo, and both turned
+out to be about the same habit: a view asserting more structure than it has.
+
+**The treemap was nesting two different things.** `world` rendered a leaf as a
+node CARD and a container as a label box. That reads as two unrelated kinds of
+object rather than as depth, and it dragged the card's furniture in with it —
+icon, kind tag, and a row count that is `0` for every codebase module, because a
+module has no rows. The CSS had already gone along with it, writing every world
+rule twice, once per selector. `world` now returns **no cards at all**: a leaf is
+a `Cluster` carrying `nodeId` and `kind`, so uniform structure costs no identity.
+
+Three defects surfaced only once the boxes were uniform, because the old tests
+looped clusters and the leaves were cards:
+
+- **The zero-measure floor was backwards.** `MIN_SHARE * total` is applied PER
+  CHILD, so it sums to `n * k * total` — 2px at two children, 94% of the canvas
+  at 470. Exactly inverted from what real data needs. Measured against the equal
+  slice instead, the total caps at `k` whatever n is. 79 of this repo's own 470
+  modules have degree 0, so an unmeasured node is the common case.
+- **Labels ran across their neighbours** and interleaved: `UTILS.JS · 1INDEX.JS ·
+  11` was two boxes, not a typo.
+- **A pixel-threshold `display: none` made label visibility a property of the
+  DATA.** A container query measures canvas units, so zooming never revealed a
+  small box's name. Labels now ellipsise and each zoom step buys characters —
+  visible text on the codebase view goes 3931px → 7181px over four zoom steps.
+
+**Controls that do nothing now disappear.** `LAYOUT_OPTIONS` / `appliesTo`
+publish which options bite per layout. `density` was dead in `world`, `points`
+AND `neighborhood` — the last builds its cards at `full` unconditionally, which
+nothing had noticed. The on-canvas toggle reads `graph.layoutName`, not the
+`layout` prop: every real consumer passes a ready-made state, leaving the prop
+answering for a layout that is not on screen. A prop-built fixture cannot catch
+that, so the spec pins the passed-state case.
+
+**`flow` — the ER diagram's links were untraceable, and the two asks were one
+feature.** Measured before: 5 of 9 edges passed over a card that was not one of
+their endpoints. `edges.ts` picks a connector's side by relative POSITION, so an
+exit side tells you where the other box happens to sit, not which way the
+reference points. But fixing the ports on schema-grouped masonry makes burial
+*worse* — a right-exit connector reaching a left-hand table sweeps back across
+everything between. Ranking is what makes x-position mean direction, and only
+then are fixed ports honest. After: **2 of 9.**
+
+`rank.ts` is longest-path with DFS cycle breaking (mutual foreign keys are
+normal; broken edges are kept and marked `back`, never dropped). `order.ts` is
+barycentre sweeps scored by an explicit crossing count, keeping the best seen so
+it never returns worse than the order it was given. A new layout rather than a
+change to `cluster`: ranking and schema grouping compete for the same axis, and
+schema grouping is wanted in the ER view. **Stated as a limit:** a long edge is
+still drawn straight over any box between its endpoints — that is the remaining
+2 of 9, and routing around needs dummy nodes, which is its own slice.
+
+The world leaf box became a real `<button>` via `<svelte:element>` — one
+attribute list, one child, still one box shape, but Enter/Space, focus order and
+the announcement come free instead of being rebuilt from role+tabindex. It
+cleared an a11y warning the build had been emitting that no unit test could see.
+
+**Lessons worth keeping.** A `100%` coverage gate earns its keep: it found three
+untested behaviours in `flow` (row anchoring, a two-row self-loop, and crossings
+across non-adjacent layers — and that last number is what the sweep *optimises*,
+so a wrong one picks the worse layout). And: **check which port `vite preview`
+actually bound.** A stale server on 4173 from an earlier session had me reading
+the old build and concluding a correct fix had not applied.
+
+811 unit (graph + learn) and 41 graph e2e green; lint/types 0/0; graph coverage
+gate passes with `src/layout` at 100%. Design in `docs/design/25-flow-layout.md`.
