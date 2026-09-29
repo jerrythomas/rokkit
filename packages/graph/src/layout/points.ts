@@ -29,6 +29,7 @@
    pixels and a re-render never reshuffles the diagram under the reader. */
 
 import { buildEdges } from './edges.js'
+import { warnUnknownOptions } from './options.js'
 import type { Cards, Cluster, LayoutFn, LayoutResult } from './types.js'
 import type { GraphModel, GraphNode } from '../types.js'
 
@@ -225,6 +226,7 @@ function buildDots(model: GraphModel, clusters: Cluster[], sizeOf: Map<string, S
  * `arrange` is ignored because placement is fully determined by degree and group.
  */
 export const points: LayoutFn = (model, _options): LayoutResult => {
+	warnUnknownOptions(_options, 'points')
 	if (model.nodes.length === 0) {
 		return { clusters: [], cards: {}, edges: [], size: { w: 0, h: 0 } }
 	}

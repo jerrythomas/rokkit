@@ -113,6 +113,48 @@ describe('neighborhood layout', () => {
 		expect(Object.keys(neighborhood(model, { focus: 'p.users' }).cards)).not.toContain('nowhere')
 	})
 
+	it('places a MUTUAL neighbour by its dominant direction, not just "has an out edge"', () => {
+		// #160. `out.length > 0` won outright, so a node with edges BOTH ways landed right and
+		// its inbound edge was drawn right-to-left — against the convention the layout states.
+		// Routine in a call graph: mutual recursion, a callback registered with its invoker, a
+		// visitor dispatching back into its walker.
+		const FIELDS2: GraphFields = { source: 'source', target: 'target' }
+		const nodes = [
+			{ id: 'focus', label: 'resolve_edges' },
+			{ id: 'mostlyCaller', label: 'walk_scope' },
+			{ id: 'mostlyCallee', label: 'lookup_fqn' }
+		]
+		const edges = [
+			// mostlyCaller: 2 in, 1 out → left
+			{ source: 'mostlyCaller', target: 'focus' },
+			{ source: 'mostlyCaller', target: 'focus' },
+			{ source: 'focus', target: 'mostlyCaller' },
+			// mostlyCallee: 1 in, 2 out → right
+			{ source: 'focus', target: 'mostlyCallee' },
+			{ source: 'focus', target: 'mostlyCallee' },
+			{ source: 'mostlyCallee', target: 'focus' }
+		]
+		const result = neighborhood(normalizeGraph(nodes, edges, FIELDS2), { focus: 'focus' })
+
+		expect(result.cards.mostlyCaller.x).toBeLessThan(result.cards.focus.x)
+		expect(result.cards.mostlyCallee.x).toBeGreaterThan(result.cards.focus.x)
+	})
+
+	it('puts an evenly bidirectional neighbour on the LEFT, reading it as a caller', () => {
+		// A tie has no dominant direction, so one of its two edges must run backwards whatever
+		// we pick — one card per node is the constraint. Left is the deliberate choice: the
+		// column reads "things that reach this", which is what a reader scans for first.
+		const FIELDS2: GraphFields = { source: 'source', target: 'target' }
+		const nodes = [{ id: 'focus', label: 'a' }, { id: 'partner', label: 'b' }]
+		const edges = [
+			{ source: 'focus', target: 'partner' },
+			{ source: 'partner', target: 'focus' }
+		]
+		const result = neighborhood(normalizeGraph(nodes, edges, FIELDS2), { focus: 'focus' })
+
+		expect(result.cards.partner.x).toBeLessThan(result.cards.focus.x)
+	})
+
 	it('reports no clusters — neighbourhood is ungrouped by design', () => {
 		const result = neighborhood(model(), { focus: 'p.users' })
 

@@ -9,6 +9,7 @@ import {
 	pack
 } from './clusters.js'
 import { buildEdges } from './edges.js'
+import { warnUnknownOptions } from './options.js'
 import { nestedClusters } from './nested.js'
 import type { LayoutFn, LayoutResult } from './types.js'
 
@@ -22,6 +23,7 @@ import type { LayoutFn, LayoutResult } from './types.js'
  * area-descending order with alphabetical lists.
  */
 export const cluster: LayoutFn = (model, options): LayoutResult => {
+	warnUnknownOptions(options, 'cluster')
 	const density = options.density ?? 'keys'
 	const arrange = options.arrange ?? 'untangle'
 

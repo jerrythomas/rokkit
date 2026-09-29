@@ -1,6 +1,10 @@
 /* Entity-centric layout: the focus node centred, nodes that reference it stacked on
    the left, nodes it references on the right.
 
+   EXACTLY ONE HOP, always. There is no depth option, and a caller passing one gets a warning
+   rather than silence (#162) — a two-hop view is a different picture with its own problems
+   (a hub explodes, and five columns need headings to be readable at all), not a parameter.
+
    Ported from dbd's EntityDiagram.svelte. That component carried its own geometry
    constants, buildCard, anchorY and path — roughly 100 lines duplicating cards.ts and
    edges.ts with slightly different numbers. Here it reuses both, so the duplication is
@@ -9,6 +13,7 @@
 
 import { buildCards } from './cards.js'
 import { buildEdges } from './edges.js'
+import { warnUnknownOptions } from './options.js'
 import { CARD_W } from './constants.js'
 import type { Card, Cards, LayoutFn, LayoutResult } from './types.js'
 import type { GraphEdge, GraphModel, GraphNode } from '../types.js'
@@ -115,6 +120,8 @@ function buildNeighbourCards(
  * the rows the focus references, capped at 8 — both caps carried over from dbd.
  */
 export const neighborhood: LayoutFn = (model, options): LayoutResult => {
+	warnUnknownOptions(options, 'neighborhood')
+
 	const focus = options.focus ? model.byId.get(options.focus) : undefined
 	if (!focus) return EMPTY
 
@@ -125,9 +132,22 @@ export const neighborhood: LayoutFn = (model, options): LayoutResult => {
 	}
 
 	const focusCard = cards[focus.id]
-	// A neighbour the focus points at sits right; one that points at the focus sits left.
-	const right = neighbours.filter((n) => n.out.length > 0).map((n) => cards[n.id])
-	const left = neighbours.filter((n) => n.out.length === 0).map((n) => cards[n.id])
+	/*
+	 * A neighbour the focus points at sits right; one that points at the focus sits left.
+	 *
+	 * Split on the DOMINANT direction, not on "has an out edge at all" (#160). A node with
+	 * edges both ways is routine in a call graph — mutual recursion, a callback registered
+	 * with its invoker, a visitor dispatching back into its walker — and testing
+	 * `out.length > 0` put every one of them on the right, drawing its inbound edge
+	 * right-to-left against the convention this layout states.
+	 *
+	 * One card per node is the constraint, so a TIE still draws one edge backwards whichever
+	 * side wins. Left is the deliberate pick: that column reads "things that reach this",
+	 * which is what a reader scans for before changing something.
+	 */
+	const isRight = (n: (typeof neighbours)[number]) => n.out.length > n.in.length
+	const right = neighbours.filter(isRight).map((n) => cards[n.id])
+	const left = neighbours.filter((n) => !isRight(n)).map((n) => cards[n.id])
 
 	const height = Math.max(focusCard.h, stackHeight(left), stackHeight(right), MIN_H) + H_PAD
 	const hasRight = right.length > 0 || selfEdges.length > 0
