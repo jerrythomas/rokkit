@@ -183,6 +183,58 @@ describe('world layout', () => {
 		expect(state().routedEdges).toEqual([])
 	})
 
+	it('captions a box with its MEASURE, not its child count', () => {
+		// A number beside a box reads as the thing driving its size. Showing the child count
+		// where AREA encodes a measure is actively misleading: `components · 63` was 63 files
+		// in a box sized by 63 declarations, and the two matching was a coincidence that made
+		// the label look self-consistent while the neighbouring boxes did not add up.
+		const s = state({ sizeBy: 'weight' })
+		const dbd = s.clusters.find((c) => c.name === 'dbd')
+
+		expect(dbd?.caption).toBe('135')
+		expect(dbd?.count).not.toBe(135)
+	})
+
+	it('captions by whatever measure is active, not one fixed field', () => {
+		// The default is `degree`, so the caption tracks that rather than a weight nobody asked
+		// for — the number and the area always agree, whichever measure is driving them.
+		const s = state()
+
+		expect(s.clusters.find((c) => c.name === 'dbd')?.caption).toBe('6')
+	})
+
+	it('compacts a large caption so it fits a label strip', () => {
+		const big = [
+			{ id: 'a', label: 'a', path: ['p', 'a'], weight: 1_500 },
+			{ id: 'b', label: 'b', path: ['p', 'b'], weight: 1_500 }
+		]
+		const s = new GraphState({
+			nodes: big,
+			edges: [],
+			fields: FIELDS,
+			layout: 'world',
+			sizeBy: 'weight'
+		})
+
+		expect(s.clusters.find((c) => c.name === 'p')?.caption).toBe('3.0k')
+	})
+
+	it('compacts millions too — a real index counts in them', () => {
+		const huge = [
+			{ id: 'a', label: 'a', path: ['p', 'a'], weight: 2_400_000 },
+			{ id: 'b', label: 'b', path: ['p', 'b'], weight: 100_000 }
+		]
+		const s = new GraphState({
+			nodes: huge,
+			edges: [],
+			fields: FIELDS,
+			layout: 'world',
+			sizeBy: 'weight'
+		})
+
+		expect(s.clusters.find((c) => c.name === 'p')?.caption).toBe('2.5M')
+	})
+
 	it('is deterministic', () => {
 		expect(state().cards).toEqual(state().cards)
 	})

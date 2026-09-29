@@ -440,7 +440,7 @@
 				"SkinSwitcherToggle.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 43
@@ -476,7 +476,7 @@
 				"ThemeSwitcherToggle.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 66
@@ -600,7 +600,7 @@
 				"FormPlugin.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 313
@@ -617,7 +617,7 @@
 				"ListPlugin.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 102
@@ -634,7 +634,7 @@
 				"MermaidPlugin.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 40
@@ -651,7 +651,7 @@
 				"PlotPlugin.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 278
@@ -668,7 +668,7 @@
 				"SparkTablePlugin.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 112
@@ -685,7 +685,7 @@
 				"SparklinePlugin.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 43
@@ -702,7 +702,7 @@
 				"StepperPlugin.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 114
@@ -719,7 +719,7 @@
 				"TablePlugin.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 58
@@ -770,7 +770,7 @@
 				"AnimatedPlot.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 411
@@ -787,7 +787,7 @@
 				"Chart.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 94
@@ -804,7 +804,7 @@
 				"ChartExporter.svelte"
 			],
 			"m": {
-				"declarations": 2,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 130
@@ -821,7 +821,7 @@
 				"ChartLegend.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 153
@@ -838,7 +838,7 @@
 				"ChartProvider.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 19
@@ -856,7 +856,7 @@
 				"Panel.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 58
@@ -873,7 +873,7 @@
 				"FacetPlot.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 118
@@ -891,7 +891,7 @@
 				"Axis.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 157
@@ -909,7 +909,7 @@
 				"Grid.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 55
@@ -927,7 +927,7 @@
 				"Legend.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 273
@@ -945,7 +945,7 @@
 				"Root.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 99
@@ -963,7 +963,7 @@
 				"Timeline.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 121
@@ -981,7 +981,7 @@
 				"Tooltip.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 94
@@ -1016,7 +1016,7 @@
 				"Plot.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 330
@@ -1050,7 +1050,7 @@
 				"PlotSurface.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 163
@@ -1067,7 +1067,7 @@
 				"Spark.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 166
@@ -1101,7 +1101,7 @@
 				"Sparkline.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 138
@@ -1118,7 +1118,7 @@
 				"Symbol.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 32
@@ -1135,7 +1135,7 @@
 				"Texture.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 29
@@ -1153,7 +1153,7 @@
 				"AreaChart.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 94
@@ -1171,7 +1171,7 @@
 				"BarChart.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 92
@@ -1189,7 +1189,7 @@
 				"BoxPlot.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 45
@@ -1207,7 +1207,7 @@
 				"BubbleChart.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 83
@@ -1225,7 +1225,7 @@
 				"LineChart.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 89
@@ -1243,7 +1243,7 @@
 				"PieChart.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 55
@@ -1261,7 +1261,7 @@
 				"RadarChart.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 107
@@ -1279,7 +1279,7 @@
 				"ScatterPlot.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 87
@@ -1297,7 +1297,7 @@
 				"ViolinPlot.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 45
@@ -1315,7 +1315,7 @@
 				"CrossFilter.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 46
@@ -1333,7 +1333,7 @@
 				"FilterBar.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 36
@@ -1351,7 +1351,7 @@
 				"FilterHistogram.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 317
@@ -1369,7 +1369,7 @@
 				"FilterSlider.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 95
@@ -1405,7 +1405,7 @@
 				"Bar.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 48
@@ -1423,7 +1423,7 @@
 				"ColorRamp.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 74
@@ -1441,7 +1441,7 @@
 				"ContinuousLegend.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 85
@@ -1459,7 +1459,7 @@
 				"DefinePatterns.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 41
@@ -1477,7 +1477,7 @@
 				"DiscreteLegend.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 58
@@ -1495,7 +1495,7 @@
 				"Label.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 18
@@ -1513,7 +1513,7 @@
 				"SymbolGrid.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 32
@@ -1549,7 +1549,7 @@
 				"Arc.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 107
@@ -1567,7 +1567,7 @@
 				"Area.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 130
@@ -1585,7 +1585,7 @@
 				"Bar.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 232
@@ -1603,7 +1603,7 @@
 				"Box.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 165
@@ -1621,7 +1621,7 @@
 				"Candlestick.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 83
@@ -1639,7 +1639,7 @@
 				"Heatmap.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 60
@@ -1657,7 +1657,7 @@
 				"Hexbin.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 60
@@ -1675,7 +1675,7 @@
 				"Highlight.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 127
@@ -1693,7 +1693,7 @@
 				"Jitter.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 68
@@ -1711,7 +1711,7 @@
 				"LabelPill.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 24
@@ -1729,7 +1729,7 @@
 				"Line.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 155
@@ -1747,7 +1747,7 @@
 				"Point.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 151
@@ -1765,7 +1765,7 @@
 				"Radar.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 353
@@ -1783,7 +1783,7 @@
 				"Ribbon.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 93
@@ -1801,7 +1801,7 @@
 				"Rule.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 118
@@ -1819,7 +1819,7 @@
 				"Trend.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 90
@@ -1837,7 +1837,7 @@
 				"Violin.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 71
@@ -1855,7 +1855,7 @@
 				"Waterfall.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 83
@@ -2812,7 +2812,7 @@
 				"DefinePatterns.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 38
@@ -2830,7 +2830,7 @@
 				"PatternDef.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 36
@@ -2993,7 +2993,7 @@
 				"outline.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 63
@@ -3011,7 +3011,7 @@
 				"solid.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 63
@@ -4035,7 +4035,7 @@
 				"FieldLayout.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 69
@@ -4052,7 +4052,7 @@
 				"FormRenderer.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 347
@@ -4069,7 +4069,7 @@
 				"InfoField.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 29
@@ -4086,7 +4086,7 @@
 				"Input.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 44
@@ -4103,7 +4103,7 @@
 				"InputField.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 98
@@ -4120,7 +4120,7 @@
 				"StatusList.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 72
@@ -4137,7 +4137,7 @@
 				"StepIndicator.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 44
@@ -4155,7 +4155,7 @@
 				"DisplayCardGrid.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 84
@@ -4173,7 +4173,7 @@
 				"DisplayList.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 40
@@ -4191,7 +4191,7 @@
 				"DisplaySection.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 33
@@ -4209,7 +4209,7 @@
 				"DisplayTable.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 82
@@ -4227,7 +4227,7 @@
 				"DisplayValue.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 49
@@ -4280,7 +4280,7 @@
 				"ArrayEditor.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 132
@@ -4298,7 +4298,7 @@
 				"InputCheckbox.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 73
@@ -4316,7 +4316,7 @@
 				"InputColor.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 41
@@ -4334,7 +4334,7 @@
 				"InputDate.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 49
@@ -4352,7 +4352,7 @@
 				"InputDateTime.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 49
@@ -4370,7 +4370,7 @@
 				"InputEmail.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 55
@@ -4388,7 +4388,7 @@
 				"InputFile.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 42
@@ -4406,7 +4406,7 @@
 				"InputMonth.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 49
@@ -4424,7 +4424,7 @@
 				"InputNumber.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 51
@@ -4442,7 +4442,7 @@
 				"InputPassword.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 53
@@ -4460,7 +4460,7 @@
 				"InputRadio.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 56
@@ -4478,7 +4478,7 @@
 				"InputRange.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 47
@@ -4496,7 +4496,7 @@
 				"InputSelect.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 52
@@ -4514,7 +4514,7 @@
 				"InputSwatch.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 29
@@ -4532,7 +4532,7 @@
 				"InputSwitch.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 13
@@ -4550,7 +4550,7 @@
 				"InputTel.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 53
@@ -4568,7 +4568,7 @@
 				"InputText.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 53
@@ -4586,7 +4586,7 @@
 				"InputTextArea.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 52
@@ -4604,7 +4604,7 @@
 				"InputTime.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 49
@@ -4622,7 +4622,7 @@
 				"InputToggle.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 19
@@ -4640,7 +4640,7 @@
 				"InputUrl.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 53
@@ -4658,7 +4658,7 @@
 				"InputWeek.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 49
@@ -4694,7 +4694,7 @@
 				"Input.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 324
@@ -4926,7 +4926,7 @@
 				"Graph.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 387
@@ -5214,7 +5214,7 @@
 				"declarations": 13,
 				"tested": 0,
 				"files": 1,
-				"lines": 171
+				"lines": 180
 			}
 		},
 		{
@@ -5232,7 +5232,7 @@
 				"declarations": 1,
 				"tested": 1,
 				"files": 1,
-				"lines": 147
+				"lines": 158
 			}
 		},
 		{
@@ -5318,7 +5318,7 @@
 				"EntitiesView.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 84
@@ -5336,7 +5336,7 @@
 				"EntityView.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 117
@@ -5354,7 +5354,7 @@
 				"NoteBlocks.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 32
@@ -5461,7 +5461,7 @@
 				"MockItem.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 8
@@ -5479,7 +5479,7 @@
 				"StaticContent.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 2
@@ -6038,7 +6038,7 @@
 				"MarkdownRenderer.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 1,
 				"files": 1,
 				"lines": 122
@@ -6056,7 +6056,7 @@
 				"AlertList.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 48
@@ -6074,7 +6074,7 @@
 				"Avatar.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 52
@@ -6092,7 +6092,7 @@
 				"Badge.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 43
@@ -6110,7 +6110,7 @@
 				"BreadCrumbs.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 76
@@ -6128,7 +6128,7 @@
 				"Button.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 98
@@ -6146,7 +6146,7 @@
 				"ButtonGroup.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 10
@@ -6164,7 +6164,7 @@
 				"Card.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 55
@@ -6182,7 +6182,7 @@
 				"Carousel.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 145
@@ -6218,7 +6218,7 @@
 				"ChatHistory.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 43
@@ -6236,7 +6236,7 @@
 				"ChatMessage.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 28
@@ -6254,7 +6254,7 @@
 				"ChatShell.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 42
@@ -6272,7 +6272,7 @@
 				"ChatTimeline.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 33
@@ -6290,7 +6290,7 @@
 				"Code.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 190
@@ -6308,7 +6308,7 @@
 				"CodeBlock.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 131
@@ -6326,7 +6326,7 @@
 				"CodeGroup.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 422
@@ -6344,7 +6344,7 @@
 				"CommandPalette.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 102
@@ -6362,7 +6362,7 @@
 				"Connector.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 41
@@ -6380,7 +6380,7 @@
 				"Divider.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 18
@@ -6398,7 +6398,7 @@
 				"Dropdown.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 184
@@ -6416,7 +6416,7 @@
 				"FloatingAction.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 368
@@ -6434,7 +6434,7 @@
 				"FloatingNavigation.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 257
@@ -6452,7 +6452,7 @@
 				"Frame.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 31
@@ -6470,7 +6470,7 @@
 				"Grid.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 125
@@ -6488,7 +6488,7 @@
 				"ItemContent.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 33
@@ -6506,7 +6506,7 @@
 				"ItemSwitch.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 41
@@ -6524,7 +6524,7 @@
 				"ItemToggle.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 104
@@ -6542,7 +6542,7 @@
 				"LazyTree.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 165
@@ -6560,7 +6560,7 @@
 				"List.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 260
@@ -6578,7 +6578,7 @@
 				"LockMode.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 17
@@ -6596,7 +6596,7 @@
 				"Menu.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 257
@@ -6614,7 +6614,7 @@
 				"Message.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 55
@@ -6632,7 +6632,7 @@
 				"MultiSelect.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 354
@@ -6650,7 +6650,7 @@
 				"NavContent.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 28
@@ -6668,7 +6668,7 @@
 				"PaletteManager.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 361
@@ -6686,7 +6686,7 @@
 				"Pill.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 66
@@ -6704,7 +6704,7 @@
 				"ProgressBar.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 25
@@ -6722,7 +6722,7 @@
 				"Range.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 349
@@ -6740,7 +6740,7 @@
 				"Rating.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 96
@@ -6758,7 +6758,7 @@
 				"ResponsiveGrid.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 22
@@ -6776,7 +6776,7 @@
 				"Reveal.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 25
@@ -6794,7 +6794,7 @@
 				"SearchFilter.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 89
@@ -6812,7 +6812,7 @@
 				"Select.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 502
@@ -6830,7 +6830,7 @@
 				"Shine.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 70
@@ -6848,7 +6848,7 @@
 				"Stack.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 24
@@ -6866,7 +6866,7 @@
 				"StatusList.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 20
@@ -6884,7 +6884,7 @@
 				"Stepper.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 136
@@ -6902,7 +6902,7 @@
 				"Swatch.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 104
@@ -6920,7 +6920,7 @@
 				"Switch.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 72
@@ -6938,7 +6938,7 @@
 				"Table.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 209
@@ -6956,7 +6956,7 @@
 				"Tabs.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 220
@@ -6974,7 +6974,7 @@
 				"Tilt.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 57
@@ -6992,7 +6992,7 @@
 				"Timeline.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 62
@@ -7010,7 +7010,7 @@
 				"Toggle.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 154
@@ -7028,7 +7028,7 @@
 				"Toolbar.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 230
@@ -7046,7 +7046,7 @@
 				"ToolbarGroup.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 18
@@ -7064,7 +7064,7 @@
 				"Tooltip.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 122
@@ -7082,7 +7082,7 @@
 				"Tree.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 155
@@ -7100,7 +7100,7 @@
 				"TreeTable.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 319
@@ -7118,7 +7118,7 @@
 				"UploadFileStatus.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 103
@@ -7136,7 +7136,7 @@
 				"UploadProgress.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 127
@@ -7154,7 +7154,7 @@
 				"UploadTarget.svelte"
 			],
 			"m": {
-				"declarations": 0,
+				"declarations": 1,
 				"tested": 0,
 				"files": 1,
 				"lines": 126

@@ -232,7 +232,7 @@
 				style:height="{cluster.h}px"
 				style={graph.groupStyleAttr(cluster.name)}
 			>
-				<span data-graph-cluster-label>{cluster.name} · {cluster.count}</span>
+				<span data-graph-cluster-label>{cluster.name} · {cluster.caption ?? cluster.count}</span>
 			</div>
 		{/each}
 

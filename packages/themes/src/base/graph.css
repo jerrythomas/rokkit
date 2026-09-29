@@ -379,6 +379,65 @@
   display: none;
 }
 
+/* ─── the world layout (treemap) ────────────────────────────────────────────
+   A box's area IS its measure, so the picture carries the information and the text is
+   annotation. Two rules keep the annotation honest. */
+
+/* Counter-scaled, because the world is fitted to the viewport and a 10px label inside a
+   1200px canvas shown at 0.58 renders at 6px. The label should be the same size on screen
+   whatever the fit, exactly as the points layout's hover label already is. */
+[data-graph-layout='world'] [data-graph-cluster-label],
+[data-graph-layout='world'] [data-graph-node-title] {
+  transform: scale(var(--graph-label-counter-scale, 1));
+  transform-origin: 0 0;
+}
+
+/* A box smaller than its own label rendered the text CLIPPED — one or two characters, or a
+   sliver of a glyph — which reads as "some boxes have labels and some do not" rather than as
+   a size. Below a threshold the label is dropped outright; the box keeps its colour, its
+   area and its hover, which is what still carries meaning at that size. */
+[data-graph-layout='world'] [data-graph-cluster],
+[data-graph-layout='world'] [data-graph-node] {
+  container-type: size;
+}
+
+@container (max-width: 90px) {
+  [data-graph-cluster-label],
+  [data-graph-node-title],
+  [data-graph-node-kind],
+  [data-graph-node-icon] {
+    display: none;
+  }
+}
+
+@container (max-height: 34px) {
+  [data-graph-cluster-label],
+  [data-graph-node-title] {
+    display: none;
+  }
+}
+
+/* Hover brings it back at any size, over the neighbours rather than inside a box too small
+   to hold it — the same deal the points layout makes. */
+[data-graph-layout='world'] [data-graph-node]:hover,
+[data-graph-layout='world'] [data-graph-node]:focus-visible {
+  z-index: 3;
+}
+
+[data-graph-layout='world'] [data-graph-node]:hover [data-graph-node-title],
+[data-graph-layout='world'] [data-graph-node]:focus-visible [data-graph-node-title] {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 3;
+  width: max-content;
+  max-width: none;
+  padding: 1px 4px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
 /* Secondary to the title: it answers "what IS this" once, then gets out of the way. Sized like
    the row count at the other end of the head, because that is what it is — a small fact about
    the node, not part of its name.

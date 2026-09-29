@@ -71,9 +71,20 @@ function place(
 	}
 }
 
+/** Compact enough to sit in a label strip: 1200 reads as 1.2k. */
+function compact(value: number): string {
+	if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`
+	if (value >= 1000) return `${(value / 1000).toFixed(1)}k`
+
+	return String(Math.round(value))
+}
+
 function clusterOf(entry: Placed, groupIndex: number): Cluster {
 	return {
 		name: entry.tree.label,
+		// The measure, not the child count: this box's area IS its value, so that is the
+		// number a reader should see beside it.
+		caption: compact(entry.tree.value),
 		parent: entry.parent,
 		depth: entry.depth,
 		list: entry.tree.children.map((c) => c.node).filter((n) => n !== undefined),
@@ -97,20 +108,21 @@ function split(placed: Placed[]): { clusters: Cluster[]; cards: Cards } {
 
 	placed.forEach((entry, i) => {
 		const leaf = entry.tree.children.length === 0 ? entry.tree.node : undefined
-
-		if (leaf) {
-			cards[leaf.id] = {
-				node: leaf,
-				vis: [],
-				more: leaf.rows.length,
-				w: entry.rect.w,
-				h: entry.rect.h,
-				x: entry.rect.x,
-				y: entry.rect.y,
-				groupIndex: i
-			}
-		} else if (entry.tree.children.length > 0) {
+		if (!leaf) {
 			clusters.push(clusterOf(entry, i))
+
+			return
+		}
+
+		cards[leaf.id] = {
+			node: leaf,
+			vis: [],
+			more: leaf.rows.length,
+			w: entry.rect.w,
+			h: entry.rect.h,
+			x: entry.rect.x,
+			y: entry.rect.y,
+			groupIndex: i
 		}
 	})
 

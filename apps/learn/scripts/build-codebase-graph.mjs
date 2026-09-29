@@ -47,9 +47,15 @@ for (const pkg of packages) {
 		const segments = rel.split('/')
 		const name = segments[segments.length - 1]
 
-		// `export` count stands in for "how much is declared here" — the measure the world
-		// view sizes by. A re-export counts, which is right: a barrel IS surface area.
-		const declarations = (source.match(/^\s*export\s/gm) ?? []).length
+		// "How much is declared here" — the measure the world view sizes by. A re-export
+		// counts, which is right: a barrel IS surface area.
+		//
+		// A `.svelte` file declares ONE thing by existing — the component — and its `export
+		// let` lines are that component's props, not separate declarations. Counting only
+		// `export` scored MarkdownRenderer.svelte at zero and made a 63-component folder
+		// look smaller than a 4-file utils folder.
+		const isComponent = name.endsWith('.svelte')
+		const declarations = isComponent ? 1 : (source.match(/^\s*export\s/gm) ?? []).length
 		// A module is "tested" when a spec names it. Summed up the tree this becomes "how many
 		// of this subtree's modules have tests", which is the share worth shading by.
 		const stem = name.replace(SOURCE, '')

@@ -48,6 +48,15 @@ export type Cluster = {
 	depth?: number
 	/** Name of the enclosing cluster, for a depth-1 box. */
 	parent?: string
+	/**
+	 * What to show after the name, when the layout has something better than a child count.
+	 *
+	 * A number beside a box reads as the thing driving its size, so in a layout where AREA
+	 * encodes a measure the count is actively misleading — `components · 63` was 63 files in a
+	 * box sized by 63 declarations, and the two being equal was a coincidence. A layout that
+	 * sizes by a measure says so here; one that does not leaves it unset and the count stands.
+	 */
+	caption?: string
 }
 
 /**
