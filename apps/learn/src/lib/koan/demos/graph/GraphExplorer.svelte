@@ -38,6 +38,7 @@
 			fields: dataset.fields,
 			layout: explorer.layout,
 			groupTint: explorer.groupTint,
+			radialMode: explorer.radialMode,
 			density: explorer.density,
 			arrange: explorer.arrange,
 			...GROUPING[explorer.grouping],

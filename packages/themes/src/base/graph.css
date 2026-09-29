@@ -59,7 +59,7 @@
 }
 
 /* A dot has no rows, so the detail toggle would have nothing to toggle. */
-[data-graph-viewport]:has([data-graph-layout='points']) [data-graph-density-controls] {
+[data-graph-viewport]:has([data-graph-node-shape='dot']) [data-graph-density-controls] {
   display: none;
 }
 
@@ -99,13 +99,13 @@
 /* A rounded rect, not a disc. The layout shelf-packs rects because circle packing wasted most
    of the canvas (36% fill measured on the service graph), and the shape has to agree with the
    geometry or the boxes the layout reserved will not be the boxes drawn. */
-[data-graph-layout='points'] [data-graph-node] {
+[data-graph-node-shape='dot'] [data-graph-node] {
   border-radius: 0.25rem;
   overflow: visible;
   padding: 0;
 }
 
-[data-graph-layout='points'] [data-graph-node-head] {
+[data-graph-node-shape='dot'] [data-graph-node-head] {
   height: 100%;
   padding: 0;
   border-bottom-width: 0;
@@ -114,16 +114,16 @@
 
 /* The more-row is hidden outright. A dot has no rows to reveal, so "+2 more" was not just
    useless — it was the ONLY text on the dot, sitting exactly where the name belongs. */
-[data-graph-layout='points'] [data-graph-node-icon],
-[data-graph-layout='points'] [data-graph-node-count],
-[data-graph-layout='points'] [data-graph-more] {
+[data-graph-node-shape='dot'] [data-graph-node-icon],
+[data-graph-node-shape='dot'] [data-graph-node-count],
+[data-graph-node-shape='dot'] [data-graph-more] {
   display: none;
 }
 
 /* Zoomed in, the label is just THERE, beneath its dot. Hover-only is a poor deal when
    there is room to read: it hides what you came for and makes you sweep for it. It stays
    the fallback for the tiers where a label genuinely cannot fit. */
-[data-graph-layout='points'] [data-graph-node-title] {
+[data-graph-node-shape='dot'] [data-graph-node-title] {
   display: none;
   position: absolute;
   top: calc(100% + 3px);
@@ -140,15 +140,15 @@
   transform: translateX(-50%);
 }
 
-[data-graph-detail='full'] [data-graph-layout='points'] [data-graph-node-title],
-[data-graph-detail='compact'] [data-graph-layout='points'] [data-graph-node-title] {
+[data-graph-detail='full'] [data-graph-node-shape='dot'] [data-graph-node-title],
+[data-graph-detail='compact'] [data-graph-node-shape='dot'] [data-graph-node-title] {
   display: block;
 }
 
 /* Below that, hover or keyboard focus brings it back — counter-scaled, since at those
    tiers a label drawn at the card's scale is exactly as unreadable as the hidden one. */
-[data-graph-layout='points'] [data-graph-node]:hover [data-graph-node-title],
-[data-graph-layout='points'] [data-graph-node]:focus-visible [data-graph-node-title] {
+[data-graph-node-shape='dot'] [data-graph-node]:hover [data-graph-node-title],
+[data-graph-node-shape='dot'] [data-graph-node]:focus-visible [data-graph-node-title] {
   display: block;
   z-index: 3;
   max-width: none;
@@ -162,8 +162,8 @@
 }
 
 /* A hovered dot lifts above its neighbours so its label is not overlapped by them. */
-[data-graph-layout='points'] [data-graph-node]:hover,
-[data-graph-layout='points'] [data-graph-node]:focus-visible {
+[data-graph-node-shape='dot'] [data-graph-node]:hover,
+[data-graph-node-shape='dot'] [data-graph-node]:focus-visible {
   z-index: 2;
 }
 
@@ -394,6 +394,27 @@
   display: none;
 }
 
+/* ─── the sunburst (wedges) ─────────────────────────────────────────────────
+   A wedge is an annulus sector, which has no box — so it is an SVG path rather than a
+   positioned div, drawn under the node layer. Structure only; each style colours it from the
+   same `--group-fill` / `--group-stroke` the rectangular boxes use. */
+
+[data-graph-wedges] {
+  pointer-events: none;
+}
+
+/* Only a wedge that IS a node answers a click, exactly as a rectangular box does: a region is
+   scenery. `pointer-events` is re-enabled per path rather than on the svg, so the gaps between
+   wedges still reach the background and clear the selection. */
+[data-graph-wedge][data-graph-node-id] {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+[data-graph-wedge] {
+  stroke-width: 1;
+}
+
 /* ─── the world layout (treemap) ────────────────────────────────────────────
    A box's area IS its measure, so the picture carries the information and the text is
    annotation. Two rules keep the annotation honest. */
@@ -489,7 +510,7 @@
 [data-graph-detail='compact'] [data-graph-node-kind],
 [data-graph-detail='minimal'] [data-graph-node-kind],
 [data-graph-detail='dot'] [data-graph-node-kind],
-[data-graph-layout='points'] [data-graph-node-kind] {
+[data-graph-node-shape='dot'] [data-graph-node-kind] {
   display: none;
 }
 

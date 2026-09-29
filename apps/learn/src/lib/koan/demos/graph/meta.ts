@@ -102,6 +102,9 @@ const meta: DemoMeta = {
 			{ selector: '[data-column-depth]', desc: 'Hops from the focus. 0 is the focus column' },
 			{ selector: '[data-cluster-depth]', desc: '0 for an outer box, 1 for one nested inside it. Outer boxes are emitted first, so paint order nests them with no DOM tree' },
 			{ selector: '[data-graph-cluster-label]', desc: 'Group name + count, or name + measure where the layout sizes by one. Truncates with an ellipsis rather than hiding, so how much is readable follows the zoom' },
+			{ selector: '[data-graph-wedges]', desc: 'The SVG arc layer a sunburst draws into — a wedge is an annulus sector and has no box, so it cannot be a positioned div' },
+			{ selector: '[data-graph-wedge]', desc: 'One sunburst wedge. Reads the same --group-fill / --group-stroke a cluster box does, so both views of one dataset agree on a schema’s colour' },
+			{ selector: '[data-graph-node-shape]', desc: 'card | dot — what the active layout draws a node as. The dot treatment keys on this rather than on a layout name, so `radial` inherited it by declaring the shape' },
 			{ selector: '[data-graph-group-tint]', desc: 'Set on the canvas when `groupTint` is on — cards carry a spine in their group colour, which is how schema stays visible in a layout with no cluster boxes' },
 			{ selector: '[data-graph-node-id]', desc: 'The node a box IS, on a containment layout where a leaf is still a box rather than a card. Makes it selectable; absent on a region, which is not a node' },
 			// Node card

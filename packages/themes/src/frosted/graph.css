@@ -311,7 +311,7 @@
 }
 
 /* A dot's label floats over the canvas and over other dots, so it carries a surface. */
-[data-style='frosted'] [data-graph-layout='points'] [data-graph-node-title] {
+[data-style='frosted'] [data-graph-node-shape='dot'] [data-graph-node-title] {
   background-color: var(--paper);
   color: var(--ink);
   border: 1px solid var(--paper-edge);
@@ -321,4 +321,15 @@
    living after the card's own `border-color` is what stops the shorthand resetting it. */
 [data-style='frosted'] [data-graph-group-tint] [data-graph-node] {
   border-inline-start-color: var(--group-stroke, rgba(255, 255, 255, 0.18));
+}
+
+/* A sunburst wedge reads from the same group ramp a cluster box does, so the two views
+   of one dataset agree on what colour a schema is. */
+[data-style='frosted'] [data-graph-wedge] {
+  fill: color-mix(in oklch, var(--group-fill, var(--paper-mute)) 55%, transparent);
+  stroke: var(--group-stroke, rgba(255, 255, 255, 0.18));
+}
+
+[data-style='frosted'] [data-graph-wedge][data-node-state='selected'] {
+  fill: color-mix(in oklch, var(--group-fill, var(--paper-mute)) 90%, transparent);
 }

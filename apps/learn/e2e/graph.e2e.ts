@@ -41,6 +41,12 @@ test.describe('graph demo', () => {
 	})
 
 	test('renders nodes, edges and clusters', async ({ page }) => {
+		// `cluster` explicitly: the default is `flow`, which reports no cluster boxes at all.
+		// Leaning on the default would test whichever layout happens to be default rather than
+		// the one this case is about.
+		await openControls(page)
+		await setControl(page, 'Layout', 'cluster')
+
 		await expect(page.locator('[data-graph-node]').first()).toBeVisible()
 		await expect(page.locator('[data-graph-edge]').first()).toBeAttached()
 		await expect(page.locator('[data-graph-cluster]').first()).toBeVisible()
@@ -182,6 +188,8 @@ test.describe('graph demo', () => {
 		// other, and which is outer is the reader's choice.
 		await page.goto('/app/graph?variant=schema-deps')
 		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+		await openControls(page)
+		await setControl(page, 'Layout', 'cluster')
 
 		const outer = page.locator('[data-graph-cluster][data-cluster-depth="0"]')
 		const inner = page.locator('[data-graph-cluster][data-cluster-depth="1"]')
@@ -194,7 +202,7 @@ test.describe('graph demo', () => {
 			await page.locator('[data-cluster-depth="1"][data-node-group="table"]').count()
 		).toBeGreaterThan(1)
 
-		await openControls(page)
+		// The drawer is already open — `openControls` is a TOGGLE, so a second call closes it.
 		await setControl(page, 'Group by', 'kind-schema')
 		await expect(
 			page.locator('[data-graph-cluster][data-cluster-depth="0"][data-node-group="table"]')
@@ -205,6 +213,7 @@ test.describe('graph demo', () => {
 		await page.goto('/app/graph?variant=schema-deps')
 		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
 		await openControls(page)
+		await setControl(page, 'Layout', 'cluster')
 		await setControl(page, 'Group by', 'kind')
 
 		await expect(page.locator('[data-graph-cluster][data-cluster-depth="1"]')).toHaveCount(0)
@@ -344,9 +353,13 @@ test.describe('graph demo', () => {
 			})
 
 		test('buries fewer links than the schema-grouped arrangement', async ({ page }) => {
+			// The baseline is the CLUSTER arrangement, named explicitly — `flow` is the default
+			// now, so reading the opening layout would compare flow against itself and pass for
+			// no reason.
+			await openControls(page)
+			await setControl(page, 'Layout', 'cluster')
 			const grouped = await buriedEdges(page)
 
-			await openControls(page)
 			await setControl(page, 'Layout', 'flow')
 			await expect(page.locator('[data-graph-cluster]')).toHaveCount(0)
 
@@ -382,6 +395,67 @@ test.describe('graph demo', () => {
 
 			expect(wrongSide).toBe(0)
 		})
+	})
+
+	test('the call graph opens radial, with no two nodes stacked', async ({ page }) => {
+		// `points` shelf-packed it into group boxes and at seven services that already read as a
+		// stack: tiny rects with each label colliding with the row beneath.
+		await page.goto('/app/graph?variant=call-graph')
+		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+		await expect(page.locator('[data-graph-world]')).toHaveAttribute('data-graph-layout', 'radial')
+
+		const overlaps = await page.locator('[data-graph-node]').evaluateAll((els) => {
+			const r = els.map((el) => el.getBoundingClientRect())
+			let hits = 0
+			for (let i = 0; i < r.length; i++) {
+				for (let j = i + 1; j < r.length; j++) {
+					const [a, b] = [r[i], r[j]]
+					if (!(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top))
+						hits++
+				}
+			}
+			return hits
+		})
+
+		expect(overlaps).toBe(0)
+	})
+
+	test('a radial node is a DOT, not a card with its chrome overflowing', async ({ page }) => {
+		// The dot treatment keys on `data-graph-node-shape`, so `radial` inherited the whole of
+		// it by declaring a shape rather than by naming itself in fifteen selectors.
+		await page.goto('/app/graph?variant=call-graph')
+		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+
+		await expect(page.locator('[data-graph-world]')).toHaveAttribute('data-graph-node-shape', 'dot')
+		await expect(page.locator('[data-graph-node]').first().locator('[data-graph-more]')).toHaveCSS(
+			'display',
+			'none'
+		)
+	})
+
+	test('the sunburst draws wedges that carry their package’s colour', async ({ page }) => {
+		// Looked up by its own name every descendant falls through to the default, which left
+		// the outer ring uniformly grey under a correctly coloured inner one.
+		await page.goto('/app/graph?variant=codebase')
+		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
+		await openControls(page)
+		await setControl(page, 'Layout', 'sunburst')
+
+		const wedges = page.locator('[data-graph-wedge]')
+		expect(await wedges.count()).toBeGreaterThan(20)
+
+		const fillsByDepth = await wedges.evaluateAll((els) => {
+			const out: Record<string, string[]> = {}
+			for (const el of els) {
+				const d = el.getAttribute('data-cluster-depth') ?? '0'
+				;(out[d] ??= []).push(getComputedStyle(el).fill)
+			}
+			return Object.fromEntries(Object.entries(out).map(([d, f]) => [d, [...new Set(f)]]))
+		})
+
+		// Both rings carry several distinct colours — not one ring coloured and one grey.
+		expect(fillsByDepth['0'].length).toBeGreaterThan(3)
+		expect(fillsByDepth['1'].length).toBeGreaterThan(3)
 	})
 
 	test('switching to the neighborhood layout drops the clusters', async ({ page }) => {
@@ -447,6 +521,7 @@ test.describe('graph demo', () => {
 
 	test('differentiating by pattern sets a pattern instead of a group fill', async ({ page }) => {
 		await openControls(page)
+		await setControl(page, 'Layout', 'cluster')
 		await setControl(page, 'Differentiate by', 'pattern')
 
 		await expect(page.locator('[data-graph-cluster]').first()).toHaveAttribute(
@@ -482,6 +557,9 @@ test.describe('graph demo', () => {
 				)
 
 		await openControls(page)
+		// `arrange` is a cluster-ordering option, so the control only appears for `cluster` —
+		// `appliesTo` hides it elsewhere, which is the behaviour, not a workaround.
+		await setControl(page, 'Layout', 'cluster')
 		await setControl(page, 'Arrange', 'untangle')
 		const untangled = await positions()
 

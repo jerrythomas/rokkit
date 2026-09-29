@@ -95,11 +95,13 @@ Your own slots in exactly the same way.
 | `flow` | Cards in columns by reference direction | **The default.** Every edge leaves right, enters left |
 | `cluster` | Cards in group boxes | Entity diagrams grouped by schema |
 | `neighborhood` | One focus node + its 1-hop neighbours | Walking a graph one step at a time |
+| `radial` | A tidy tree or dendrogram around a circle | Call graphs — who calls whom, and how deep |
 | `points` | Degree-sized rounded rects, shelf-packed | Dense graphs — a code index, 1000+ nodes |
 | `world` | Nested rectangles, area proportional to a measure | Containment — where the mass of a codebase is |
+| `sunburst` | Nested wedges, angle proportional to a measure | The same containment, with depth on the radius |
 
 ```js
-import { cluster, flow, neighborhood, points, world, layouts } from '@rokkit/graph'
+import { cluster, flow, neighborhood, points, radial, sunburst, world, layouts } from '@rokkit/graph'
 ```
 
 ### Options
@@ -115,8 +117,9 @@ import { cluster, flow, neighborhood, points, world, layouts } from '@rokkit/gra
 | `depth` | `1` | `neighborhood` only — how many hops out from the focus |
 | `sizeBy` | `'degree'` | `points` / `world` — the measure area encodes |
 | `sizeScale` | `'linear'` | `points` only — `log` for a measure spanning orders of magnitude |
-| `focusPath` | `[]` | `world` only — the subtree to render as the whole canvas |
-| `levels` | `2` | `world` only — how many levels below the focus to materialise |
+| `focusPath` | `[]` | `world` / `sunburst` — the subtree to render as the whole canvas |
+| `levels` | `2` | `world` / `sunburst` — how many levels below the focus to materialise |
+| `radialMode` | `'tree'` | `radial` only — `tree` reads radius as depth, `dendrogram` pins leaves to the rim |
 | `groupTint` | `false` | Paint each card with its group's ramp — schema without cluster boxes |
 | `expanded` | — | Node ids shown at full detail whatever `density` says |
 
@@ -156,6 +159,39 @@ cannot be both "in the `public` box" and "in column 3". `cluster` remains the sc
 
 **What it does not do yet:** a long edge is still drawn straight over any box between its
 endpoints. Routing around needs dummy nodes on the intervening ranks, which is its own slice.
+
+### `radial` — a call graph has a shape
+
+`points` shelf-packs a call graph into group boxes. At seven services that already reads as a
+stack: tiny rects with each label colliding with the row beneath. Packing answers "how much is
+there"; a call graph asks "who calls whom, and how deep does it go", which is a SHAPE.
+
+Angle separates the subtrees, radius carries the depth. Two modes:
+
+```svelte
+<Graph {nodes} {edges} layout="radial" />                      <!-- radius = depth -->
+<Graph {nodes} {edges} layout="radial" radialMode="dendrogram" /> <!-- leaves on the rim -->
+```
+
+**A call graph is not a tree**, and the layout does not pretend otherwise. A spanning tree
+picks one parent per node — breadth-first, so a node sits at its shortest distance from a root
+— and every edge it could not use is still drawn, marked `back`. "b also calls this" is exactly
+what a reader is looking for, and a tree that drops half its edges looks complete while being a
+quarter of one. Cycles terminate because a claimed node is never re-claimed; a disconnected
+node becomes its own root rather than vanishing.
+
+### `sunburst` — the treemap's question, asked radially
+
+Same tree, same measure, same captions as `world`, so the two are one dataset drawn twice:
+
+|  | measure | depth |
+|--|---------|-------|
+| `world` | area | nesting you have to look for |
+| `sunburst` | angle | the radius, read at a glance |
+
+A treemap spends its pixels better; a sunburst tells you how deep the tree goes before you have
+read a label. A wedge comes back as a `Cluster` carrying `wedge: { r0, r1, a0, a1 }` — numbers,
+not a path string, so the layout stays DOM-free and testable to exact radians.
 
 ### The world view is boxes all the way down
 

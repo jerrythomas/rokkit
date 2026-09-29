@@ -217,6 +217,15 @@ describe('world layout', () => {
 		}
 	})
 
+	it('inherits the outermost box’s ramp key, so a subtree reads as one region', () => {
+		const s = state({ levels: 3 })
+		const dbd = s.clusters.find((c) => c.name === 'dbd')
+		const inner = s.clusters.find((c) => c.parent === 'dbd')
+
+		expect(dbd?.ramp).toBe('dbd')
+		expect(inner?.ramp).toBe('dbd')
+	})
+
 	it('reports no routed edges — containment is the relationship here', () => {
 		// 4.08M edges cannot be drawn and should not be; cross-container aggregation is its
 		// own design.

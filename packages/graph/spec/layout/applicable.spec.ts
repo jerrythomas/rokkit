@@ -11,7 +11,7 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import { LAYOUT_OPTIONS, LAYOUT_OPTION_KEYS } from '../../src/layout/options.js'
+import { LAYOUT_OPTIONS, LAYOUT_OPTION_KEYS, nodeShapeOf } from '../../src/layout/options.js'
 import { layouts } from '../../src/layout/index.js'
 
 describe('per-layout option applicability', () => {
@@ -25,6 +25,22 @@ describe('per-layout option applicability', () => {
 				expect(LAYOUT_OPTION_KEYS, `${name}.${key}`).toContain(key)
 			}
 		}
+	})
+
+	it('calls a node a dot where the layout draws one, and a card otherwise', () => {
+		// The theme keys its whole dot treatment on this rather than naming each layout that
+		// happens to have one: a card's head, kind tag and more-row are all still in the DOM
+		// at 20px across, overflowing a box the layout sized for a dot.
+		expect(nodeShapeOf('points')).toBe('dot')
+		expect(nodeShapeOf('radial')).toBe('dot')
+		expect(nodeShapeOf('cluster')).toBe('card')
+		expect(nodeShapeOf('flow')).toBe('card')
+	})
+
+	it('assumes a card for an unknown layout, which is the safe default', () => {
+		// A custom LayoutFn gets full card chrome rather than a head-only box with its rows
+		// invisible — wrong in the recoverable direction.
+		expect(nodeShapeOf('something-custom')).toBe('card')
 	})
 
 	it('excludes density from the treemap, which has no row lists to thin', () => {

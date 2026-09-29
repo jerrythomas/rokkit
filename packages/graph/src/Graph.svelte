@@ -209,6 +209,7 @@
 	>
 	<div
 		data-graph-world
+		data-graph-node-shape={graph.nodeShape}
 		data-graph-layout={graph.layoutName}
 		style="width: {graph.size.w}px; height: {graph.size.h}px; transform: translate({tx}px, {ty}px) scale({scale}); --graph-label-counter-scale: {(1 / scale).toFixed(3)};"
 	>
@@ -225,43 +226,100 @@
 			>
 		{/each}
 
-		{#each graph.clusters as cluster (graph.clusterKey(cluster))}
+		<!-- A wedge cannot be a positioned <div> — an annulus sector has no box. It is drawn in
+		     its own SVG UNDER the boxes, so a sunburst renders through the same cluster list as
+		     every other containment layout and nothing downstream learns a second vocabulary. -->
+		{#if graph.hasWedges}
+			<svg
+				data-graph-wedges
+				width={graph.size.w}
+				height={graph.size.h}
+				role="img"
+				aria-label={graph.label}
+				style="position: absolute; top: 0; left: 0;"
+			>
+				<title>{graph.label}</title>
+				{#each graph.clusters as cluster (graph.clusterKey(cluster))}
+					{@const shared = graph.boxAttrs(cluster)}
+					{@const caption = `${cluster.name} · ${cluster.caption ?? cluster.count}`}
+					<!-- Two branches so `role` is STATIC. A wedge that is a node is a button and says
+					     so; a region is scenery. Written as one element with a conditional role, the
+					     compiler cannot tell which it is and neither can a screen reader. The shared
+					     attributes come from state, so the branches cannot drift apart. -->
+					{#if cluster.nodeId}
+						<path
+							data-graph-wedge
+							{...shared}
+							style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+							d={graph.wedgePath(cluster)}
+							role="button"
+							tabindex={0}
+							aria-label={caption}
+							onclick={(event: Event) => {
+								event.stopPropagation()
+								graph.select(cluster.nodeId!)
+							}}
+							onkeydown={(event: KeyboardEvent) => {
+								if (event.key !== 'Enter' && event.key !== ' ') return
+								event.preventDefault()
+								event.stopPropagation()
+								graph.select(cluster.nodeId!)
+							}}><title>{caption}</title></path
+						>
+					{:else}
+						<path
+							data-graph-wedge
+							{...shared}
+							style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+							d={graph.wedgePath(cluster)}><title>{caption}</title></path
+						>
+					{/if}
+				{/each}
+			</svg>
+		{/if}
+
+		{#each graph.boxes as cluster (graph.clusterKey(cluster))}
+			{@const shared = graph.boxAttrs(cluster)}
+			{@const caption = `${cluster.name} · ${cluster.caption ?? cluster.count}`}
 			<!-- One box shape at every depth. A containment layout nests boxes inside boxes, so a
 			     childless one is still a box — rendering it as a node CARD instead put two
 			     structures in one hierarchy and brought the card's furniture with it, down to a
 			     row count that is `0` for anything without rows.
 
-			     A leaf keeps its identity as attributes rather than as a different element:
-			     `data-graph-node-id` makes it addressable and selectable, `data-node-kind` lets a
-			     theme colour it, and a region — which is not a node — simply has neither. -->
-			<!-- The TAG varies, everything else does not: one attribute list, one child, one box
-			     on screen. A leaf is clickable and focusable, so it is a real <button> and gets
-			     Enter/Space, focus order and the right announcement for free; a region is
-			     scenery, so it is a <div> that says so. Faking it with role/tabindex on a div
-			     describes an interactive element to a screen reader while leaving the keyboard
-			     handling to be reimplemented by hand. -->
-			<svelte:element
-				this={cluster.nodeId ? 'button' : 'div'}
-				type={cluster.nodeId ? 'button' : undefined}
-				data-graph-cluster
-				data-cluster-depth={cluster.depth ?? 0}
-				data-node-group={cluster.name}
-				data-graph-node-id={cluster.nodeId}
-				data-node-kind={cluster.kind}
-				data-node-state={cluster.nodeId ? graph.nodeState(cluster.nodeId) : undefined}
-				style:left="{cluster.x}px"
-				style:top="{cluster.y}px"
-				style:width="{cluster.w}px"
-				style:height="{cluster.h}px"
-				style={graph.groupStyleAttr(cluster.name)}
-				onclick={(event: Event) => {
-					if (!cluster.nodeId) return
-					event.stopPropagation()
-					graph.select(cluster.nodeId)
-				}}
-			>
-				<span data-graph-cluster-label>{cluster.name} · {cluster.caption ?? cluster.count}</span>
-			</svelte:element>
+			     Two branches, not one element with a conditional tag: a leaf is clickable and
+			     focusable, so it is a real <button> and gets Enter/Space, focus order and the right
+			     announcement for free. A region is scenery and is a <div> that says so. The shared
+			     attributes come from state, so the two cannot drift. -->
+			{#if cluster.nodeId}
+				<button
+					type="button"
+					data-graph-cluster
+					{...shared}
+					style:left="{cluster.x}px"
+					style:top="{cluster.y}px"
+					style:width="{cluster.w}px"
+					style:height="{cluster.h}px"
+					style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+					onclick={(event) => {
+						event.stopPropagation()
+						graph.select(cluster.nodeId!)
+					}}
+				>
+					<span data-graph-cluster-label>{caption}</span>
+				</button>
+			{:else}
+				<div
+					data-graph-cluster
+					{...shared}
+					style:left="{cluster.x}px"
+					style:top="{cluster.y}px"
+					style:width="{cluster.w}px"
+					style:height="{cluster.h}px"
+					style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+				>
+					<span data-graph-cluster-label>{caption}</span>
+				</div>
+			{/if}
 		{/each}
 
 		<svg

@@ -61,8 +61,11 @@ Your own slots in the same way.
   with `groupTint` to keep schema visible without cluster boxes.
 - **`cluster`** — cards in group boxes. Entity diagrams grouped by schema.
 - **`neighborhood`** — one focus node and its 1-hop neighbours.
+- **`radial`** — a tidy tree or dendrogram around a circle. Call graphs: angle separates the
+  subtrees, radius carries the depth.
 - **`points`** — degree-sized rects, shelf-packed. Dense graphs, 1000+ nodes.
 - **`world`** — nested rectangles, area proportional to a measure. Where the mass is.
+- **`sunburst`** — the same containment as nested wedges, with depth on the radius.
 
 Two-level clustering shows both grouping axes at once, which matters for a dependency graph
 where one schema holds a table, a trigger and a procedure:

@@ -771,6 +771,98 @@ describe('Graph — accessibility and construction', () => {
 		expect(container.querySelectorAll('[data-graph-row]')).toHaveLength(0)
 	})
 
+	describe('the sunburst renders wedges, not boxes', () => {
+		/* A wedge is an annulus sector and has no box, so it is an SVG path drawn under the
+		 * node layer — but it comes through the SAME cluster list every containment layout
+		 * uses, so nothing downstream learns a second vocabulary. */
+
+		const WEDGE_NODES = [
+			{ schema: 'p', name: 'parse', kind: 'table', path: ['dbd', 'parse'], columns: [] },
+			{ schema: 'p', name: 'emit', kind: 'view', path: ['dbd', 'emit'], columns: [] }
+		]
+		const burst = (config: Partial<GraphStateConfig> = {}) =>
+			new GraphState({
+				nodes: WEDGE_NODES,
+				edges: [],
+				fields: { ...FIELDS, path: 'path' },
+				layout: 'sunburst',
+				levels: 2,
+				...config
+			})
+
+		it('draws a path per wedge and no positioned box', () => {
+			const { container } = render(Graph, { state: burst() })
+
+			expect(container.querySelectorAll('[data-graph-wedge]').length).toBeGreaterThan(1)
+			expect(container.querySelectorAll('[data-graph-cluster]')).toHaveLength(0)
+			expect(container.querySelectorAll('[data-graph-node]')).toHaveLength(0)
+		})
+
+		it('gives every wedge a real path, not an empty d', () => {
+			const { container } = render(Graph, { state: burst() })
+			const paths = [...container.querySelectorAll('[data-graph-wedge]')]
+
+			for (const p of paths) expect(p.getAttribute('d')?.length ?? 0).toBeGreaterThan(10)
+		})
+
+		it('makes a leaf wedge a button and a region wedge scenery', () => {
+			const { container } = render(Graph, { state: burst() })
+			const leaf = container.querySelector('[data-graph-node-id="p.parse"]')
+			const region = [...container.querySelectorAll('[data-graph-wedge]')].find(
+				(el) => el.getAttribute('data-node-group') === 'dbd'
+			)
+
+			expect(leaf?.getAttribute('role')).toBe('button')
+			expect(region?.hasAttribute('role')).toBe(false)
+		})
+
+		it('names a wedge for assistive tech, which cannot read an arc', () => {
+			const { container } = render(Graph, { state: burst() })
+			const leaf = container.querySelector('[data-graph-node-id="p.parse"]')
+
+			expect(leaf?.getAttribute('aria-label')).toContain('parse')
+			expect(leaf?.querySelector('title')?.textContent).toContain('parse')
+		})
+
+		it('selects the node when a leaf wedge is clicked', async () => {
+			const s = burst()
+			const { container } = render(Graph, { state: s })
+			const leaf = container.querySelector('[data-graph-node-id="p.parse"]') as HTMLElement
+
+			leaf.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+			await tick()
+			expect(s.value).toBe('p.parse')
+		})
+
+		it('selects on Enter too, since a wedge is keyboard reachable', async () => {
+			const s = burst()
+			const { container } = render(Graph, { state: s })
+			const leaf = container.querySelector('[data-graph-node-id="p.parse"]') as HTMLElement
+
+			leaf.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+			await tick()
+			expect(s.value).toBe('p.parse')
+		})
+
+		it('ignores a key that is not Enter or Space', async () => {
+			const s = burst()
+			const { container } = render(Graph, { state: s })
+			const leaf = container.querySelector('[data-graph-node-id="p.parse"]') as HTMLElement
+
+			leaf.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', bubbles: true }))
+			await tick()
+			expect(s.value).toBeNull()
+		})
+
+		it('returns an empty path for a box that is not a wedge', () => {
+			// `wedgePath` is asked for every cluster the renderer walks, and a rectangular one
+			// has no polar geometry at all.
+			expect(burst().wedgePath({ name: 'x', list: [], count: 0, groupIndex: 0, x: 0, y: 0 })).toBe(
+				''
+			)
+		})
+	})
+
 	describe('the world layout renders one box shape', () => {
 		/* A treemap nests ONE thing. Rendering a leaf as a node card put a card's furniture
 		 * inside a hierarchy of label boxes — and a codebase module has no rows, so every leaf

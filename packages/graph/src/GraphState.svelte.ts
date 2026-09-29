@@ -2,6 +2,8 @@ import { SvelteSet } from 'svelte/reactivity'
 import { normalizeGraph } from './model/normalize.js'
 import { layouts } from './layout/index.js'
 import { edgePath } from './layout/edges.js'
+import { nodeShapeOf } from './layout/options.js'
+import { arcPath } from './layout/arc.js'
 import { defaultGraphPreset, resolveGroupStyles } from './preset.js'
 import type { GraphPreset } from './preset.js'
 import type {
@@ -63,6 +65,8 @@ export type GraphStateConfig = {
 	focusPath?: string[]
 	/** `world` only — levels below the focus to materialise. Defaults to 2. */
 	levels?: number
+	/** `radial` only — `tree` ranks by depth, `dendrogram` pins leaves to the rim. */
+	radialMode?: 'tree' | 'dendrogram'
 	/**
 	 * Paint each CARD with its group's ramp, not just the cluster box around it.
 	 *
@@ -156,6 +160,7 @@ export class GraphState {
 	#fields = $state<GraphFields>({})
 	#layout = $state<string | LayoutFn>('flow')
 	#groupTint = $state(false)
+	#radialMode = $state<'tree' | 'dendrogram'>('tree')
 	#density = $state<Density>('keys')
 	#arrange = $state<Arrange>('untangle')
 	#groupBy = $state<NodeAxis>('group')
@@ -191,6 +196,7 @@ export class GraphState {
 			depth: this.#depth,
 			focusPath: this.#focusPath,
 			levels: this.#levels,
+			radialMode: this.#radialMode,
 			edgeStyle: this.#edgeStyle,
 			focus: this.#focus ?? this.#value,
 			expanded: this.#expanded
@@ -315,6 +321,7 @@ export class GraphState {
 		this.#depth = Math.max(1, Math.floor(config.depth ?? 1))
 		this.#focusPath = config.focusPath ?? []
 		this.#levels = Math.max(1, Math.floor(config.levels ?? 2))
+		this.#radialMode = config.radialMode ?? 'tree'
 	}
 
 	#applyView(config: GraphStateConfig): void {
@@ -438,6 +445,21 @@ export class GraphState {
 	get model(): GraphModel {
 		return this.#model
 	}
+	/**
+	 * Clusters drawn as rectangles — everything the box renderer handles.
+	 *
+	 * A wedge has no box, so it is drawn as an SVG arc instead. Split here rather than in the
+	 * template so the component keeps computing nothing.
+	 */
+	get boxes(): Cluster[] {
+		return this.clusters.filter((c) => c.wedge === undefined)
+	}
+
+	/** Whether any cluster is a wedge, which is what puts the arc layer on the canvas. */
+	get hasWedges(): boolean {
+		return this.clusters.some((c) => c.wedge !== undefined)
+	}
+
 	get clusters(): Cluster[] {
 		return this.#result.clusters
 	}
@@ -516,6 +538,34 @@ export class GraphState {
 	 * render aborts, and no inner box appears at all, which reads as nesting silently not
 	 * working rather than as an error.
 	 */
+	/**
+	 * The SVG path for a wedge-shaped box, centred on the canvas.
+	 *
+	 * Here rather than in the component for the same reason `edgePath` is: it is arithmetic,
+	 * and the view's job is to render what state derives, not to compute geometry.
+	 */
+	wedgePath(cluster: Cluster): string {
+		if (!cluster.wedge) return ''
+
+		return arcPath(this.size.w / 2, this.size.h / 2, cluster.wedge)
+	}
+
+	/**
+	 * The data attributes every containment box carries, wedge or rectangle.
+	 *
+	 * Built here so the two render branches — interactive and scenery — cannot drift: they
+	 * differ only in the element and its role, which is exactly the difference that matters.
+	 */
+	boxAttrs(cluster: Cluster): Record<string, string | null | undefined> {
+		return {
+			'data-cluster-depth': String(cluster.depth ?? 0),
+			'data-node-group': cluster.name,
+			'data-graph-node-id': cluster.nodeId,
+			'data-node-kind': cluster.kind,
+			'data-node-state': cluster.nodeId ? this.nodeState(cluster.nodeId) : undefined
+		}
+	}
+
 	clusterKey(cluster: Cluster): string {
 		return `${cluster.depth ?? 0}:${cluster.parent ?? ''}:${cluster.name}`
 	}
@@ -525,6 +575,11 @@ export class GraphState {
 	}
 
 	/** Whether cards carry the group ramp themselves. See `GraphStateConfig.groupTint`. */
+	/** `dot` or `card` — what the active layout draws a node as. */
+	get nodeShape(): 'dot' | 'card' {
+		return nodeShapeOf(this.layoutName)
+	}
+
 	get groupTint(): boolean {
 		return this.#groupTint
 	}

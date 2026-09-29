@@ -45,15 +45,15 @@ const TITLE = 16
  */
 const MIN_EQUAL_SHARE = 0.12
 
-type Placed = { tree: TreeNode; rect: Rect; depth: number; parent?: string }
+type Placed = { tree: TreeNode; rect: Rect; depth: number; parent?: string; ramp?: string }
 
 /** Walk the materialised levels, squarifying each container's children into its own rect. */
 function place(
 	node: TreeNode,
 	rect: Rect,
-	ctx: { levels: number; out: Placed[]; parent?: string; origin: number }
+	ctx: { levels: number; out: Placed[]; parent?: string; origin: number; ramp?: string }
 ): void {
-	const { levels, out, parent, origin } = ctx
+	const { levels, out, parent, origin, ramp } = ctx
 	if (levels <= 0 || node.children.length === 0) return
 
 	// Children are inset for the parent's border and label strip. Below that the box is all
@@ -74,8 +74,12 @@ function place(
 		// Depth is RELATIVE to the focus, so the outermost rendered box is always 0 whatever
 		// the reader has drilled into. A renderer styles by "how deep in this view", not by
 		// "how deep in the whole tree", and the same convention holds in `nested.ts`.
-		out.push({ tree: item, rect: box, depth: node.path.length - origin, parent })
-		place(item, box, { levels: levels - 1, out, parent: item.id, origin })
+		// The outermost box names the ramp entry; everything under it inherits, so a whole
+		// subtree reads as one region instead of every descendant falling through to the
+		// default colour.
+		const key = ramp ?? item.label
+		out.push({ tree: item, rect: box, depth: node.path.length - origin, parent, ramp: key })
+		place(item, box, { levels: levels - 1, out, parent: item.id, origin, ramp: key })
 	}
 }
 
@@ -109,6 +113,7 @@ function clusterOf(entry: Placed, groupIndex: number): Cluster {
 		caption: compact(entry.tree.value),
 		parent: entry.parent,
 		depth: entry.depth,
+		ramp: entry.ramp,
 		nodeId: leaf?.id,
 		kind: leaf?.kind,
 		list: entry.tree.children.map((c) => c.node).filter((n) => n !== undefined),

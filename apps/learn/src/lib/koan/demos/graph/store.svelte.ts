@@ -9,7 +9,14 @@
 import type { DatasetId } from './datasets'
 
 export type GraphViewId = 'diagram' | 'entity' | 'entities'
-export type LayoutId = 'cluster' | 'flow' | 'neighborhood' | 'points' | 'world'
+export type LayoutId =
+	| 'cluster'
+	| 'flow'
+	| 'neighborhood'
+	| 'points'
+	| 'radial'
+	| 'sunburst'
+	| 'world'
 export type DensityId = 'names' | 'keys' | 'full'
 export type ArrangeId = 'untangle' | 'a-z'
 export type EdgeStyleId = 'curved' | 'orthogonal'
@@ -42,6 +49,7 @@ class GraphExplorerStore {
 	using = $state<ChannelId>('color')
 	grouping = $state<GroupingId>('schema')
 	sizeBy = $state<string>('degree')
+	radialMode = $state<'tree' | 'dendrogram'>('tree')
 	/** Multiplier on Graph's fit-to-container scale. 1 = fit the whole diagram. */
 	zoom = $state<number>(1)
 
@@ -65,7 +73,10 @@ class GraphExplorerStore {
 			this.layout = 'world'
 			this.sizeBy = 'declarations'
 		} else {
-			this.layout = id === 'service-calls' ? 'points' : 'flow'
+			// A call graph has a SHAPE — who calls whom, how deep it goes — and `points` packs
+			// it into boxes instead, which at seven services already reads as a stack of
+			// colliding labels. Radius is depth; angle separates the subtrees.
+			this.layout = id === 'service-calls' ? 'radial' : 'flow'
 		}
 	}
 }

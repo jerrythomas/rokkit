@@ -69,6 +69,25 @@ export type Cluster = {
 	nodeId?: string
 	/** The node's kind, for colour, when this box is a node. */
 	kind?: string
+	/**
+	 * Which entry of the group ramp this box takes its colour from, when that is not its own
+	 * name.
+	 *
+	 * A containment layout nests boxes many levels deep, and only the outermost ones are group
+	 * names the ramp knows. Looked up by its own name, every descendant falls through to the
+	 * default — which is how a sunburst's outer ring came out uniformly grey while the inner
+	 * ring was correctly coloured. Inheriting the outermost ancestor's key makes a whole
+	 * subtree read as one region, which is the thing the reader is tracing.
+	 */
+	ramp?: string
+	/**
+	 * Polar geometry, when the layout draws this box as a WEDGE rather than a rectangle.
+	 *
+	 * Angles are radians from 3 o'clock, radii are from the canvas centre. Kept as numbers
+	 * rather than a path string so the layout stays DOM-free and unit-testable to exact
+	 * radians — building the arc is the renderer's job.
+	 */
+	wedge?: { r0: number; r1: number; a0: number; a1: number }
 }
 
 /**
@@ -179,6 +198,11 @@ export type LayoutOptions = {
 	focusPath?: string[]
 	/** `world` only — how many levels below the focus to MATERIALISE. Defaults to 2. */
 	levels?: number
+	/**
+	 * `radial` only — `tree` (the default) reads radius as DEPTH; `dendrogram` pins every
+	 * leaf to the rim so leaves are compared against each other.
+	 */
+	radialMode?: 'tree' | 'dendrogram'
 }
 
 export type LayoutResult = {

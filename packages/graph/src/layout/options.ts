@@ -17,7 +17,8 @@ export const LAYOUT_OPTION_KEYS = [
 	'sizeScale',
 	'depth',
 	'focusPath',
-	'levels'
+	'levels',
+	'radialMode'
 ] as const
 
 /**
@@ -43,7 +44,24 @@ export const LAYOUT_OPTIONS: Record<string, readonly (typeof LAYOUT_OPTION_KEYS)
 	flow: ['density', 'edgeStyle', 'expanded'],
 	neighborhood: ['edgeStyle', 'expanded', 'focus', 'depth'],
 	points: ['edgeStyle', 'sizeBy', 'sizeScale'],
+	radial: ['edgeStyle', 'sizeBy', 'sizeScale', 'radialMode'],
+	sunburst: ['sizeBy', 'focusPath', 'levels'],
 	world: ['sizeBy', 'focusPath', 'levels']
+}
+
+/**
+ * Layouts that draw a node as a DOT rather than a card.
+ *
+ * A card is the wrong unit once a node is 20px across: the head, the kind tag and the
+ * more-row are all still in the DOM, overflowing a box the layout sized for a dot. Published
+ * as a fact about the layout so the theme can key on the SHAPE instead of naming every layout
+ * that happens to have one — `radial` inherited the whole dot treatment by joining this set.
+ */
+const DOT_LAYOUTS = new Set(['points', 'radial'])
+
+/** `dot` or `card` — what shape this layout draws a node as. */
+export function nodeShapeOf(layout: string): 'dot' | 'card' {
+	return DOT_LAYOUTS.has(layout) ? 'dot' : 'card'
 }
 
 /** Whether a control for `option` should be offered while `layout` is active. */

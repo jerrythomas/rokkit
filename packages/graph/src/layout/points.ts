@@ -29,20 +29,14 @@
    pixels and a re-render never reshuffles the diagram under the reader. */
 
 import { buildEdges } from './edges.js'
+import { degreeOf, measureOf, normalise, sizeFor } from './sizing.js'
+import type { Scale } from './sizing.js'
 import { warnUnknownOptions } from './options.js'
 import type { Cards, Cluster, LayoutFn, LayoutResult } from './types.js'
-type Scale = NonNullable<import('./types.js').LayoutOptions['sizeScale']>
 import type { GraphModel, GraphNode } from '../types.js'
 
-/**
- * Node geometry. AREA — not width — tracks degree, so ten edges reads as ten rather than as
- * a hundred. Areas are carried over from the disc version (pi*5^2 to pi*26^2) so the ink
- * weight of a diagram is unchanged; only the shape and the packing are different.
- */
-const MIN_AREA = Math.PI * 5 * 5
-const MAX_AREA = Math.PI * 26 * 26
-/** Width:height. 2:1 reads as a "chip" and shelves well; a square wastes shelf height. */
-const ASPECT = 2
+/* Node geometry — area, aspect and the measure curve now live in `sizing.ts`, shared with
+   `radial`, so the same node is the same size in both views. */
 
 const NODE_GAP = 6
 /**
@@ -67,20 +61,6 @@ const CANVAS_PAD = 60
  */
 const SHELF_ASPECT = 1.6
 
-function degreeOf(model: GraphModel): Map<string, number> {
-	const degree = new Map<string, number>()
-	for (const node of model.nodes) degree.set(node.id, 0)
-
-	for (const edge of model.edges) {
-		degree.set(edge.source, (degree.get(edge.source) ?? 0) + 1)
-		if (edge.target !== edge.source) {
-			degree.set(edge.target, (degree.get(edge.target) ?? 0) + 1)
-		}
-	}
-
-	return degree
-}
-
 type Sized = { node: GraphNode; w: number; h: number }
 
 /**
@@ -92,22 +72,6 @@ type Sized = { node: GraphNode; w: number; h: number }
  *
  * A flat measure — every node equal, so `max === min` — is 0, not a division by zero.
  */
-function normalise(value: number, min: number, max: number, scale: Scale): number {
-	if (max <= min) return 0
-	if (scale === 'log') {
-		return Math.log(value - min + 1) / Math.log(max - min + 1)
-	}
-
-	return (value - min) / (max - min)
-}
-
-/** Area is LINEAR in the measure, so width grows as its square root — ten reads as ten. */
-function sizeFor(t: number): { w: number; h: number } {
-	const area = MIN_AREA + (MAX_AREA - MIN_AREA) * t
-
-	return { w: Math.sqrt(area * ASPECT), h: Math.sqrt(area / ASPECT) }
-}
-
 /**
  * The number each node is sized by.
  *
@@ -115,13 +79,6 @@ function sizeFor(t: number): { w: number; h: number } {
  * "unknown" is a normal state in a partially-indexed graph, and the alternative is a NaN
  * width that renders as nothing at all.
  */
-function measureOf(node: GraphNode, degree: Map<string, number>, sizeBy: string): number {
-	if (sizeBy === 'degree') return degree.get(node.id) ?? 0
-	if (sizeBy === 'weight') return node.weight ?? 0
-
-	return node.measures?.[sizeBy] ?? 0
-}
-
 type Packed = { nodes: { node: GraphNode; w: number; h: number; dx: number; dy: number }[]; w: number; h: number }
 
 /**

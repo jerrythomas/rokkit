@@ -8,7 +8,7 @@ export type { TreeNode } from './model/tree.js'
 export { readPath } from './model/path.js'
 export { createGraphPreset, defaultGraphPreset, resolveGroupStyles } from './preset.js'
 export { DEFAULT_ICONS } from './icons.js'
-export { cluster, flow, neighborhood, points, world, layouts } from './layout/index.js'
+export { cluster, flow, neighborhood, points, radial, sunburst, world, layouts } from './layout/index.js'
 export { LAYOUT_OPTIONS, appliesTo } from './layout/options.js'
 
 export type { EntityRow, GraphStateConfig, Relationship } from './GraphState.svelte.js'

@@ -55,9 +55,11 @@
 			options: [
 				{ value: 'cluster', label: 'Cluster (cards)' },
 				{ value: 'flow', label: 'Flow (layered)' },
+				{ value: 'radial', label: 'Radial (call tree)' },
 				{ value: 'points', label: 'Points (dense)' },
 				{ value: 'neighborhood', label: 'Neighborhood' },
-				{ value: 'world', label: 'World (treemap)' }
+				{ value: 'world', label: 'World (treemap)' },
+				{ value: 'sunburst', label: 'Sunburst (radial tree map)' }
 			],
 			get: () => explorer.layout,
 			set: (v: string) => (explorer.layout = v as typeof explorer.layout)
@@ -122,6 +124,17 @@
 			],
 			get: () => explorer.edgeStyle,
 			set: (v: string) => (explorer.edgeStyle = v as typeof explorer.edgeStyle)
+		},
+		{
+			id: 'radial-mode',
+			label: 'Radial shape',
+			option: 'radialMode',
+			options: [
+				{ value: 'tree', label: 'Tidy tree' },
+				{ value: 'dendrogram', label: 'Dendrogram' }
+			],
+			get: () => explorer.radialMode,
+			set: (v: string) => (explorer.radialMode = v as typeof explorer.radialMode)
 		},
 		{
 			id: 'group-tint',
