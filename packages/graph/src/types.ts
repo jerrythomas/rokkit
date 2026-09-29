@@ -42,15 +42,21 @@ export type GraphNode = {
 	 */
 	measures?: Record<string, number>
 	/**
-	 * Containment, outermost first — `['dbd', 'core', 'lexer']`.
+	 * This node's OWN full path, outermost first and INCLUDING itself —
+	 * `['dbd', 'core', 'lexer', 'parse']`.
 	 *
 	 * `group` is one flat key and a codebase is containment six deep: project › repository ›
-	 * folder › module › file › symbol. A path needs nothing to exist that does not (the
-	 * containers are synthesised from it) and cannot dangle the way a `parent` id can. A node
-	 * without one sits at the root.
+	 * folder › module › file › symbol. A path needs nothing to exist that does not, and cannot
+	 * dangle the way a `parent` id can. A node without one sits at the root.
 	 *
-	 * A node whose `id` equals a path joined by `/` CLAIMS that container, lending it a label
-	 * and a note — so a consumer that does index its folders loses nothing.
+	 * **Containment is PREFIX**, which is what makes a container an ordinary node: anything
+	 * whose path extends past this one is inside it. A container therefore keeps its own id,
+	 * label, note, measures and edges — there is no id convention to satisfy and no second
+	 * kind of node. A prefix nothing declares is synthesised, so the easy case still needs
+	 * only leaves.
+	 *
+	 * Accepts a delimited STRING too (`'dbd/core/lexer/parse'`), since that is how a file path
+	 * arrives. See `GraphFields.pathDelimiter`.
 	 */
 	path?: string[]
 	rows: GraphRow[]
@@ -171,6 +177,8 @@ export type GraphFields = {
 	weight?: string
 	/** Path to a containment chain — see `GraphNode.path`. */
 	path?: string
+	/** Separator when `path` resolves to a STRING rather than an array. Defaults to `/`. */
+	pathDelimiter?: string
 	/** Path to an object of named quantities — see `GraphNode.measures`. */
 	measures?: string
 	rows?: string

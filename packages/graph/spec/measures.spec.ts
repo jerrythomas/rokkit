@@ -83,8 +83,8 @@ describe('measures', () => {
 	it('defaults the tree to weight, so the earlier behaviour is unchanged', () => {
 		// Two leaves, or `p` is a wrapper and folds away before it can be asserted on.
 		const weighted = [
-			{ id: 'a', label: 'a', path: ['p'], weight: 7 },
-			{ id: 'b', label: 'b', path: ['p'], weight: 3 }
+			{ id: 'a', label: 'a', path: ['p', 'a'], weight: 7 },
+			{ id: 'b', label: 'b', path: ['p', 'b'], weight: 3 }
 		]
 		const t = buildTree(normalizeGraph(weighted, [], FIELDS))
 

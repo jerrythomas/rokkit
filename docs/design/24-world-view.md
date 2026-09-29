@@ -46,16 +46,36 @@ looking at the real control (`SIZE BY` and `SHADE BY` are independent) it cannot
 | arrives naturally from | a graph DB | a file path |
 | container carries its own data | yes | only if a node happens to match |
 
-**Recommendation: `path`.** A codebase indexes files and symbols; folders are implied. `path`
-needs nothing to exist that does not, degrades cleanly (no path → root), and cannot dangle.
-
-A synthesised container is **claimed** by a real node whose id matches the prefix, so a
-consumer that *does* index folders gets their labels, notes and status for free:
+**Recommendation: `path`, and it is the node's OWN full path — including itself.**
 
 ```js
-{ id: 'dbd/core/lexer', label: 'lexer', note: 'Tokeniser', … }   // claims the container
-{ id: 'parse', path: ['dbd', 'core', 'lexer'], weight: 40 }      // lives inside it
+{ id: 'mod_42', label: 'Lexer', path: ['dbd','core','lexer'], note: 'Tokeniser' }
+{ id: 'a',      label: 'parse', path: ['dbd','core','lexer','parse'], weight: 40 }
 ```
+
+**Containment is PREFIX.** Anything whose path extends past another's is inside it. That is
+what makes a container an ordinary node: it keeps its own id, label, note, measures and edges,
+and there is no second kind of node and no convention to satisfy.
+
+The first draft of this design had containers **claimed** by a node whose *id* matched the
+joined path. That reads fine for the easy entry point and fails exactly where it matters — a
+rich node array where containers are real entities with their own ids and attributes could not
+claim anything. Prefix containment removes the convention entirely; a prefix nothing declares
+is still synthesised, so the easy case still needs only leaves.
+
+A container's value is its subtree **plus its own** measure: a module holds top-level
+declarations as well as the functions inside it.
+
+### It also accepts a delimited string
+
+```js
+{ id: 'a', label: 'parse', path: 'dbd/core/lexer/parse', weight: 40 }
+```
+
+A file path arrives as a string; making every consumer split it is asking for the same three
+lines everywhere. `GraphFields.pathDelimiter` overrides `/`, and empty segments are dropped so
+a leading, trailing or doubled separator is harmless rather than producing a nameless box.
+Both forms build a byte-identical tree.
 
 This is a **model change, not a layout change** — the real prerequisite, exactly as the slice-1
 note predicted.

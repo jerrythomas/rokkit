@@ -48,13 +48,19 @@ function container(path: string[]): TreeNode {
 	}
 }
 
-/** Walk to `path`, creating any container along the way that does not exist yet. */
+/**
+ * Walk to `path`, synthesising any box along the way that nothing has declared yet.
+ *
+ * Matched on the path SEGMENT, not on the label: a declared node may label its box anything
+ * ('Lexer' for the segment 'lexer'), and matching on label would then fail to find the box it
+ * had already created.
+ */
 function ensure(root: TreeNode, path: string[]): TreeNode {
 	let current = root
 
 	for (let i = 0; i < path.length; i++) {
 		const segment = path[i]
-		let next = current.children.find((c) => c.label === segment && c.node === undefined)
+		let next = current.children.find((c) => c.path[c.path.length - 1] === segment)
 		if (!next) {
 			next = container(path.slice(0, i + 1))
 			current.children.push(next)
@@ -78,16 +84,36 @@ function measureOf(node: GraphNode, measure: string): number {
 	return node.measures?.[measure] ?? 0
 }
 
-function leafOf(node: GraphNode, measure: string): TreeNode {
-	return {
-		id: node.id,
-		label: node.label,
-		path: node.path ?? [],
-		depth: (node.path?.length ?? 0) + 1,
-		node,
-		children: [],
-		value: measureOf(node, measure)
+/**
+ * Attach a real node to the box at its own path.
+ *
+ * The box may already exist — synthesised by a descendant that arrived first — in which case
+ * this fills in its identity rather than creating a sibling. That is the whole of "a container
+ * is an ordinary node": no claiming, no id convention, just the same walk.
+ */
+function attach(root: TreeNode, node: GraphNode, measure: string): void {
+	const box = ensure(root, node.path ?? [])
+	if (box === root) {
+		// No path: a root-level leaf, not a redefinition of the root itself.
+		root.children.push({
+			id: node.id,
+			label: node.label,
+			path: [],
+			depth: 1,
+			node,
+			children: [],
+			value: measureOf(node, measure)
+		})
+
+		return
 	}
+
+	box.id = node.id
+	box.label = node.label
+	box.node = node
+	// A container can hold declarations of its OWN — a file has top-level code as well as the
+	// functions in it — so this is added to the subtree rather than replaced by it.
+	box.value += measureOf(node, measure)
 }
 
 /**
@@ -100,7 +126,9 @@ function summarise(node: TreeNode, depth: number): number {
 	node.depth = depth
 	if (node.children.length === 0) return node.value
 
-	node.value = node.children.reduce((total, child) => total + summarise(child, depth + 1), 0)
+	// `node.value` starts as the container's OWN measure, if it declared one — a module can
+	// hold top-level declarations as well as the functions inside it.
+	node.value += node.children.reduce((total, child) => total + summarise(child, depth + 1), 0)
 
 	return node.value
 }
@@ -141,39 +169,14 @@ function sort(node: TreeNode): void {
  * checked before leaves are placed, so a claiming node becomes the box rather than a child
  * inside it.
  */
-/**
- * Nodes that name a container rather than living in one.
- *
- * A node with no path whose id looks like a path (`dbd/core/lexer`) is claiming that box. It
- * has to be identified BEFORE leaves are placed, or a leaf inside it would create an
- * unclaimed container that the claimer then cannot become.
- */
-function claimsIn(model: GraphModel): Map<string, GraphNode> {
-	const claims = new Map<string, GraphNode>()
-	for (const node of model.nodes) {
-		if (node.path === undefined && node.id.includes('/')) claims.set(node.id, node)
-	}
-
-	return claims
-}
-
 export function buildTree(model: GraphModel, options: { measure?: string } = {}): TreeNode {
 	const measure = options.measure ?? 'weight'
 	const root = container([])
 	root.depth = 0
 
-	const claims = claimsIn(model)
-
-	for (const node of model.nodes) {
-		if (claims.has(node.id)) continue
-		ensure(root, node.path ?? []).children.push(leafOf(node, measure))
-	}
-
-	for (const [id, node] of claims) {
-		const box = ensure(root, id.split('/'))
-		box.node = node
-		box.label = node.label
-	}
+	// One pass, one rule: every node is the box at its own path. Order does not matter —
+	// a descendant arriving first synthesises the box, and its owner fills in the identity.
+	for (const node of model.nodes) attach(root, node, measure)
 
 	const folded = fold(root)
 	sort(folded)

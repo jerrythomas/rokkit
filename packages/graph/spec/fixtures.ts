@@ -138,11 +138,11 @@ export const weighted = {
  */
 export const measured = {
 	nodes: [
-		{ id: 'parser', label: 'parser', path: ['src'], m: { declarations: 900, unresolved: 0.9, tests: 0.1 } },
-		{ id: 'lexer', label: 'lexer', path: ['src'], m: { declarations: 300, unresolved: 0.1, tests: 0.8 } },
-		{ id: 'util', label: 'util', path: ['src'], m: { declarations: 60, unresolved: 0.5, tests: 0.5 } },
+		{ id: 'parser', label: 'parser', path: ['src', 'parser'], m: { declarations: 900, unresolved: 0.9, tests: 0.1 } },
+		{ id: 'lexer', label: 'lexer', path: ['src', 'lexer'], m: { declarations: 300, unresolved: 0.1, tests: 0.8 } },
+		{ id: 'util', label: 'util', path: ['src', 'util'], m: { declarations: 60, unresolved: 0.5, tests: 0.5 } },
 		// No measures at all — must floor, not break the normalisation.
-		{ id: 'bare', label: 'bare', path: ['src'] }
+		{ id: 'bare', label: 'bare', path: ['src', 'bare'] }
 	],
 	edges: [{ source: 'parser', target: 'lexer' }]
 }
@@ -155,15 +155,17 @@ export const measured = {
  */
 export const nestedPath = {
 	nodes: [
-		// Two leaves in one container, so `dbd/core/lexer` is a real level.
-		{ id: 'a', label: 'parse', path: ['dbd', 'core', 'lexer'], weight: 40 },
-		{ id: 'b', label: 'tokenize', path: ['dbd', 'core', 'lexer'], weight: 60 },
-		// A container that CLAIMS its synthesised box, carrying its own label and note.
-		{ id: 'dbd/core/lexer', label: 'Lexer', note: 'Tokeniser and parser.' },
-		// One leaf under its own container → that container is a wrapper and folds away.
-		{ id: 'c', label: 'plan', path: ['dbd', 'core', 'apply'], weight: 25 },
-		// A chain of wrappers, all single-child: three levels collapsing to one.
-		{ id: 'd', label: 'render', path: ['dbd', 'site', 'ui', 'view'], weight: 10 },
+		// `path` is the node's OWN full path, including itself. Containment falls out of prefix:
+		// dbd › core › lexer contains parse and tokenize, and nothing has to match an id.
+		{ id: 'a', label: 'parse', path: ['dbd', 'core', 'lexer', 'parse'], weight: 40 },
+		{ id: 'b', label: 'tokenize', path: ['dbd', 'core', 'lexer', 'tokenize'], weight: 60 },
+		// A container that is a REAL node, with its own id, label and note — no convention,
+		// no id-matching. It is a box because other nodes' paths extend past it.
+		{ id: 'mod_42', label: 'Lexer', path: ['dbd', 'core', 'lexer'], note: 'Tokeniser.' },
+		// One leaf under an UNDECLARED container → that container is a wrapper and folds away.
+		{ id: 'c', label: 'plan', path: ['dbd', 'core', 'apply', 'plan'], weight: 25 },
+		// A chain of undeclared wrappers: three levels collapsing to one.
+		{ id: 'd', label: 'render', path: ['dbd', 'site', 'ui', 'view', 'render'], weight: 10 },
 		// No path at all → sits at the root.
 		{ id: 'e', label: 'orphan', weight: 5 }
 	],
@@ -172,6 +174,19 @@ export const nestedPath = {
 		{ source: 'b', target: 'c' },
 		{ source: 'c', target: 'd' }
 	]
+}
+
+/** The same hierarchy as a delimited STRING, which is how a file path actually arrives. */
+export const delimitedPath = {
+	nodes: [
+		{ id: 'a', label: 'parse', path: 'dbd/core/lexer/parse', weight: 40 },
+		{ id: 'b', label: 'tokenize', path: 'dbd/core/lexer/tokenize', weight: 60 },
+		{ id: 'mod_42', label: 'Lexer', path: 'dbd/core/lexer', note: 'Tokeniser.' },
+		{ id: 'c', label: 'plan', path: 'dbd/core/apply/plan', weight: 25 },
+		{ id: 'd', label: 'render', path: 'dbd/site/ui/view/render', weight: 10 },
+		{ id: 'e', label: 'orphan', weight: 5 }
+	],
+	edges: []
 }
 
 /** A schema shaped like dbd's, for the ER-flavoured cases. */

@@ -10,7 +10,7 @@
 import { describe, it, expect } from 'vitest'
 import { buildTree, findNode } from '../src/model/tree.js'
 import { normalizeGraph } from '../src/model/normalize.js'
-import { CALL_FIELDS, nestedPath } from './fixtures.js'
+import { CALL_FIELDS, delimitedPath, nestedPath } from './fixtures.js'
 
 const FIELDS = { ...CALL_FIELDS, path: 'path', note: 'note' }
 const model = () => normalizeGraph(nestedPath.nodes, nestedPath.edges, FIELDS)
@@ -22,7 +22,28 @@ const childrenAt = (segments: string[]) =>
 
 describe('path on the canonical model', () => {
 	it('reads a mapped path onto the node', () => {
-		expect(model().byId.get('a')?.path).toEqual(['dbd', 'core', 'lexer'])
+		expect(model().byId.get('a')?.path).toEqual(['dbd', 'core', 'lexer', 'parse'])
+	})
+
+	it('splits a DELIMITED string into the same path', () => {
+		// A file path arrives as a string. Requiring the consumer to split it is asking them
+		// to write the same three lines every time.
+		const m = normalizeGraph(delimitedPath.nodes, delimitedPath.edges, FIELDS)
+
+		expect(m.byId.get('a')?.path).toEqual(['dbd', 'core', 'lexer', 'parse'])
+	})
+
+	it('builds the SAME tree from either form', () => {
+		const fromArray = buildTree(normalizeGraph(nestedPath.nodes, [], FIELDS))
+		const fromString = buildTree(normalizeGraph(delimitedPath.nodes, [], FIELDS))
+
+		expect(fromString).toEqual(fromArray)
+	})
+
+	it('ignores empty segments, so a leading or doubled slash is harmless', () => {
+		const m = normalizeGraph([{ id: 'x', label: 'x', path: '/a//b/' }], [], FIELDS)
+
+		expect(m.byId.get('x')?.path).toEqual(['a', 'b'])
 	})
 
 	it('leaves a node with no path at the root', () => {
@@ -49,13 +70,16 @@ describe('buildTree', () => {
 		expect(childrenAt(['dbd', 'core', 'lexer'])).toEqual(['parse', 'tokenize'])
 	})
 
-	it('lets a REAL node claim its container, carrying its own label and note', () => {
-		// `dbd/core/lexer` exists as a node. Without claiming, its label and note would be
-		// dropped and the box would be titled with the bare path segment.
+	it('makes a real node the container when other paths extend past it', () => {
+		// `mod_42` sits AT dbd/core/lexer while parse and tokenize sit under it. No id
+		// convention: containment is prefix, so the container keeps its own id, label and note
+		// and can carry edges like any other node.
 		const lexer = findNode(tree(), ['dbd', 'core', 'lexer'])
 
 		expect(lexer?.label).toBe('Lexer')
-		expect(lexer?.node?.note).toBe('Tokeniser and parser.')
+		expect(lexer?.node?.id).toBe('mod_42')
+		expect(lexer?.node?.note).toBe('Tokeniser.')
+		expect(lexer?.children.map((c) => c.label).sort()).toEqual(['parse', 'tokenize'])
 	})
 
 	it('titles an unclaimed container with its path segment', () => {
@@ -75,20 +99,38 @@ describe('buildTree', () => {
 		expect(childrenAt(['dbd'])).toEqual(['core', 'render'])
 	})
 
-	it('never folds a container a real node claims', () => {
-		// It is an entity with its own data, not a wrapper — folding it would drop that data.
-		// `pkg` gets a second child so it is not itself a wrapper — this isolates the claim
-		// rule from the folding rule rather than testing both at once.
+	it('never folds a container the data actually declares', () => {
+		// A declared node carries its own id, label, note and edges — folding it would drop
+		// them. The rule is "a wrapper is not a level", and a thing the data names is not a
+		// wrapper. `pkg` gets a second child so it is not itself a wrapper, which isolates the
+		// declaration rule from the folding rule rather than testing both at once.
 		const single = [
-			{ id: 'only', label: 'solo', path: ['pkg', 'mod'], weight: 1 },
-			{ id: 'pkg/mod', label: 'Module', note: 'Has its own meaning.' },
-			{ id: 'sibling', label: 'sibling', path: ['pkg'], weight: 1 }
+			{ id: 'only', label: 'solo', path: ['pkg', 'mod', 'solo'], weight: 1 },
+			{ id: 'mod_1', label: 'Module', path: ['pkg', 'mod'], note: 'Has its own meaning.' },
+			{ id: 'sibling', label: 'sibling', path: ['pkg', 'sibling'], weight: 1 }
 		]
 		const t = buildTree(normalizeGraph(single, [], FIELDS))
 		const mod = findNode(t, ['pkg', 'mod'])
 
 		expect(mod?.label).toBe('Module')
+		expect(mod?.node?.id).toBe('mod_1')
 		expect(mod?.children.map((c) => c.label)).toEqual(['solo'])
+	})
+
+	it('gives a declared container its OWN measure on top of its children', () => {
+		// A module can hold declarations of its own — a file has top-level code as well as the
+		// functions inside it — so a container's value is its subtree PLUS itself.
+		// `other` keeps `pkg` from being a single-child wrapper, so the assertion is about the
+		// container's own measure and not about folding.
+		const own = [
+			{ id: 'm', label: 'mod', path: ['pkg', 'mod'], weight: 5 },
+			{ id: 'x', label: 'x', path: ['pkg', 'mod', 'x'], weight: 10 },
+			{ id: 'y', label: 'y', path: ['pkg', 'mod', 'y'], weight: 20 },
+			{ id: 'other', label: 'other', path: ['pkg', 'other'], weight: 1 }
+		]
+		const t = buildTree(normalizeGraph(own, [], FIELDS))
+
+		expect(findNode(t, ['pkg', 'mod'])?.value).toBe(35)
 	})
 
 	it('sums each subtree’s measure, including its own leaves', () => {
@@ -105,8 +147,8 @@ describe('buildTree', () => {
 
 	it('treats a missing weight as zero rather than breaking the sum', () => {
 		const some = [
-			{ id: 'x', label: 'x', path: ['p'], weight: 10 },
-			{ id: 'y', label: 'y', path: ['p'] }
+			{ id: 'x', label: 'x', path: ['p', 'x'], weight: 10 },
+			{ id: 'y', label: 'y', path: ['p', 'y'] }
 		]
 		const t = buildTree(normalizeGraph(some, [], FIELDS))
 

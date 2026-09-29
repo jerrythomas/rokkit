@@ -31,10 +31,18 @@ function measures(value: unknown): Record<string, number> | undefined {
 	return Object.keys(out).length > 0 ? out : undefined
 }
 
-/** A non-empty array of strings, or nothing. */
-function segments(value: unknown): string[] | undefined {
-	if (!Array.isArray(value)) return undefined
-	const parts = value.filter((v): v is string => typeof v === 'string' && v.length > 0)
+/**
+ * A containment path, from either an array or a delimited string.
+ *
+ * A file path arrives as `'src/lib/parse.ts'`; requiring every consumer to split it is asking
+ * for the same three lines everywhere. Empty segments are dropped, so a leading, trailing or
+ * doubled separator is harmless rather than producing a nameless container.
+ */
+function segments(value: unknown, delimiter: string): string[] | undefined {
+	const raw = typeof value === 'string' ? value.split(delimiter) : value
+	if (!Array.isArray(raw)) return undefined
+
+	const parts = raw.filter((v): v is string => typeof v === 'string' && v.length > 0)
 
 	return parts.length > 0 ? parts : undefined
 }
@@ -111,7 +119,7 @@ function buildNode(source: unknown, fields: GraphFields): GraphNode {
 		group,
 		kind: str(pick(source, fields.kind, 'kind')),
 		weight: num(pick(source, fields.weight, 'weight')),
-		path: segments(pick(source, fields.path, 'path')),
+		path: segments(pick(source, fields.path, 'path'), fields.pathDelimiter ?? '/'),
 		measures: measures(pick(source, fields.measures, 'measures')),
 		rows: buildRows(source, fields),
 		note: str(pick(source, fields.note, 'note')),
