@@ -29,8 +29,21 @@ const REPO = [
 	{ id: 'd2', label: 'intro', path: ['repo', 'site', 'docs', 'intro'] }
 ]
 
+/**
+ * Focused past the single repo root and cut at the FILE level, which is what most of these
+ * cases are about. `levels` decides what sits on the rim — 1 is crates, 3 is files — so a
+ * test about files has to say so rather than lean on the default.
+ */
 const state = (edges: unknown[] = [], config = {}) =>
-	new GraphState({ nodes: REPO, edges, fields: FIELDS, layout: 'structure', ...config })
+	new GraphState({
+		nodes: REPO,
+		edges,
+		fields: FIELDS,
+		layout: 'structure',
+		focusPath: ['repo'],
+		levels: 3,
+		...config
+	})
 
 const centreOf = (s: GraphState) => ({ x: s.size.w / 2, y: s.size.h / 2 })
 const radiusOf = (s: GraphState, id: string) => {
@@ -121,8 +134,7 @@ describe('structure layout', () => {
 		it('nests a deeper band outside a shallower one', () => {
 			// Reading outward is reading down the tree, which is the opposite of a sunburst and
 			// is what lets the leaf labels sit against the rim.
-			// Focused past the single repo root, so two levels are crate and module.
-			const s = state([], { focusPath: ['repo'], levels: 2 })
+			const s = state([], { levels: 3 })
 			const crate = s.clusters.find((c) => c.name === 'core')!
 			const mod = s.clusters.find((c) => c.name === 'lexer')!
 
@@ -137,15 +149,34 @@ describe('structure layout', () => {
 			expect(core.wedge!.a1).toBeLessThanOrEqual(site.wedge!.a0 + 0.001)
 		})
 
-		it('caps the bands at `levels`', () => {
-			// One level from the tree root is the repo itself — the whole fixture sits under it.
-			expect(state([], { levels: 1 }).clusters.map((c) => c.name)).toEqual(['repo'])
+		it('puts the crates themselves on the rim at one level, with no bands', () => {
+			// The readable end of the control: a dozen boxes you can name, rather than every
+			// file at a fraction of a degree. At one level the leaves ARE the regions, so
+			// there is nothing left for a band to annotate.
+			const s = state([], { levels: 1 })
+
+			expect(Object.keys(s.cards).sort()).toEqual(['repo/core', 'repo/site'])
+			expect(s.clusters).toEqual([])
+		})
+
+		it('puts the modules on the rim at two, with the crates as the one band', () => {
+			const s = state([], { levels: 2 })
+
+			expect(Object.keys(s.cards).length).toBe(4)
+			expect(s.clusters.map((c) => c.name).sort()).toEqual(['core', 'site'])
 		})
 
 		it('counts levels from the FOCUS, so drilling does not change what one level means', () => {
-			const s = state([], { focusPath: ['repo'], levels: 1 })
+			// Unfocused, one level is the repo itself — everything sits under a single root.
+			const s = new GraphState({
+				nodes: REPO,
+				edges: [],
+				fields: FIELDS,
+				layout: 'structure',
+				levels: 1
+			})
 
-			expect(s.clusters.map((c) => c.name).sort()).toEqual(['core', 'site'])
+			expect(Object.keys(s.cards)).toEqual(['repo'])
 		})
 
 		it('keys two same-named bands apart by their parent', () => {
@@ -170,7 +201,7 @@ describe('structure layout', () => {
 				fields: FIELDS,
 				layout: 'structure',
 				focusPath: ['r'],
-				levels: 2
+				levels: 3
 			})
 			const libs = s.clusters.filter((c) => c.name === 'lib')
 
@@ -180,6 +211,37 @@ describe('structure layout', () => {
 
 		it('captions a band with how many leaves it holds', () => {
 			expect(state().clusters.find((c) => c.name === 'core')?.caption).toBe('4')
+		})
+	})
+
+	describe('rim labels', () => {
+		/* The half of "readable" the depth control cannot fix on its own: a label lying flat on
+		 * a circle either overlaps its neighbours or reads upside down on the left. */
+
+		it('orients every leaf label tangentially', () => {
+			const s = state()
+
+			for (const card of Object.values(s.cards)) {
+				expect(card.labelAngle, card.node.label).toBeTypeOf('number')
+			}
+		})
+
+		it('flips through the left half, so nothing reads upside down', () => {
+			// Two leaves on opposite sides must not both point the same way round.
+			const s = state()
+			const sides = new Set(Object.values(s.cards).map((c) => c.labelSide))
+
+			expect(sides).toEqual(new Set(['start', 'end']))
+		})
+
+		it('runs the label away from the diagram on each side', () => {
+			const s = state()
+			const cards = Object.values(s.cards)
+			const right = cards.find((c) => c.labelSide === 'start')!
+			const left = cards.find((c) => c.labelSide === 'end')!
+
+			// Rotated back the other way on the left, which is what `end` tells the renderer.
+			expect(Math.abs(right.labelAngle! - left.labelAngle!)).toBeGreaterThan(0)
 		})
 	})
 
@@ -235,8 +297,24 @@ describe('structure layout', () => {
 	})
 
 	describe('drilling and the usual contracts', () => {
+		it('collapses an intra-region call into a self-link and drops it', () => {
+			// The aggregation that makes a cut view readable: at crate level, a call between two
+			// files in the same crate is not a line between two boxes — it is inside one. Only
+			// calls that actually cross a boundary survive.
+			const s = state([{ source: 'a1', target: 'a2' }], { levels: 1 })
+
+			expect(s.routedEdges).toHaveLength(0)
+		})
+
+		it('keeps a call that crosses the cut', () => {
+			const s = state([{ source: 'a1', target: 'c1' }], { levels: 1 })
+
+			expect(s.routedEdges).toHaveLength(1)
+			expect([s.routedEdges[0].fromKey, s.routedEdges[0].toKey].sort()).toEqual(['a1', 'c1'])
+		})
+
 		it('scopes the canvas to a subtree', () => {
-			const s = state([], { focusPath: ['repo', 'core'] })
+			const s = state([], { focusPath: ['repo', 'core'], levels: 2 })
 
 			expect(Object.keys(s.cards).sort()).toEqual(['a1', 'a2', 'b1', 'b2'])
 		})

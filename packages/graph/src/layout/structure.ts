@@ -28,7 +28,7 @@ import type { Point } from './bundle.js'
 import { nodeSizes } from './sizing.js'
 import { warnUnknownOptions } from './options.js'
 import type { Cards, Cluster, LayoutFn, LayoutResult, RoutedEdge } from './types.js'
-import type { GraphEdge, GraphModel } from '../types.js'
+import type { GraphEdge, GraphModel, GraphNode } from '../types.js'
 
 /** Smallest leaf rim. Everything inside is tree, everything outside is annotation. */
 const MIN_RIM = 300
@@ -65,6 +65,23 @@ type ByPath = Map<string, TreeNode>
 
 /** What routing an edge needs: where every node sits, and how to find an ancestor. */
 type Ctx = { placed: Map<string, Placed>; byPath: ByPath; centre: number }
+
+/**
+ * Cut the tree off at `limit`, making everything at that depth a leaf.
+ *
+ * This is what `levels` means here, and the thing that makes the view usable: the rim holds
+ * whatever level you asked for, so 1 is a dozen crates you can read and 3 is every file. Left
+ * uncut, a repo puts 470 leaves on one rim at a fraction of a degree each — unreadable at any
+ * zoom, with a depth control that appeared to do nothing because it only drew rings.
+ *
+ * `buildTree` has already summed each subtree, so a cut node keeps the weight of everything
+ * it now stands for.
+ */
+function truncate(node: TreeNode, limit: number): TreeNode {
+	if (node.depth >= limit) return { ...node, children: [] }
+
+	return { ...node, children: node.children.map((child) => truncate(child, limit)) }
+}
 
 /** Leaves in walk order, so a parent's children stay adjacent on the rim. */
 function leavesOf(root: TreeNode): TreeNode[] {
@@ -244,16 +261,31 @@ function reach(a: TreeNode, b: TreeNode): string {
 	return sameGrandparent ? 'crate' : 'cross'
 }
 
-function leafIndex(root: TreeNode): Map<string, TreeNode> {
+function leafIndex(root: TreeNode, model: GraphModel): Map<string, TreeNode> {
 	const byNode = new Map<string, TreeNode>()
-	// Same reasoning as `dots`: a childless box in this tree IS an attached node.
-	for (const leaf of leavesOf(root)) byNode.set(leaf.node!.id, leaf)
+	const leaves = leavesOf(root)
+	// By PATH, not by node: after a cut, a file's own node is no longer a leaf — the region
+	// standing for it is. An edge between two files in the same crate becomes an edge from
+	// that crate to itself, which is then dropped as a self-link. That is the aggregation
+	// that makes a cut view readable: only calls that actually cross the boundary survive.
+	const byPathKey = new Map(leaves.map((leaf) => [leaf.path.join('/'), leaf]))
+
+	for (const node of model.nodes) {
+		const path = node.path ?? []
+		for (let d = path.length; d >= 0; d--) {
+			const leaf = byPathKey.get(path.slice(0, d).join('/'))
+			if (leaf) {
+				byNode.set(node.id, leaf)
+				break
+			}
+		}
+	}
 
 	return byNode
 }
 
 function routeAll(model: GraphModel, root: TreeNode, ctx: Ctx, tension: number): RoutedEdge[] {
-	const byNode = leafIndex(root)
+	const byNode = leafIndex(root, model)
 	const routed: RoutedEdge[] = []
 
 	model.edges.forEach((edge: GraphEdge, i) => {
@@ -291,6 +323,39 @@ function routeAll(model: GraphModel, root: TreeNode, ctx: Ctx, tension: number):
 	return routed
 }
 
+/**
+ * How a label sits at this angle on the rim.
+ *
+ * Tangential, and flipped through the left half so nothing reads upside down — the same rule
+ * the Sensei board uses. Degrees, because that is what a CSS rotation takes.
+ */
+function labelAt(angle: number): { labelAngle: number; labelSide: 'start' | 'end' } {
+	const degrees = (angle * 180) / Math.PI
+	const onLeft = degrees % 360 > 180
+
+	return {
+		labelAngle: onLeft ? degrees + 90 : degrees - 90,
+		labelSide: onLeft ? 'end' : 'start'
+	}
+}
+
+/** A stand-in node for a cut leaf, which is a region rather than anything declared. */
+function region(leaf: TreeNode): GraphNode {
+	return { id: leaf.id, label: leaf.label, rows: [], meta: {}, kind: 'module' }
+}
+
+/**
+ * How big a region's dot is.
+ *
+ * A cut leaf has no entry in the measure map — it is not a node anyone declared — so it takes
+ * a size from what it CONTAINS, which is the same question the measure answers for a real one.
+ */
+function sizeFor(leaf: TreeNode, ring: Ring): { w: number; h: number } {
+	const scaled = Math.min(18, 5 + Math.sqrt(Math.max(0, leaf.value)) * 0.8)
+
+	return { w: scaled, h: scaled * (ring.rim > 0 ? 1 : 1) }
+}
+
 /** One dot per leaf, on the rim. Sized by the measure, as `points` and `radial` size theirs. */
 function dots(
 	leaves: TreeNode[],
@@ -302,12 +367,15 @@ function dots(
 	const cards: Cards = {}
 
 	for (const leaf of leaves) {
-		// A leaf always carries a node: a container only exists because something was attached
-		// below it, so one with no children is the attached node itself.
-		const node = leaf.node!
+		// A CUT leaf is often a region rather than a declared node — `core` standing for the
+		// forty files under it. It still needs a dot and a label, so one is synthesised for
+		// it; the box IS the thing at this level.
+		const node = leaf.node ?? region(leaf)
 		const spot = placed.get(leaf.id)!
-		const size = sizeOf.get(node.id) ?? { w: 6, h: 6 }
+		const size = sizeOf.get(node.id) ?? sizeFor(leaf, ring)
 		const point = at(ring.centre, spot.angle, spot.radius)
+		const label = labelAt(spot.angle)
+
 		cards[node.id] = {
 			node,
 			vis: [],
@@ -316,7 +384,8 @@ function dots(
 			h: size.h,
 			x: point.x - size.w / 2,
 			y: point.y - size.h / 2,
-			groupIndex: 0
+			groupIndex: 0,
+			...label
 		}
 	}
 
@@ -339,23 +408,26 @@ export const structure: LayoutFn = (model, options): LayoutResult => {
 		return { clusters: [], cards: {}, edges: [], size: { w: 0, h: 0 } }
 	}
 
-	const leaves = leavesOf(root)
-	const step = (Math.PI * 2) / Math.max(1, leaves.length)
 	const origin = root.path.length
-	const levels = options.levels ?? 2
-	const bandCount = Math.max(1, Math.min(levels, maxDepthOf(root) - origin))
+	const levels = Math.max(1, options.levels ?? 2)
+	// `levels` decides what sits ON the rim: 1 is a dozen crates, 3 is every file. The bands
+	// are then the levels ABOVE it, so at 1 there are none and the leaves label themselves.
+	const cut = truncate(root, origin + levels)
+	const leaves = leavesOf(cut)
+	const step = (Math.PI * 2) / Math.max(1, leaves.length)
+	const bandCount = Math.max(0, levels - 1)
 
 	const rim = Math.max(MIN_RIM, (LEAF_ARC * leaves.length) / (Math.PI * 2))
-	const extent = rim + BAND_GAP + (bandCount - 1) * BAND_STEP + BAND + PAD
+	const extent = rim + BAND_GAP + Math.max(0, bandCount - 1) * BAND_STEP + BAND + PAD
 	const ring: Ring = { rim, centre: extent }
 
-	const { placed, byPath } = place(root, step, rim)
+	const { placed, byPath } = place(cut, step, rim)
 	const ctx: Ctx = { placed, byPath, centre: ring.centre }
 
 	return {
-		clusters: bands(root, { placed, step, origin, rim }, bandCount),
+		clusters: bands(cut, { placed, step, origin, rim }, bandCount),
 		cards: dots(leaves, ring, { placed, model, sizeBy: options.sizeBy, sizeScale: options.sizeScale }),
-		edges: routeAll(model, root, ctx, options.bundleTension ?? 0.85),
+		edges: routeAll(model, cut, ctx, options.bundleTension ?? 0.85),
 		size: { w: extent * 2, h: extent * 2 }
 	}
 }

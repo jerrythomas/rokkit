@@ -25,6 +25,17 @@ export type Card = {
 	 * hardcoded oklch angle baked into the layout.
 	 */
 	groupIndex?: number
+	/**
+	 * Degrees to rotate this node's label so it reads outward from a rim, already flipped on
+	 * the left half so nothing is upside down.
+	 *
+	 * The layout knows the angle it placed the node at; the renderer would have to re-derive
+	 * it from x/y and the canvas centre, which is the kind of geometry a component should not
+	 * be doing. Absent on every layout that is not radial.
+	 */
+	labelAngle?: number
+	/** Which way the label runs from the dot — `end` on the left half of the circle. */
+	labelSide?: 'start' | 'end'
 }
 
 export type Cluster = {

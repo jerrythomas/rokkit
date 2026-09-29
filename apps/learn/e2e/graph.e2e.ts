@@ -461,9 +461,29 @@ test.describe('graph demo', () => {
 			'structure'
 		)
 
-		// Crate bands outside the rim, one wedge each.
-		expect(await page.locator('[data-graph-wedge]').count()).toBeGreaterThan(5)
-		expect(await page.locator('[data-graph-edge]').count()).toBeGreaterThan(100)
+		// Opens at ONE level: the packages themselves on the rim, which is the readable view.
+		// No bands at this depth — the leaves ARE the regions, so there is nothing left to
+		// annotate — and only the imports that actually cross a package boundary survive.
+		const leaves = await page.locator('[data-graph-node]').count()
+		expect(leaves).toBeGreaterThan(8)
+		expect(leaves).toBeLessThan(30)
+		await expect(page.locator('[data-graph-wedge]')).toHaveCount(0)
+		expect(await page.locator('[data-graph-edge]').count()).toBeGreaterThan(50)
+	})
+
+	test('at one level the package names are actually readable', async ({ page }) => {
+		// The complaint this answers: unreadable even at 400% zoom, because every one of 435
+		// files was on the rim and the depth control only drew rings.
+		await openDiagram(page, 'structure')
+
+		const titles = page.locator('[data-graph-node-title]')
+		await expect(titles.first()).toBeVisible()
+
+		// Counter-scaled, so a label is legible at the fitted scale rather than 5px wide.
+		const widths = await titles.evaluateAll((els) =>
+			els.map((el) => el.getBoundingClientRect().width)
+		)
+		expect(Math.max(...widths)).toBeGreaterThan(20)
 	})
 
 	test('the bundling toggle visibly changes every edge', async ({ page }) => {
@@ -504,11 +524,15 @@ test.describe('graph demo', () => {
 		await openDiagram(page, 'structure')
 		const bands = () => page.locator('[data-graph-wedge]').count()
 
+		// One level puts the packages on the rim with nothing above them to annotate; three
+		// puts every file there, under two rings of bands.
 		await page.locator('[data-graph-depth="1"]').click()
-		const shallow = await bands()
+		expect(await bands()).toBe(0)
+		const shallowLeaves = await page.locator('[data-graph-node]').count()
 
 		await page.locator('[data-graph-depth="3"]').click()
-		expect(await bands()).toBeGreaterThan(shallow)
+		expect(await bands()).toBeGreaterThan(0)
+		expect(await page.locator('[data-graph-node]').count()).toBeGreaterThan(shallowLeaves)
 	})
 
 	test('switching to the neighborhood layout drops the clusters', async ({ page }) => {

@@ -402,3 +402,17 @@
   stroke: var(--primary);
   opacity: 1;
 }
+
+/* A rim label sits on the canvas with no card behind it, so it carries its own colour rather
+   than inheriting a dot's. No background: at this density a chip per label would tile the
+   whole ring into a solid band. */
+[data-style='frosted'] [data-graph-layout='structure'] [data-graph-node-title] {
+  background: none;
+  border: 0;
+  color: var(--ink-mute);
+}
+
+[data-style='frosted'] [data-graph-layout='structure'] [data-node-state='selected'] [data-graph-node-title],
+[data-style='frosted'] [data-graph-layout='structure'] [data-graph-node]:hover [data-graph-node-title] {
+  color: var(--ink);
+}

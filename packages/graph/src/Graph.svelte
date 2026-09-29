@@ -348,6 +348,10 @@
 				data-node-kind={card.node.kind}
 				data-node-group={card.node.group}
 				data-node-state={graph.nodeState(key)}
+				data-label-side={card.labelSide}
+				style:--label-angle={card.labelAngle === undefined
+					? undefined
+					: `${card.labelAngle}deg`}
 				data-node-headonly={card.vis.length === 0 && card.more <= 0 ? '' : undefined}
 				style:left="{card.x}px"
 				style:top="{card.y}px"

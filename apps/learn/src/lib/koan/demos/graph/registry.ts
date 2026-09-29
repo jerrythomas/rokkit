@@ -117,8 +117,10 @@ export const registry: Record<DiagramId, DiagramConfig> = {
 		component: StructureDiagram as Component<Record<string, unknown>>,
 		dataset: 'codebase',
 		blurb:
-			'The repo as a radial dendrogram — crates, then modules, then files on the rim — with every import bundled through the hierarchy it travels. Straight, the same 801 edges are a disc of ink.',
-		props: { levels: 2, sizeBy: 'degree', bundleTension: 0.85, focusPath: ['rokkit'], maxLevels: 4 }
+			'The repo as a radial dendrogram, with every import bundled through the hierarchy it travels. The depth control says what sits on the rim — 1 is the packages, 3 is every file — which is how you narrow it enough to read.',
+		// Opens at ONE: fourteen packages you can name. Three puts 435 files on the rim, which
+		// is a picture rather than something to read, and is what the control is for.
+		props: { levels: 1, sizeBy: 'degree', bundleTension: 0.85, focusPath: ['rokkit'], maxLevels: 4 }
 	},
 	treemap: {
 		id: 'treemap',

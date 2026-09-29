@@ -91,7 +91,7 @@ over one `Plot`.
 | `CallTree` | A call graph as a radial tidy tree or dendrogram | depth, zoom |
 | `Treemap` | Containment as nested rectangles | depth, zoom |
 | `Sunburst` | The same containment as wedges | depth, zoom |
-| `StructureDiagram` | A codebase: containment on a rim, calls bundled through it | depth, bundling, zoom |
+| `StructureDiagram` | A codebase: containment on a rim, calls bundled through it | depth (what sits on the rim), bundling, zoom |
 | `Neighborhood` | One node and what reaches it | depth, edge style, zoom |
 
 `controls` and `legend` are both **off by default** — the default is the bare picture, because

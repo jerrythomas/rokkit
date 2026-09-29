@@ -200,8 +200,15 @@ calls are drawn ON it rather than defining it:
   toward the straight chord by `bundleTension`
 
 ```svelte
-<StructureDiagram {nodes} {edges} {fields} levels={2} controls legend />
+<StructureDiagram {nodes} {edges} {fields} levels={1} controls legend />
 ```
+
+**`levels` decides what sits ON the rim**, which is not quite what it means for `world` and
+`sunburst` — there it caps how deep the boxes nest, here it cuts the tree and everything below
+the cut is aggregated into the box standing for it. Over rokkit's own source: `1` is fourteen
+packages you can read, `2` is 174 modules, `3` is 435 files. A call between two files in the
+same package becomes a self-link at level 1 and is dropped, so only edges that actually cross
+the boundary survive — which is what makes a cut view legible rather than merely smaller.
 
 Bundling is what makes it readable at scale — edges travelling the same way through the tree
 pull together, so rokkit's own 801 imports become visible flows between packages instead of a

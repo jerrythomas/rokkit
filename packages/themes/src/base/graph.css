@@ -874,3 +874,43 @@ svg[data-legend-swatch] {
   line-height: 1.6;
   cursor: pointer;
 }
+
+/* A leaf label on a rim reads OUTWARD, tangent to the circle.
+   The angle comes from the layout — it is the one thing that knows where it put the node —
+   and is already flipped through the left half so nothing is upside down. Laid out from the
+   dot rather than centred on it, so the text starts at the rim and runs away from the
+   diagram instead of over it. */
+[data-graph-layout='structure'] [data-graph-node-title] {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  max-width: none;
+  padding: 0;
+  font-size: 9px;
+  white-space: nowrap;
+  pointer-events: none;
+  /* Counter-scaled, like every other label on a fitted canvas: the rim is ~800px wide in a
+     ~700px box, so a 9px label renders at 5px and the view is "readable" only in the sense
+     that the text is technically present. Scaled LAST and around the label's own start, so
+     the offset from the dot stays put while the glyphs grow. */
+  transform: translateY(-50%) rotate(var(--label-angle, 0deg)) translateX(0.65rem)
+    scale(var(--graph-label-counter-scale, 1));
+  transform-origin: 0 50%;
+}
+
+/* On the left half the label is rotated back the other way, so it has to run leftward from
+   the dot or it would start under the diagram and read into it. */
+[data-graph-layout='structure'] [data-label-side='end'] [data-graph-node-title] {
+  transform: translateY(-50%) rotate(var(--label-angle, 0deg))
+    scale(var(--graph-label-counter-scale, 1)) translateX(-100%) translateX(-0.65rem);
+  transform-origin: 100% 50%;
+}
+
+/* Below `compact` the rim is too dense for text at any rotation, and the dots plus the bands
+   are what still carry meaning. Hover brings one back. */
+[data-graph-detail='minimal'] [data-graph-layout='structure'] [data-graph-node-title],
+[data-graph-detail='dot'] [data-graph-layout='structure'] [data-graph-node-title] {
+  display: none;
+}
