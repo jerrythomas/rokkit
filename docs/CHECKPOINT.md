@@ -24,14 +24,22 @@ layout. `density` was dead in `world`, `points` AND `neighborhood` (which builds
 `full` unconditionally). The toggle reads `graph.layoutName`, not the `layout` prop — every
 real consumer passes a state, leaving the prop answering for a layout not on screen.
 
+**`63bdfa55` / `6ba66953` — the `flow` layout.** Columns ranked by reference direction, so
+every edge leaves the RIGHT and enters the LEFT with no side calculation at all. On the demo's
+ER diagram, edges passing over a foreign card went **5 of 9 → 2 of 9**. `rank.ts` (longest
+path + DFS cycle breaking, back-edges kept and marked), `order.ts` (barycentre sweeps scored
+by an explicit crossing count, best-seen kept so it never returns worse than it was given),
+`flow.ts` (columns, centred, fixed ports). A NEW layout, not a change to `cluster`: ranking and
+schema grouping compete for the same axis. The world leaf box is now a real `<button>` via
+`<svelte:element>` — one attribute list, one child, correct semantics, and it cleared an a11y
+compile warning no unit test could see.
+
 ## Remains
 
-1. **Next: layered ER layout** (user request, not started). Incoming edges always enter LEFT,
-   outgoing always leave RIGHT, and boxes arranged to minimise crossings so links are
-   traceable — today they are buried behind entities. This is a **new layout, not a tweak**:
-   `edges.ts` `sides()` picks ports by relative POSITION, not direction, and `cluster.ts` is
-   schema-grouped masonry with barycenter passes, not a DAG. Needs rank assignment (with cycle
-   breaking), per-layer ordering, then fixed ports.
+1. **`flow` slice 2 — dummy-node routing.** A long edge is still drawn straight over any box
+   between its endpoints; that is the remaining 2 of 9. Routing around needs dummy nodes on the
+   intervening ranks, the ordering pass treating them as orderable, and a polyline router.
+   Stated as a limit in `docs/design/25-flow-layout.md`, not as completeness.
 2. World design steps **4** (drill: `drillPath`/`drillInto`/`drillOut`/breadcrumbs) and **5**
    (`shade` channel + label-contrast flip). Issues **#163**, **#164** still open.
 3. **Release order:** rokkit first (dbd needs a `@rokkit/themes` carrying `graph.css` before it
