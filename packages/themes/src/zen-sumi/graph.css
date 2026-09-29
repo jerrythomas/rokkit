@@ -24,8 +24,14 @@
 
 /* ─── clusters ──────────────────────────────────────────────────────────── */
 
+/* A TINT, not a slab. The group ramp resolves to a deep saturated shade in dark and a pale
+   one in light; painted opaque, the dark one reads louder than the cards inside it and
+   fights any restrained UI around it (measured against dbd's cool oklch(0.225 0.037 245)).
+   At 20% the region groups its cards without competing with them, and the border carries the
+   delineation. Unconditional rather than dark-only, so a cluster looks like the same object
+   in both modes. frosted reaches the same place via its glass mix. */
 [data-style='zen-sumi'] [data-graph-cluster] {
-  background-color: var(--group-fill, var(--paper-soft));
+  background-color: color-mix(in oklch, var(--group-fill, var(--paper-soft)) 20%, transparent);
   border-color: var(--group-stroke, var(--paper-mute));
 }
 

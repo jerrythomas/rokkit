@@ -54,6 +54,22 @@ describe('graph theme CSS', () => {
 		}
 	})
 
+	it.each(STYLES)('%s paints a cluster as a TINT, never a solid slab', (style) => {
+		// The group ramp resolves to a deep saturated shade in dark (#07591d for a green
+		// schema). Opaque, that is a vivid slab reading louder than the cards inside it, and it
+		// fights any restrained UI around it — measured against dbd's cool
+		// oklch(0.225 0.037 245). Unconditional rather than dark-only, so a cluster is the
+		// same object in both modes.
+		const css = read(`${style}/graph.css`)
+		const rule = css.match(
+			new RegExp(`\\[data-style='${style}'\\] \\[data-graph-cluster\\]\\s*\\{[^}]*\\}`)
+		)?.[0]
+
+		expect(rule, `${style} has no cluster rule`).toBeTruthy()
+		expect(rule).toContain('color-mix')
+		expect(rule).toContain('transparent')
+	})
+
 	it.each(STYLES)('%s draws a nested cluster as a subdivision, not a second region', (style) => {
 		// base/graph.css can size the inner box but not colour it. A style that forgets it
 		// leaves the subdivision inheriting the OUTER box's fill, so two nested groups read as
