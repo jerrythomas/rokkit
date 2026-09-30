@@ -19,12 +19,12 @@ import type {
 	Size
 } from './layout/types.js'
 import type { GraphEdge, GraphFields, GraphModel, GraphNode } from './types.js'
-import { relationshipsOf } from './model/relationships.js'
 import type { Relationship } from './model/relationships.js'
 import { entityRows } from './model/entities.js'
 import type { EntityRow } from './model/entities.js'
 import { contentExtent } from './layout/extent.js'
 import { GraphConfig } from './state/GraphConfig.svelte.js'
+import { GraphSelection } from './state/GraphSelection.svelte.js'
 
 export type { Relationship, EntityRow }
 
@@ -107,8 +107,12 @@ function unique(values: (string | undefined)[]): string[] {
 export class GraphState {
 	/** Every input — see `CONFIG_FIELDS` for what each omitted key falls back to. */
 	readonly config = new GraphConfig()
-	#value = $state<string | null>(null)
-	#expanded = new SvelteSet<string>()
+	/** What the reader picked and opened. */
+	readonly selection: GraphSelection = new GraphSelection({
+		model: () => this.#model,
+		routedEdges: () => this.#result.edges,
+		onselect: () => this.config.onselect
+	})
 
 	#model = $derived(normalizeGraph(this.config.nodes, this.config.edges, this.config.fields))
 
@@ -131,8 +135,8 @@ export class GraphState {
 			root: this.config.root,
 			bundleTension: this.config.bundleTension,
 			edgeStyle: this.config.edgeStyle,
-			focus: this.config.focus ?? this.#value,
-			expanded: this.#expanded
+			focus: this.config.focus ?? this.selection.value,
+			expanded: this.selection.expanded
 		})
 	)
 
@@ -160,18 +164,7 @@ export class GraphState {
 
 	#groupStyles = $derived(resolveGroupStyles(this.#groups, this.config.mode, this.config.preset))
 
-	#related = $derived(
-		this.#value
-			? new SvelteSet(this.#model.neighbors.get(this.#value) ?? [])
-			: new SvelteSet<string>()
-	)
-
 	#entities = $derived(entityRows(this.#model))
-
-	#entity = $derived(this.#value ? (this.#model.byId.get(this.#value) ?? null) : null)
-
-	/** From the canonical model, not the layout's filtered edges — see `relationshipsOf`. */
-	#relationships = $derived(relationshipsOf(this.#model, this.#value, this.#result.edges))
 
 	constructor(config: GraphStateConfig = {}) {
 		this.update(config)
@@ -194,7 +187,7 @@ export class GraphState {
 	 * otherwise a re-render would wipe a selection the user just made.
 	 */
 	#adoptValue(config: GraphStateConfig): void {
-		if (config.value !== undefined) this.#value = config.value
+		if (config.value !== undefined) this.selection.adopt(config.value)
 	}
 
 	/**
@@ -211,41 +204,21 @@ export class GraphState {
 
 	// ─── transitions ───────────────────────────────────────────────────────────
 	select(id: string): void {
-		this.#value = id
-		this.config.onselect?.(id)
+		this.selection.select(id)
 	}
 
-	/**
-	 * Drop the selection, and SAY SO.
-	 *
-	 * Found by dbd consuming the package: it owns `selected` in its route and branches on it
-	 * to show the entity panel, so a silent clear left that panel open over nothing. A
-	 * controlled consumer cannot observe an internal `#value` — the callback is the only
-	 * channel, which is why it carries `null` rather than being skipped.
-	 *
-	 * Guarded on an actual change, or a background click on an already-empty canvas
-	 * round-trips through the consumer's setter on every stray click.
-	 */
+	/** Drop the selection and report `null` — see `GraphSelection.clear`. */
 	clear(): void {
-		if (this.#value === null) return
-		this.#value = null
-		this.config.onselect?.(null)
+		this.selection.clear()
 	}
 
-	/**
-	 * Show one node's rows in full, whatever the density says.
-	 *
-	 * Per NODE rather than a global density change: a reader who clicks "+3 more" on one
-	 * card is asking about that card, and expanding all of them answers a question they did
-	 * not ask — on a large diagram it also relayouts everything under them.
-	 */
+	/** Show one node's rows in full, whatever the density says — see `GraphSelection`. */
 	toggleExpanded(id: string): void {
-		if (this.#expanded.has(id)) this.#expanded.delete(id)
-		else this.#expanded.add(id)
+		this.selection.toggleExpanded(id)
 	}
 
 	isExpanded(id: string): boolean {
-		return this.#expanded.has(id)
+		return this.selection.isExpanded(id)
 	}
 
 	/**
@@ -261,7 +234,7 @@ export class GraphState {
 	 * answer to what was asked, not a filter that matched nothing.
 	 */
 	moreLabel(id: string): string | null {
-		if (this.#expanded.has(id)) return 'show less'
+		if (this.selection.isExpanded(id)) return 'show less'
 
 		const card = this.cards[id]
 		if (!card || card.more <= 0) return null
@@ -283,14 +256,11 @@ export class GraphState {
 
 	// ─── per-item lookups the templates need ───────────────────────────────────
 	nodeState(id: string): 'selected' | 'related' | 'dim' | null {
-		if (!this.#value) return null
-		if (id === this.#value) return 'selected'
-		return this.#related.has(id) ? 'related' : 'dim'
+		return this.selection.nodeState(id)
 	}
 
 	edgeState(edge: RoutedEdge): 'highlight' | 'dim' | null {
-		if (!this.#value) return null
-		return edge.fromKey === this.#value || edge.toKey === this.#value ? 'highlight' : 'dim'
+		return this.selection.edgeState(edge)
 	}
 
 	edgePath(edge: RoutedEdge): string {
@@ -374,16 +344,16 @@ export class GraphState {
 		return contentExtent(this.#result.clusters, this.#result.cards, this.#result.size)
 	}
 	get related(): SvelteSet<string> {
-		return this.#related
+		return this.selection.related
 	}
 	get entities(): EntityRow[] {
 		return this.#entities
 	}
 	get entity(): GraphNode | null {
-		return this.#entity
+		return this.selection.entity
 	}
 	get relationships(): Relationship[] {
-		return this.#relationships
+		return this.selection.relationships
 	}
 	/**
 	 * Edges the field map could not place at one or both ends.
@@ -403,14 +373,6 @@ export class GraphState {
 		return this.config.arrange
 	}
 
-	/**
-	 * A cluster's unique render key.
-	 *
-	 * NOT the name: nesting puts a `table` box under `public` AND under `billing`, and keying
-	 * an `{#each}` by name alone is a duplicate key — Svelte throws `each_key_duplicate`, the
-	 * render aborts, and no inner box appears at all, which reads as nesting silently not
-	 * working rather than as an error.
-	 */
 	/**
 	 * The SVG path for a wedge-shaped box, centred on the canvas.
 	 *
@@ -439,6 +401,14 @@ export class GraphState {
 		}
 	}
 
+	/**
+	 * A cluster's unique render key.
+	 *
+	 * NOT the name: nesting puts a `table` box under `public` AND under `billing`, and keying
+	 * an `{#each}` by name alone is a duplicate key — Svelte throws `each_key_duplicate`, the
+	 * render aborts, and no inner box appears at all, which reads as nesting silently not
+	 * working rather than as an error.
+	 */
 	clusterKey(cluster: Cluster): string {
 		return `${cluster.depth ?? 0}:${cluster.parent ?? ''}:${cluster.name}`
 	}
@@ -473,12 +443,12 @@ export class GraphState {
 		return unique(this.#model.nodes.map((n) => n.group))
 	}
 
-	/** Whether cards carry the group ramp themselves. See `GraphStateConfig.groupTint`. */
 	/** `dot` or `card` — what the active layout draws a node as. */
 	get nodeShape(): 'dot' | 'card' {
 		return nodeShapeOf(this.layoutName)
 	}
 
+	/** Whether cards carry the group ramp themselves. See `GraphStateConfig.groupTint`. */
 	get groupTint(): boolean {
 		return this.config.groupTint
 	}
@@ -544,7 +514,7 @@ export class GraphState {
 		return typeof this.config.layout === 'string' ? this.config.layout : 'custom'
 	}
 	get value(): string | null {
-		return this.#value
+		return this.selection.value
 	}
 	get label(): string {
 		return (
