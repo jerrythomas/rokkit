@@ -10,6 +10,7 @@ import {
 	GeomRule,
 	GeomRegion,
 	GeomHull,
+	GeomContour,
 	Spark,
 	SparkState,
 	GEOM_CONTRACT,
@@ -58,6 +59,11 @@ describe('chart exports', () => {
 	it('exposes Hull (group outline) on the Plot namespace and as GeomHull', () => {
 		expect(Plot.Hull).toBeTruthy()
 		expect(GeomHull).toBeTruthy()
+	})
+
+	it('exposes Contour (density contours) on the Plot namespace and as GeomContour', () => {
+		expect(Plot.Contour).toBeTruthy()
+		expect(GeomContour).toBeTruthy()
 	})
 
 	it('exposes Spark as a real component — rendering it produces the spark svg', () => {

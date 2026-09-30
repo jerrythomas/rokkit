@@ -25,6 +25,7 @@ export const defaultPreset = {
     waterfall:   1,
     rule:        1,
     hull:        0.15,
+    contour:     0.5,
     radar:       0.25
   },
   patterns: ['diagonal', 'dots', 'triangles', 'hatch', 'lattice', 'swell',

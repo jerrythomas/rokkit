@@ -20,6 +20,7 @@ import Waterfall from './geoms/Waterfall.svelte'
 import Rule from './geoms/Rule.svelte'
 import Region from './geoms/Region.svelte'
 import Hull from './geoms/Hull.svelte'
+import Contour from './geoms/Contour.svelte'
 import Radar from './geoms/Radar.svelte'
 
 // Composable Plot primitives — use as <Plot.Root>, <Plot.Axis>, <Plot.Bar>, etc.
@@ -46,6 +47,7 @@ export const Plot = {
 	Rule,
 	Region,
 	Hull,
+	Contour,
 	Radar
 }
 
@@ -83,6 +85,7 @@ export { default as GeomJitter } from './geoms/Jitter.svelte'
 export { default as GeomRule } from './geoms/Rule.svelte'
 export { default as GeomRegion } from './geoms/Region.svelte'
 export { default as GeomHull } from './geoms/Hull.svelte'
+export { default as GeomContour } from './geoms/Contour.svelte'
 
 // Export standalone components
 export { default as Chart } from './Chart.svelte'

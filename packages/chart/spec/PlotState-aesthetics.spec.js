@@ -68,7 +68,7 @@ describe('preset.opacity covers every geom (Phase 2)', () => {
 	it('has a numeric opacity default for all geoms', () => {
 		const geoms = [
 			'area', 'bar', 'line', 'point', 'arc', 'box', 'violin', 'jitter',
-			'heatmap', 'candlestick', 'hexbin', 'ribbon', 'waterfall', 'rule', 'hull'
+			'heatmap', 'candlestick', 'hexbin', 'ribbon', 'waterfall', 'rule', 'hull', 'contour'
 		]
 		for (const g of geoms) {
 			expect(typeof defaultPreset.opacity[g], `opacity.${g}`).toBe('number')
