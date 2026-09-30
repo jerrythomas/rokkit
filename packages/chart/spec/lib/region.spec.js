@@ -12,6 +12,18 @@ describe('region geometry', () => {
 		expect(spanOf(lin, [5])).toEqual([0, 100])
 	})
 
+	it('spanOf runs an open (null) end out to the edge of the axis', () => {
+		expect(spanOf(lin, [5, null])).toEqual([50, 100])
+		expect(spanOf(lin, [null, 5])).toEqual([0, 50])
+		expect(spanOf(lin, [null, null])).toEqual([0, 100])
+	})
+
+	it('spanOf runs an open end to the edge on an inverted (vertical) axis too', () => {
+		const y = scaleLinear().domain([0, 10]).range([100, 0])
+		// y >= 5 is the TOP half of the screen: pixels 0..50
+		expect(spanOf(y, [5, null])).toEqual([0, 50])
+	})
+
 	it('spanOf covers whole bands', () => {
 		expect(spanOf(band, ['b', 'c'])).toEqual([30, 90])
 	})

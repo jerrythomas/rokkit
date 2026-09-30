@@ -7,14 +7,31 @@
  * band, and an omitted range spans the axis.
  */
 
-/** @typedef {{ (v: unknown): number | undefined, bandwidth?: () => number, range: () => number[] }} AnyScale */
+/** @typedef {{ (v: unknown): number | undefined, bandwidth?: () => number, range: () => number[], domain: () => unknown[] }} AnyScale */
 
 /** @param {AnyScale} scale */
 const isBand = (scale) => typeof scale.bandwidth === 'function'
 
 /**
+ * The data value an open (null/undefined) range end stands for: the low or high end of the
+ * axis's domain — the first or last category on a band axis.
+ *
+ * @param {AnyScale} scale
+ * @param {unknown} v
+ * @param {'lo' | 'hi'} side
+ */
+function endValue(scale, v, side) {
+	if (v !== null && v !== undefined) return v
+	const domain = /** @type {{ domain: () => unknown[] }} */ (/** @type {unknown} */ (scale)).domain()
+	if (isBand(scale)) return side === 'lo' ? domain[0] : domain[domain.length - 1]
+	const nums = domain.map(Number)
+	return side === 'lo' ? Math.min(...nums) : Math.max(...nums)
+}
+
+/**
  * Screen span of a [lo, hi] range on one axis. A band category contributes its whole band,
- * so `x={['a', 'b']}` shades both columns edge to edge. Omitted → the full range.
+ * so `x={['a', 'b']}` shades both columns edge to edge. Omitted → the full range; a `null`
+ * end runs to that edge of the axis, so `[p75, null]` is "the top quartile and beyond".
  *
  * @param {AnyScale} scale
  * @param {unknown[] | undefined} range
@@ -26,9 +43,8 @@ export function spanOf(scale, range) {
 		return [Math.min(...r), Math.max(...r)]
 	}
 	const band = isBand(scale) ? /** @type {() => number} */ (scale.bandwidth)() : 0
-	const ends = range.slice(0, 2).map((v) => Number(scale(v)))
-	const starts = [Math.min(...ends), Math.max(...ends) + band]
-	return /** @type {[number, number]} */ (starts)
+	const ends = [endValue(scale, range[0], 'lo'), endValue(scale, range[1], 'hi')].map((v) => Number(scale(v)))
+	return [Math.min(...ends), Math.max(...ends) + band]
 }
 
 /**

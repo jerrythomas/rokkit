@@ -16,10 +16,13 @@
 
 	type Value = number | string
 	type Props = {
-		/** `[lo, hi]` on the x axis. Omit to span the whole axis. A band category covers its band. */
-		x?: [Value, Value]
-		/** `[lo, hi]` on the y axis. Omit to span the whole axis. */
-		y?: [Value, Value]
+		/**
+		 * `[lo, hi]` on the x axis. Omit to span the whole axis; a `null` end runs to that edge,
+		 * so `[p75, null]` is "the top quartile and beyond". A band category covers its band.
+		 */
+		x?: [Value | null, Value | null]
+		/** `[lo, hi]` on the y axis, with the same open-end rule. */
+		y?: [Value | null, Value | null]
 		/** Polygon vertices as `[x, y]` pairs in data coordinates. Wins over `x`/`y`. */
 		points?: Array<[Value, Value]>
 		/** Theming hook — rendered as `data-plot-region="<name>"`. */
