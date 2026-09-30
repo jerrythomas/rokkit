@@ -7,7 +7,7 @@
  * a new geom with a geometry-driven domain adds a row to that table instead of editing the
  * scale code.
  */
-import { isLiteralColor } from '../brewing/colors.js'
+import { stackFieldOf } from './stacking.js'
 
 const valid = (v) => v !== null && v !== undefined && !isNaN(v)
 
@@ -43,24 +43,15 @@ export function boxDomain(rows) {
 }
 
 /**
- * The field a stacked bar stacks by: the first of fill, colour, pattern that is a real field
- * and not the x field.
- */
-function stackFieldOf({ x, fill, color, pattern }) {
-	const fillField = isLiteralColor(fill) ? null : fill
-	const colorField = isLiteralColor(color) ? null : color
-	return [fillField, colorField, pattern].find((f) => f && f !== x) ?? (fillField ?? colorField)
-}
-
-/**
  * A stacked bar reaches its column total; a 100%-filled one reaches 1.
  *
- * Summed per (x, stack key), keeping the LAST value per key, so rows that share a key under an
- * identity stat do not double-count. With no stacking field the builder draws plain bars, so
- * there is no total to size to and the normal extent applies (null).
+ * Summed per (x, stack key), keeping the LAST value per key — the builder's own lookup does the
+ * same, so rows sharing a key under an identity stat do not double-count. The stack key is the
+ * builder's (`stackFieldOf`); with none, the builder draws plain bars, so there is no total to
+ * size to and the normal extent applies (null).
  *
  * @param {Record<string, unknown>[]} rows
- * @param {{ x?: string, y?: string, fill?: string, color?: string, pattern?: string }} channels
+ * @param {{ x?: string, y?: string, group?: string, fill?: string, color?: string, pattern?: string }} channels
  * @param {'stack' | 'fill' | undefined} position
  */
 export function stackDomain(rows, channels, position) {
@@ -99,6 +90,10 @@ export function waterfallDomain(rows, field, totalField) {
 	return [min, max]
 }
 
+/** A geom's channels without the keys it left undefined (to inherit). */
+const definedOf = (channels = {}) =>
+	Object.fromEntries(Object.entries(channels).filter(([, v]) => v !== undefined))
+
 const isStacked = (g) => g.options?.stack || g.options?.position === 'stack' || g.options?.position === 'fill'
 
 /**
@@ -109,8 +104,13 @@ const VALUE_DOMAINS = [
 	{ matches: (g) => g.type === 'box' || g.type === 'violin', domain: (rows) => boxDomain(rows) },
 	{
 		matches: isStacked,
+		// The geom's OWN channels win — `group` exists only there — over the effective ones.
 		domain: (rows, geom, channels, field) =>
-			stackDomain(rows, { ...channels, y: field }, geom.options?.position === 'fill' ? 'fill' : 'stack')
+			stackDomain(
+				rows,
+				{ ...channels, ...definedOf(geom.channels), y: field },
+				geom.options?.position === 'fill' ? 'fill' : 'stack'
+			)
 	},
 	{
 		matches: (g) => g.type === 'waterfall',

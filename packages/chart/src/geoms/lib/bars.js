@@ -1,7 +1,8 @@
 import { scaleBand } from 'd3-scale'
 import { stack, stackOffsetExpand } from 'd3-shape'
 import { toPatternId } from '../../lib/brewing/patterns.js'
-import { isLiteralColor, literalColor, markEntry } from '../../lib/brewing/colors.js'
+import { literalColor, markEntry } from '../../lib/brewing/colors.js'
+import { subBandFields } from '../../lib/plot/stacking.js'
 
 /**
  * Returns a band scale suitable for bar x-positioning.
@@ -14,24 +15,6 @@ function ensureBandX(xScale, data, xField) {
 	const [r0, r1] = xScale.range()
 	const domain = [...new Set(data.map((d) => d[xField]))]
 	return scaleBand().domain(domain).range([r0, r1]).padding(0.2)
-}
-
-/**
- * Returns the sub-band fields: distinct non-x fields among [group, color, pattern].
- * These are the fields that cause multiple bars within a single x-band (dodge/grouping).
- * `group` (the explicit grouping channel) takes precedence as the first sub-band.
- */
-function subBandFields(channels) {
-	const { x: xf, group: gf, color: cf, pattern: pf } = channels
-	const seen = new Set()
-	const out = []
-	for (const f of [gf, cf, pf]) {
-		if (f && f !== xf && !seen.has(f) && !isLiteralColor(f)) {
-			seen.add(f)
-			out.push(f)
-		}
-	}
-	return out
 }
 
 /**
