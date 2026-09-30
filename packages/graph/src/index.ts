@@ -15,6 +15,7 @@ export { default as Treemap } from './diagrams/Treemap.svelte'
 export { default as Sunburst } from './diagrams/Sunburst.svelte'
 export { default as StructureDiagram } from './diagrams/StructureDiagram.svelte'
 export { default as Neighborhood } from './diagrams/Neighborhood.svelte'
+export { default as DependencyMatrix } from './diagrams/DependencyMatrix.svelte'
 
 // Controls, for composing your own arrangement over the bare canvas.
 export { default as DensityControl } from './controls/DensityControl.svelte'
@@ -32,6 +33,8 @@ export { createGraphPreset, defaultGraphPreset, resolveGroupStyles } from './pre
 export { DEFAULT_ICONS } from './icons.js'
 export { cluster, flow, neighborhood, points, radial, structure, sunburst, world, layouts } from './layout/index.js'
 export { LAYOUT_OPTIONS, appliesTo } from './layout/options.js'
+export { buildMatrix } from './layout/matrix.js'
+export type { Matrix, MatrixCell, MatrixBlock, MatrixOptions } from './layout/matrix.js'
 
 export type { EntityRow, GraphStateConfig, Relationship } from './GraphState.svelte.js'
 export type { GraphChannel, GraphPreset, GraphShades } from './preset.js'

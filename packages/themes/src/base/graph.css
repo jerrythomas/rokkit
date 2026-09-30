@@ -916,3 +916,40 @@ svg[data-legend-swatch] {
 [data-graph-detail='dot'] [data-graph-layout='structure'] [data-graph-node-title] {
   display: none;
 }
+
+
+/* ─── the dependency matrix ─────────────────────────────────────────────────
+   Structure only. Cell intensity comes from --cell-weight (count / max, set per cell), so a
+   pair joined by many edges reads heavier than a pair joined by one. */
+[data-graph-matrix] {
+  overflow: auto;
+  font-size: 11px;
+}
+
+[data-graph-matrix] svg {
+  display: block;
+}
+
+[data-matrix-row] {
+  cursor: pointer;
+  outline: none;
+}
+
+[data-matrix-band] {
+  fill: transparent;
+}
+
+[data-matrix-cell] rect {
+  fill-opacity: calc(0.35 + var(--cell-weight, 1) * 0.65);
+}
+
+[data-matrix-diagonal],
+[data-matrix-block],
+[data-matrix-col] {
+  pointer-events: none;
+}
+
+[data-matrix-block] {
+  fill: none;
+  stroke-width: 1.5;
+}

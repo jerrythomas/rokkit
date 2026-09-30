@@ -430,3 +430,48 @@
 [data-style='zen-sumi'] [data-graph-layout='structure'] [data-graph-node]:hover [data-graph-node-title] {
   color: var(--ink);
 }
+
+
+/* ─── the dependency matrix ─────────────────────────────────────────────────
+   A dependency is ink; one against the grain (above the diagonal) is danger and stays danger
+   when its row is selected — the violation is the point. Labels are ink-mute, the readable
+   secondary tone: each row header is a button. */
+[data-style='zen-sumi'] [data-graph-matrix] text {
+  fill: var(--ink-mute);
+}
+
+[data-style='zen-sumi'] [data-matrix-row][data-matrix-state='selected'] text,
+[data-style='zen-sumi'] [data-matrix-col][data-matrix-state='selected'] {
+  fill: var(--ink);
+  font-weight: 600;
+}
+
+[data-style='zen-sumi'] [data-matrix-row]:hover [data-matrix-band],
+[data-style='zen-sumi'] [data-matrix-row][data-matrix-state='selected'] [data-matrix-band] {
+  fill: var(--paper-mute);
+}
+
+[data-style='zen-sumi'] [data-matrix-row]:focus-visible [data-matrix-band] {
+  stroke: var(--focus-ring);
+  stroke-width: 2;
+}
+
+[data-style='zen-sumi'] [data-matrix-diagonal] {
+  fill: var(--paper-mute);
+}
+
+[data-style='zen-sumi'] [data-matrix-cell] rect {
+  fill: var(--ink-mute);
+}
+
+[data-style='zen-sumi'] [data-matrix-cell][data-matrix-state='highlight'] rect {
+  fill: var(--primary);
+}
+
+[data-style='zen-sumi'] [data-matrix-cell][data-matrix-above] rect {
+  fill: var(--danger);
+}
+
+[data-style='zen-sumi'] [data-matrix-block] {
+  stroke: var(--ink-soft);
+}
