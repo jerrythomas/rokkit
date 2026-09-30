@@ -1,26 +1,27 @@
 # CHECKPOINT
 
-**Slice: Navigator decomposition — DONE.** Plan: `docs/plans/2026-09-30-navigator-decomposition.md`.
+**Last slice: the open items. DONE and pushed.** `develop` is at `56d90af1`, and CI is green
+(check, browser, coverage).
 
-- `9449887f`: dom.js
-- `79a38106`: Typeahead
-- `657db32f`: focus.js
-- `fb46dafb`: intent.js; the Navigator is now pure wiring
+- `00f64615`: the browser specs run in CI.
+- `1b629aa6`: forms no longer ships its specs or fixtures; a workspace guard enforces it.
+- `066d5b3a` and `56d90af1`: JSON Schema object-level `required` is honoured, and the docs say so.
 
-`navigator.js` went from 418 to 187 lines and complexity 70 to 18. The differential replayed
-30,318 scenarios, all identical, and caught all 5 planted bugs.
+The Navigator decomposition (`9449887f`..`fb46dafb`) landed before these; see journal 2026-09-30 (7).
 
-Also landed: `6ec4971b` fixes `bun run test:browser`, which vitest 4 broke; it now passes 34 tests.
+**Next slice: `chart/src/Plot.svelte`.** It is the top hotspot now (cx 72, churn 38).
+Same method as before:
 
-**Pushed:** `develop` is at `982abc5c`, and CI's Check and Coverage runs are green. Nothing remains in this slice.
+1. characterise it;
+2. write the plan doc;
+3. extract pure parts behind the unchanged component API;
+4. run a differential and re-measure.
 
-**Next command:** none queued. Pick the next item from the open questions below.
+**Next command:** read `packages/chart/src/Plot.svelte` and its specs, then write
+`docs/plans/2026-09-30-plot-svelte-decomposition.md`.
 
 **Open questions:**
 
-- `@rokkit/forms` ships `*.spec.js` + fixtures in `dist/lib` — packaging hygiene, not yet fixed.
-- Object-level JSON Schema `required: [...]` is not honoured — only field-level `required: true`.
-- `test:browser` is not in CI, so it can rot again unnoticed. Add it to CI?
-- Next hotspots: `Plot.svelte` (cx 72, churn 38), `unocss/preset.ts` (74/34), `core/utils.js` (47/52).
+- The next hotspots after Plot.svelte: `unocss/preset.ts` (74/34) and `core/utils.js` (47/52).
 
 **Known broken:** nothing. The sensei MCP server is disconnected, so this file is the only record.

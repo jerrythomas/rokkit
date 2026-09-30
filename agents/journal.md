@@ -10164,3 +10164,27 @@ Found on the way:
 Gates: `test:ci` passes 7824 tests, `test:browser` 34 and learn e2e 129. Lint is 0/0, types
 are clean and coverage exits 0. `architecture.json` / `codebase.json` are regenerated:
 `actions/navigator` is the 46th component, and the Navigator has left the hotspot list.
+
+---
+
+## 2026-09-30 (8) — open items: browser CI, forms packaging, object-level required
+
+The user said "keep going" after the Navigator. I took the open items in order:
+
+- **Browser specs in CI** (`00f64615`). The Check workflow gains a `browser` job that
+  installs Chromium and runs `test:browser`. It passed on its first CI run.
+- **Forms packaging** (`1b629aa6`). `fields.spec.js`, `conditions.spec.js` and `lib/fixtures/`
+  lived in `src/lib`, so 1.8.0 published them twice: under `src/` (the `files` list) and under
+  `dist/` (svelte-package copies `src`). They moved to `spec/lib`, and the packed tarball now
+  has none of them. A workspace guard, `core/spec/workspace-published-src.spec.js`, fails any
+  publishable package with test artifacts under `src/`. It failed on exactly those three first.
+- **Object-level `required`** (`066d5b3a`). JSON Schema's `required: ['city']` on the parent is
+  honoured at any depth, in validation and on the rendered input. `requiredAt(schema, path)`
+  decides both. Latent bug fixed alongside: presence used a truthy `required`, so an absent
+  object field whose own `required` array lists its children was flagged "is required".
+- **Docs** (`56d90af1`). The README's `validateField` example was wrong: it had no `type`, so
+  it returned null, and it quoted a message the code never produces.
+
+Process slip, caught: the forms gate linted only `packages/forms`, so a `prefer-template`
+error in the new core guard spec reached a commit. It was amended before the push, and the
+gate script now lints the whole repo.
