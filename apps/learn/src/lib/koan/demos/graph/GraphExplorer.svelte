@@ -19,6 +19,10 @@
 	import { datasets } from './datasets'
 
 	const config = $derived(explorer.config)
+
+	/** A containment diagram opens at a path; everything else ignores it, so `[]`. */
+	const openingPath = (props: Record<string, unknown> | undefined) =>
+		(props?.focusPath as string[] | undefined) ?? []
 	const dataset = $derived(datasets[config.dataset])
 
 	// Named `graph`, not `state`: a local binding literally called `state` makes the compiler
@@ -37,6 +41,17 @@
 			})
 	)
 
+	// The diagram this state last opened. Plain, not $state: it is bookkeeping for the effect
+	// below, and reading it must not make the effect depend on it.
+	let opened: string | null = null
+
+	/** True once per diagram switch — the first update for a diagram applies its opening path. */
+	function freshDiagram(): boolean {
+		if (opened === explorer.diagram) return false
+		opened = explorer.diagram
+		return true
+	}
+
 	$effect(() => {
 		graph.update({
 			nodes: dataset.nodes,
@@ -47,6 +62,11 @@
 			// compares the two so they cannot drift.
 			layout: config.layout,
 			...config.props,
+			// The drill path, carried back like `value` below: update() fully re-applies, so the
+			// registry's OPENING path spread above would snap a drilled diagram back to its start
+			// whenever anything else changed — selecting a box, say. The state holds where the
+			// reader drilled to; only a newly opened diagram starts at its registry path.
+			focusPath: freshDiagram() ? openingPath(config.props) : untrack(() => graph.drillPath),
 			preset: createGraphPreset({ using: explorer.using }),
 			// Without this the group ramp resolves from the LIGHT ladder forever, so every
 			// cluster keeps its pale shade-100 fill in dark mode and the canvas reads as

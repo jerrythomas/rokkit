@@ -10,7 +10,7 @@ import {
 	Sunburst,
 	Treemap
 } from '@rokkit/graph'
-import { datasets } from './datasets'
+import { datasets, lazyCodebase } from './datasets'
 
 /**
  * One entry per DIAGRAM, each carrying the dataset it is for.
@@ -33,6 +33,7 @@ export type DiagramId =
 	| 'calls'
 	| 'structure'
 	| 'treemap'
+	| 'lazy-treemap'
 	| 'sunburst'
 	| 'neighborhood'
 	| 'matrix'
@@ -141,6 +142,23 @@ export const registry: Record<DiagramId, DiagramConfig> = {
 		blurb:
 			'Where the mass of a codebase is. A box’s area is what it contains, so the tree sums subtrees rather than counting nodes.',
 		props: { sizeBy: 'declarations', levels: 2, focusPath: ['rokkit'] }
+	},
+	'lazy-treemap': {
+		id: 'lazy-treemap',
+		layout: 'world',
+		label: 'Treemap, loaded per level',
+		group: 'Code',
+		component: Treemap as Component<Record<string, unknown>>,
+		dataset: 'codebase-lazy',
+		blurb:
+			'The same treemap, but the page never holds the whole repo. Opening a box asks the host for that level — the canvas waits while it loads — and a level it already has comes back instantly.',
+		props: {
+			sizeBy: 'declarations',
+			levels: 2,
+			focusPath: ['rokkit'],
+			ondrill: (path: string[]) => lazyCodebase.load(path),
+			ondrillup: (path: string[]) => lazyCodebase.load(path)
+		}
 	},
 	sunburst: {
 		id: 'sunburst',

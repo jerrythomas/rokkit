@@ -21,12 +21,14 @@ import { toGraphInput } from '@rokkit/graph/schema'
 import codebase from './codebase.json'
 import architecture from '../chart/architecture.json'
 import type { GraphFields } from '@rokkit/graph'
+import { LazyCodebase } from './lazy-codebase.svelte'
 
 export type DatasetId =
 	| 'ecommerce'
 	| 'schema-deps'
 	| 'service-calls'
 	| 'codebase'
+	| 'codebase-lazy'
 	| 'components'
 	| 'cochange'
 
@@ -472,6 +474,16 @@ export const componentFields: GraphFields = {
 	defaultEdgeKind: 'dependency'
 }
 
+/**
+ * The same codebase, held ONE LEVEL AT A TIME (#165): the host the lazy treemap drills
+ * through. Opens at `rokkit` with two levels loaded; every other level is "fetched" on drill.
+ */
+export const lazyCodebase = new LazyCodebase(codebase.nodes as unknown[], {
+	root: ['rokkit'],
+	depth: 2,
+	delay: 600
+})
+
 export const datasets = {
 	ecommerce: {
 		id: 'ecommerce' as const,
@@ -499,6 +511,16 @@ export const datasets = {
 		label: 'This codebase',
 		nodes: codebase.nodes as unknown[],
 		edges: codebase.edges as unknown[],
+		fields: codebaseFields
+	},
+	'codebase-lazy': {
+		id: 'codebase-lazy' as const,
+		label: 'This codebase, loaded level by level',
+		// A getter, so the explorer's effect re-reads it: the level the host swapped in.
+		get nodes() {
+			return lazyCodebase.nodes
+		},
+		edges: [] as unknown[],
 		fields: codebaseFields
 	},
 	components: {

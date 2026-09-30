@@ -83,6 +83,12 @@ const meta: DemoMeta = {
 		{ id: 'call-graph', label: 'Call tree', mode: 'dynamic', props: { diagram: 'calls' } },
 		{ id: 'structure', label: 'Structure', mode: 'dynamic', props: { diagram: 'structure' } },
 		{ id: 'treemap', label: 'Treemap', mode: 'dynamic', props: { diagram: 'treemap' } },
+		{
+			id: 'lazy-treemap',
+			label: 'Treemap, per level',
+			mode: 'dynamic',
+			props: { diagram: 'lazy-treemap' }
+		},
 		{ id: 'sunburst', label: 'Sunburst', mode: 'dynamic', props: { diagram: 'sunburst' } },
 		{ id: 'matrix', label: 'Dependency matrix', mode: 'dynamic', props: { diagram: 'matrix' } },
 		{ id: 'coupling', label: 'Hidden coupling', mode: 'dynamic', props: { diagram: 'coupling' } }
@@ -197,6 +203,21 @@ const meta: DemoMeta = {
 				name: 'onselect',
 				type: '(id: string | null) => void',
 				desc: 'Fires when a node is activated, and with null when the selection is cleared — a controlled consumer has no other way to learn it was dropped'
+			},
+			{
+				name: 'focusPath',
+				type: 'string[]',
+				desc: 'Containment layouts (world, sunburst, structure): the subtree drawn as the whole canvas, as the DATA path. Bindable — drilling moves it; bind it (or omit it) so a re-render does not put the old path back'
+			},
+			{
+				name: 'ondrill',
+				type: '(path: string[], node: GraphNode | null) => void | Promise<void>',
+				desc: 'The reader opened a box. `node` is the declared node at the path, null for a synthesised container. Return a promise while you load that level: the canvas shows it pending, and a rejection returns to the previous level. Not a selection — onselect is not called'
+			},
+			{
+				name: 'ondrillup',
+				type: '(path: string[]) => void | Promise<void>',
+				desc: 'The reader climbed out to `path`. Answer from what you already hold (no refetch) or return a promise, same contract as ondrill'
 			}
 		],
 		attrs: [
@@ -212,6 +233,35 @@ const meta: DemoMeta = {
 			{
 				selector: '[data-graph-panning]',
 				desc: 'Present on the canvas while a drag-pan is in progress'
+			},
+			{
+				selector: '[data-graph-pending]',
+				desc: 'Present on the canvas (with aria-busy) while a drill’s level is loading — the old level stays, dimmed'
+			},
+			// Drilling (#165)
+			{
+				selector: '[data-graph-drillable]',
+				desc: 'A containment box or wedge that opens on click / Enter / Space — a button, labelled "Open …"'
+			},
+			{
+				selector: '[data-graph-drill]',
+				desc: 'The drill bar in the control overlay: trail, Open, loading, error. Shown only when it has something to say'
+			},
+			{
+				selector: '[data-graph-drill-trail]',
+				desc: 'The breadcrumb list from the root to the current level'
+			},
+			{
+				selector: '[data-graph-drill-crumb]',
+				desc: 'One crumb — a button back to that ancestor; the current level carries aria-current'
+			},
+			{
+				selector: '[data-graph-drill-open]',
+				desc: '"Open <name>" for the selected box when it can be drilled — the keyboard route into a leaf'
+			},
+			{
+				selector: '[data-graph-drill-error]',
+				desc: 'Why the last drill failed (role="alert") — the previous level is restored'
 			},
 			{
 				selector: '[data-graph-zoom-controls]',

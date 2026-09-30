@@ -678,8 +678,10 @@ test.describe('graph demo', () => {
 	test('every example is reachable as a variant chip, not just via a control', async ({ page }) => {
 		// The variants were declared in meta and surfaced nowhere: the layout renders variant
 		// chips only in its GENERIC demo branch, and graph has its own conversation component.
-		for (const label of ['ER diagram', 'Schema dependencies', 'Call tree', 'Treemap']) {
-			await expect(page.getByRole('button', { name: label }), label).toBeVisible()
+		// Exact names: 'Treemap' is a prefix of 'Treemap, per level', and a substring match
+		// resolves both and fails strict mode.
+		for (const label of ['ER diagram', 'Schema dependencies', 'Call tree', 'Treemap', 'Treemap, per level']) {
+			await expect(page.getByRole('button', { name: label, exact: true }), label).toBeVisible()
 		}
 
 		await page.getByRole('button', { name: 'Schema dependencies' }).click()
