@@ -14,15 +14,15 @@ import {
 	defaultPalette,
 	DEFAULT_ICONS,
 	iconShortcuts,
-	NAMED_TOKENS,
-	Theme,
-	defaultColors
+	NAMED_TOKENS
 } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
-import { loadConfig, resolveColormap, isAlias, resolveTokenMode } from './config.js'
-import { resolveTokens, isColorValue, PALETTE_REF_RE } from './custom-tokens.js'
+import { loadConfig, resolveColormap } from './config.js'
+import { isColorValue, PALETTE_REF_RE } from './custom-tokens.js'
 import { NAMED_SHORTCUT_PREFIXES, buildNamedShortcuts } from './named-shortcuts.js'
 import { rootExtraVars } from './typography.js'
+import { themeFor, rootPreflights, skinPreflights, themeColors } from './colors.js'
+import { checkInkContrast } from './contrast.js'
 
 const THEME_CONFIG = {
 	dark: {
@@ -37,51 +37,6 @@ const FONT_FAMILIES = {
 	sans: ['var(--font-sans)'],
 	body: ['var(--font-sans)']
 }
-
-// ─── Shared predicate ────────────────────────────────────────────────────────
-
-/**
- * Returns true when a colormap value is a { light?, dark? } dual-palette object
- * rather than a plain palette-name string.
- */
-function isDualPalette(value) {
-	return value !== null && typeof value === 'object' && !Array.isArray(value)
-}
-
-// ─── Colormap helpers ────────────────────────────────────────────────────────
-
-/**
- * Returns true when any role in a colormap uses dual-palette syntax.
- */
-function hasDualPaletteMapping(colormap) {
-	return Object.values(colormap).some(isDualPalette)
-}
-
-/**
- * Resolves a colormap to flat palette-name strings for a given mode.
- * String values pass through unchanged.
- * { light, dark } objects resolve to the matching side, falling back to the other.
- */
-function resolveMappingForMode(colormap, mode) {
-	return Object.fromEntries(
-		Object.entries(colormap).map(([role, value]) => [
-			role,
-			isDualPalette(value)
-				? /* v8 ignore next — the ?? null fallbacks require both light+dark absent, which causes downstream errors */
-					mode === 'dark'
-					? (value.dark ?? value.light ?? null)
-					: (value.light ?? value.dark ?? null)
-				: value
-		])
-	)
-}
-
-// ─── CSS var serialization ───────────────────────────────────────────────────
-
-const toCssBlock = (vars) =>
-	Object.entries(vars)
-		.map(([k, v]) => `${k}:${v}`)
-		.join(';')
 
 // ─── Builder helpers ─────────────────────────────────────────────────────────
 
@@ -111,159 +66,6 @@ function buildSafelist(config) {
 		...defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}`)),
 		...defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}/50`))
 	]
-}
-
-function buildPreflights(theme, colormap, config) {
-	const extraVars = rootExtraVars(config)
-
-	const lightVars = buildVarsForMode(theme, colormap, config)
-	const lightOverrides = resolveTokens(
-		/* v8 ignore next — loadConfig always ensures overrides is {} */
-		config.overrides ?? {},
-		/* v8 ignore next — loadConfig always ensures palettes is {} */
-		config.palettes ?? {},
-		config.colorSpace,
-		'light'
-	)
-	// Overrides merged after named-token defaults so reserved-name entries
-	// (e.g. `paper-edge`) win over the skin-derived value.
-	const lightAllVars = { ...lightVars, ...lightOverrides }
-	const lightBlock = `:root, [data-mode="light"]{${toCssBlock(lightAllVars)}}${
-		extraVars.length ? `:root{${extraVars.join(';')}}` : ''
-	}`
-
-	return [{ getCSS: () => `${lightBlock}${buildDarkBlock(colormap, config)}` }]
-}
-
-/**
- * Roles whose mapping is a real palette rather than an alias — the only ones a
- * dark theme can be built from.
- */
-function nonAliasRoles(colormap) {
-	return Object.fromEntries(Object.entries(colormap).filter(([, v]) => !isAlias(v)))
-}
-
-/** True when any override declares a dark value, as `{ light, dark }` or dark-only. */
-function hasDarkOverride(config) {
-	/* v8 ignore next — loadConfig always ensures overrides is {} */
-	return Object.values(config.overrides ?? {}).some(
-		(v) => v && typeof v === 'object' && !Array.isArray(v) && 'dark' in v
-	)
-}
-
-/**
- * The `[data-mode="dark"]` block, or `''` when nothing asks for one — emitted
- * only when the skin has a dual palette OR an override declares a dark value.
- * Returning empty rather than a no-op block keeps the output free of a selector
- * that would match and set nothing.
- */
-function buildDarkBlock(colormap, config) {
-	const roles = nonAliasRoles(colormap)
-	if (!hasDualPaletteMapping(roles) && !hasDarkOverride(config)) return ''
-
-	const darkTheme = new Theme({
-		colors: { ...defaultColors, ...config.palettes },
-		mapping: resolveMappingForMode(roles, 'dark'),
-		colorSpace: config.colorSpace
-	})
-	const darkVars = buildVarsForMode(darkTheme, colormap, config)
-	const darkOverrides = resolveTokens(
-		/* v8 ignore next — loadConfig always ensures overrides is {} */
-		config.overrides ?? {},
-		/* v8 ignore next — loadConfig always ensures palettes is {} */
-		config.palettes ?? {},
-		config.colorSpace,
-		'dark'
-	)
-	return `[data-mode="dark"]{${toCssBlock({ ...darkVars, ...darkOverrides })}}`
-}
-
-/**
- * Builds a per-role mode map from config, covering every non-alias role in colormap.
- */
-function buildPerRoleModes(config, colormap) {
-	const result: Record<string, 'core' | 'extended'> = {}
-	for (const role of Object.keys(colormap)) {
-		result[role] = resolveTokenMode(config, role)
-	}
-	return result
-}
-
-/**
- * Builds CSS-var assignments for one mode (light or dark).
- *  - core: named tokens (palette values inlined) + bare `--color-{role}` alias per role
- *  - extended: full palette per role + named tokens as palette aliases
- * Supports per-role decomposition via config.tokens object.
- */
-function buildVarsForMode(theme, colormap, config) {
-	const perRoleModes = buildPerRoleModes(config, colormap)
-	const result: Record<string, string> = {}
-
-	// Named layer (per-token resolution based on role mode)
-	Object.assign(result, theme.getNamedTokens('light', perRoleModes))
-
-	// Per-role palette + bare alias emit
-	for (const role of Object.keys(colormap)) {
-		if (isAlias(colormap[role])) continue
-		if (perRoleModes[role] === 'extended') {
-			Object.assign(result, theme.getPaletteForRole(role))
-		} else {
-			Object.assign(result, theme.getRoleBaseAlias(role))
-		}
-	}
-	return result
-}
-
-/**
- * The skin name treated as the active default. Its named-token vars are carried
- * by the `:root` preflight (see buildPreflights), so we never emit a competing
- * `[data-skin='default']` block — `data-skin='default'` simply inherits `:root`.
- */
-const DEFAULT_SKIN_NAME = 'default'
-
-/**
- * Builds the named-token CSS-var block for one skin in a single mode, using the
- * SAME var-building helper (`buildVarsForMode`) that `:root` uses. The resulting
- * vars are therefore identical in form to the `:root`/dark blocks — we only
- * change the selector. Aliases are stripped (they get no own CSS vars).
- */
-function buildSkinVars(mapping, config, mode) {
-	const nonAliasMapping = Object.fromEntries(Object.entries(mapping).filter(([, v]) => !isAlias(v)))
-	const theme = new Theme({
-		colors: { ...defaultColors, ...config.palettes },
-		mapping: resolveMappingForMode(nonAliasMapping, mode),
-		colorSpace: config.colorSpace
-	})
-	return buildVarsForMode(theme, nonAliasMapping, config)
-}
-
-/**
- * Emits `[data-skin='name']` preflight blocks for every configured skin EXCEPT
- * the resolved default (whose vars live in `:root`). Mirrors buildPreflights:
- *  - light block: `[data-skin='name']{…light vars…}`
- *  - dark block (only when the skin has a dual-palette role):
- *      `[data-mode='dark'][data-skin='name']{…dark vars…}`
- * The dark selector uses single-quoted attributes; the test contract accepts
- * either quoting, and single quotes match the `data-skin` quoting used here.
- */
-function buildSkinPreflights(config) {
-	return Object.entries(config.skins)
-		.filter(([name]) => name !== DEFAULT_SKIN_NAME)
-		.map(([name, mapping]) => {
-			const lightVars = buildSkinVars(mapping, config, 'light')
-			const lightBlock = `[data-skin='${name}']{${toCssBlock(lightVars)}}`
-
-			const nonAliasMapping = Object.fromEntries(
-				Object.entries(mapping).filter(([, v]) => !isAlias(v))
-			)
-			let darkBlock = ''
-			if (hasDualPaletteMapping(nonAliasMapping)) {
-				const darkVars = buildSkinVars(mapping, config, 'dark')
-				darkBlock = `[data-mode='dark'][data-skin='${name}']{${toCssBlock(darkVars)}}`
-			}
-
-			return { getCSS: () => `${lightBlock}${darkBlock}` }
-		})
 }
 
 function buildSemanticShortcuts(theme, colormap) {
@@ -320,90 +122,6 @@ function shortcutsForOverrideToken(name) {
 		.map(({ prefix, prop }) => [`${prefix}-${name}`, { [prop]: `var(--${name})` }])
 }
 
-/**
- * Parses the OKLCH lightness value from a palette shade string.
- * Palette values are stored as "L C H" strings (e.g., "0.75 0.008 50").
- */
-function parseLightness(oklchStr) {
-	if (!oklchStr || typeof oklchStr !== 'string') return null
-	const parts = oklchStr.trim().split(/\s+/)
-	/* v8 ignore next — split() always returns ≥1 element; the : null branch is unreachable */
-	return parts.length >= 1 ? parseFloat(parts[0]) : null
-}
-
-/**
- * Resolves the palette object for a role from the colormap and config.
- */
-function resolvePaletteForRole(role, colormap, config) {
-	const value = colormap[role]
-	if (!value || isAlias(value)) return null
-	const paletteName = isDualPalette(value) ? (value.light ?? value.dark) : value
-	return config.palettes[paletteName] ?? null
-}
-
-/**
- * Checks OKLCH lightness contrast between ink and surface at complementary shades.
- * Ink shades run inverted relative to surface (ink-900 is the darkest, analogous to
- * surface-100), so the meaningful pairs are (surface-100, ink-900) and (surface-300, ink-700).
- * We check that these complementary shades have sufficient lightness difference.
- */
-function checkInkContrast(config, colormap) {
-	const inkPalette = resolvePaletteForRole('ink', colormap, config)
-	const surfacePalette = resolvePaletteForRole('surface', colormap, config)
-	if (!inkPalette || !surfacePalette) return
-
-	// Check shade pairs: surface-100 vs ink-900, surface-300 vs ink-700
-	const checkLevels = [
-		{ surfaceShade: 100, inkShade: 900 },
-		{ surfaceShade: 300, inkShade: 700 }
-	]
-
-	for (const { surfaceShade, inkShade } of checkLevels) {
-		const surfaceL = parseLightness(surfacePalette[surfaceShade])
-		const inkL = parseLightness(inkPalette[inkShade])
-		if (surfaceL !== null && inkL !== null) {
-			const diff = Math.abs(surfaceL - inkL)
-			if (diff < 0.3) {
-				// eslint-disable-next-line no-console
-				console.warn(
-					`rokkit: ink-${inkShade} on surface-${surfaceShade} has low lightness contrast (${diff.toFixed(2)}). ` +
-						`Consider a palette with more tonal range for ink.`
-				)
-			}
-		}
-	}
-}
-
-function buildTheme(config, colormap) {
-	// Filter out aliases — they don't get their own CSS variables
-	const nonAliasColormap = Object.fromEntries(
-		Object.entries(colormap).filter(([, v]) => !isAlias(v))
-	)
-	return new Theme({
-		colors: { ...defaultColors, ...config.palettes },
-		mapping: resolveMappingForMode(nonAliasColormap, 'light'),
-		colorSpace: config.colorSpace
-	})
-}
-
-function buildThemeColors(theme, colormap, config) {
-	const baseColors = { ...theme.getColorRules(), ...config.palettes }
-
-	// Add alias color rules — point alias name to target's CSS variables
-	for (const [role, value] of Object.entries(colormap)) {
-		if (isAlias(value)) {
-			const target = value.alias
-			if (baseColors[target]) {
-				// Generate color rules under the alias name that reference the target's CSS vars
-				/* v8 ignore next 3 — alias validation ensures target's mapping exists; `|| {}` is unreachable */
-				baseColors[role] = theme.mapVariant(theme.colors[theme.mapping[target]] || {}, target)
-			}
-		}
-	}
-
-	return baseColors
-}
-
 const NAMED_TOKEN_SET: Set<string> = new Set(NAMED_TOKENS)
 
 function buildShortcuts(theme, colormap, config) {
@@ -420,7 +138,7 @@ function buildShortcuts(theme, colormap, config) {
 export function presetRokkit(options = {}): Preset {
 	const config = loadConfig(options)
 	const colormap = resolveColormap(config)
-	const theme = buildTheme(config, colormap)
+	const theme = themeFor(colormap, config, 'light')
 	checkInkContrast(config, colormap)
 
 	return {
@@ -436,11 +154,14 @@ export function presetRokkit(options = {}): Preset {
 		extractors: [extractorSvelte()],
 		rules: [['hidden', { display: 'none' }]],
 		safelist: buildSafelist(config),
-		preflights: [...buildPreflights(theme, colormap, config), ...buildSkinPreflights(config)],
+		preflights: [
+			...rootPreflights(theme, colormap, config, rootExtraVars(config)),
+			...skinPreflights(config)
+		],
 		shortcuts: buildShortcuts(theme, colormap, config),
 		theme: {
 			fontFamily: FONT_FAMILIES,
-			colors: buildThemeColors(theme, colormap, config)
+			colors: themeColors(theme, colormap, config)
 		},
 		transformers: [transformerDirectives(), transformerVariantGroup()]
 	}
