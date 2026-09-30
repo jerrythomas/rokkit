@@ -11,7 +11,11 @@ import { literalColor, markEntry } from '../colors.js'
  * @param {number} height
  * @param {{ innerRadius?: number }} opts
  * @param {Map<unknown, string>} [patterns]
- * @returns {{ d: string | null, fill: string, stroke: string, key: unknown, patternId: string | null, pct: number, centroid: [number, number], data: Record<string, unknown> }[]}
+ * `key` is the slice's category — what picks its colour and pattern — so it repeats when rows
+ * share a category, and is undefined without a colour field. `id` is unique per slice (the key
+ * plus its occurrence), for keyed rendering; stable across updates while categories are unique.
+ *
+ * @returns {{ id: string, d: string | null, fill: string, stroke: string, key: unknown, patternId: string | null, pct: number, centroid: [number, number], data: Record<string, unknown> }[]}
  */
 export function buildArcs(data, channels, colors, width, height, opts = {}, patterns) {
 	const { color: lf, y: yf } = channels
@@ -32,6 +36,7 @@ export function buildArcs(data, channels, colors, width, height, opts = {}, patt
 	// Label radius: midpoint between inner and outer (or 70% out for solid pie)
 	const labelRadius = innerRadius > 0 ? (innerRadius + radius) / 2 : radius * 0.65
 	const labelArc = arc().innerRadius(labelRadius).outerRadius(labelRadius)
+	const seen = new Map()
 	return slices.map((slice, i) => {
 		// With a literal color there's no category field, so key each slice by index to keep
 		// them distinct (patterns, which are field-keyed, don't apply to a single literal fill).
@@ -41,7 +46,10 @@ export function buildArcs(data, channels, colors, width, height, opts = {}, patt
 			!lit && key !== null && key !== undefined && patterns?.has(key) ? toPatternId(String(key)) : null
 		const pct = Math.round(((slice.endAngle - slice.startAngle) / total) * 100)
 		const [cx, cy] = labelArc.centroid(slice)
+		const occurrence = seen.get(key) ?? 0
+		seen.set(key, occurrence + 1)
 		return {
+			id: `${String(key)}#${occurrence}`,
 			d: arcGen(slice),
 			fill: colorEntry.fill,
 			stroke: colorEntry.stroke,

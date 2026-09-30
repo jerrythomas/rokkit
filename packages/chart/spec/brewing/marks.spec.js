@@ -107,6 +107,24 @@ describe('buildArcs', () => {
 		expect(arcs).toHaveLength(2)
 	})
 
+	it('gives every slice a unique render id, even when categories repeat or are absent', () => {
+		const repeated = [
+			{ label: 'A', value: 1 },
+			{ label: 'A', value: 2 },
+			{ label: 'B', value: 3 }
+		]
+		const ids = buildArcs(repeated, { color: 'label', y: 'value' }, colors, 100, 100).map((a) => a.id)
+		expect(new Set(ids).size).toBe(3)
+		const unlabelled = buildArcs(repeated, { y: 'value' }, colors, 100, 100).map((a) => a.id)
+		expect(new Set(unlabelled).size).toBe(3)
+	})
+
+	it('keeps the category as the colour key, and a stable id for unique categories', () => {
+		const arcs = buildArcs(data, { color: 'label', y: 'value' }, colors, 100, 100)
+		expect(arcs.map((a) => a.key)).toEqual(['A', 'B'])
+		expect(arcs.map((a) => a.id)).toEqual(['A#0', 'B#0'])
+	})
+
 	it('arc has d (path), fill, stroke', () => {
 		const [arc] = buildArcs(data, { label: 'label', y: 'value' }, colors, 100, 100)
 		expect(arc).toHaveProperty('d')

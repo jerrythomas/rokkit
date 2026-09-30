@@ -374,3 +374,21 @@ describe('spec geoms — helper overrides and unknown types', () => {
 		expect(container.querySelectorAll('[data-plot-geom="point"]').length).toBeGreaterThan(0)
 	})
 })
+
+describe('spec arc — repeated or absent categories', () => {
+	const data = [
+		{ k: 'a', v: 1 },
+		{ k: 'a', v: 2 },
+		{ k: 'b', v: 3 }
+	]
+	it('draws a slice per row instead of aborting the render on a duplicate key', () => {
+		for (const spec of [
+			{ data, y: 'v', geoms: [{ type: 'arc', props: { theta: 'v', fill: 'k' } }] },
+			{ data, geoms: [{ type: 'arc', props: { theta: 'v' } }] }
+		]) {
+			const { container, unmount } = render(Plot, { props: { spec, width: 300, height: 300 } })
+			expect(container.querySelectorAll('[data-plot-element="arc"]').length).toBe(3)
+			unmount()
+		}
+	})
+})
