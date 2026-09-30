@@ -248,6 +248,8 @@ export function validateField(value, fieldSchema, fieldLabel = 'Field') {
  * @private
  */
 function validateElement(element, data, schema, results) {
+	// A group's children are fields too — validated at any depth, not just the top level.
+	for (const child of element.elements ?? []) validateElement(child, data, schema, results)
 	if (!element.scope) return
 
 	const fieldPath = element.scope.replace(/^#\//, '')

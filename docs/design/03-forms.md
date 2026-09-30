@@ -373,7 +373,7 @@ Validation timing is controlled by the `validateOn` prop:
 - `'change'` — validation runs on every field change.
 - `'manual'` — validation runs only on submit or when the consumer explicitly calls `formBuilder.validateField`.
 
-On submit, `formBuilder.validate()` runs `validateAll` across every field regardless of `validateOn` mode. If `formBuilder.isValid` is false, submission is blocked and the DOM focus moves to the first error field.
+On submit, `formBuilder.validate()` runs `validateAll` across every field regardless of `validateOn` mode — including the fields inside a group, at any depth (since 2026-09-30; it used to stop at the top level). A nested field's schema is found where JSON Schema nests it (`properties.addr.properties.city`), with the flat form `properties.addr.city` still read. If `formBuilder.isValid` is false, submission is blocked and the DOM focus moves to the first error field.
 
 ### State representation
 

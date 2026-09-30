@@ -69,3 +69,46 @@ describe('FormBuilder — validating a nested field', () => {
 		expect(b.validateField('addr/city')?.state).toBe('error')
 	})
 })
+
+describe('FormBuilder — validate() reaches every field', () => {
+	const schema = {
+		type: 'object',
+		properties: {
+			name: { type: 'string' },
+			addr: { type: 'object', properties: { city: { type: 'string', required: true } } }
+		}
+	}
+	const layout = {
+		type: 'vertical',
+		elements: [{ scope: '#/name' }, { scope: '#/addr', elements: [{ scope: '#/addr/city', label: 'City' }] }]
+	}
+
+	it('reports a nested required field, and keeps its message (it is visible)', () => {
+		const b = new FormBuilder({ name: 'A', addr: {} }, schema, layout)
+		const results = b.validate()
+		expect(results['addr/city']?.state).toBe('error')
+		expect(b.validation['addr/city']?.state).toBe('error')
+		expect(b.isValid).toBe(false)
+	})
+
+	it('shows the nested message on the nested element', () => {
+		const b = new FormBuilder({ addr: {} }, schema, layout)
+		b.validate()
+		const group = b.elements.find((e) => e.scope === '#/addr')
+		expect(group.props.elements[0].props.message?.state).toBe('error')
+	})
+
+	it('a nested message survives an unrelated edit — the field is still visible', () => {
+		const b = new FormBuilder({ addr: {} }, schema, layout)
+		b.validate()
+		b.updateField('name', 'Z')
+		expect(b.validation['addr/city']?.state).toBe('error')
+	})
+
+	it('a wizard validates the nested fields of the step it checks', () => {
+		const stepped = { type: 'vertical', elements: [{ type: 'step', elements: layout.elements }] }
+		const b = new FormBuilder({ addr: {} }, schema, stepped)
+		expect(b.next()).toBe(false)
+		expect(b.validation['addr/city']?.state).toBe('error')
+	})
+})

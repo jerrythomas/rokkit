@@ -52,9 +52,20 @@ export class FormBuilder {
 		this.lookups = new FormLookups(this.values, lookups)
 	}
 
-	/** The field paths that currently render — a `showWhen`-hidden field has no element. */
+	/**
+	 * The field paths that currently render — a `showWhen`-hidden field has no element. A group's
+	 * children count: their messages must survive `validate()` and `clearHidden()`.
+	 */
 	#visiblePaths() {
-		return this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
+		const paths = []
+		const walk = (elements) => {
+			for (const el of elements) {
+				if (el?.scope) paths.push(el.scope.replace(/^#\//, ''))
+				if (el?.type === 'group') walk(el.props.elements ?? [])
+			}
+		}
+		walk(this.elements)
+		return paths
 	}
 
 	/**

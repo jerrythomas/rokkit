@@ -351,3 +351,43 @@ describe('validateAll — schema without properties', () => {
 		expect(validateAll({ anything: 1 }, {}, layout)).toBeTruthy()
 	})
 })
+
+describe('validateAll — every field, not just the top level', () => {
+	const schema = {
+		type: 'object',
+		properties: {
+			name: { type: 'string', required: true },
+			addr: {
+				type: 'object',
+				properties: {
+					city: { type: 'string', required: true },
+					geo: { type: 'object', properties: { lat: { type: 'number', required: true } } }
+				}
+			}
+		}
+	}
+	const layout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/name' },
+			{
+				scope: '#/addr',
+				elements: [
+					{ scope: '#/addr/city', label: 'City' },
+					{ scope: '#/addr/geo', elements: [{ scope: '#/addr/geo/lat', label: 'Lat' }] }
+				]
+			}
+		]
+	}
+
+	it('validates the fields inside a group, at any depth', () => {
+		const results = validateAll({ name: 'A', addr: { geo: {} } }, schema, layout)
+		expect(results['addr/city']).toMatchObject({ state: 'error', text: 'City is required' })
+		expect(results['addr/geo/lat']).toMatchObject({ state: 'error', text: 'Lat is required' })
+		expect(results.name).toBeUndefined()
+	})
+
+	it('reports nothing for a fully valid nested form', () => {
+		expect(validateAll({ name: 'A', addr: { city: 'Pune', geo: { lat: 1 } } }, schema, layout)).toEqual({})
+	})
+})

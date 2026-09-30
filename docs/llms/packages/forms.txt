@@ -333,7 +333,7 @@ Key behaviors:
 
 ### Schema-Based Validation
 
-Validation rules are defined in the schema. Call `validate()` or `validateField(path)` to run them:
+Validation rules are defined in the schema. Call `validate()` or `validateField(path)` to run them. `validate()` covers every visible field, including those inside groups at any depth; nested fields are looked up the way JSON Schema nests them (`properties.addr.properties.city`):
 
 ```js
 const schema = {
