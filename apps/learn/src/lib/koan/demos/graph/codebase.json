@@ -9385,6 +9385,23 @@
 			}
 		},
 		{
+			"id": "packages/unocss/src/colors.js",
+			"label": "colors.js",
+			"kind": "function",
+			"group": "unocss",
+			"path": [
+				"rokkit",
+				"unocss",
+				"colors.js"
+			],
+			"m": {
+				"declarations": 7,
+				"tested": 1,
+				"files": 1,
+				"lines": 187
+			}
+		},
+		{
 			"id": "packages/unocss/src/config.js",
 			"label": "config.js",
 			"kind": "function",
@@ -9399,6 +9416,23 @@
 				"tested": 1,
 				"files": 1,
 				"lines": 205
+			}
+		},
+		{
+			"id": "packages/unocss/src/contrast.js",
+			"label": "contrast.js",
+			"kind": "function",
+			"group": "unocss",
+			"path": [
+				"rokkit",
+				"unocss",
+				"contrast.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 1,
+				"files": 1,
+				"lines": 56
 			}
 		},
 		{
@@ -9483,7 +9517,41 @@
 				"declarations": 1,
 				"tested": 1,
 				"files": 1,
-				"lines": 576
+				"lines": 63
+			}
+		},
+		{
+			"id": "packages/unocss/src/shortcuts.js",
+			"label": "shortcuts.js",
+			"kind": "function",
+			"group": "unocss",
+			"path": [
+				"rokkit",
+				"unocss",
+				"shortcuts.js"
+			],
+			"m": {
+				"declarations": 5,
+				"tested": 1,
+				"files": 1,
+				"lines": 107
+			}
+		},
+		{
+			"id": "packages/unocss/src/typography.js",
+			"label": "typography.js",
+			"kind": "function",
+			"group": "unocss",
+			"path": [
+				"rokkit",
+				"unocss",
+				"typography.js"
+			],
+			"m": {
+				"declarations": 4,
+				"tested": 1,
+				"files": 1,
+				"lines": 126
 			}
 		}
 	],
@@ -15519,6 +15587,21 @@
 			"kind": "imports"
 		},
 		{
+			"source": "packages/unocss/src/colors.js",
+			"target": "packages/core/src/index.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/unocss/src/colors.js",
+			"target": "packages/unocss/src/config.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/unocss/src/colors.js",
+			"target": "packages/unocss/src/custom-tokens.js",
+			"kind": "imports"
+		},
+		{
 			"source": "packages/unocss/src/config.js",
 			"target": "packages/core/src/index.js",
 			"kind": "imports"
@@ -15526,6 +15609,16 @@
 		{
 			"source": "packages/unocss/src/config.js",
 			"target": "packages/unocss/src/builtin-skins.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/unocss/src/contrast.js",
+			"target": "packages/unocss/src/config.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/unocss/src/contrast.js",
+			"target": "packages/unocss/src/colors.js",
 			"kind": "imports"
 		},
 		{
@@ -15570,21 +15663,41 @@
 		},
 		{
 			"source": "packages/unocss/src/preset.ts",
-			"target": "packages/core/src/index.js",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/unocss/src/preset.ts",
 			"target": "packages/unocss/src/config.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/unocss/src/preset.ts",
-			"target": "packages/unocss/src/custom-tokens.js",
+			"target": "packages/unocss/src/typography.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/unocss/src/preset.ts",
+			"target": "packages/unocss/src/colors.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/unocss/src/preset.ts",
+			"target": "packages/unocss/src/contrast.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/unocss/src/preset.ts",
+			"target": "packages/unocss/src/shortcuts.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/unocss/src/shortcuts.js",
+			"target": "packages/core/src/index.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/unocss/src/shortcuts.js",
+			"target": "packages/unocss/src/custom-tokens.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/unocss/src/shortcuts.js",
 			"target": "packages/unocss/src/named-shortcuts.js",
 			"kind": "imports"
 		}

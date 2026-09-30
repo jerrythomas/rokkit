@@ -260,9 +260,9 @@
 			"files": 17,
 			"loc": 2184,
 			"churn": 321,
-			"ca": 59,
+			"ca": 60,
 			"ce": 2,
-			"instability": 0.033,
+			"instability": 0.032,
 			"abstractness": 0.196,
 			"distance": 0.771
 		},
@@ -545,14 +545,14 @@
 		{
 			"component": "unocss",
 			"package": "unocss",
-			"files": 8,
-			"loc": 1177,
-			"churn": 64,
+			"files": 12,
+			"loc": 1140,
+			"churn": 71,
 			"ca": 2,
-			"ce": 5,
-			"instability": 0.714,
-			"abstractness": 0.045,
-			"distance": 0.24
+			"ce": 6,
+			"instability": 0.75,
+			"abstractness": 0.026,
+			"distance": 0.224
 		}
 	],
 	"modules": [
@@ -3647,7 +3647,7 @@
 			"coverage": null,
 			"declarations": 15,
 			"abstract": 0,
-			"fanIn": 59,
+			"fanIn": 60,
 			"fanOut": 15
 		},
 		{
@@ -7907,6 +7907,20 @@
 			"fanOut": 1
 		},
 		{
+			"id": "packages/unocss/src/colors.js",
+			"label": "colors.js",
+			"package": "unocss",
+			"component": "unocss",
+			"loc": 187,
+			"complexity": 29,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 7,
+			"abstract": 0,
+			"fanIn": 2,
+			"fanOut": 3
+		},
+		{
 			"id": "packages/unocss/src/config.js",
 			"label": "config.js",
 			"package": "unocss",
@@ -7917,7 +7931,21 @@
 			"coverage": 1,
 			"declarations": 5,
 			"abstract": 0,
-			"fanIn": 2,
+			"fanIn": 4,
+			"fanOut": 2
+		},
+		{
+			"id": "packages/unocss/src/contrast.js",
+			"label": "contrast.js",
+			"package": "unocss",
+			"component": "unocss",
+			"loc": 56,
+			"complexity": 15,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
 			"fanOut": 2
 		},
 		{
@@ -7931,7 +7959,7 @@
 			"coverage": 1,
 			"declarations": 3,
 			"abstract": 0,
-			"fanIn": 1,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -7981,14 +8009,42 @@
 			"label": "preset.ts",
 			"package": "unocss",
 			"component": "unocss",
-			"loc": 576,
-			"complexity": 74,
-			"churn": 34,
+			"loc": 63,
+			"complexity": 1,
+			"churn": 37,
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 4
+			"fanOut": 5
+		},
+		{
+			"id": "packages/unocss/src/shortcuts.js",
+			"label": "shortcuts.js",
+			"package": "unocss",
+			"component": "unocss",
+			"loc": 107,
+			"complexity": 17,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 5,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 3
+		},
+		{
+			"id": "packages/unocss/src/typography.js",
+			"label": "typography.js",
+			"package": "unocss",
+			"component": "unocss",
+			"loc": 126,
+			"complexity": 12,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 4,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 0
 		}
 	],
 	"imports": [
@@ -8515,7 +8571,7 @@
 		{
 			"source": "unocss",
 			"target": "core",
-			"count": 5
+			"count": 6
 		}
 	],
 	"cochange": [
