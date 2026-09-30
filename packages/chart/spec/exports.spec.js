@@ -8,6 +8,7 @@ import {
 	GeomViolin,
 	GeomJitter,
 	GeomRule,
+	GeomRegion,
 	Spark,
 	SparkState,
 	GEOM_CONTRACT,
@@ -46,6 +47,11 @@ describe('chart exports', () => {
 	it('exposes Rule (reference line) on the Plot namespace and as GeomRule', () => {
 		expect(Plot.Rule).toBeTruthy()
 		expect(GeomRule).toBeTruthy()
+	})
+
+	it('exposes Region (data-coordinate shading) on the Plot namespace and as GeomRegion', () => {
+		expect(Plot.Region).toBeTruthy()
+		expect(GeomRegion).toBeTruthy()
 	})
 
 	it('exposes Spark as a real component — rendering it produces the spark svg', () => {

@@ -18,6 +18,7 @@ import Hexbin from './geoms/Hexbin.svelte'
 import Ribbon from './geoms/Ribbon.svelte'
 import Waterfall from './geoms/Waterfall.svelte'
 import Rule from './geoms/Rule.svelte'
+import Region from './geoms/Region.svelte'
 import Radar from './geoms/Radar.svelte'
 
 // Composable Plot primitives — use as <Plot.Root>, <Plot.Axis>, <Plot.Bar>, etc.
@@ -42,6 +43,7 @@ export const Plot = {
 	Ribbon,
 	Waterfall,
 	Rule,
+	Region,
 	Radar
 }
 
@@ -77,6 +79,7 @@ export { default as GeomHighlight } from './geoms/Highlight.svelte'
 export { default as GeomTrend } from './geoms/Trend.svelte'
 export { default as GeomJitter } from './geoms/Jitter.svelte'
 export { default as GeomRule } from './geoms/Rule.svelte'
+export { default as GeomRegion } from './geoms/Region.svelte'
 
 // Export standalone components
 export { default as Chart } from './Chart.svelte'
