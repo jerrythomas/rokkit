@@ -1,6 +1,6 @@
 ---
 name: charts-rokkit
-description: Use when building, styling, customizing, or theming data visualizations with @rokkit/chart in a Svelte 5 app — the ggplot-style geom/aesthetic model (fill/color/pattern/group/size/symbol/alpha/position/orientation + literal-colour tokens), the PlotChart root + Plot.* geom namespace and prebuilt chart shapes, the spec API, and the preset system (colors/patterns/symbols via createChartPreset + ChartProvider, plus how to ADD a new colour palette, pattern, or symbol to the library).
+description: Use when building, styling, customizing, or theming data visualizations with @rokkit/chart in a Svelte 5 app — the ggplot-style geom/aesthetic model (fill/color/pattern/group/size/symbol/alpha/position/orientation + literal-colour tokens), the PlotChart root + Plot.* geom namespace and prebuilt chart shapes, plane annotations (Rule with slope/intercept, Region bands/polygons, Hull per group, density Contour) and the architecture-analysis recipes built from them (Martin's main sequence, hotspots, complexity × coverage, fan-in/fan-out, god modules), the spec API, and the preset system (colors/patterns/symbols via createChartPreset + ChartProvider, plus how to ADD a new colour palette, pattern, or symbol to the library).
 ---
 
 # Charts — Rokkit (`@rokkit/chart`)
@@ -53,7 +53,8 @@ Shapes: `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `ScatterPlot`, `Bubble
 `Plot` is a **namespace object** (`Plot.Bar`, `Plot.Line`, …), not a component — the root is
 `PlotChart`. Each member equals its `Geom*` export (`Plot.Bar === GeomBar`); use either. Full set:
 `Bar`, `Line`, `Area`, `Point`, `Jitter`, `Arc`, `Box`, `Violin`, `Heatmap`, `Hexbin`,
-`Candlestick`, `Waterfall`, `Ribbon`, `Rule`, plus overlays `Highlight` / `Trend`.
+`Candlestick`, `Waterfall`, `Ribbon`, `Radar`, `Rule`, `Region`, `Hull`, `Contour`, plus overlays
+`Highlight` / `Trend`.
 
 **3. Spec API** (full control from a plain object — same result as composition):
 
@@ -232,6 +233,56 @@ decorations expose `data-*` hooks: `[data-plot-geom="<type>"]`, `[data-plot-elem
 
 ---
 
+## Annotating the plane — Rule, Region, Hull, Contour
+
+These describe the metric PLANE, not a row. SVG paints in document order, so place them **before**
+the marks they sit behind.
+
+```svelte
+<PlotChart data={components} xDomain={[0, 1]} yDomain={[0, 1]} legend tooltip>
+  <Plot.Region name="pain" points={[[0, 0], [0.5, 0], [0, 0.5]]} label="Zone of pain" />
+  <Plot.Region name="uselessness" points={[[1, 1], [0.5, 1], [1, 0.5]]} label="Zone of uselessness" />
+  <Plot.Hull x="instability" y="abstractness" color="package" />
+  <Plot.Contour x="instability" y="abstractness" bandwidth={28} />
+  <Plot.Rule slope={-1} intercept={1} label="main sequence" />
+  <Plot.Point x="instability" y="abstractness" color="package" size="loc" />
+</PlotChart>
+```
+
+- **`Rule`** — `x` / `y` values, or `slope` + `intercept` (ggplot's abline), clipped to the visible
+  domain and labelled at its midpoint along the line. A slope is ignored on a band axis.
+- **`Region`** — `x` / `y` as `[lo, hi]` (a `null` end runs to the axis edge: `[p95, null]`), or a
+  polygon `points`. Reads no data, never moves the scales, clipped to the plot. `name` →
+  `data-plot-region` for theming; `label` at the centroid or `labelAt`.
+- **`Hull`** — one padded convex hull per value of `fill` / `color`; the group field joins the
+  shared palette. A one- or two-member group still draws (dot, capsule).
+- **`Contour`** — kernel-density contours per group; `bandwidth` is in pixels; `filled` for bands.
+
+**The frame comes from the theory, not the data.** A region never moves the scales, so fix the
+domain on `PlotChart` (`xDomain` / `yDomain`) when the plane is defined — or a zone shrinks because
+no row happens to fall in it.
+
+### Architecture analysis (recipes, not components)
+
+The library ships no architecture vocabulary — the recipes are ordinary geoms over metric rows the
+consumer computes (the learn site measures rokkit itself with
+`apps/learn/scripts/build-architecture-metrics.mjs`):
+
+| Recipe | x × y | Annotations |
+|--------|-------|-------------|
+| Main sequence (Robert Martin) | instability `Ce/(Ca+Ce)` × abstractness | zone polygons, `Rule slope={-1} intercept={1}`, `Hull` per package, `Contour` for the pile-up at A = 0 |
+| Hotspots | complexity × churn | `Region x={[p95, null]} y={[p95, null]}` |
+| Complexity × coverage | complexity × coverage | `Region` for complex-and-under-tested, `Rule y={0.8}` |
+| Fan-in × fan-out | fan-out × fan-in | `Region` for hubs and for reaches-everywhere |
+| God modules | complexity × fan-out | `Region` past p95 on both |
+
+Martin's metrics are per COMPONENT (a package or top-level folder); per file, most points sit
+exactly on (0,0) or (1,0). Take thresholds as percentiles of the codebase, and the 95th rather than
+the 90th — these distributions are heavy-tailed. For dependency structure and hidden coupling, reach
+for `@rokkit/graph`: `DependencyMatrix`, and edges flagged `overlay` (drawn, never shaping layout).
+
+---
+
 ## Gotchas
 
 - The root is **`PlotChart`**, not `<Plot>` — `Plot` is the geom namespace object.
@@ -242,6 +293,8 @@ decorations expose `data-*` hooks: `[data-plot-geom="<type>"]`, `[data-plot-elem
 - `position="stack"` supersedes the boolean `stack` prop; grouping needs a `fill`/`color`/`group`
   field (a stack with no group field renders individual bars, not a stacked total).
 - A literal colour on `fill`/`color` is applied directly — it is **not** a legend group.
+- `Region`, `Hull` and `Contour` placed AFTER `Plot.Point` paint over the points. Put them first.
+- A `Hull` over many overlapping groups stacks translucent fills into mud — offer it as a toggle.
 
 ## Verify
 

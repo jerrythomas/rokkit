@@ -20,7 +20,7 @@ npm install @rokkit/graph
 
 | Import | Contains |
 |--------|----------|
-| `@rokkit/graph` | `Graph`, `GraphState`, layouts, presets, the normalizer, icons, types |
+| `@rokkit/graph` | `Graph`, `GraphState`, the named diagrams (incl. `DependencyMatrix`), layouts, `buildMatrix`, presets, the normalizer, icons, types |
 | `@rokkit/graph/schema` | ER-flavoured views and the dbd adapter: `EntityView`, `EntitiesView`, `NoteBlocks`, `fromSchemaModel`, `toGraphInput`, `SCHEMA_FIELDS`, `DEPS_FIELDS` |
 | `@rokkit/graph/icons` | `DEFAULT_ICONS` alone, with no Svelte imports — for a UnoCSS safelist, which Node loads |
 
@@ -75,8 +75,33 @@ type GraphEdge = {
   cardinality?: string
   action?: string
   unplaced?: 'source' | 'target' | 'both'
+  overlay?: boolean                  // drawn over the layout, never shaping it — see below
+  weight?: number                    // co-change count, call frequency — stroke width, matrix intensity
+}
+
+type GraphModel = {
+  nodes: GraphNode[]
+  edges: GraphEdge[]      // structural — layouts, neighbours, relationships
+  overlays: GraphEdge[]   // overlay edges, routed after the layout
+  byId: Map<string, GraphNode>
+  neighbors: Map<string, Set<string>>
 }
 ```
+
+### Overlay edges — drawn over the picture, never shaping it
+
+Files that change in the same commit with no import between them, a broken layering rule, a
+suggested dependency: exactly the edges a reader wants to SEE, and exactly the ones that must
+not re-rank `flow` or pull a cluster ordering — that would draw the pair side by side and hide
+the coupling the overlay exists to expose.
+
+Set `overlay: true` (or map `fields.overlay`) and the edge goes to `model.overlays`, never
+`model.edges`: layouts, neighbours, relationships and reference counts never see it.
+`GraphState` routes it against the cards the layout placed (`routedEdges` = structural, then
+overlays; `overlayEdges` lists them all). It renders with `data-edge-overlay`, dotted in every
+style. `weight` (or `fields.edgeWeight`) normalises through `state.edgeWeight(edge)` to 0..1 of
+the heaviest weighted edge and arrives as `--edge-weight`, which thickens the stroke. Layouts
+with no cards (`world`, `sunburst`) have nothing to route an overlay between.
 
 ### An unplaced edge is dimmed, never dropped
 
@@ -259,6 +284,31 @@ LAYOUT_OPTIONS.world           // ['sizeBy', 'focusPath', 'levels']
 Two entries are not simply "what the layout reads": `edgeStyle` is applied when a path is
 drawn, so it belongs to every layout that produces edges (`world` produces none), and
 `neighborhood` takes no `density` because it builds cards at `full` unconditionally.
+
+## The dependency matrix
+
+`DependencyMatrix` draws the model as a dependency structure matrix: every node a row and a
+column, a cell where the row depends on the column. Providers come first — `flow`'s ranking,
+reversed — so a layered graph is lower-triangular and **a cell above the diagonal is a
+dependency against the grain**: a cycle, or a layer reaching up. It stays readable at sizes
+where a node-link drawing is a hairball; the drawing grows with the square of the node count,
+so aggregate to modules or components first.
+
+```svelte
+<DependencyMatrix {nodes} {edges} {fields} groupBy="group" cell={14} bind:value />
+```
+
+| Prop | Default | |
+|------|---------|--|
+| `state` | — | Share selection with a node-link view beside it |
+| `groupBy` | `'group'` | Keep each group contiguous and outline it on the diagonal; `null` for one flat order |
+| `cell` | `16` | Cell size in px |
+| `value`, `onselect`, `label` | | As `Graph` |
+
+Parallel edges fold into one cell; a weighted edge counts as its weight. Overlays, self-loops
+and unplaced edges never enter. Row headers are buttons (click / Enter / Space toggle). The
+pure builder is exported: `buildMatrix(model, { groupBy }) → { order, labels, groups, cells,
+blocks, above, maxCount }`.
 
 ## Using it with dbd
 

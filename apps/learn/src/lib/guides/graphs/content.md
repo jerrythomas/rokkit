@@ -53,14 +53,58 @@ type LayoutFn = (model: GraphModel, options: LayoutOptions) => LayoutResult
 ```
 
 DOM-free, synchronous, deterministic — card heights come from row counts and nothing is
-measured, which is what makes a layout testable to exact pixels. Two ship today:
+measured, which is what makes a layout testable to exact pixels. Eight ship today:
 
+- **`flow`** (the default) — columns ranked by reference direction, every edge leaving a
+  card's right edge and entering the next one's left.
 - **`cluster`** — groups become clusters, clusters are ordered to reduce edge crossings,
   and each cluster's nodes are masonry-packed then flowed into wrapping rows.
 - **`neighborhood`** — the focused node centred, nodes that reference it stacked left,
   nodes it references stacked right.
+- **`points`** — dense graphs: small rects sized by degree or a measure, packed by group.
+- **`radial`**, **`structure`**, **`world`**, **`sunburst`** — trees and containment.
 
 Pass `layout` a name or your own function. Nothing about the canvas is layout-specific.
+
+## Edges that must not move the picture
+
+Some edges are exactly what a reader wants to see and exactly what must not shape the layout —
+files that change in the same commit with no import between them, a layering rule broken, a
+suggested dependency. Let a co-change edge into `flow`'s ranking and it pulls the pair side by
+side, hiding the coupling it was meant to expose. Mark it an overlay:
+
+```js
+const edges = [
+  ...imports,
+  { source: 'ui/components', target: 'ui/types', overlay: true, relation: 'co-change', weight: 20 }
+]
+```
+
+An overlay never reaches the layout, neighbours or relationships; it is routed afterwards,
+between the cards the layout placed, drawn dotted (`data-edge-overlay`), and its `weight` —
+normalised to the heaviest — thickens the stroke. `fields.overlay` and `fields.edgeWeight` map
+both from your own shape.
+
+## The dependency matrix
+
+A node-link drawing of a real codebase is a hairball. `DependencyMatrix` draws the same model as
+a dependency structure matrix — every node a row and a column, a cell where the row depends on
+the column — ordered providers-first, so a layered codebase is lower-triangular and **a cell
+above the diagonal is a dependency against the grain**: a cycle, or a layer reaching up.
+
+```svelte
+<DependencyMatrix {nodes} {edges} {fields} groupBy="group" cell={14} />
+```
+
+`groupBy` keeps each group contiguous and outlines it on the diagonal, so a cross-module
+violation is a mark outside its block. The drawing grows with the square of the node count —
+aggregate files to components first; a weighted edge counts as its weight, so an aggregated
+import list reads as-is. Row headers are buttons that select through `GraphState`: share one
+`state` with a node-link view and both follow the same selection.
+
+The graph demo's **Dependency matrix** and **Hidden coupling** examples read rokkit itself at
+component grain — 17 of its 81 component dependencies sit above the diagonal, and 19 pairs of
+components change together with no import between them.
 
 ## Three views, one state
 

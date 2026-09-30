@@ -89,6 +89,50 @@ children:
 </PlotChart>
 ```
 
+## Annotating the plane
+
+Four geoms describe the metric plane rather than any row — put them **before** the marks they
+sit behind, since SVG paints in document order:
+
+- `Plot.Rule` — reference lines at `x` / `y` values, or a sloped line from `slope` and
+  `intercept`, clipped to the plot and labelled along its midpoint.
+- `Plot.Region` — a shaded band (`x` / `y` as `[lo, hi]`, where a `null` end runs to the edge of
+  the axis) or a polygon (`points`), in data coordinates, with a label.
+- `Plot.Hull` — the padded convex hull of each group of the `fill` / `color` field.
+- `Plot.Contour` — kernel-density contours per group, as rings or `filled` bands.
+
+A region never moves the scales, so when theory rather than the data defines the frame, fix it
+with `xDomain` / `yDomain` on `<PlotChart>`.
+
+## Analysing a codebase's architecture
+
+Those four are enough to draw the classic architecture charts over metrics you compute — the
+library ships no architecture vocabulary. Robert Martin's **main sequence** plots each
+component's instability `I = Ce / (Ca + Ce)` against its abstractness `A`: the line `A + I = 1`
+is where a component balances the two, the corner near `(0, 0)` is the **zone of pain**
+(concrete, and everything depends on it) and the one near `(1, 1)` the **zone of uselessness**.
+
+```svelte
+<PlotChart data={components} xDomain={[0, 1]} yDomain={[0, 1]} legend tooltip>
+  <Plot.Region name="pain" points={[[0, 0], [0.5, 0], [0, 0.5]]} label="Zone of pain" />
+  <Plot.Region name="uselessness" points={[[1, 1], [0.5, 1], [1, 0.5]]} label="Zone of uselessness" />
+  <Plot.Hull x="instability" y="abstractness" color="package" />
+  <Plot.Rule slope={-1} intercept={1} label="main sequence" />
+  <Plot.Point x="instability" y="abstractness" color="package" size="loc" />
+</PlotChart>
+```
+
+The same pieces make **hotspots** (complexity × churn, shading the corner past the 95th
+percentile on both), **complexity × coverage**, **fan-in × fan-out** and **god modules**. The
+chart explorer's *Architecture* group draws all five over rokkit's own code, measured by
+`apps/learn/scripts/build-architecture-metrics.mjs`. Two things to get right: Martin's metrics
+are per *component*, not per file, and thresholds on these heavy-tailed metrics belong at a high
+percentile of the codebase itself — the 90th percentile of a fan-in whose median is 1 is 3,
+which marks most of the plot as extreme.
+
+For dependency *structure* — cycles, layering, coupling that no import explains — reach for
+`@rokkit/graph`'s `DependencyMatrix` and overlay edges (see the Graphs guide).
+
 ## Faceted plots
 
 `FacetPlot` wraps small-multiples — one mini-chart per
@@ -298,6 +342,20 @@ Small multiples with `FacetPlot` — one panel per drivetrain, points coloured b
 
 ```plot
 { "data": [{ "class": "compact", "drv": "f", "displ": 1.4, "hwy": 35 }, { "class": "compact", "drv": "r", "displ": 2.0, "hwy": 29 }, { "class": "midsize", "drv": "f", "displ": 2.0, "hwy": 30 }, { "class": "midsize", "drv": "4", "displ": 3.0, "hwy": 25 }, { "class": "suv", "drv": "4", "displ": 3.5, "hwy": 22 }, { "class": "suv", "drv": "r", "displ": 4.6, "hwy": 18 }, { "class": "pickup", "drv": "4", "displ": 5.0, "hwy": 17 }, { "class": "subcompact", "drv": "f", "displ": 1.4, "hwy": 38 }, { "class": "subcompact", "drv": "r", "displ": 2.0, "hwy": 28 }], "x": "displ", "y": "hwy", "color": "class", "facet": { "by": "drv", "cols": 3 }, "width": 520, "height": 300, "geoms": [{ "type": "point" }] }
+```
+
+Plane annotations from a spec — each geom takes its own `props`. A region and a sloped rule read
+no data; the hull outlines each group:
+
+```plot
+{ "data": [{ "i": 0.05, "a": 0.1, "pkg": "core" }, { "i": 0.15, "a": 0.05, "pkg": "core" }, { "i": 0.1, "a": 0.3, "pkg": "core" }, { "i": 0.25, "a": 0.2, "pkg": "core" }, { "i": 0.6, "a": 0.2, "pkg": "ui" }, { "i": 0.85, "a": 0.05, "pkg": "ui" }, { "i": 0.7, "a": 0.35, "pkg": "ui" }, { "i": 0.95, "a": 0.15, "pkg": "ui" }, { "i": 0.4, "a": 0.7, "pkg": "types" }, { "i": 0.55, "a": 0.9, "pkg": "types" }, { "i": 0.3, "a": 0.8, "pkg": "types" }], "x": "i", "y": "a", "color": "pkg", "xDomain": [0, 1], "yDomain": [0, 1], "legend": true, "width": 520, "height": 360, "geoms": [{ "type": "region", "props": { "name": "pain", "points": [[0, 0], [0.5, 0], [0, 0.5]], "label": "Zone of pain" } }, { "type": "region", "props": { "name": "uselessness", "points": [[1, 1], [0.5, 1], [1, 0.5]], "label": "Zone of uselessness" } }, { "type": "hull", "props": { "padding": 8 } }, { "type": "rule", "props": { "slope": -1, "intercept": 1, "label": "main sequence" } }, { "type": "point" }] }
+```
+
+A threshold corner with an open-ended region — `null` runs to the edge of the axis — and density
+contours over the points:
+
+```plot
+{ "data": [{ "c": 4, "n": 2 }, { "c": 6, "n": 3 }, { "c": 5, "n": 1 }, { "c": 8, "n": 4 }, { "c": 7, "n": 2 }, { "c": 9, "n": 5 }, { "c": 12, "n": 3 }, { "c": 10, "n": 6 }, { "c": 6, "n": 7 }, { "c": 14, "n": 4 }, { "c": 30, "n": 18 }, { "c": 42, "n": 22 }, { "c": 36, "n": 9 }, { "c": 11, "n": 20 }], "x": "c", "y": "n", "width": 520, "height": 320, "geoms": [{ "type": "region", "props": { "name": "hotspot", "x": [25, null], "y": [12, null], "label": "Hotspots" } }, { "type": "contour", "props": { "bandwidth": 30, "thresholds": 5 } }, { "type": "point" }] }
 ```
 
 An animated bar-race with `AnimatedPlot` — the bars tween across quarters:

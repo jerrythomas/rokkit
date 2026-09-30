@@ -50,6 +50,17 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 
 #### Components
 
+- [x] **Architecture-analysis primitives** — Shipped 2026-09-30 (plan:
+  `docs/plans/2026-09-30-architecture-analysis-primitives.md`). `@rokkit/chart`: `Rule`
+  `slope`/`intercept` (clipped abline, midpoint label), `Plot.Region` (bands with open ends,
+  polygons), `Plot.Hull` (padded per-group convex hull), `Plot.Contour` (d3-contour density),
+  `PlotChart` `xDomain`/`yDomain`, and the spec path rendering all four. `@rokkit/graph`:
+  overlay edges (drawn, never shaping the layout; `weight` → `--edge-weight`) and
+  `DependencyMatrix` + `buildMatrix`. Learn: Architecture recipes (main sequence, hotspots,
+  complexity × coverage, fan-in × fan-out, god modules) over metrics measured from rokkit by
+  `build-architecture-metrics.mjs`; graph demo dependency matrix + hidden coupling. See journal
+  2026-09-30.
+
 - [x] **`@rokkit/graph` — slice 1 (#159)** — Package shipped 2026-09-28; **dbd consuming it is
   the outstanding acceptance gate** (nothing publishes before that passes). dbd's ER viewer
   extracted and rebuilt data-first: a canonical `{nodes, edges}` model reached through a

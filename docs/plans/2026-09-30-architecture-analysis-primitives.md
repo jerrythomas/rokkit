@@ -1,6 +1,6 @@
 # Architecture-analysis primitives
 
-**Status:** IMPLEMENT (agreed 2026-09-30)
+**Status:** DONE (2026-09-30) — see journal 2026-09-30 for commits and what changed on the way
 **Packages:** `@rokkit/chart`, `@rokkit/graph`, `apps/learn`
 
 ## Goal

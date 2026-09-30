@@ -280,6 +280,39 @@ inside slice 1, rather than by one plus a promise about `d3-force`.
 
 ---
 
+## Overlay edges
+
+An edge flagged `overlay` (`fields.overlay`) goes to `GraphModel.overlays`, never
+`GraphModel.edges`. Layouts, neighbours, relationships and reference counts see only structural
+edges; `GraphState` routes overlays with the same `buildEdges` against the finished
+`result.cards` and appends them to `routedEdges`, each carrying `overlay: true`.
+
+Why a separate list rather than a flag every layout ignores: every layout reads `model.edges`,
+and a future one would have to remember to filter. Keeping overlays out of the model's edge
+list makes "never shapes the layout" structural, not a convention. The motivating case is
+co-change — files that change together with no import between them; ranked by `flow` they
+would be drawn side by side and the coupling would vanish into the layout.
+
+`GraphEdge.weight` (`fields.edgeWeight`) is optional on every edge. `GraphState.edgeWeight(edge)`
+normalises it to 0..1 of the heaviest weighted edge and the canvas exposes it as
+`--edge-weight`; base CSS thickens the stroke from it. Every style dots overlays in `ink-mute`.
+Layouts with no cards (`world`, `sunburst`) have nothing to route an overlay between.
+
+## The dependency matrix
+
+`DependencyMatrix` is a named diagram that does not draw on the `Graph` canvas: a DSM needs no
+layout, only an order. `buildMatrix(model, { groupBy })` (pure, `layout/matrix.ts`) orders nodes
+providers-first by reversing `rank` — `flow` puts a target in a later column than its source; a
+DSM wants the target first — so an acyclic layering is lower-triangular and a cell above the
+diagonal is a dependency against the grain. `groupBy` keeps groups contiguous, ordered by where
+their first member ranks, and reports each as a diagonal block. Parallel edges fold into one
+cell; a weighted edge counts as its weight (an import list aggregated to components arrives as
+one edge per pair). Overlays, self-loops and unplaced edges never enter.
+
+Selection goes through `GraphState` — row headers are buttons — so a shared state keeps a
+node-link view beside it in step. Themed like the canvas: structure in `base/graph.css`
+(`--cell-weight` drives intensity), colour per style, above-diagonal cells `danger` in every one.
+
 ## Theming: semantic attributes + brewer preset
 
 Two vocabularies, two mechanisms. This is the central theming decision.

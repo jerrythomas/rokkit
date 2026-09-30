@@ -36,8 +36,8 @@ geoms on a plot, so multi-geom charts share one consistent legend and palette.
   `PlotSurface` (a `ResizeObserver`); `width`/`height` are fallbacks.
 - **`Plot`** — a **namespace object** of geom components: `Plot.Bar`, `Plot.Line`, `Plot.Area`,
   `Plot.Point`, `Plot.Arc`, `Plot.Radar`, `Plot.Box`, `Plot.Violin`, `Plot.Heatmap`, `Plot.Hexbin`,
-  `Plot.Candlestick`, `Plot.Waterfall`, `Plot.Ribbon`, `Plot.Rule`, `Plot.Highlight`, `Plot.Trend`,
-  `Plot.Jitter`, plus `Plot.Root`/`Plot.Axis`/`Plot.Grid`/`Plot.Legend`. Each member is the same
+  `Plot.Candlestick`, `Plot.Waterfall`, `Plot.Ribbon`, `Plot.Rule`, `Plot.Region`, `Plot.Hull`,
+  `Plot.Contour`, `Plot.Highlight`, `Plot.Trend`, `Plot.Jitter`, plus `Plot.Root`/`Plot.Axis`/`Plot.Grid`/`Plot.Legend`. Each member is the same
   component as the `Geom*` export (`Plot.Bar === GeomBar`) — use either name.
 - **`Sparkline`** — a minimal inline chart (no axes/grid/legend) for table cells and small containers.
 - **`Spark`** — the lean container `Sparkline` composes internally: publishes `SparkState` on the
@@ -190,10 +190,43 @@ exposed both as `Plot.<Name>` and `Geom<Name>`.
 | `candlestick` | `Candlestick.svelte` | OHLC financial bars |
 | `waterfall` | `Waterfall.svelte` | Running-total bars (y-domain spans the cumulative range) |
 | `ribbon` | `Ribbon.svelte` | Sankey-style flow links + node boxes |
-| `rule` | `Rule.svelte` | Reference line(s) at fixed `y` value(s); `stroke`/`strokeWidth`/`label` |
+| `rule` | `Rule.svelte` | Reference line(s) at `x` / `y` value(s), or `slope` + `intercept`; `color`/`dash`/`strokeWidth`/`label` |
+| `region` | `Region.svelte` | Shaded band or polygon in data coordinates — see [Plane annotations](#plane-annotations) |
+| `hull` | `Hull.svelte` | Padded convex hull per group of `fill` / `color` |
+| `contour` | `Contour.svelte` | Kernel-density contours per group (d3-contour), rings or filled |
 
 Overlays that render above the geoms without affecting scales: **`Highlight`** and **`Trend`**
 (see below).
+
+---
+
+## Plane annotations
+
+`Rule`, `Region`, `Hull` and `Contour` exist for charts whose meaning lives in the PLANE — Robert
+Martin's main sequence, a hotspot quadrant, a code-smell detection threshold. Decisions:
+
+- **A region reads no data and registers no geom.** It is a statement about the plane, so it
+  must never widen a scale or join the legend. The frame comes from the chart: `PlotChart`
+  takes `xDomain` / `yDomain` directly (previously only via `spec` or `Plot.Root`), so a zone
+  is not clipped because no row happens to fall in it.
+- **Clip in data space, draw in screen space.** A sloped `Rule` is clipped against the scales'
+  domains (`lib/abline.js`), so it stays inside the plot at any zoom; `Region` and `Contour`
+  shapes are clipped to the plot area by a shared `PlotAreaClip`. A sloped rule's label sits at
+  its midpoint along the line — its ends are plot corners, where marks crowd.
+- **An open range end runs to the axis edge.** `x={[p95, null]}` is "the top 5% and beyond",
+  resolved against the domain so it is right on inverted and band axes.
+- **Hull and Contour group by the fill/colour field**, which joins the shared palette — ggplot's
+  discrete-colour grouping. Both compute in SCREEN space after `place`, so a hull is convex as
+  drawn and a contour bandwidth is in pixels. Hull pads with a round-joined stroke 2×`padding`
+  wide under element opacity, so one- and two-member groups still draw (dot, capsule) — d3-polygon
+  returns null for both. Shared grouping helpers live in `geoms/lib/grouping.js`.
+- **The spec path renders them.** `GeomSpec.props` spreads geom-specific props; the annotation
+  geoms (`rule`, `region`) take ONLY their props, because a Region's `x`/`y` are ranges and
+  inheriting the spec's field names would be wrong. Spec geoms are keyed by position — two
+  regions in one spec are normal.
+- **No architecture vocabulary in the package.** The main sequence, hotspots, complexity ×
+  coverage, fan-in × fan-out and god modules are recipes (learn site: chart explorer →
+  Architecture, data from `apps/learn/scripts/build-architecture-metrics.mjs`), not components.
 
 ---
 

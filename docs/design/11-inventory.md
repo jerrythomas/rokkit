@@ -226,7 +226,8 @@
 
 | Component | Package | Status | Description |
 | --------- | ------- | ------ | ----------- |
-| GeomBar, GeomLine, GeomArea, GeomPoint, GeomArc, GeomBox, GeomViolin, GeomHeatmap, GeomCandlestick, GeomWaterfall, GeomHexbin, GeomRibbon | `@rokkit/chart` | Implemented | Declarative mark components rendered inside `PlotChart` |
+| GeomBar, GeomLine, GeomArea, GeomPoint, GeomArc, GeomBox, GeomViolin, GeomHeatmap, GeomCandlestick, GeomWaterfall, GeomHexbin, GeomRibbon, GeomRadar, GeomJitter, GeomHighlight, GeomTrend | `@rokkit/chart` | Implemented | Declarative mark components rendered inside `PlotChart` |
+| GeomRule, GeomRegion, GeomHull, GeomContour | `@rokkit/chart` | Implemented | Plane annotations — reference lines (incl. slope), shaded bands/polygons, group hulls, density contours |
 
 ### CrossFilter (`@rokkit/chart`)
 
@@ -236,6 +237,17 @@
 | FilterBar       | `@rokkit/chart` | Implemented | Categorical cross-filter control                |
 | FilterSlider    | `@rokkit/chart` | Implemented | Range cross-filter control                      |
 | FilterHistogram | `@rokkit/chart` | Implemented | Histogram cross-filter control                  |
+
+---
+
+## Graphs (`@rokkit/graph`)
+
+| Component | Package | Status | Description |
+| --------- | ------- | ------ | ----------- |
+| Graph | `@rokkit/graph` | Implemented | Node-link canvas over pluggable layouts (flow, cluster, neighborhood, points, radial, structure, world, sunburst); overlay edges drawn over the layout |
+| ErDiagram, DependencyDiagram, CallTree, Treemap, Sunburst, StructureDiagram, Neighborhood | `@rokkit/graph` | Implemented | Named diagrams — one layout plus its controls |
+| DependencyMatrix | `@rokkit/graph` | Implemented | Dependency structure matrix; cells above the diagonal are dependencies against the grain |
+| EntityView, EntitiesView | `@rokkit/graph/schema` | Implemented | Schema entity tables sharing the diagram's selection |
 
 ---
 
@@ -255,7 +267,8 @@
 | ----------------- | --------------------------- | -------------------------------------------------------------------------- |
 | `@rokkit/ui`      | Main component library      | 62 UI components                                                           |
 | `@rokkit/forms`   | Form generation and inputs  | FormRenderer, FormBuilder, 30 form components                             |
-| `@rokkit/chart`   | Data visualisation          | Plot primitives, high-level charts, Geom marks, crossfilter, colour presets |
+| `@rokkit/chart`   | Data visualisation          | Plot primitives, high-level charts, Geom marks, plane annotations (Rule/Region/Hull/Contour), crossfilter, colour presets |
+| `@rokkit/graph`   | Node-link diagrams          | Graph, GraphState, named diagrams, DependencyMatrix, layouts, buildMatrix, graph presets |
 | `@rokkit/app`     | Application shell utilities | ThemeSwitcherToggle                                                        |
 | `@rokkit/states`  | Reactive state controllers  | Wrapper, LazyWrapper, ProxyItem, ProxyTree, ProxyTable, ProxyTableTree, vibe, alerts, messages, commands, watchMedia |
 | `@rokkit/actions` | Svelte actions + classes    | `Navigator`, `Trigger`, `shortcuts`, `dismissable`, `themable`, `skinnable`, `lockMode`, `tooltip`, `ripple`, `hoverLift`, `magnetic`, `reveal` |

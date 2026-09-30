@@ -40,6 +40,8 @@ import { PlotChart, GeomBar, GeomLine, GeomArea, GeomPoint, GeomArc, GeomBox, Ge
 | `legend` | `boolean` | `false` | Show legend |
 | `title` | `string` | `''` | Chart title |
 | `tooltip` | `boolean \| (d) => string` | `false` | Hover tooltip |
+| `xDomain` | `unknown[]` | inferred | Fix the x domain instead of inferring it — e.g. `[0, 1]` for a plane defined by theory. `spec.xDomain` wins |
+| `yDomain` | `unknown[]` | inferred | Fix the y domain |
 
 ## Geom Props
 
@@ -58,6 +60,14 @@ All geoms accept `stat` (`identity` | `sum` | `mean` | `min` | `max` | `count`) 
 **GeomArea**: `x`, `y`, `fill`, `color`, `pattern`, `group`, `position` (`stack` | `fill` | `identity`), `alpha`
 
 **GeomBox** / **GeomViolin**: `x`, `y`, `fill`, `color`, `pattern`, `alpha`
+
+**GeomRule**: `x`, `y` (value or array), `slope`, `intercept` (default 0), `label`, `color`, `dash`, `strokeWidth`. A sloped line is clipped to the visible domain and labelled at its midpoint along the line.
+
+**GeomRegion**: `x`, `y` (`[lo, hi]`; `null` runs to the axis edge), `points` (polygon, wins over ranges), `name` (→ `data-plot-region`), `label`, `labelAt`, `fill`, `alpha`, `stroke`. Reads no data and never moves the scales; clipped to the plot area. Place before the marks it sits behind.
+
+**GeomHull**: `x`, `y`, `fill` / `color` (the group field), `padding` (px), `alpha`, `label`. One convex hull per group, padded clear of its points.
+
+**GeomContour**: `x`, `y`, `fill` / `color` (group), `bandwidth` (px), `thresholds`, `filled`, `alpha`. Kernel-density contours, clipped to the plot area.
 
 ## Spec-driven API
 

@@ -48,6 +48,12 @@ the vocabulary — cite it, don't restate it.
 - **Accessibility is not free.** Colour-only encoding fails for print/colourblind — patterns
   (`pattern` channel) dual-code series. Interactive charts need `keyboard`/`onselect` and the
   `role`/`aria-label` the geoms provide.
+- **Plane annotations go first, and the theory fixes the frame.** `Region`, `Hull` and `Contour`
+  describe the metric plane, and SVG paints in document order — placed after `Plot.Point` they
+  paint over it. A `Region` never moves the scales, so a plane defined by theory (Martin's
+  `[0,1]×[0,1]`) needs `xDomain`/`yDomain` on `PlotChart`, or a zone shrinks to wherever the rows
+  fall. `Rule slope` is ignored on a band axis. Thresholds on skewed metrics belong at a high
+  percentile of the data (p95), not a guessed constant.
 - **Evidence beats assertion.** You do not say "it themes" — you build and snapshot and paste what
   you saw.
 
@@ -67,6 +73,9 @@ the vocabulary — cite it, don't restate it.
 8. Is there a colour-independent encoding (pattern) where accessibility/print matters, and are
    interactive charts keyboard/aria-enabled?
 9. Does the chart hold up in light AND dark mode (no invisible marks, no overflow)?
+10. Are `Region` / `Hull` / `Contour` placed before the marks they sit behind, and is the domain
+    fixed where a region — not the data — defines the frame? Do many overlapping hulls default to
+    off rather than stacking into mud?
 
 ## Procedure
 
@@ -80,7 +89,8 @@ results than blind grep. Fall back to Grep/Glob only if a tool errors or returns
    `orientation`, `alpha`, and preset config.
 3. Grep the app's `.svelte` for the smells: `<Plot ` (stale root), `<GeomBar`/`<GeomLine` used as a
    root, `opacity=` on a chart, `stack\b` as a boolean prop, `palette=` / `preset=` on a chart,
-   raw `#[0-9a-fA-F]{3,8}`/`oklch(`/`rgb(` inside chart props. Map each hit to the correct
+   raw `#[0-9a-fA-F]{3,8}`/`oklch(`/`rgb(` inside chart props, and a `Plot.Region`/`Plot.Hull`/
+   `Plot.Contour` that follows a `Plot.Point` in the same chart. Map each hit to the correct
    channel/preset fix.
 4. If a new palette/pattern/symbol was added, verify it's in the right registry
    (`categoricalPalette` /

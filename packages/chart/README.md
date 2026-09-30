@@ -100,6 +100,19 @@ const dimensions = brewer.getDimensions()
 | `Plot.Grid`   | Background grid lines derived from axis scales.           |
 | `Plot.Legend` | Color legend; clicking items filters the visible series.  |
 
+Every geom is on the namespace too — `Line`, `Area`, `Point`, `Arc`, `Box`, `Violin`, `Jitter`,
+`Heatmap`, `Hexbin`, `Candlestick`, `Waterfall`, `Ribbon`, `Radar`, `Highlight`, `Trend` — plus four
+that annotate the metric plane rather than draw rows:
+
+| Component      | Description                                                                                   |
+| -------------- | --------------------------------------------------------------------------------------------- |
+| `Plot.Rule`    | Reference lines at `x` / `y` values, or `slope` + `intercept`, clipped to the plot.           |
+| `Plot.Region`  | Shaded band (`[lo, hi]`, `null` = open end) or polygon (`points`) in data coordinates.        |
+| `Plot.Hull`    | Padded convex hull around each group of the `fill` / `color` field.                           |
+| `Plot.Contour` | Kernel-density contours per group — rings, or `filled` bands.                                 |
+
+Together they draw architecture charts such as Robert Martin's main sequence — see the Charts guide.
+
 ### `Plot.Root` props
 
 | Prop                | Type               | Default                               | Description                                                           |

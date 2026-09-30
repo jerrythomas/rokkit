@@ -93,6 +93,7 @@ over one `Plot`.
 | `Sunburst` | The same containment as wedges | depth, zoom |
 | `StructureDiagram` | A codebase: containment on a rim, calls bundled through it | depth (what sits on the rim), bundling, zoom |
 | `Neighborhood` | One node and what reaches it | depth, edge style, zoom |
+| `DependencyMatrix` | A dependency structure matrix — cells above the diagonal are dependencies against the grain | none; row headers select |
 
 `controls` and `legend` are both **off by default** — the default is the bare picture, because
 a consumer embedding a diagram in their own shell wants their own chrome, not two sets.
@@ -188,7 +189,8 @@ Hover or keyboard focus restores a node's label at any tier, counter-scaled so i
 
 ## Data attributes
 
-Every visual hook is a data-attribute — 58 in total. The ones you reach for first:
+Every visual hook is a data-attribute; the graph demo's API tab lists all of them (a spec keeps
+that list complete against the theme CSS). The ones you reach for first:
 
 | Attribute | Values |
 |-----------|--------|
@@ -203,6 +205,10 @@ Every visual hook is a data-attribute — 58 in total. The ones you reach for fi
 | `data-edge-relation` | The producer's own verb — dbd emits `reads` `writes` `calls` `member` |
 | `data-edge-from` / `data-edge-to` | Endpoint ids — not otherwise recoverable from the DOM |
 | `data-edge-state` | `highlight` `dim` |
+| `data-edge-overlay` | On an overlay edge — co-change, a broken rule. Dotted in every style; `--edge-weight` (0..1) thickens it |
+| `data-matrix-cell` | A `DependencyMatrix` cell; `data-matrix-from` / `-to`, `--cell-weight` |
+| `data-matrix-above` | A matrix cell above the diagonal — against the grain, danger-filled |
+| `data-matrix-row` / `data-matrix-block` | A matrix row header (a button) / a group's outline on the diagonal |
 | `data-cluster-depth` | `0` outer, `1` nested inside it |
 | `data-graph-detail` | `full` `compact` `minimal` `dot` |
 | `data-graph-layout` | Active layout |

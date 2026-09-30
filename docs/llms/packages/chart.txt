@@ -51,6 +51,16 @@ npm install @rokkit/chart
 | `GeomWaterfall` | `waterfall` | Sequential running-total bars with connectors |
 | `GeomHexbin` | `hexbin` | 2D density binning with hexagonal cells |
 | `GeomRibbon` | `ribbon` | Sankey-style flow between categorical groups |
+| `GeomRadar` | `radar` | Spider/radar polygons over weighted axes |
+| `GeomJitter` | `jitter` | Jittered raw observations beside a box or violin |
+| `GeomTrend` | `trend` | Trend / reference series — avg, median, linear, ma, ema, exp |
+| `GeomHighlight` | `highlight` | Accent marker on chosen observations |
+| `GeomRule` | `rule` | Reference lines: `x` / `y` values, or `slope` + `intercept` (clipped to the plot) |
+| `GeomRegion` | `region` | Shaded band (`x` / `y` as `[lo, hi]`, `null` = open end) or polygon (`points`) in data coordinates |
+| `GeomHull` | `hull` | Padded convex hull around each group of the `fill` / `color` field |
+| `GeomContour` | `contour` | Kernel-density contours per group — rings, or `filled` bands |
+
+Every geom is also on the `Plot` namespace (`Plot.Region`, `Plot.Hull`, …).
 
 ### Filtering
 
@@ -74,6 +84,47 @@ npm install @rokkit/chart
 | `xTicks` | `number` | `6` | X-axis tick count |
 | `yTicks` | `number` | `6` | Y-axis tick count |
 | `minorTicks` | `boolean` | `false` | Show minor tick marks between major ticks |
+| `xDomain` / `yDomain` | `unknown[]` | inferred | `PlotChart` only — fix a domain instead of inferring it from the data (also `spec.xDomain`) |
+
+## Annotating the plane — Rule, Region, Hull, Contour
+
+Four geoms describe the metric plane rather than a row. SVG paints in document order, so put
+them BEFORE the marks they sit behind.
+
+```svelte
+<PlotChart data={components} xDomain={[0, 1]} yDomain={[0, 1]} legend tooltip>
+  <Plot.Region name="pain" points={[[0, 0], [0.5, 0], [0, 0.5]]} label="Zone of pain" />
+  <Plot.Region name="uselessness" points={[[1, 1], [0.5, 1], [1, 0.5]]} label="Zone of uselessness" />
+  <Plot.Hull x="instability" y="abstractness" color="package" />
+  <Plot.Contour x="instability" y="abstractness" bandwidth={28} />
+  <Plot.Rule slope={-1} intercept={1} label="main sequence" />
+  <Plot.Point x="instability" y="abstractness" color="package" size="loc" />
+</PlotChart>
+```
+
+| Geom | Props | Notes |
+|------|-------|-------|
+| `Rule` | `x`, `y` (value or array), `slope`, `intercept` (default 0), `label`, `color`, `dash`, `strokeWidth` | A sloped line is clipped in data space, so it stays inside the plot at any zoom; ignored on band axes. Its label sits at the midpoint, rotated along it. `data-plot-rule="x"\|"y"\|"slope"` |
+| `Region` | `x`, `y` (`[lo, hi]`, a `null` end runs to the axis edge), `points` (`[[x, y], …]`, wins), `name`, `label`, `labelAt`, `fill`, `alpha`, `stroke` | Reads no data, registers no geom, never moves the scales — fix the domain when the region defines the frame. Clipped to the plot. A band category covers its whole band. `data-plot-region="<name>"`; `--chart-region-{fill,opacity,label-color,label-size,label-opacity}` |
+| `Hull` | `x`, `y`, `fill` / `color` (group field + its palette colour), `padding` (px, default 10), `alpha` (default 0.15), `label` | Hull computed in screen space. A 1-member group is a dot, a 2-member group a capsule. `data-plot-hull="<group>"` |
+| `Contour` | `x`, `y`, `fill` / `color` (group), `bandwidth` (px, default 20), `thresholds` (default 8), `filled`, `alpha` | d3-contour `contourDensity`. Level 0 is the outermost ring; filled bands ramp opacity toward `alpha` at the core. Clipped to the plot. `data-plot-contour`, `data-plot-contour-level`; `--chart-contour-{color,width,opacity}` |
+
+## Architecture analysis recipes
+
+The learn site's chart explorer composes those geoms over metrics measured from rokkit itself
+(`apps/learn/scripts/build-architecture-metrics.mjs`). The zones and thresholds belong to the
+analysis, not the package — each recipe is ordinary geoms:
+
+| Recipe | x × y | Built from |
+|--------|-------|------------|
+| Main sequence (Martin) | instability `Ce/(Ca+Ce)` × abstractness | `Region` polygons for the zones of pain and uselessness, `Rule slope={-1} intercept={1}`, `Hull` per package, `Contour` |
+| Hotspots | complexity × churn | `Region x={[p95, null]} y={[p95, null]}` |
+| Complexity × coverage | complexity × statement coverage | `Region` for complex-and-under-tested, `Rule y={0.8}` |
+| Fan-in × fan-out | fan-out × fan-in | `Region` for hubs and for reaches-everywhere |
+| God modules | complexity × fan-out | `Region` past p95 on both |
+
+Use percentiles of the codebase itself for thresholds, and the 95th rather than the 90th: these
+metrics are heavy-tailed, and a p90 fan-in of 3 shades most of the plot.
 
 ## Continuous Color Scales
 

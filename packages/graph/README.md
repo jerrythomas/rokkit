@@ -66,7 +66,8 @@ one layout, the controls that mean something for it, an opt-in legend. The same 
 ```
 
 `ErDiagram` · `DependencyDiagram` · `CallTree` · `Treemap` · `Sunburst` · `StructureDiagram` ·
-`Neighborhood`.
+`Neighborhood` · `DependencyMatrix` (a dependency structure matrix — cells above the diagonal are
+dependencies against the grain).
 Both `controls` and `legend` default to off: the default is the bare picture.
 
 Composing your own is the same parts in a different box — `DensityControl`, `EdgeStyleControl`,
@@ -110,6 +111,12 @@ import { appliesTo } from '@rokkit/graph'
 
 appliesTo('world', 'density')  // false — a treemap box has no row list to thin
 ```
+
+## Overlay edges
+
+An edge with `overlay: true` (or `fields.overlay`) is drawn over the picture but never shapes it —
+co-change pairs, a broken layering rule. It never reaches the layout, neighbours or relationships,
+renders with `data-edge-overlay`, and its `weight` thickens the stroke via `--edge-weight`.
 
 ## Two things worth knowing
 

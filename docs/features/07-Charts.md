@@ -102,6 +102,48 @@ Feature: Geom Layer
     Then the custom component is used for that geom layer
 ```
 
+### Plane Annotations
+
+Geoms that describe the metric plane rather than any row — the zones of a main-sequence
+diagram, a hotspot quadrant, a code-smell threshold.
+
+```gherkin
+Feature: Plane annotations
+  Scenario: A sloped reference line is clipped to the plot
+    Given a PlotChart over a [0,1]×[0,1] domain
+    When it renders <Plot.Rule slope={-1} intercept={1} label="main sequence" />
+    Then a line runs from (0, 1) to (1, 0) and never leaves the plot
+    And its label sits at the line's midpoint, rotated along it
+
+  Scenario: A region shades part of the plane without moving the scales
+    Given data whose values all fall below 0.4
+    And a PlotChart with xDomain [0, 1] and yDomain [0, 1]
+    When it renders <Plot.Region points={[[1,1],[0.5,1],[1,0.5]]} label="Zone of uselessness" />
+    Then the triangle is shaded and labelled at its centroid
+    And the axes still span [0, 1]
+
+  Scenario: An open-ended region runs to the edge of the axis
+    When a region is given x={[p95, null]}
+    Then it spans from the 95th-percentile value to the right edge of the plot
+
+  Scenario: A hull outlines each group
+    Given points grouped by package
+    When <Plot.Hull color="package" /> renders
+    Then each package has one padded outline in its palette colour
+    And a package with one or two members still has an outline
+
+  Scenario: Contours show where points pile up
+    Given a dense scatter
+    When <Plot.Contour /> renders
+    Then nested density rings are drawn, clipped to the plot area
+    And with filled they become bands whose opacity rises toward the densest core
+
+  Scenario: Annotations render from a spec
+    Given a spec with geoms [{ type: 'region', props: { points, label } }, { type: 'region', … }]
+    When rendered through PlotChart or a markdown plot block
+    Then both regions draw, from their own props rather than the spec's field names
+```
+
 ### Stat Transforms
 
 Charts accept raw unaggregated data. Stats aggregate per geom before rendering.
@@ -356,43 +398,48 @@ Feature: Accessible Charts
 
 | Feature                                         | Status     |
 | ----------------------------------------------- | ---------- |
-| `Plot.svelte` orchestrator                      | 🔲 Planned |
+| `Plot.svelte` orchestrator                      | ✅ Implemented |
 | `PlotSpec` JSON schema                          | 🔲 Planned |
-| `PlotState` reactive class                      | 🔲 Planned |
-| Declarative geom children API                   | 🔲 Planned |
-| Spec-driven API                                 | 🔲 Planned |
-| Helpers pattern (stats, format, tooltip, geoms) | 🔲 Planned |
+| `PlotState` reactive class                      | ✅ Implemented |
+| Declarative geom children API                   | ✅ Implemented |
+| Spec-driven API                                 | ✅ Implemented |
+| Helpers pattern (stats, format, tooltip, geoms) | ✅ Implemented |
 
 ### Geoms
 
 | Feature                                         | Status                           |
 | ----------------------------------------------- | -------------------------------- |
-| Bar (vertical + horizontal via scale inference) | 🔲 Planned                       |
-| Bar stacked                                     | 🔲 Planned                       |
+| Bar (vertical + horizontal via scale inference) | ✅ Implemented                   |
+| Bar stacked                                     | ✅ Implemented                   |
 | Line                                            | ✅ Implemented (extract to geom) |
 | Area                                            | ✅ Implemented (extract to geom) |
-| Area stacked                                    | 🔲 Planned                       |
+| Area stacked                                    | ✅ Implemented                   |
 | Point / Scatter                                 | ✅ Implemented (extract to geom) |
 | Box                                             | ✅ Implemented (extract to geom) |
 | Violin                                          | ✅ Implemented (extract to geom) |
 | Arc (pie + donut via innerRadius)               | ✅ Implemented (extract to geom) |
-| Hexbin                                          | 🔲 Planned (#121)                |
-| Heatmap                                         | 🔲 Planned (#122)                |
-| Candlestick                                     | 🔲 Planned (#123)                |
-| Waterfall                                       | 🔲 Planned (#124)                |
-| Ribbon / Sankey                                 | 🔲 Planned (#125)                |
+| Hexbin                                          | ✅ Implemented                   |
+| Heatmap                                         | ✅ Implemented                   |
+| Candlestick                                     | ✅ Implemented                   |
+| Waterfall                                       | ✅ Implemented                   |
+| Ribbon / Sankey                                 | ✅ Implemented                   |
+| Radar                                           | ✅ Implemented                   |
+| Rule (x / y values, slope + intercept)          | ✅ Implemented                   |
+| Region (band / polygon, open-ended ranges)      | ✅ Implemented                   |
+| Hull (padded convex hull per group)             | ✅ Implemented                   |
+| Contour (kernel-density rings / bands)          | ✅ Implemented                   |
 
 ### Visual Encoding
 
 | Feature                             | Status            |
 | ----------------------------------- | ----------------- |
 | Categorical color scale (palette)   | ✅ Implemented    |
-| Sequential color scale              | 🔲 Planned (#126) |
-| Diverging color scale               | 🔲 Planned (#126) |
+| Sequential color scale              | ✅ Implemented    |
+| Diverging color scale               | ✅ Implemented    |
 | Pattern fills                       | ✅ Implemented    |
 | Symbol shapes                       | ✅ Implemented    |
 | Labels map + i18n-external contract | 🔲 Planned        |
-| Tick formatters via helpers.format  | 🔲 Planned        |
+| Tick formatters via helpers.format  | ✅ Implemented    |
 | Dark mode / theme integration       | ✅ Implemented    |
 
 ### Infrastructure
