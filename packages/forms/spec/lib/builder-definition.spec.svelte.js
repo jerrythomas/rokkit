@@ -120,3 +120,42 @@ describe('FormBuilder — validate() reaches every field', () => {
 		expect(b.validation['addr/city']?.state).toBe('error')
 	})
 })
+
+describe('FormBuilder — a field path may be written as a JSON Forms scope', () => {
+	const schema = {
+		type: 'object',
+		properties: {
+			name: { type: 'string', required: true },
+			addr: { type: 'object', properties: { city: { type: 'string', required: true } } }
+		}
+	}
+
+	it('updateField / getValue accept "#/" and bare paths alike, without a "#" key', () => {
+		const b = new FormBuilder({ name: 'A', addr: { city: 'X' } }, schema)
+		b.updateField('#/name', 'B')
+		b.updateField('#/addr/city', 'Y')
+		expect(b.data).toEqual({ name: 'B', addr: { city: 'Y' } })
+		expect(b.getValue('#/addr/city')).toBe('Y')
+		expect(b.getValue('addr/city')).toBe('Y')
+	})
+
+	it('validation and dirtiness key by the bare path whichever form is passed', () => {
+		const b = new FormBuilder({ name: '', addr: {} }, schema)
+		expect(b.validateField('#/name')?.state).toBe('error')
+		expect(b.validation.name?.state).toBe('error')
+		b.setFieldValidation('#/addr/city', { state: 'warning', text: 'w' })
+		expect(b.validation['addr/city']?.state).toBe('warning')
+		b.setFieldValidation('#/addr/city', null)
+		expect(b.validation['addr/city']).toBeUndefined()
+		b.updateField('name', 'Z')
+		expect(b.isFieldDirty('#/name')).toBe(true)
+	})
+
+	it('lookup queries accept a scope too', () => {
+		const lookups = { city: { dependsOn: ['country'], source: [], filter: () => [] } }
+		const b = new FormBuilder({}, null, null, lookups)
+		expect(b.hasLookup('#/city')).toBe(true)
+		expect(b.getLookupState('#/city')).not.toBeNull()
+		expect(b.isFieldDisabled('#/city')).toBe(b.isFieldDisabled('city'))
+	})
+})

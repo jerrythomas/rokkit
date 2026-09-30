@@ -77,3 +77,14 @@ export function setPath(data, path, value) {
 	current[keys[keys.length - 1]] = value
 	return root
 }
+
+/**
+ * A field path in its canonical, bare form. Accepts a JSON Forms scope as well — `'#/addr/city'`
+ * and `'addr/city'` name the same field — so the convention layouts are written in is also safe
+ * to pass to the API. (Unnormalised, `'#/name'` wrote to a `'#'` key.)
+ * @param {string} path - anything else (a missing path) passes through unchanged
+ * @returns {string}
+ */
+export function toFieldPath(path) {
+	return typeof path === 'string' && path.startsWith('#/') ? path.slice(2) : path
+}

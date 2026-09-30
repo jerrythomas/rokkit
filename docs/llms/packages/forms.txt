@@ -84,6 +84,11 @@ validating), `lookups` (FormLookups). `elements` is derived by the pure `buildEl
 new FormBuilder(data?, schema?, layout?, lookups?)
 ```
 
+**Field paths.** Every method that takes a field path (`getValue`, `updateField`, `validateField`,
+`setFieldValidation`, `isFieldDirty`, the lookup queries) accepts either a JSON Forms scope —
+`'#/address/city'`, as layouts write it — or the bare slash path `'address/city'`. Validation
+messages are keyed by the bare path.
+
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `data` | `Object` | `{}` | Initial form data |

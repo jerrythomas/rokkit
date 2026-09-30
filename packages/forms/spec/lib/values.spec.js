@@ -46,3 +46,14 @@ describe('getPath / setPath', () => {
 		expect(setPath({ t: 1 }, 't', 2)).toEqual({ t: 2 })
 	})
 })
+
+describe('toFieldPath', () => {
+	it('strips a leading JSON Forms "#/" and leaves a bare path alone', async () => {
+		const { toFieldPath } = await import('../../src/lib/values.js')
+		expect(toFieldPath('#/addr/city')).toBe('addr/city')
+		expect(toFieldPath('addr/city')).toBe('addr/city')
+		expect(toFieldPath('#/')).toBe('')
+		expect(toFieldPath('')).toBe('')
+		expect(toFieldPath(undefined)).toBeUndefined()
+	})
+})

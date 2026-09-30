@@ -1,5 +1,6 @@
 import { SvelteSet } from 'svelte/reactivity'
 import { buildElements } from './elements.js'
+import { toFieldPath } from './values.js'
 import { FormValues } from './state/FormValues.svelte.js'
 import { FormDefinition } from './state/FormDefinition.svelte.js'
 import { FormSteps } from './state/FormSteps.svelte.js'
@@ -99,9 +100,12 @@ export class FormBuilder {
 	set data(value) {
 		this.values.data = value
 	}
-	/** A field's value by slash path (`'settings/distance'`). */
+	/**
+	 * Every method taking a field path accepts a bare slash path (`'settings/distance'`) or a
+	 * JSON Forms scope (`'#/settings/distance'`) — see `toFieldPath`.
+	 */
 	getValue(path) {
-		return this.values.get(path)
+		return this.values.get(toFieldPath(path))
 	}
 	/**
 	 * Write a field, then drop messages of fields a `showWhen` just hid, then clear and re-fetch
@@ -110,7 +114,8 @@ export class FormBuilder {
 	 * @param {any} value
 	 * @param {boolean} [triggerLookups=true]
 	 */
-	updateField(path, value, triggerLookups = true) {
+	updateField(scopeOrPath, value, triggerLookups = true) {
+		const path = toFieldPath(scopeOrPath)
 		this.values.set(path, value)
 		this.validationState.clearHidden()
 		if (triggerLookups) this.lookups.fieldChanged(path)
@@ -128,7 +133,7 @@ export class FormBuilder {
 		return this.values.dirtyFields
 	}
 	isFieldDirty(fieldPath) {
-		return this.values.isFieldDirty(fieldPath)
+		return this.values.isFieldDirty(toFieldPath(fieldPath))
 	}
 	/** Make the current data the baseline — after a successful save. */
 	snapshot() {
@@ -170,14 +175,14 @@ export class FormBuilder {
 	}
 	/** @param {string} fieldPath @param {Object|null} message - null clears it */
 	setFieldValidation(fieldPath, message) {
-		this.validationState.set(fieldPath, message)
+		this.validationState.set(toFieldPath(fieldPath), message)
 	}
 	clearValidation() {
 		this.validationState.clear()
 	}
 	/** @returns {import('./validation.js').ValidationMessage|null} */
 	validateField(fieldPath) {
-		return this.validationState.validateField(fieldPath)
+		return this.validationState.validateField(toFieldPath(fieldPath))
 	}
 	/** Validate the whole form (every step of a wizard; the visible fields of a flat form). */
 	validate() {
@@ -240,17 +245,17 @@ export class FormBuilder {
 	}
 	/** @returns {{ options: any[], loading: boolean, error: string|null, fields: Object, disabled: boolean }|null} */
 	getLookupState(fieldPath) {
-		return this.lookups.state(fieldPath)
+		return this.lookups.state(toFieldPath(fieldPath))
 	}
 	/** Disabled because a field its lookup depends on is not set yet. */
 	isFieldDisabled(path) {
-		return this.lookups.isDisabled(path)
+		return this.lookups.isDisabled(toFieldPath(path))
 	}
 	async refreshLookup(path) {
-		await this.lookups.refresh(path)
+		await this.lookups.refresh(toFieldPath(path))
 	}
 	hasLookup(fieldPath) {
-		return this.lookups.has(fieldPath)
+		return this.lookups.has(toFieldPath(fieldPath))
 	}
 	async initializeLookups() {
 		await this.lookups.initialize()

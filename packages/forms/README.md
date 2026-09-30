@@ -73,10 +73,11 @@ import { FormBuilder } from '@rokkit/forms'
 const form = new FormBuilder(data, schema, layout)
 
 // form.elements → [{ scope, type, value, props }, ...]
-form.updateField('name', 'Alice') // paths are slash paths, e.g. 'address/city'
-form.validateField('name')
+// A field path is a JSON Forms scope ('#/address/city') or the bare path ('address/city')
+form.updateField('#/name', 'Alice')
+form.validateField('#/name')
 form.validate() // every visible field, including those inside groups
-form.isFieldDirty('name') // true if the value differs from the initial snapshot
+form.isFieldDirty('#/name') // true if the value differs from the initial snapshot
 form.isDirty // any field changed
 ```
 
