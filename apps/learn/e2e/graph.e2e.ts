@@ -264,10 +264,10 @@ test.describe('graph demo', () => {
 						if (!label || getComputedStyle(label).display === 'none') return null
 						const b = box.getBoundingClientRect()
 						const l = label.getBoundingClientRect()
-						// A box narrower than the label's own inset truncates to nothing. There is no
-						// text on screen, so there is nothing to spill — only a rectangle of zero
-						// width sitting past the edge.
-						if (l.width === 0) return null
+						// A box narrower (or shorter) than the label's own inset truncates to nothing.
+						// There is no text on screen, so there is nothing to spill — only a rectangle
+						// of zero width, or zero height, sitting past the edge.
+						if (l.width === 0 || l.height === 0) return null
 
 						// 1px for sub-pixel rounding at a fractional fit scale.
 						return l.right > b.right + 1 || l.bottom > b.bottom + 1

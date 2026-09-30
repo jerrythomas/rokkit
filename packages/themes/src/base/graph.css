@@ -353,9 +353,12 @@
    a shorter label strip, and (per style) an outline rather than a fill. Without the depth
    distinction two nested coloured boxes read as two unrelated clusters that happen to
    overlap. */
+/* The extra 0.15rem is carried by `top`, not padding: a box can never be shorter than its own
+   padding, so a padded label in a box too short for text still hung a transparent sliver past
+   the bottom edge. As an offset, the treemap's max-height below clips it to nothing. */
 [data-graph-cluster][data-cluster-depth='1'] > [data-graph-cluster-label] {
   font-size: 0.6rem;
-  padding-top: 0.15rem;
+  top: 0.5rem;
 }
 
 /* The outer box is painted first (the layout emits it first), so the inner one sits above it
@@ -442,8 +445,14 @@
   /* Same divisor vertically, so a box too short for a line of text clips it instead of
      letting it spill across the boxes underneath. */
   max-height: calc((100% - 0.35rem) / var(--graph-label-counter-scale, 1));
+  box-sizing: border-box;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* A nested label sits 0.5rem down (above), so its height budget is 0.5rem less. */
+[data-graph-layout='world'] [data-graph-cluster][data-cluster-depth='1'] > [data-graph-cluster-label] {
+  max-height: calc((100% - 0.5rem) / var(--graph-label-counter-scale, 1));
 }
 
 /* Truncated, never dropped. A hard `display: none` below a pixel threshold made label
