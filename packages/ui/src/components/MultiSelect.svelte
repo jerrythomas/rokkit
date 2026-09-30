@@ -26,10 +26,10 @@
 	 */
 	import type { ProxyItem } from '@rokkit/states'
 	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
-	import { SvelteSet } from 'svelte/reactivity'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
+	import { groupsAsLabels, groupDividerKeys } from '../utils/dropdown.js'
 	import type { MultiSelectProps, SelectStateIcons } from '../types/select.js'
 
 	let {
@@ -74,17 +74,8 @@
 
 	const childrenField = $derived(fields?.children || 'children')
 
-	// Force groups expanded + disabled (non-navigable labels)
-	const processedItems = $derived(
-		items.map((item) => {
-			const asRecord = item as Record<string, unknown>
-			const children = asRecord[childrenField]
-			if (Array.isArray(children) && children.length > 0) {
-				return { ...asRecord, expanded: true, disabled: true }
-			}
-			return item
-		})
-	)
+	// Groups render as non-navigable labels
+	const processedItems = $derived(groupsAsLabels(items, childrenField))
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
@@ -209,17 +200,7 @@
 
 	// ─── Helpers ──────────────────────────────────────────────────────────────
 
-	const groupDividers = $derived.by(() => {
-		const set = new SvelteSet<string>()
-		let foundFirst = false
-		for (const node of wrapper.flatView) {
-			if (node.hasChildren) {
-				if (foundFirst) set.add(node.key)
-				foundFirst = true
-			}
-		}
-		return set
-	})
+	const groupDividers = $derived(groupDividerKeys(wrapper.flatView))
 </script>
 
 {#snippet defaultOptionContent(proxy: ProxyItem)}

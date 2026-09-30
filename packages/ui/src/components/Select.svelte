@@ -39,10 +39,16 @@
 	 */
 	import type { ProxyItem } from '@rokkit/states'
 	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
-	import { SvelteSet } from 'svelte/reactivity'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
+	import {
+		filterItems,
+		groupsAsLabels,
+		groupDividerKeys,
+		valueKey,
+		dropdownPlacement
+	} from '../utils/dropdown.js'
 	import type { SelectProps, SelectStateIcons } from '../types/select.js'
 
 	let {
@@ -92,45 +98,12 @@
 	const textField = $derived(fields?.label || 'label')
 	const childrenField = $derived(fields?.children || 'children')
 
-	function childMatchesQuery(child: unknown, query: string): boolean {
-		return String((child as Record<string, unknown>)[textField] ?? '')
-			.toLowerCase()
-			.includes(query)
-	}
-
-	function filterGroupChildren(asRecord: Record<string, unknown>, query: string): unknown | null {
-		const children = asRecord[childrenField] as unknown[]
-		const matching = children.filter((child: unknown) => childMatchesQuery(child, query))
-		return matching.length > 0 ? { ...asRecord, [childrenField]: matching } : null
-	}
-
-	function filterItem(item: unknown, query: string): unknown | null {
-		const asRecord = item as Record<string, unknown>
-		const children = asRecord[childrenField]
-		if (Array.isArray(children) && children.length > 0) {
-			return filterGroupChildren(asRecord, query)
-		}
-		const text = String(asRecord[textField] ?? '').toLowerCase()
-		return text.includes(query) ? item : null
-	}
-
-	const filteredItems = $derived.by(() => {
-		if (!filterable || !filterQuery) return items
-		const query = filterQuery.toLowerCase()
-		return items.map((item) => filterItem(item, query)).filter(Boolean)
-	})
-
-	// Pre-process: force groups expanded + disabled (non-navigable labels)
-	const processedItems = $derived(
-		filteredItems.map((item) => {
-			const asRecord = item as Record<string, unknown>
-			const children = asRecord[childrenField]
-			if (Array.isArray(children) && children.length > 0) {
-				return { ...asRecord, expanded: true, disabled: true }
-			}
-			return item
-		})
+	const filteredItems = $derived(
+		filterable && filterQuery ? filterItems(items, filterQuery, { textField, childrenField }) : items
 	)
+
+	// Groups render as non-navigable labels
+	const processedItems = $derived(groupsAsLabels(filteredItems, childrenField))
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
@@ -248,19 +221,10 @@
 		return () => t.destroy()
 	})
 
-	function moveToSelectedValue(): boolean {
-		for (const node of wrapper.flatView) {
-			if (!node.proxy.disabled && node.proxy.value === value) {
-				wrapper.moveTo(node.key)
-				return true
-			}
-		}
-		return false
-	}
-
 	function focusSelectedOrFirst() {
-		if (value !== undefined && value !== null && moveToSelectedValue()) return
-		wrapper.first(null)
+		const key = valueKey(wrapper.flatView, value)
+		if (key) wrapper.moveTo(key)
+		else wrapper.first(null)
 	}
 
 	// ─── Navigator on dropdown ────────────────────────────────────────────────
@@ -298,24 +262,12 @@
 	// away from the trigger.
 	function positionDropdown() {
 		if (!dropdownRef || !triggerRef) return
-		const r = triggerRef.getBoundingClientRect()
-		const gap = 4
-		dropdownRef.style.position = 'fixed'
-		dropdownRef.style.minWidth = `${r.width}px`
-		if (direction === 'up') {
-			dropdownRef.style.top = 'auto'
-			dropdownRef.style.bottom = `${window.innerHeight - r.top + gap}px`
-		} else {
-			dropdownRef.style.top = `${r.bottom + gap}px`
-			dropdownRef.style.bottom = 'auto'
-		}
-		if (align === 'end') {
-			dropdownRef.style.left = 'auto'
-			dropdownRef.style.right = `${window.innerWidth - r.right}px`
-		} else {
-			dropdownRef.style.left = `${r.left}px`
-			dropdownRef.style.right = 'auto'
-		}
+		const placement = dropdownPlacement(
+			triggerRef.getBoundingClientRect(),
+			{ width: window.innerWidth, height: window.innerHeight },
+			{ direction, align }
+		)
+		Object.assign(dropdownRef.style, placement)
 	}
 
 	$effect(() => {
@@ -376,17 +328,7 @@
 	// ─── Helpers ──────────────────────────────────────────────────────────────
 
 	/** Set of group keys that need a divider before them (not the first group) */
-	const groupDividers = $derived.by(() => {
-		const set = new SvelteSet<string>()
-		let foundFirst = false
-		for (const node of wrapper.flatView) {
-			if (node.hasChildren) {
-				if (foundFirst) set.add(node.key)
-				foundFirst = true
-			}
-		}
-		return set
-	})
+	const groupDividers = $derived(groupDividerKeys(wrapper.flatView))
 </script>
 
 {#snippet defaultOptionContent(proxy: ProxyItem)}
