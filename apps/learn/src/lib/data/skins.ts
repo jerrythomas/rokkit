@@ -135,6 +135,16 @@ export const availablePalettes: string[] = [...customPaletteNames, ...tailwindPa
 
 // ── Palette value helpers ───────────────────────────────────────────────────
 
+/**
+ * A built-in palette by name, or null. preset-mini's colour map also holds keyword entries
+ * (`inherit`, `current`…) that are plain strings, so an entry is only a palette if it is an
+ * object — narrowed here rather than cast.
+ */
+function builtinPalette(name: string): Record<string | number, string> | null {
+	const entry = (defaultColors as Record<string, unknown>)[name]
+	return entry !== null && typeof entry === 'object' ? (entry as Record<string | number, string>) : null
+}
+
 function isCustomPalette(name: string): boolean {
 	return name in customPalettes
 }
@@ -147,7 +157,7 @@ function getPaletteShades(paletteName: string): Record<number, string> | null {
 	if (isCustomPalette(paletteName)) {
 		return customPalettes[paletteName]
 	}
-	const tw = (defaultColors as Record<string, Record<string | number, string>>)[paletteName]
+	const tw = builtinPalette(paletteName)
 	if (!tw) return null
 	const result: Record<number, string> = {}
 	for (const shade of shades) {
@@ -166,8 +176,7 @@ export function getPaletteColor(paletteName: string): string {
 	if (isCustomPalette(paletteName)) {
 		return `oklch(${customPalettes[paletteName][500]})`
 	}
-	const tw = (defaultColors as Record<string, Record<string | number, string>>)[paletteName]
-	return tw?.[500] ?? '#888'
+	return builtinPalette(paletteName)?.[500] ?? '#888'
 }
 
 // ── CSS variable application ────────────────────────────────────────────────
