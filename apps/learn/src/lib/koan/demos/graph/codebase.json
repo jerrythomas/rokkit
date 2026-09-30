@@ -1036,7 +1036,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 614
+				"lines": 241
 			}
 		},
 		{
@@ -1087,7 +1087,7 @@
 				"declarations": 2,
 				"tested": 0,
 				"files": 1,
-				"lines": 332
+				"lines": 302
 			}
 		},
 		{
@@ -2007,7 +2007,7 @@
 				"declarations": 2,
 				"tested": 0,
 				"files": 1,
-				"lines": 218
+				"lines": 201
 			}
 		},
 		{
@@ -2346,7 +2346,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 59
+				"lines": 47
 			}
 		},
 		{
@@ -2728,6 +2728,25 @@
 			}
 		},
 		{
+			"id": "packages/chart/src/lib/plot/domains.js",
+			"label": "domains.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"lib",
+				"plot",
+				"domains.js"
+			],
+			"m": {
+				"declarations": 5,
+				"tested": 0,
+				"files": 1,
+				"lines": 130
+			}
+		},
+		{
 			"id": "packages/chart/src/lib/plot/facet.js",
 			"label": "facet.js",
 			"kind": "function",
@@ -2804,6 +2823,25 @@
 			}
 		},
 		{
+			"id": "packages/chart/src/lib/plot/running.js",
+			"label": "running.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"lib",
+				"plot",
+				"running.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 27
+			}
+		},
+		{
 			"id": "packages/chart/src/lib/plot/scales.js",
 			"label": "scales.js",
 			"kind": "function",
@@ -2820,6 +2858,25 @@
 				"tested": 0,
 				"files": 1,
 				"lines": 90
+			}
+		},
+		{
+			"id": "packages/chart/src/lib/plot/stacking.js",
+			"label": "stacking.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"lib",
+				"plot",
+				"stacking.js"
+			],
+			"m": {
+				"declarations": 2,
+				"tested": 0,
+				"files": 1,
+				"lines": 35
 			}
 		},
 		{
@@ -3092,6 +3149,168 @@
 				"tested": 0,
 				"files": 1,
 				"lines": 73
+			}
+		},
+		{
+			"id": "packages/chart/src/state/AestheticState.svelte.js",
+			"label": "AestheticState.svelte.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"state",
+				"AestheticState.svelte.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 79
+			}
+		},
+		{
+			"id": "packages/chart/src/state/AxisState.svelte.js",
+			"label": "AxisState.svelte.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"state",
+				"AxisState.svelte.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 57
+			}
+		},
+		{
+			"id": "packages/chart/src/state/ChannelState.svelte.js",
+			"label": "ChannelState.svelte.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"state",
+				"ChannelState.svelte.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 68
+			}
+		},
+		{
+			"id": "packages/chart/src/state/GeomRegistry.svelte.js",
+			"label": "GeomRegistry.svelte.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"state",
+				"GeomRegistry.svelte.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 87
+			}
+		},
+		{
+			"id": "packages/chart/src/state/InteractionState.svelte.js",
+			"label": "InteractionState.svelte.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"state",
+				"InteractionState.svelte.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 70
+			}
+		},
+		{
+			"id": "packages/chart/src/state/OrientationState.svelte.js",
+			"label": "OrientationState.svelte.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"state",
+				"OrientationState.svelte.js"
+			],
+			"m": {
+				"declarations": 2,
+				"tested": 0,
+				"files": 1,
+				"lines": 64
+			}
+		},
+		{
+			"id": "packages/chart/src/state/PlotConfig.svelte.js",
+			"label": "PlotConfig.svelte.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"state",
+				"PlotConfig.svelte.js"
+			],
+			"m": {
+				"declarations": 3,
+				"tested": 0,
+				"files": 1,
+				"lines": 192
+			}
+		},
+		{
+			"id": "packages/chart/src/state/PlotFrame.svelte.js",
+			"label": "PlotFrame.svelte.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"state",
+				"PlotFrame.svelte.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 19
+			}
+		},
+		{
+			"id": "packages/chart/src/state/ScaleState.svelte.js",
+			"label": "ScaleState.svelte.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"state",
+				"ScaleState.svelte.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 117
 			}
 		},
 		{
@@ -9704,42 +9923,47 @@
 		},
 		{
 			"source": "packages/chart/src/PlotState.svelte.js",
-			"target": "packages/chart/src/lib/plot/stat.js",
+			"target": "packages/chart/src/state/PlotConfig.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/chart/src/PlotState.svelte.js",
-			"target": "packages/chart/src/lib/plot/scales.js",
+			"target": "packages/chart/src/state/GeomRegistry.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/chart/src/PlotState.svelte.js",
-			"target": "packages/chart/src/lib/plot/preset.js",
+			"target": "packages/chart/src/state/PlotFrame.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/chart/src/PlotState.svelte.js",
-			"target": "packages/chart/src/lib/plot/helpers.js",
+			"target": "packages/chart/src/state/ChannelState.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/chart/src/PlotState.svelte.js",
-			"target": "packages/chart/src/lib/preset.js",
+			"target": "packages/chart/src/state/OrientationState.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/chart/src/PlotState.svelte.js",
-			"target": "packages/chart/src/lib/brewing/colors.js",
+			"target": "packages/chart/src/state/InteractionState.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/chart/src/PlotState.svelte.js",
-			"target": "packages/chart/src/lib/brewing/patterns.js",
+			"target": "packages/chart/src/state/ScaleState.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/chart/src/PlotState.svelte.js",
-			"target": "packages/chart/src/lib/brewing/marks/points.js",
+			"target": "packages/chart/src/state/AestheticState.svelte.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/PlotState.svelte.js",
+			"target": "packages/chart/src/state/AxisState.svelte.js",
 			"kind": "imports"
 		},
 		{
@@ -9774,7 +9998,7 @@
 		},
 		{
 			"source": "packages/chart/src/SparkState.svelte.js",
-			"target": "packages/chart/src/lib/plot/stat.js",
+			"target": "packages/chart/src/state/GeomRegistry.svelte.js",
 			"kind": "imports"
 		},
 		{
@@ -10423,6 +10647,11 @@
 			"kind": "imports"
 		},
 		{
+			"source": "packages/chart/src/geoms/lib/bars.js",
+			"target": "packages/chart/src/lib/plot/stacking.js",
+			"kind": "imports"
+		},
+		{
 			"source": "packages/chart/src/geoms/lib/marks/arc.js",
 			"target": "packages/chart/src/lib/brewing/marks/arcs.js",
 			"kind": "imports"
@@ -10580,6 +10809,11 @@
 		{
 			"source": "packages/chart/src/geoms/lib/marks/waterfall.js",
 			"target": "packages/chart/src/geoms/lib/aesthetics.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/geoms/lib/marks/waterfall.js",
+			"target": "packages/chart/src/lib/plot/running.js",
 			"kind": "imports"
 		},
 		{
@@ -10903,6 +11137,16 @@
 			"kind": "imports"
 		},
 		{
+			"source": "packages/chart/src/lib/plot/domains.js",
+			"target": "packages/chart/src/lib/plot/stacking.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/lib/plot/domains.js",
+			"target": "packages/chart/src/lib/plot/running.js",
+			"kind": "imports"
+		},
+		{
 			"source": "packages/chart/src/lib/plot/frames.js",
 			"target": "packages/data/src/index.js",
 			"kind": "imports"
@@ -10925,6 +11169,11 @@
 		{
 			"source": "packages/chart/src/lib/plot/preset.js",
 			"target": "packages/chart/src/lib/brewing/symbols.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/lib/plot/stacking.js",
+			"target": "packages/chart/src/lib/brewing/colors.js",
 			"kind": "imports"
 		},
 		{
@@ -11005,6 +11254,71 @@
 		{
 			"source": "packages/chart/src/patterns/scale.js",
 			"target": "packages/chart/src/patterns/patterns.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/AestheticState.svelte.js",
+			"target": "packages/chart/src/lib/plot/scales.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/AestheticState.svelte.js",
+			"target": "packages/chart/src/lib/brewing/colors.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/AestheticState.svelte.js",
+			"target": "packages/chart/src/lib/brewing/patterns.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/AestheticState.svelte.js",
+			"target": "packages/chart/src/lib/brewing/marks/points.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/ChannelState.svelte.js",
+			"target": "packages/chart/src/lib/brewing/colors.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/GeomRegistry.svelte.js",
+			"target": "packages/chart/src/lib/plot/stat.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/OrientationState.svelte.js",
+			"target": "packages/chart/src/lib/plot/scales.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/PlotConfig.svelte.js",
+			"target": "packages/chart/src/lib/preset.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/PlotConfig.svelte.js",
+			"target": "packages/chart/src/lib/plot/preset.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/PlotConfig.svelte.js",
+			"target": "packages/chart/src/lib/plot/helpers.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/PlotFrame.svelte.js",
+			"target": "packages/chart/src/state/PlotConfig.svelte.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/ScaleState.svelte.js",
+			"target": "packages/chart/src/lib/plot/scales.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/state/ScaleState.svelte.js",
+			"target": "packages/chart/src/lib/plot/domains.js",
 			"kind": "imports"
 		},
 		{
