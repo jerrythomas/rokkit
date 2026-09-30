@@ -4,7 +4,10 @@ import * as functions from '../src/index.js'
 
 describe('@rokkit/core', () => {
 	it('should contain all exported functions', () => {
-		expect(Object.keys(functions)).toEqual([
+		// Sorted: the set of names is the API. A real ESM namespace orders its keys by name
+		// anyway; vitest's transform lists them in declaration order, which a module split moves.
+		expect(Object.keys(functions).sort()).toEqual(
+			[
 			'ColorSpace',
 			'relativeLuminance',
 			'FieldMapper',
@@ -75,6 +78,6 @@ describe('@rokkit/core', () => {
 			'ON_COLOR_Y_CROSSOVER',
 			'pickOnColor',
 			'Theme'
-		])
+		].sort())
 	})
 })

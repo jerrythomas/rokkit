@@ -190,7 +190,7 @@ rk-item { ... }
 | `groupContent(proxy)` | Every group header                 | `ProxyItem`                           |
 | `[name](proxy)`       | Items with `item.snippet = 'name'` | `ProxyItem` (per-item named override) |
 
-**`resolveSnippet(snippets, proxy, fallbackName)`** — from `@rokkit/core/src/utils.js`:
+**`resolveSnippet(snippets, proxy, fallbackName)`** — from `@rokkit/core` (`src/snippets.js`):
 
 1. Check `proxy.get('snippet')` → look for `snippets[snippetName]`
 2. Fall back to `snippets[fallbackName]` (`'itemContent'` or `'groupContent'`)
@@ -300,7 +300,7 @@ let { class: className = '', ...rest } = $props()
 | `packages/core/src/constants.js` | `DEFAULT_ICONS` array + `stateIconsFromNames()` → `DEFAULT_STATE_ICONS` |
 | `packages/icons/src/base/`       | SVGs matching the naming convention (`node-opened.svg`, etc.)           |
 | `apps/learn/uno.config.js`             | `iconShortcuts(DEFAULT_ICONS, 'i-rokkit')` global mapping               |
-| `packages/core/src/utils.js`     | `iconShortcuts()` function                                              |
+| `packages/core/src/icons.js`     | `iconShortcuts()` function                                              |
 
 **Naming Convention:**
 
