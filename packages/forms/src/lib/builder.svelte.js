@@ -4,62 +4,11 @@ import { deriveLayoutFromValue, deriveLayoutFromSchema } from './layout.js'
 import { getSchemaWithLayout } from './fields.js'
 import { createLookupManager } from './lookup.svelte.js'
 import { evaluateCondition } from './conditions.js'
+import { FormValues } from './state/FormValues.svelte.js'
 import {
 	validateField as validateFieldValue,
 	validateAll as validateAllFields
 } from './validation.js'
-
-/**
- * Deep-clone a plain value (primitives, plain objects, arrays).
- * Uses JSON round-trip which handles $state proxies safely.
- * @param {any} value
- * @returns {any}
- */
-function deepClone(value) {
-	if (value === null || value === undefined || typeof value !== 'object') return value
-	return JSON.parse(JSON.stringify(value))
-}
-
-/** @private */
-function deepEqualArrays(a, b) {
-	if (a.length !== b.length) return false
-	return a.every((val, i) => deepEqual(val, b[i]))
-}
-
-/** @private */
-function deepEqualObjects(a, b) {
-	const keysA = Object.keys(a)
-	const keysB = Object.keys(b)
-	if (keysA.length !== keysB.length) return false
-	return keysA.every((key) => Object.hasOwn(b, key) && deepEqual(a[key], b[key]))
-}
-
-/** @private — true when either value is nullish */
-function isNullish(v) {
-	return v === null || v === undefined
-}
-
-/** @private — true when both are same-type objects (not mixed array/object) */
-function areSameObjectType(a, b) {
-	return typeof a === 'object' && typeof b === 'object' && Array.isArray(a) === Array.isArray(b)
-}
-
-/** @private — dispatch object comparison to array or plain-object helper */
-function deepEqualObjects2(a, b) {
-	return Array.isArray(a) ? deepEqualArrays(a, b) : deepEqualObjects(a, b)
-}
-
-/**
- * Deep equality check for plain values (primitives, plain objects, arrays).
- * @param {any} a
- * @param {any} b
- * @returns {boolean}
- */
-function deepEqual(a, b) {
-	if (a === b) return true
-	if (isNullish(a) || isNullish(b)) return false
-	return areSameObjectType(a, b) && deepEqualObjects2(a, b)
-}
 
 /**
  * @typedef {Object} FormElement
@@ -84,33 +33,11 @@ function deepEqual(a, b) {
 const SCHEMA_TYPE_MAP = { boolean: 'checkbox', array: 'array' }
 
 /**
- * Update a nested data path and return the updated root object
- * @private
- * @param {Object} data - Current data
- * @param {string[]} keys - Path segments
- * @param {any} value - New value
- * @returns {Object}
- */
-function setNestedValue(data, keys, value) {
-	const updated = { ...data }
-	let current = updated
-	for (let i = 0; i < keys.length - 1; i++) {
-		current[keys[i]] = { ...current[keys[i]] }
-		current = current[keys[i]]
-	}
-	current[keys[keys.length - 1]] = value
-	return updated
-}
-
-/**
  * FormBuilder class for dynamically generating forms from data structures
  */
 export class FormBuilder {
-	/** @type {Record<string, unknown>} */
-	#data = $state({})
-
-	/** @type {Record<string, unknown>} - Snapshot of data at construction (or last snapshot()) */
-	#initialData = {}
+	/** The form's data and its dirty baseline. */
+	values
 
 	/** @type {Object} */
 	#schema = $state({})
@@ -147,7 +74,7 @@ export class FormBuilder {
 	 * @returns {Record<string, unknown>} Current data object
 	 */
 	get data() {
-		return this.#data
+		return this.values.data
 	}
 
 	/**
@@ -155,7 +82,7 @@ export class FormBuilder {
 	 * @param {Record<string, unknown>} value - New data object
 	 */
 	set data(value) {
-		this.#data = value
+		this.values.data = value
 	}
 
 	/**
@@ -177,7 +104,7 @@ export class FormBuilder {
 	 * unless the caller has already installed an explicit non-empty layout.
 	 */
 	set schema(value) {
-		this.#schema = value ?? deriveSchemaFromValue(this.#data)
+		this.#schema = value ?? deriveSchemaFromValue(this.values.data)
 		const layout = this.#layout
 		const hasExplicitLayout = layout && Array.isArray(layout.elements) && layout.elements.length > 0
 		if (!hasExplicitLayout) {
@@ -212,7 +139,7 @@ export class FormBuilder {
 			Object.keys(schema.properties).length > 0
 		this.#layout = hasSchemaProperties
 			? deriveLayoutFromSchema(schema)
-			: deriveLayoutFromValue(this.#data)
+			: deriveLayoutFromValue(this.values.data)
 	}
 
 	/**
@@ -250,8 +177,7 @@ export class FormBuilder {
 	 * @param {Object<string, import('./lookup.svelte.js').LookupConfig>} [lookups={}] - Lookup configurations
 	 */
 	constructor(data = {}, schema = null, layout = null, lookups = {}) {
-		this.#data = data
-		this.#initialData = deepClone(data)
+		this.values = new FormValues(data)
 		this.schema = schema
 		this.layout = layout
 		this.#initLookups(lookups)
@@ -308,7 +234,7 @@ export class FormBuilder {
 	 */
 	async refreshLookup(path) {
 		const lookup = this.#lookupManager?.getLookup(path)
-		if (lookup) await lookup.fetch(this.#data)
+		if (lookup) await lookup.fetch(this.values.data)
 	}
 
 	/**
@@ -326,7 +252,7 @@ export class FormBuilder {
 	 */
 	async initializeLookups() {
 		if (this.#lookupManager) {
-			await this.#lookupManager.initialize(this.#data)
+			await this.#lookupManager.initialize(this.values.data)
 		}
 	}
 
@@ -338,9 +264,7 @@ export class FormBuilder {
 		for (const [depPath, lookup] of this.#lookupManager.lookups) {
 			if (!lookup.dependsOn.includes(path)) continue
 			const depKeys = depPath.split('/')
-			if (depKeys.length === 1) {
-				this.#data = { ...this.#data, [depKeys[0]]: null }
-			}
+			if (depKeys.length === 1) this.values.set(depKeys[0], null)
 		}
 	}
 
@@ -351,12 +275,7 @@ export class FormBuilder {
 	 * @param {boolean} [triggerLookups=true] - Whether to trigger dependent lookups
 	 */
 	updateField(path, value, triggerLookups = true) {
-		const keys = path.split('/')
-		if (keys.length === 1) {
-			this.#data = { ...this.#data, [keys[0]]: value }
-		} else {
-			this.#data = setNestedValue(this.#data, keys, value)
-		}
+		this.values.set(path, value)
 
 		// Clear stale validation errors for fields that are now hidden
 		this.#clearHiddenValidation()
@@ -364,7 +283,7 @@ export class FormBuilder {
 		// Trigger dependent lookups if configured
 		if (triggerLookups && this.#lookupManager) {
 			this.#clearDependentFields(path)
-			this.#lookupManager.handleFieldChange(path, this.#data)
+			this.#lookupManager.handleFieldChange(path, this.values.data)
 		}
 	}
 
@@ -374,18 +293,7 @@ export class FormBuilder {
 	 * @returns {any} Field value
 	 */
 	getValue(path) {
-		if (!path) return undefined
-
-		const keys = path.split('/')
-		let current = this.#data
-		for (const key of keys) {
-			if (current && typeof current === 'object') {
-				current = current[key]
-			} else {
-				return undefined
-			}
-		}
-		return current
+		return this.values.get(path)
 	}
 
 	/**
@@ -436,7 +344,7 @@ export class FormBuilder {
 	 * @private
 	 */
 	#processScopedElement(layoutEl, combinedMap) {
-		if (layoutEl.showWhen && !evaluateCondition(layoutEl.showWhen, this.#data)) return null
+		if (layoutEl.showWhen && !evaluateCondition(layoutEl.showWhen, this.values.data)) return null
 		const key = layoutEl.scope.replace(/^#\//, '').split('/').pop()
 		const combinedEl = combinedMap.get(key)
 		return combinedEl ? this.#convertToFormElement(combinedEl) : null
@@ -763,11 +671,11 @@ export class FormBuilder {
 				if (step.type === 'step') allElements.push(...(step.elements ?? []))
 			}
 			const flatLayout = { ...this.#layout, elements: allElements }
-			const results = validateAllFields(this.#data, this.#schema, flatLayout)
+			const results = validateAllFields(this.values.data, this.#schema, flatLayout)
 			this.#validation = results
 			return results
 		}
-		const results = validateAllFields(this.#data, this.#schema, this.#layout)
+		const results = validateAllFields(this.values.data, this.#schema, this.#layout)
 		const visiblePaths = new SvelteSet(
 			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
 		)
@@ -781,14 +689,14 @@ export class FormBuilder {
 	/**
 	 * Get form data with hidden field values stripped out
 	 * Hidden fields are those absent from this.elements (the derived list)
-	 * Does not mutate this.#data
+	 * Does not mutate this.values.data
 	 * @returns {Record<string, unknown>} Filtered data containing only visible field keys
 	 */
 	getVisibleData() {
 		const visiblePaths = new SvelteSet(
 			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
 		)
-		return Object.fromEntries(Object.entries(this.#data).filter(([key]) => visiblePaths.has(key)))
+		return Object.fromEntries(Object.entries(this.values.data).filter(([key]) => visiblePaths.has(key)))
 	}
 
 	/**
@@ -828,7 +736,7 @@ export class FormBuilder {
 	 * @returns {boolean}
 	 */
 	get isDirty() {
-		return !deepEqual(this.#data, this.#initialData)
+		return this.values.isDirty
 	}
 
 	/**
@@ -836,9 +744,7 @@ export class FormBuilder {
 	 * @returns {Set<string>}
 	 */
 	get dirtyFields() {
-		const dirty = new SvelteSet()
-		this.#collectDirtyFields(this.#data, this.#initialData, '', dirty)
-		return dirty
+		return this.values.dirtyFields
 	}
 
 	/**
@@ -847,9 +753,7 @@ export class FormBuilder {
 	 * @returns {boolean}
 	 */
 	isFieldDirty(fieldPath) {
-		const current = this.getValue(fieldPath)
-		const initial = this.#getInitialValue(fieldPath)
-		return !deepEqual(current, initial)
+		return this.values.isFieldDirty(fieldPath)
 	}
 
 	/**
@@ -857,43 +761,7 @@ export class FormBuilder {
 	 * Call after a successful save to clear dirty state.
 	 */
 	snapshot() {
-		this.#initialData = deepClone(this.#data)
-	}
-
-	/**
-	 * Get a field's initial value by path
-	 * @private
-	 * @param {string} path - Field path
-	 * @returns {any} Initial field value
-	 */
-	#getInitialValue(path) {
-		if (!path) return undefined
-
-		const keys = path.split('/')
-		let current = this.#initialData
-		for (const key of keys) {
-			if (current && typeof current === 'object') {
-				current = current[key]
-			} else {
-				return undefined
-			}
-		}
-		return current
-	}
-
-	/**
-	 * Recursively collect dirty field paths by comparing current vs initial
-	 * @private
-	 * @param {any} current - Current data (sub)tree
-	 * @param {any} initial - Initial data (sub)tree
-	 * @param {string} prefix - Path prefix
-	 * @param {Set<string>} dirty - Accumulator set
-	 */
-	#collectDirtyFields(current, initial, prefix, dirty) {
-		const allKeys = new SvelteSet([...Object.keys(current ?? {}), ...Object.keys(initial ?? {})])
-		for (const key of allKeys) {
-			collectIfDirty({ current, initial, prefix, key, dirty })
-		}
+		this.values.snapshot()
 	}
 
 	/**
@@ -939,7 +807,7 @@ export class FormBuilder {
 	 * Reset form data to initial snapshot and clear validation
 	 */
 	reset() {
-		this.#data = deepClone(this.#initialData)
+		this.values.reset()
 		this.#validation = {}
 	}
 
@@ -1012,7 +880,7 @@ export class FormBuilder {
 		const stepEl = (this.#layout?.elements ?? [])[index]
 		if (!stepEl || stepEl.type !== 'step') return true
 		const stepLayout = { ...this.#layout, elements: stepEl.elements ?? [] }
-		const results = validateAllFields(this.#data, this.#schema, stepLayout)
+		const results = validateAllFields(this.values.data, this.#schema, stepLayout)
 		this.#applyStepValidation(results, stepEl.elements)
 		return isAllValid(results)
 	}
@@ -1115,14 +983,4 @@ function applyLookupMeta(lookupState, finalProps) {
 function applyLookupProps(lookupState, finalProps) {
 	applyLookupData(lookupState, finalProps)
 	applyLookupMeta(lookupState, finalProps)
-}
-
-/**
- * Add path to dirty set if current and initial values differ
- * @private
- * @param {{ current: any, initial: any, prefix: string, key: string, dirty: Set<string> }} ctx
- */
-function collectIfDirty({ current, initial, prefix, key, dirty }) {
-	const path = prefix ? `${prefix}/${key}` : key
-	if (!deepEqual(current?.[key], initial?.[key])) dirty.add(path)
 }
