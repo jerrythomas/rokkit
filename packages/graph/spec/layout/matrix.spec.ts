@@ -48,6 +48,13 @@ describe('buildMatrix', () => {
 		expect(m.maxCount).toBe(2)
 	})
 
+	it('counts a weighted edge as its weight — an aggregated import list folds nothing', () => {
+		const weighted = { ...LAYERED, edges: [{ source: 'ui', target: 'app', weight: 7 }, ...LAYERED.edges.slice(1)] }
+		const m = buildMatrix(model(weighted))
+		expect(m.cells.find((c) => c.source === 'ui' && c.target === 'app')?.count).toBe(7)
+		expect(m.maxCount).toBe(7)
+	})
+
 	it('keeps groups contiguous and reports each as a block on the diagonal', () => {
 		const m = buildMatrix(model(LAYERED), { groupBy: 'group' })
 		expect(m.blocks).toEqual([

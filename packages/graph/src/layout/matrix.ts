@@ -25,7 +25,7 @@ export type MatrixCell = {
 	col: number
 	source: string
 	target: string
-	/** Edges folded into this cell — two FKs, a read and a write. */
+	/** Edges folded into this cell — two FKs, a read and a write — each counted by its weight. */
 	count: number
 	/** Against the grain: a cycle or a layer reaching up. */
 	above: boolean
@@ -94,9 +94,12 @@ function collectCells(model: GraphModel, index: Map<string, number>): MatrixCell
 		const col = index.get(edge.target)
 		if (row === undefined || col === undefined || row === col) continue
 		const key = `${row}:${col}`
+		// A weighted edge already IS a count — an import list aggregated to components says
+		// "7 imports" once rather than repeating the edge seven times.
+		const n = edge.weight ?? 1
 		const cell = cells.get(key)
-		if (cell) cell.count++
-		else cells.set(key, { row, col, source: edge.source, target: edge.target, count: 1, above: col > row })
+		if (cell) cell.count += n
+		else cells.set(key, { row, col, source: edge.source, target: edge.target, count: n, above: col > row })
 	}
 	return [...cells.values()].sort((a, b) => a.row - b.row || a.col - b.col)
 }
