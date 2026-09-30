@@ -13,9 +13,9 @@
 Before that today: the Navigator (7), the open items (8) and Plot.svelte (9). Journal entries
 2026-09-30 (7)–(10).
 
-**Remaining:** push `develop` and confirm CI is green.
+**Pushed:** `develop` is at `016b7cb2`, and CI is green (check, browser, coverage).
 
-**Next command:** `git push origin develop`, then watch Check (check + browser) and Coverage.
+**Next command:** read `packages/core/src/utils.js` and its specs, then plan its slice. It is the top hotspot now.
 
 **Open questions:**
 
