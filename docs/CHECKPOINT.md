@@ -1,27 +1,24 @@
 # CHECKPOINT
 
-**Last slice: the open items. DONE and pushed.** `develop` is at `56d90af1`, and CI is green
-(check, browser, coverage).
+**Last slice: Plot.svelte decomposition. DONE.** Plan: `docs/plans/2026-09-30-plot-svelte-decomposition.md`.
 
-- `00f64615`: the browser specs run in CI.
-- `1b629aa6`: forms no longer ships its specs or fixtures; a workspace guard enforces it.
-- `066d5b3a` and `56d90af1`: JSON Schema object-level `required` is honoured, and the docs say so.
+- `2d246d0f`: `lib/plot/spec.js`, the spec-over-prop precedence as a table.
+- `7227692d`: `Plot/SpecGeoms` and `Plot/DataTable`. `Plot.svelte` went from 357 to 226 lines and complexity 72 to 27.
+- `5c5285ce`: an arc with repeated or absent categories no longer aborts the render.
+- `b19f5441`: radar keeps numeric categories and skips null ones.
+- `fa4ab83e`: the docs and skill taught a `channels` geom shape that draws nothing; corrected.
 
-The Navigator decomposition (`9449887f`..`fb46dafb`) landed before these; see journal 2026-09-30 (7).
+Earlier today: the Navigator (journal (7)) and the open items (journal (8)).
 
-**Next slice: `chart/src/Plot.svelte`.** It is the top hotspot now (cx 72, churn 38).
-Same method as before:
+**Remaining:** push `develop` and confirm CI is green.
 
-1. characterise it;
-2. write the plan doc;
-3. extract pure parts behind the unchanged component API;
-4. run a differential and re-measure.
-
-**Next command:** read `packages/chart/src/Plot.svelte` and its specs, then write
-`docs/plans/2026-09-30-plot-svelte-decomposition.md`.
+**Next command:** `git push origin develop`, then watch the Check (check + browser) and Coverage runs.
 
 **Open questions:**
 
-- The next hotspots after Plot.svelte: `unocss/preset.ts` (74/34) and `core/utils.js` (47/52).
+- The next hotspots are `unocss/preset.ts` (cx 74, churn 34), `core/utils.js` (47/52),
+  `ui/Select.svelte` (100/19) and `graph/GraphState.svelte.ts` (88/17).
+- The geom fuzz harness (`/tmp/geom-fuzz.spec.js`) found two crashes. Should it become a
+  permanent spec?
 
 **Known broken:** nothing. The sensei MCP server is disconnected, so this file is the only record.

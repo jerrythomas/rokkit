@@ -56,8 +56,10 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
   - `FormBuilder` (175 → 5) is five;
   - `Navigator` (70 → 18) is wiring over `navigator/{dom,intent,focus,typeahead}.js`, checked
     against 30,318 replayed event scenarios.
+  - `PlotChart` / `Plot.svelte` (72 → 27) is layout over `lib/plot/spec.js` (precedence as a
+    table), `Plot/SpecGeoms` and `Plot/DataTable`, checked against 596 rendered cases.
 
-  Plans are in `docs/plans/2026-09-30-*-decomposition.md`. See journal 2026-09-30 (3), (4) and (7).
+  Plans are in `docs/plans/2026-09-30-*-decomposition.md`. See journal 2026-09-30 (3), (4), (7) and (9).
 
 - [x] **Architecture-analysis primitives** — Shipped 2026-09-30 (plan:
   `docs/plans/2026-09-30-architecture-analysis-primitives.md`). `@rokkit/chart`: `Rule`

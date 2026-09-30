@@ -10188,3 +10188,38 @@ The user said "keep going" after the Navigator. I took the open items in order:
 Process slip, caught: the forms gate linted only `packages/forms`, so a `prefer-template`
 error in the new core guard spec reached a commit. It was amended before the push, and the
 gate script now lints the whole repo.
+
+---
+
+## 2026-09-30 (9) — Plot.svelte decomposition, and the bugs its differential found
+
+The next hotspot was `PlotChart` (`Plot.svelte`): 357 lines, complexity 72. Most of the 72 was
+one rule written about twenty times, "a spec value overrides its prop", plus one silent
+exception, `orientation`, where the prop wins.
+
+- `2d246d0f`: pure `lib/plot/spec.js`. `PLOT_CONFIG_FIELDS` declares each field's source
+  (spec / prop / specFirst / propFirst), and it also holds `resolveChrome`, `tableColumns` and
+  `specGeomProps`. 14 specs.
+- `7227692d`: `Plot/SpecGeoms` (the geom table, helper overrides, annotations) and
+  `Plot/DataTable`. Plot.svelte is now 226 lines, complexity 27, and off the hotspot list.
+
+Differential against `bba467bf`: 596 rendered cases (every geom type, annotations, helpers, and
+35 prop/spec variants). The HTML was identical after normalising three things:
+- scoped-style hashes;
+- anchor comments (a new component boundary adds a `<!---->`);
+- generated ids (a render-order counter: `clip-c1` vs `c2`).
+
+Six planted bugs were each caught (10–64 cases).
+
+Bugs found along the way:
+- **Arc** (`5c5285ce`). 33 differential cases threw `each_key_duplicate` in both versions.
+  Slices were keyed by category, which repeats under the identity stat and is undefined without
+  a fill field. Each slice now gets a unique `id` (`'A#0'`); `key` stays the colour key.
+- **Radar** (`b19f5441`). A fuzz of every spec geom over adversarial data (480 renders) left
+  radar as the only failure. `normaliseAxis` read any non-string axis entry as an AxisSpec, so a
+  numeric category spread into `{}` (duplicate keys) and a null one threw. All 480 now render.
+- **Docs** (`fa4ab83e`). The charts skill and design doc taught
+  `{ type, channels: { x, y } }`. GeomSpec has no `channels`, so that shape renders 0 bars.
+  Both are corrected, and the spec-over-prop rule is documented.
+
+Gates: 7,879 unit tests pass, plus 34 browser and 129 e2e; lint is 0/0 and svelte-check clean.

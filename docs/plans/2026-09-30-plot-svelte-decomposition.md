@@ -1,6 +1,7 @@
 # Plot.svelte decomposition
 
-**Status:** IMPLEMENT (2026-09-30). The user said "keep going" after the Navigator and the open items.
+**Status:** DONE (2026-09-30): `2d246d0f`, `7227692d`. See journal 2026-09-30 (9).
+The user said "keep going" after the Navigator and the open items.
 **Package:** `@rokkit/chart`
 
 ## Why
