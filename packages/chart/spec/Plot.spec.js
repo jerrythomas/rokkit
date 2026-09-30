@@ -83,6 +83,25 @@ describe('Plot.svelte', () => {
 		expect(yAxisLeft(quad)).toBeGreaterThan(yAxisLeft(q1))
 	})
 
+	// A metric plane (the main sequence is [0,1]×[0,1]) is defined by the theory, not by
+	// wherever the data happens to fall — so the chart takes the domain directly.
+	it('takes xDomain / yDomain as props, overriding the data extent', () => {
+		const data = [
+			{ x: 0.1, y: 0.2 },
+			{ x: 0.3, y: 0.4 }
+		]
+		const { container } = render(Plot, {
+			props: { spec: { data, x: 'x', y: 'y', geoms: [{ type: 'point' }] }, xDomain: [0, 1], yDomain: [0, 1], width: 400, height: 300 }
+		})
+		const ticks = (axis) =>
+			[...container.querySelectorAll(`[data-plot-axis="${axis}"] [data-plot-tick-label]`)].map((t) =>
+				Number(t.textContent)
+			)
+		expect(Math.max(...ticks('x'))).toBe(1)
+		expect(Math.max(...ticks('y'))).toBe(1)
+		expect(Math.min(...ticks('x'))).toBe(0)
+	})
+
 	// Regression: when a channel repeats (x === color), the accessible data table's keyed
 	// each must not emit a duplicate key (Svelte throws each_key_duplicate). Columns dedupe.
 	it('dedupes screen-reader table columns when x === color', () => {

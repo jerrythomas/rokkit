@@ -66,6 +66,11 @@
 		axisOrigin?: [number | undefined, number | undefined]
 		/** Nudge an edge-pinned axis outward by N px (Q1 only). Also via `spec.axisOffset`. */
 		axisOffset?: number
+		/** Fix the x domain instead of inferring it from the data — e.g. `[0, 1]` for a metric
+		 *  plane defined by theory, not by where the rows fall. Also via `spec.xDomain`. */
+		xDomain?: unknown[]
+		/** Fix the y domain. Also via `spec.yDomain`. */
+		yDomain?: unknown[]
 		/** Animate marks on data/flip changes (opt-out for e.g. AnimatedPlot, which
 		 *  tweens its own frames). Enabled one frame after the width settles so the
 		 *  initial layout paints un-animated. Default `true`. */
@@ -104,6 +109,8 @@
 		selected = $bindable([]),
 		axisOrigin = undefined,
 		axisOffset = undefined,
+		xDomain = undefined,
+		yDomain = undefined,
 		animate = true,
 		children
 	}: Props = $props()
@@ -145,8 +152,8 @@
 			channels: spec ? { x: spec.x, y: spec.y, color: spec.color ?? spec.fill } : {},
 			labels: spec?.labels ?? {},
 			helpers,
-			xDomain: spec?.xDomain,
-			yDomain: spec?.yDomain,
+			xDomain: spec?.xDomain ?? xDomain,
+			yDomain: spec?.yDomain ?? yDomain,
 			colorDomain: spec?.colorDomain,
 			colorScale: spec?.colorScale,
 			colorScheme: spec?.colorScheme,
