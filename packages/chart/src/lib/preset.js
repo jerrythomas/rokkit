@@ -24,6 +24,7 @@ export const defaultPreset = {
     ribbon:      0.5,
     waterfall:   1,
     rule:        1,
+    hull:        0.15,
     radar:       0.25
   },
   patterns: ['diagonal', 'dots', 'triangles', 'hatch', 'lattice', 'swell',

@@ -9,6 +9,7 @@ import {
 	GeomJitter,
 	GeomRule,
 	GeomRegion,
+	GeomHull,
 	Spark,
 	SparkState,
 	GEOM_CONTRACT,
@@ -52,6 +53,11 @@ describe('chart exports', () => {
 	it('exposes Region (data-coordinate shading) on the Plot namespace and as GeomRegion', () => {
 		expect(Plot.Region).toBeTruthy()
 		expect(GeomRegion).toBeTruthy()
+	})
+
+	it('exposes Hull (group outline) on the Plot namespace and as GeomHull', () => {
+		expect(Plot.Hull).toBeTruthy()
+		expect(GeomHull).toBeTruthy()
 	})
 
 	it('exposes Spark as a real component — rendering it produces the spark svg', () => {
