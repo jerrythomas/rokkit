@@ -902,3 +902,26 @@ describe('module purity', () => {
 		expect(source).not.toMatch(/getContext/)
 	})
 })
+
+describe('resolveAxes — non-string categories from the data', () => {
+	const quiet = () => vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+	it('keeps a numeric category as its axis key and label', () => {
+		quiet()
+		const axes = resolveAxes(undefined, [{ k: 1 }, { k: 1 }, { k: 2 }], 'k')
+		expect(axes.map((a) => a.key)).toEqual([1, 2])
+		expect(axes.map((a) => a.label)).toEqual([1, 2])
+	})
+
+	it('skips a null category like an undefined one, instead of throwing', () => {
+		quiet()
+		expect(resolveAxes(undefined, [{ k: null }, { k: 'a' }, {}], 'k').map((a) => a.key)).toEqual(['a'])
+	})
+
+	it('still reads an object entry as an axis spec', () => {
+		expect(resolveAxes([{ key: 'a', label: 'Alpha', unit: '%' }], [], 'k')[0]).toMatchObject({
+			key: 'a',
+			displayLabel: 'Alpha (%)'
+		})
+	})
+})

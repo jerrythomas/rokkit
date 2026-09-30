@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render } from '@testing-library/svelte'
 import RadarChart from '../../src/charts/RadarChart.svelte'
 import Plot from '../../src/Plot.svelte'
@@ -144,5 +144,22 @@ describe('Plot — spec-driven radar', () => {
 		// Guard the guard: the inferred order really is different, so this test would fail
 		// if the declared order were silently dropped.
 		expect(DECLARED_ORDER).not.toEqual(AXES)
+	})
+})
+
+describe('RadarChart — numeric and missing categories', () => {
+	it('labels an axis per numeric category and ignores rows with no category', () => {
+		vi.spyOn(console, 'warn').mockImplementation(() => {})
+		const data = [
+			{ k: 1, v: 3 },
+			{ k: 2, v: 4 },
+			{ k: 3, v: 5 },
+			{ k: null, v: 9 }
+		]
+		const { container } = render(Plot, {
+			props: { spec: { data, x: 'k', y: 'v', geoms: [{ type: 'radar' }] }, width: 300, height: 300 }
+		})
+		const labels = [...container.querySelectorAll('[data-plot-element="radar-axis-label"]')]
+		expect(labels.map((s) => s.getAttribute('data-plot-axis'))).toEqual(['1', '2', '3'])
 	})
 })

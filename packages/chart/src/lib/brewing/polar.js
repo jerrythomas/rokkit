@@ -43,11 +43,15 @@
  * Fills in the derived fields shared by every axis, regardless of which of the two
  * accepted shorthand forms it started from.
  *
- * @param {string|AxisSpec} entry
+ * Only an object is an AxisSpec; any other value — a string, or a number / boolean category
+ * read from the data — is the axis key itself. (Treating every non-string as a spec spread a
+ * numeric category into `{}`, keying every numeric axis `undefined`.)
+ *
+ * @param {string|number|AxisSpec} entry
  * @returns {ResolvedAxis}
  */
 function normaliseAxis(entry) {
-	const spec = typeof entry === 'string' ? { key: entry } : entry
+	const spec = typeof entry === 'object' ? entry : { key: entry }
 	const label = spec.label ?? spec.key
 	return {
 		...spec,
@@ -101,7 +105,8 @@ function axisKeysInData(data, axisField) {
 	const seen = new Set()
 	for (const row of data) {
 		const key = row?.[axisField]
-		if (key !== undefined) seen.add(key)
+		// A missing category — undefined or null — names no axis.
+		if (key !== undefined && key !== null) seen.add(key)
 	}
 	return [...seen]
 }
