@@ -62,7 +62,7 @@ flowchart TD
     KE --> NAVI
     NAVI -- "wrapper.next()\nwrapper.select(path)\nwrapper.expand() …" --> CTL
     CTL -- "reactive state\nfocusedKey / selected" --> DOM
-    NAVI -- "scrollIntoView\nel.focus()" --> DOM
+    NAVI -- "el.focus()\nscroll within root" --> DOM
 ```
 
 **`Navigator`** attaches to a container element, listens for `keydown`, `click`, `focusin`, and `focusout`, resolves each event to a named action via a pre-built keymap, and calls the corresponding method on the controller (`wrapper`). It also handles roving tabindex management, runs typeahead search, and scrolls the focused element into view after every keyboard move.
@@ -86,7 +86,7 @@ $effect(() => {
 | `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | Which arrow keys mean previous/next                                    |
 | `dir`         | `'ltr' \| 'rtl'`             | `'ltr'`      | Text direction; reverses horizontal arrow meaning                      |
 | `collapsible` | `boolean`                    | `false`      | Whether to bind expand/collapse keys (ArrowLeft/Right or ArrowUp/Down) |
-| `containScroll` | `boolean`                  | `false`      | Keep `scrollIntoView` contained to the scroll container (dropdowns)    |
+| `containScroll` | `boolean`                  | `false`      | Stop `wheel` events bubbling to parent scrollers (dropdowns); pair with CSS `overscroll-behavior: contain` |
 
 The `wrapper` is passed as the second constructor argument (`new Navigator(root, wrapper, options)`), not inside the options object.
 
@@ -144,20 +144,32 @@ sequenceDiagram
 
     User->>DOM: keydown ArrowDown
     DOM->>Navigator: keydown event (bubbles to list root)
-    Navigator->>Navigator: resolveAction(event, keymap) → 'next'
+    Navigator->>Navigator: keyAction(event, root, keymap) → 'next'
     Navigator->>Navigator: event.preventDefault(), stopPropagation()
     Navigator->>Wrapper: wrapper.next()
     Wrapper->>Controller: advance focusedKey to next visible item
     Controller-->>Wrapper: focusedKey updated (reactive $state)
-    Navigator->>Navigator: #syncFocus()
-    Navigator->>DOM: querySelector([data-path="<newKey>"])
-    Navigator->>DOM: el.focus()
-    Navigator->>DOM: el.scrollIntoView({ block: 'nearest' })
+    Navigator->>DOM: focusItem(root, focusedKey)
+    Navigator->>DOM: el.focus({ preventScroll: true })
+    Navigator->>DOM: root.scrollTop — nearest edge, root only
     Component-->>DOM: re-renders data-focused / aria-current on new item
     DOM-->>User: visual focus ring on new item, screen reader announces
 ```
 
-Two details are worth noting. First, `#syncFocus()` both focuses the DOM element and scrolls it into view in a single step — no `setTimeout` is needed in the class form. Second, when expand or collapse causes focus to move to a different item (e.g., expanding a group moves focus to its first child), `#syncFocus()` runs after the wrapper call for those actions too.
+Three details are worth noting. First, `focusItem()` both focuses the DOM element and scrolls it into view in a single step — no `setTimeout` is needed in the class form. Second, it never scrolls an ancestor: `preventScroll` stops `focus()` walking up the scroll chain, and the scroll is the root's own `scrollTop`, so a list inside a scrollable panel does not drag the page. Third, when expand or collapse causes focus to move to a different item (e.g., expanding a group moves focus to its first child), `focusItem()` runs after the wrapper call for those actions too.
+
+### Navigator Internals
+
+`Navigator` (`src/navigator.js`) is event wiring only: each handler asks a pure part what the event means, then acts on the wrapper and the DOM. The parts are testable without a Navigator or a wrapper.
+
+| Part | Decides |
+| --- | --- |
+| `navigator/dom.js` | `pathOf` (nearest `data-path` within the root), `clickAction` (modifier → `range` / `extend`, accordion trigger → `toggle`, else `select`), `isNestedInteractive` (a control inside an item owns its own keys, clicks and focus), `isDisabledItem` (`data-disabled` / `aria-disabled="true"`) |
+| `navigator/intent.js` | `keyAction` — the keymap action, or null for select-on-a-link (the browser clicks) and while a disabled item has focus; `clickIntent` — `{ action, path, native }`, where `native` (a link) keeps its default; `focusLeft` — whether a focusout's `relatedTarget` leaves the root |
+| `navigator/focus.js` | `focusItem` — focus the wrapper's item without scrolling ancestors, then `scrollWithin` the root; `entryItem` — where focus on the root itself is redirected |
+| `navigator/typeahead.js` | `Typeahead` — the printable-key rule, the search buffer and its 500 ms reset; the first key of a search starts after the focused item |
+
+Only `Navigator` is exported from the `@rokkit/actions` index; the parts are implementation, free to change. The decomposition was proved behaviour-preserving by replaying 30,318 event scenarios against the previous class (journal, 2026-09-30).
 
 ### The `data-path` Convention
 
@@ -424,7 +436,7 @@ These are documented design gaps — areas where the current implementation is i
 
 **Enhanced tree navigation.** Home and End in a tree currently jump to the absolute first and last visible items. Standard tree widget patterns (ARIA Authoring Practices Guide) define additional shortcuts: Home/End at a given level navigate to first/last sibling, and Alt+Home/End navigate to first/last across all levels. The `Wrapper`/`LazyWrapper` methods needed for sibling-level navigation (`moveToFirstSibling`, `moveToLastSibling`) do not yet exist.
 
-**Scroll behavior customization.** `scrollIntoView` is called with a fixed `{ block: 'nearest', inline: 'nearest' }` scroll option. There is no way for a consumer to request `block: 'center'`, disable smooth scrolling, or skip scrolling entirely for specific use cases. Exposing a `scrollBehavior` option on Navigator would address this.
+**Scroll behavior customization.** `scrollWithin` always scrolls the root to the nearest edge, vertically only. There is no way for a consumer to request centring, horizontal scrolling (a horizontal Tabs strip), or no scrolling for specific use cases. Exposing a `scrollBehavior` option on Navigator would address this.
 
 ---
 

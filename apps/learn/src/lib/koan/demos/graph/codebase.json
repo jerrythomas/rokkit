@@ -225,6 +225,78 @@
 			}
 		},
 		{
+			"id": "packages/actions/src/navigator/dom.js",
+			"label": "dom.js",
+			"kind": "function",
+			"group": "actions",
+			"path": [
+				"rokkit",
+				"actions",
+				"navigator",
+				"dom.js"
+			],
+			"m": {
+				"declarations": 4,
+				"tested": 0,
+				"files": 1,
+				"lines": 133
+			}
+		},
+		{
+			"id": "packages/actions/src/navigator/focus.js",
+			"label": "focus.js",
+			"kind": "function",
+			"group": "actions",
+			"path": [
+				"rokkit",
+				"actions",
+				"navigator",
+				"focus.js"
+			],
+			"m": {
+				"declarations": 3,
+				"tested": 0,
+				"files": 1,
+				"lines": 53
+			}
+		},
+		{
+			"id": "packages/actions/src/navigator/intent.js",
+			"label": "intent.js",
+			"kind": "function",
+			"group": "actions",
+			"path": [
+				"rokkit",
+				"actions",
+				"navigator",
+				"intent.js"
+			],
+			"m": {
+				"declarations": 3,
+				"tested": 0,
+				"files": 1,
+				"lines": 54
+			}
+		},
+		{
+			"id": "packages/actions/src/navigator/typeahead.js",
+			"label": "typeahead.js",
+			"kind": "function",
+			"group": "actions",
+			"path": [
+				"rokkit",
+				"actions",
+				"navigator",
+				"typeahead.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 48
+			}
+		},
+		{
 			"id": "packages/actions/src/navigator.js",
 			"label": "navigator.js",
 			"kind": "function",
@@ -238,7 +310,7 @@
 				"declarations": 1,
 				"tested": 1,
 				"files": 1,
-				"lines": 418
+				"lines": 187
 			}
 		},
 		{
@@ -1822,7 +1894,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 114
+				"lines": 108
 			}
 		},
 		{
@@ -1858,7 +1930,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 164
+				"lines": 180
 			}
 		},
 		{
@@ -2007,7 +2079,7 @@
 				"declarations": 2,
 				"tested": 0,
 				"files": 1,
-				"lines": 201
+				"lines": 211
 			}
 		},
 		{
@@ -2146,7 +2218,7 @@
 				"declarations": 2,
 				"tested": 0,
 				"files": 1,
-				"lines": 62
+				"lines": 68
 			}
 		},
 		{
@@ -2346,7 +2418,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 47
+				"lines": 54
 			}
 		},
 		{
@@ -2381,7 +2453,7 @@
 				"declarations": 2,
 				"tested": 0,
 				"files": 1,
-				"lines": 50
+				"lines": 52
 			}
 		},
 		{
@@ -2743,7 +2815,7 @@
 				"declarations": 5,
 				"tested": 0,
 				"files": 1,
-				"lines": 130
+				"lines": 131
 			}
 		},
 		{
@@ -2838,7 +2910,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 27
+				"lines": 33
 			}
 		},
 		{
@@ -2932,7 +3004,7 @@
 				"declarations": 2,
 				"tested": 0,
 				"files": 1,
-				"lines": 57
+				"lines": 90
 			}
 		},
 		{
@@ -2950,7 +3022,7 @@
 				"declarations": 5,
 				"tested": 0,
 				"files": 1,
-				"lines": 126
+				"lines": 128
 			}
 		},
 		{
@@ -3166,7 +3238,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 79
+				"lines": 85
 			}
 		},
 		{
@@ -3256,7 +3328,7 @@
 				"declarations": 2,
 				"tested": 0,
 				"files": 1,
-				"lines": 64
+				"lines": 65
 			}
 		},
 		{
@@ -3274,7 +3346,7 @@
 				"declarations": 3,
 				"tested": 0,
 				"files": 1,
-				"lines": 192
+				"lines": 196
 			}
 		},
 		{
@@ -3310,7 +3382,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 117
+				"lines": 122
 			}
 		},
 		{
@@ -5120,7 +5192,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 248
+				"lines": 264
 			}
 		},
 		{
@@ -5174,7 +5246,7 @@
 				"declarations": 2,
 				"tested": 0,
 				"files": 1,
-				"lines": 179
+				"lines": 197
 			}
 		},
 		{
@@ -5297,10 +5369,10 @@
 				"schema.js"
 			],
 			"m": {
-				"declarations": 1,
+				"declarations": 2,
 				"tested": 0,
 				"files": 1,
-				"lines": 32
+				"lines": 59
 			}
 		},
 		{
@@ -5319,7 +5391,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 83
+				"lines": 84
 			}
 		},
 		{
@@ -5376,7 +5448,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 132
+				"lines": 141
 			}
 		},
 		{
@@ -5395,7 +5467,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 68
+				"lines": 70
 			}
 		},
 		{
@@ -5413,7 +5485,7 @@
 				"declarations": 4,
 				"tested": 0,
 				"files": 1,
-				"lines": 307
+				"lines": 284
 			}
 		},
 		{
@@ -5428,10 +5500,10 @@
 				"values.js"
 			],
 			"m": {
-				"declarations": 4,
+				"declarations": 5,
 				"tested": 0,
 				"files": 1,
-				"lines": 77
+				"lines": 91
 			}
 		},
 		{
@@ -5465,7 +5537,7 @@
 				"declarations": 1,
 				"tested": 1,
 				"files": 1,
-				"lines": 421
+				"lines": 420
 			}
 		},
 		{
@@ -5661,7 +5733,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 164
+				"lines": 178
 			}
 		},
 		{
@@ -5803,7 +5875,7 @@
 				"declarations": 31,
 				"tested": 0,
 				"files": 1,
-				"lines": 43
+				"lines": 53
 			}
 		},
 		{
@@ -6001,7 +6073,7 @@
 				"declarations": 5,
 				"tested": 1,
 				"files": 1,
-				"lines": 124
+				"lines": 132
 			}
 		},
 		{
@@ -9518,13 +9590,43 @@
 			"kind": "imports"
 		},
 		{
-			"source": "packages/actions/src/navigator.js",
+			"source": "packages/actions/src/navigator/intent.js",
+			"target": "packages/actions/src/keymap.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/actions/src/navigator/intent.js",
+			"target": "packages/actions/src/navigator/dom.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/actions/src/navigator/typeahead.js",
 			"target": "packages/actions/src/nav-constants.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/actions/src/navigator.js",
 			"target": "packages/actions/src/keymap.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/actions/src/navigator.js",
+			"target": "packages/actions/src/navigator/dom.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/actions/src/navigator.js",
+			"target": "packages/actions/src/navigator/intent.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/actions/src/navigator.js",
+			"target": "packages/actions/src/navigator/typeahead.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/actions/src/navigator.js",
+			"target": "packages/actions/src/navigator/focus.js",
 			"kind": "imports"
 		},
 		{
@@ -12219,6 +12321,11 @@
 		},
 		{
 			"source": "packages/forms/src/lib/builder.svelte.js",
+			"target": "packages/forms/src/lib/values.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/forms/src/lib/builder.svelte.js",
 			"target": "packages/forms/src/lib/state/FormValues.svelte.js",
 			"kind": "imports"
 		},
@@ -12465,6 +12572,11 @@
 		{
 			"source": "packages/forms/src/lib/state/FormValues.svelte.js",
 			"target": "packages/forms/src/lib/values.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/forms/src/lib/validation.js",
+			"target": "packages/forms/src/lib/schema.js",
 			"kind": "imports"
 		},
 		{
