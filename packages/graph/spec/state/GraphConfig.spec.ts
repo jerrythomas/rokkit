@@ -102,3 +102,19 @@ describe('GraphConfig — fields taken as given', () => {
 		expect(c.label).toBeNull()
 	})
 })
+
+describe('GraphConfig — a change made from inside survives the next merge', () => {
+	// `apply()` merges over the LAST FULL config. A setter changed only the live value, so the
+	// next apply — any component writing its own options — quietly put the old one back: a drill
+	// undone, a density reverted, a regrouping lost.
+	it.each([
+		['setFocusPath', (c: GraphConfig) => c.setFocusPath(['a', 'b']), (c: GraphConfig) => c.focusPath, ['a', 'b']],
+		['setDensity', (c: GraphConfig) => c.setDensity('all'), (c: GraphConfig) => c.density, 'all'],
+		['setGrouping', (c: GraphConfig) => c.setGrouping('kind', 'group'), (c: GraphConfig) => [c.groupBy, c.nestBy], ['kind', 'group']]
+	] as const)('%s', (_name, change, read, expected) => {
+		const c = new GraphConfig({ layout: 'world' })
+		change(c)
+		c.apply({ edgeStyle: 'straight' })
+		expect(read(c)).toEqual(expected)
+	})
+})

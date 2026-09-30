@@ -8,6 +8,7 @@ import { tick } from 'svelte'
 import { render, fireEvent } from '@testing-library/svelte'
 import Treemap from '../src/diagrams/Treemap.svelte'
 import Sunburst from '../src/diagrams/Sunburst.svelte'
+import { GraphState } from '../src/GraphState.svelte.js'
 
 const LEVEL = [
 	{ id: 'crate', label: 'senseid', path: ['senseid'], weight: 0 },
@@ -160,5 +161,32 @@ describe('sunburst wedges drill too', () => {
 		expect(wedge).toBeDefined()
 		await fireEvent.click(wedge!)
 		expect(ondrill).toHaveBeenCalledWith(['cli'], null)
+	})
+})
+
+describe('a press on a box is the box’s, not a pan of the canvas', () => {
+	// The canvas pans from any press that does not start on a node card — and captures the
+	// pointer to do it, so the browser then delivers the CLICK to the canvas, which clears the
+	// selection. A containment box is not a node card, so in a real browser a treemap box could
+	// neither be opened nor selected by mouse. fireEvent.click alone never sees this.
+	it.each(['senseid', 'indexer'])('pressing the %s box starts no pan', async (name) => {
+		const { container } = render(Treemap, { nodes: LEVEL, edges: [], levels: 2, ondrill: () => {} })
+		await fireEvent.pointerDown(box(container, name)!, { pointerId: 1 })
+		expect(container.querySelector('[data-graph-paper]')?.hasAttribute('data-graph-panning')).toBe(false)
+	})
+})
+
+describe('a diagram handed the caller’s state', () => {
+	// The caller owns the state, so the drill path is the state's — the diagram must not push its
+	// own `focusPath` prop back over it. It did: any prop change (a legend toggle) re-applied the
+	// diagram's stale opening path and undid the reader's drill.
+	it('does not undo a drill when one of its own props changes', async () => {
+		const state = new GraphState({ nodes: LEVEL, edges: [], layout: 'world', levels: 2 })
+		const view = render(Treemap, { state, focusPath: [], levels: 2, legend: false })
+		await tick()
+		state.drillInto(state.clusters.find((c) => c.path?.join('/') === 'senseid')!)
+		await view.rerender({ state, focusPath: [], levels: 2, legend: true })
+		await tick()
+		expect(state.drillPath).toEqual(['senseid'])
 	})
 })

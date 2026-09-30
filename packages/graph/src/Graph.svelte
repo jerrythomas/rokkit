@@ -124,9 +124,17 @@
 	let panning = $state(false)
 	let panFrom = { x: 0, y: 0, left: 0, top: 0 }
 
+	/**
+	 * What a press can start on without being a pan: a node card, and anything interactive —
+	 * a containment box is a <button>, a wedge is role="button". A pan captures the pointer, and
+	 * the browser then delivers the CLICK to the canvas (which clears the selection) instead of
+	 * the box, so a treemap box could be neither opened nor selected by mouse.
+	 */
+	const OWNS_ITS_PRESS = '[data-graph-node], button, [role="button"], a[href], input, select, textarea'
+
 	function onPointerDown(event: PointerEvent) {
-		// Only the background drags — a press that starts on a card is a selection.
-		if (!paper || (event.target as HTMLElement).closest('[data-graph-node]')) return
+		// Only the background drags — a press that starts on something interactive is its own.
+		if (!paper || (event.target as Element).closest(OWNS_ITS_PRESS)) return
 		panning = true
 		panFrom = { x: event.clientX, y: event.clientY, left: paper.scrollLeft, top: paper.scrollTop }
 		paper.setPointerCapture(event.pointerId)

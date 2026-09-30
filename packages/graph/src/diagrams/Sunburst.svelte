@@ -111,8 +111,19 @@
 		// and are never reset here. What this component DOES own is the options its own
 		// controls drive — the layout above all, since choosing this component is choosing it.
 		// `apply` merges; `update` would revert everything it does not name.
-		const { nodes: _n, edges: _e, fields: _f, preset: _p, mode: _m, value: _v, ...mine } =
-			config()
+		// The drill path too: a caller's state holds where the reader drilled, and pushing this
+		// component's own focusPath prop back over it undid the drill on any prop change.
+		const {
+			nodes: _n,
+			edges: _e,
+			fields: _f,
+			preset: _p,
+			mode: _m,
+			value: _v,
+			focusPath: _fp,
+			onfocuspath: _sync,
+			...mine
+		} = config()
 		graph.apply(mine)
 	})
 </script>

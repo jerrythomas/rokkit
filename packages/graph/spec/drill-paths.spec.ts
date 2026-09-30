@@ -75,3 +75,24 @@ describe.each(['world', 'sunburst'])('%s leaf boxes name their node too', (layou
 		expect(parse?.declared).toBe('a')
 	})
 })
+
+describe.each(['world', 'sunburst', 'structure'])('%s cluster keys', (layout) => {
+	// Two boxes with the same name under same-named parents in different branches — `lib/marks`
+	// under `geoms` and under `src` — are two boxes. A key of depth:parent-label:name makes them
+	// one: Svelte throws each_key_duplicate and the whole render aborts, which drilling into a
+	// real package reached immediately.
+	it('are unique when names repeat across branches', () => {
+		const nodes = [
+			{ id: '1', label: 'a.js', path: ['pkg', 'src', 'geoms', 'lib', 'marks', 'a.js'] },
+			{ id: '2', label: 'b.js', path: ['pkg', 'src', 'geoms', 'lib', 'marks', 'b.js'] },
+			{ id: '3', label: 'c.js', path: ['pkg', 'src', 'lib', 'marks', 'c.js'] },
+			{ id: '4', label: 'd.js', path: ['pkg', 'src', 'lib', 'marks', 'd.js'] },
+			{ id: '5', label: 'e.js', path: ['pkg', 'src', 'lib', 'e.js'] },
+			{ id: '6', label: 'f.js', path: ['pkg', 'src', 'geoms', 'lib', 'f.js'] }
+		]
+		const s = new GraphState({ nodes, edges: [], fields: FIELDS, layout, levels: 6 })
+		const keys = s.clusters.map((c) => s.clusterKey(c))
+		expect(keys.length).toBeGreaterThan(2)
+		expect(new Set(keys).size).toBe(keys.length)
+	})
+})

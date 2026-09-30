@@ -150,17 +150,29 @@ export class GraphConfig {
 	 */
 	setDensity(density: Density): void {
 		this.#v.density = density
+		this.#remember({ density })
 	}
 
 	/** Move the drill path from inside the state — drilling. See `GraphDrill`. */
 	setFocusPath(path: string[]): void {
 		this.#v.focusPath = path
+		this.#remember({ focusPath: path })
 	}
 
 	/** Change the grouping axes from inside the component — same reason as `setDensity`. */
 	setGrouping(outer: NodeAxis, inner: NodeAxis | null = null): void {
 		this.#v.groupBy = outer
 		this.#v.nestBy = distinctNest(inner, outer)
+		this.#remember({ groupBy: outer, nestBy: this.#v.nestBy })
+	}
+
+	/**
+	 * Fold a change made from INSIDE into the last full config. `apply()` merges over that, so a
+	 * setter that changed only the live value was quietly undone by the next merge — any
+	 * component writing its own options put the old drill path, density or grouping back.
+	 */
+	#remember(change: Partial<GraphStateConfig>): void {
+		this.#last = { ...this.#last, ...change }
 	}
 
 	get nodes() {

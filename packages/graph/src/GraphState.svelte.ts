@@ -478,6 +478,10 @@ export class GraphState {
 	 * working rather than as an error.
 	 */
 	clusterKey(cluster: Cluster): string {
+		// A containment box's PATH is its address, unique by construction; the parent's label is
+		// not — `lib/marks` under `geoms` and under `src` share depth, parent label and name.
+		// A pathless box (an orphan node at the root, or a group box) keeps the label key.
+		if (cluster.path && cluster.path.length > 0) return `path:${cluster.path.join('/')}`
 		return `${cluster.depth ?? 0}:${cluster.parent ?? ''}:${cluster.name}`
 	}
 
