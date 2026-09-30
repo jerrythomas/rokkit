@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { clipAbline } from '../../src/lib/abline.js'
+import { clipAbline, slopeLabel } from '../../src/lib/abline.js'
 
 describe('clipAbline', () => {
 	const unit = /** @type {[number, number]} */ ([0, 1])
@@ -33,5 +33,22 @@ describe('clipAbline', () => {
 
 	it('draws a flat line inside the domain edge to edge', () => {
 		expect(clipAbline(0, 0.5, [0, 10], unit)).toEqual({ x1: 0, y1: 0.5, x2: 10, y2: 0.5 })
+	})
+})
+
+describe('slopeLabel', () => {
+	it('sits at the midpoint', () => {
+		expect(slopeLabel({ x1: 0, y1: 0, x2: 100, y2: 0 })).toEqual({ x: 50, y: 0, angle: 0 })
+	})
+
+	it('folds a right-to-left segment so the text is never upside down', () => {
+		expect(slopeLabel({ x1: 100, y1: 0, x2: 0, y2: 0 }).angle).toBeCloseTo(0)
+		expect(slopeLabel({ x1: 100, y1: 100, x2: 0, y2: 0 }).angle).toBeCloseTo(45)
+		expect(slopeLabel({ x1: 100, y1: 0, x2: 0, y2: 100 }).angle).toBeCloseTo(-45)
+	})
+
+	it('keeps a vertical segment at 90°', () => {
+		expect(slopeLabel({ x1: 0, y1: 0, x2: 0, y2: 100 }).angle).toBe(90)
+		expect(slopeLabel({ x1: 0, y1: 100, x2: 0, y2: 0 }).angle).toBe(90)
 	})
 })

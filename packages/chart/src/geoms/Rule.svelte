@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
-	import { clipAbline } from '../lib/abline.js'
+	import { clipAbline, slopeLabel } from '../lib/abline.js'
 
 	type RuleValue = number | string
 	type Props = {
@@ -134,7 +134,19 @@
 				data-plot-rule={rule.kind}
 				data-plot-value={rule.value}
 			/>
-			{#if rule.text}
+			{#if rule.text && rule.kind === 'slope'}
+				{@const at = slopeLabel(rule)}
+				<text
+					x={at.x}
+					y={at.y}
+					dy="-5"
+					text-anchor="middle"
+					transform="rotate({at.angle} {at.x} {at.y})"
+					font-size="10"
+					fill={strokeColor}
+					data-plot-element="rule-label"
+				>{rule.text}</text>
+			{:else if rule.text}
 				<text
 					x={rule.x2}
 					y={rule.y2}

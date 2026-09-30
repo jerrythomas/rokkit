@@ -88,6 +88,25 @@ describe('Rule.svelte', () => {
 			expect([x1, y1, x2, y2].map((v) => Math.round(v))).toEqual([0, 200, 300, 0])
 		})
 
+		it('labels a sloped line at its midpoint, rotated along it — its end is a corner of the plot', () => {
+			const { container } = render(TestRule, { props: { state: unit(), slope: -1, intercept: 1, label: 'main sequence' } })
+			const text = container.querySelector('[data-plot-element="rule-label"]')
+			// (0,0)→(300,200): midpoint (150,100), angle atan2(200,300) ≈ 33.69°
+			expect(Number(text.getAttribute('x'))).toBeCloseTo(150, 3)
+			expect(Number(text.getAttribute('y'))).toBeCloseTo(100, 3)
+			expect(text.getAttribute('text-anchor')).toBe('middle')
+			const angle = Number(text.getAttribute('transform').match(/rotate\(([-\d.]+)/)[1])
+			expect(angle).toBeCloseTo(33.69, 1)
+		})
+
+		it('keeps a sloped label upright when the line rises', () => {
+			const { container } = render(TestRule, { props: { state: unit(), slope: 1, label: 'y = x' } })
+			const text = container.querySelector('[data-plot-element="rule-label"]')
+			const angle = Number(text.getAttribute('transform').match(/rotate\(([-\d.]+)/)[1])
+			expect(Math.abs(angle)).toBeLessThanOrEqual(90)
+			expect(angle).toBeCloseTo(-33.69, 1)
+		})
+
 		it('is ignored on a band x axis, where a slope has no meaning', () => {
 			const { container } = render(TestRule, { props: { state: createMockState(), slope: 1 } })
 			expect(container.querySelector('[data-plot-element="rule"]')).toBeNull()

@@ -30,3 +30,20 @@ export function clipAbline(slope, intercept, xDomain, yDomain) {
 	if (lo > hi) return null
 	return { x1: lo, y1: at(lo), x2: hi, y2: at(hi) }
 }
+
+/**
+ * Where a sloped line's label goes: its midpoint, rotated to run along it.
+ *
+ * Not the end, where an axis-aligned rule puts its label — a sloped line's ends are corners
+ * of the plot, exactly where points and axis ticks crowd. The angle is folded into
+ * (-90°, 90°] so the text never reads upside down, whichever way the line was drawn.
+ *
+ * @param {{ x1: number, y1: number, x2: number, y2: number }} seg  screen coordinates
+ * @returns {{ x: number, y: number, angle: number }}
+ */
+export function slopeLabel({ x1, y1, x2, y2 }) {
+	let angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI
+	if (angle > 90) angle -= 180
+	if (angle <= -90) angle += 180
+	return { x: (x1 + x2) / 2, y: (y1 + y2) / 2, angle }
+}
