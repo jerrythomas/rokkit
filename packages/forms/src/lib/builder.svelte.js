@@ -4,6 +4,7 @@ import { evaluateCondition } from './conditions.js'
 import { FormValues } from './state/FormValues.svelte.js'
 import { FormDefinition } from './state/FormDefinition.svelte.js'
 import { FormLookups } from './state/FormLookups.svelte.js'
+import { FormSteps, stepPaths } from './state/FormSteps.svelte.js'
 import {
 	validateField as validateFieldValue,
 	validateAll as validateAllFields
@@ -47,14 +48,16 @@ export class FormBuilder {
 	/** Fields whose options come from elsewhere, and what they depend on. */
 	lookups
 
-	/** @type {number} */
-	#currentStep = $state(0)
+	/** Multi-step navigation. */
+	steps
 
 	/** @type {FormElement[]} */
 	elements = $derived(this.#buildElements())
 
 	/** True when currentStep can advance to the next step */
-	canAdvance = $derived(this.#currentStep < this.totalSteps - 1)
+	get canAdvance() {
+		return this.steps.canAdvance
+	}
 
 	/** Combined schema+layout (scoped elements only) */
 	get combined() {
@@ -118,6 +121,7 @@ export class FormBuilder {
 	constructor(data = {}, schema = null, layout = null, lookups = {}) {
 		this.values = new FormValues(data)
 		this.definition = new FormDefinition(this.values, schema, layout)
+		this.steps = new FormSteps(this.definition)
 		this.lookups = new FormLookups(this.values, lookups)
 	}
 
@@ -288,7 +292,7 @@ export class FormBuilder {
 	 */
 	#buildElements() {
 		try {
-			const layoutElements = this.#getActiveElements()
+			const layoutElements = this.steps.activeElements
 			const combinedMap = this.#buildCombinedMap(layoutElements)
 			return this.#collectElements(layoutElements, combinedMap)
 		} catch (error) {
@@ -546,11 +550,7 @@ export class FormBuilder {
 	validate() {
 		if (this.isMultiStep) {
 			// Flatten all step elements into a synthetic layout for full validation
-			const allElements = []
-			for (const step of this.definition.layout?.elements ?? []) {
-				if (step.type === 'step') allElements.push(...(step.elements ?? []))
-			}
-			const flatLayout = { ...this.definition.layout, elements: allElements }
+			const flatLayout = { ...this.definition.layout, elements: this.steps.allStepElements }
 			const results = validateAllFields(this.values.data, this.definition.schema, flatLayout)
 			this.#validation = results
 			return results
@@ -656,17 +656,17 @@ export class FormBuilder {
 
 	/** True when the layout contains step elements */
 	get isMultiStep() {
-		return (this.definition.layout?.elements ?? []).some((el) => el.type === 'step')
+		return this.steps.isMultiStep
 	}
 
 	/** Number of step elements in the layout */
 	get totalSteps() {
-		return (this.definition.layout?.elements ?? []).filter((el) => el.type === 'step').length
+		return this.steps.total
 	}
 
 	/** Zero-based index of the active step */
 	get currentStep() {
-		return this.#currentStep
+		return this.steps.current
 	}
 
 	/**
@@ -674,12 +674,8 @@ export class FormBuilder {
 	 * @returns {boolean} true if advanced, false if validation failed
 	 */
 	next() {
-		if (!this.validateStep(this.#currentStep)) return false
-		if (this.#currentStep < this.totalSteps - 1) {
-			this.#currentStep++
-			return true
-		}
-		return false
+		if (!this.validateStep(this.steps.current)) return false
+		return this.steps.advance()
 	}
 
 	/**
@@ -687,11 +683,7 @@ export class FormBuilder {
 	 * @returns {boolean} true if moved, false if already on first step
 	 */
 	prev() {
-		if (this.#currentStep > 0) {
-			this.#currentStep--
-			return true
-		}
-		return false
+		return this.steps.back()
 	}
 
 	/**
@@ -699,8 +691,7 @@ export class FormBuilder {
 	 * @param {number} index - Target step index
 	 */
 	goToStep(index) {
-		if (index >= this.#currentStep) throw new Error('Cannot navigate forward to an unvisited step')
-		this.#currentStep = index
+		this.steps.goTo(index)
 	}
 
 	/**
@@ -708,7 +699,7 @@ export class FormBuilder {
 	 * @param {number} [index] - Step index (defaults to currentStep)
 	 * @returns {boolean} true if no errors
 	 */
-	isStepValid(index = this.#currentStep) {
+	isStepValid(index = this.steps.current) {
 		return this.validateStep(index)
 	}
 
@@ -718,8 +709,8 @@ export class FormBuilder {
 	 * @returns {boolean} true if no errors
 	 */
 	validateStep(index) {
-		const stepEl = (this.definition.layout?.elements ?? [])[index]
-		if (!stepEl || stepEl.type !== 'step') return true
+		const stepEl = this.steps.step(index)
+		if (!stepEl) return true
 		const stepLayout = { ...this.definition.layout, elements: stepEl.elements ?? [] }
 		const results = validateAllFields(this.values.data, this.definition.schema, stepLayout)
 		this.#applyStepValidation(results, stepEl.elements)
@@ -731,53 +722,13 @@ export class FormBuilder {
 	 * @private
 	 */
 	#applyStepValidation(results, elements) {
-		const paths = new SvelteSet(this.#collectStepPaths(elements))
+		const paths = new SvelteSet(stepPaths(elements))
 		for (const path of paths) {
 			this.setFieldValidation(path, results[path] ?? null)
 		}
 	}
 
-	/**
-	 * Collect all scoped field paths from a step's elements recursively.
-	 * @private
-	 * @param {Object[]} elements - Step element array
-	 * @returns {string[]}
-	 */
-	#collectStepPaths(elements) {
-		const paths = []
-		for (const el of elements ?? []) {
-			if (el.scope) paths.push(el.scope.replace(/^#\//, ''))
-			if (el.elements) paths.push(...this.#collectStepPaths(el.elements))
-		}
-		return paths
-	}
 
-	/**
-	 * Collect all field paths across all steps.
-	 * @private
-	 * @returns {Set<string>}
-	 */
-	/* v8 ignore next 9 — defined for future use; not yet called by any public method */
-	#getAllStepPaths() {
-		const paths = new SvelteSet()
-		for (const step of this.definition.layout?.elements ?? []) {
-			if (step.type === 'step') {
-				for (const path of this.#collectStepPaths(step.elements)) paths.add(path)
-			}
-		}
-		return paths
-	}
-
-	/**
-	 * Return the layout elements for the active step (or all elements for flat layouts).
-	 * @private
-	 * @returns {Object[]}
-	 */
-	#getActiveElements() {
-		const elements = this.definition.layout?.elements ?? []
-		if (!elements.some((el) => el.type === 'step')) return elements
-		return elements[this.#currentStep]?.elements ?? []
-	}
 }
 
 // ── Module-level helpers (no `this`) ──────────────────────────────────────────
