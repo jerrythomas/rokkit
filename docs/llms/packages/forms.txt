@@ -72,7 +72,11 @@ const builder = new FormBuilder({ count: 25, animate: true })
 
 ## FormBuilder
 
-The core class that manages form state, field derivation, validation, and dirty tracking.
+The core class that manages form state, field derivation, validation, and dirty tracking. It is a
+composition of job classes, each also exposed as a member for advanced use: `values`
+(FormValues — data, dirty tracking), `definition` (FormDefinition — schema/layout derivation),
+`steps` (FormSteps — multi-step navigation), `validationState` (FormValidation — messages and
+validating), `lookups` (FormLookups). `elements` is derived by the pure `buildElements`.
 
 ### Constructor
 
@@ -84,7 +88,7 @@ new FormBuilder(data?, schema?, layout?, lookups?)
 |-----------|------|---------|-------------|
 | `data` | `Object` | `{}` | Initial form data |
 | `schema` | `Object\|null` | `null` | JSON Schema definition (auto-derived from data when null) |
-| `layout` | `Object\|null` | `null` | Layout definition (auto-derived from data when null) |
+| `layout` | `Object\|null` | `null` | Layout definition (when null: derived from the schema if it declares fields, else from the data) |
 | `lookups` | `Object` | `{}` | Lookup configurations keyed by field path |
 
 ### Properties

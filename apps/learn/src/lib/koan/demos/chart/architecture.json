@@ -329,14 +329,14 @@
 		{
 			"component": "forms/lib",
 			"package": "forms",
-			"files": 12,
-			"loc": 2827,
-			"churn": 79,
+			"files": 19,
+			"loc": 2660,
+			"churn": 94,
 			"ca": 4,
 			"ce": 4,
 			"instability": 0.5,
-			"abstractness": 0.242,
-			"distance": 0.258
+			"abstractness": 0.196,
+			"distance": 0.304
 		},
 		{
 			"component": "graph",
@@ -4511,12 +4511,12 @@
 			"label": "builder.svelte.js",
 			"package": "forms",
 			"component": "forms/lib",
-			"loc": 1129,
-			"complexity": 175,
-			"churn": 26,
+			"loc": 248,
+			"complexity": 5,
+			"churn": 33,
 			"coverage": 1,
-			"declarations": 2,
-			"abstract": 1,
+			"declarations": 1,
+			"abstract": 0,
 			"fanIn": 3,
 			"fanOut": 6
 		},
@@ -4549,6 +4549,20 @@
 			"fanOut": 1
 		},
 		{
+			"id": "packages/forms/src/lib/elements.js",
+			"label": "elements.js",
+			"package": "forms",
+			"component": "forms/lib",
+			"loc": 179,
+			"complexity": 38,
+			"churn": 2,
+			"coverage": 1,
+			"declarations": 4,
+			"abstract": 2,
+			"fanIn": 1,
+			"fanOut": 2
+		},
+		{
 			"id": "packages/forms/src/lib/fields.js",
 			"label": "fields.js",
 			"package": "forms",
@@ -4559,7 +4573,7 @@
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 0,
-			"fanIn": 4,
+			"fanIn": 5,
 			"fanOut": 0
 		},
 		{
@@ -4661,6 +4675,76 @@
 			"fanOut": 1
 		},
 		{
+			"id": "packages/forms/src/lib/state/FormDefinition.svelte.js",
+			"label": "FormDefinition.svelte.js",
+			"package": "forms",
+			"component": "forms/lib",
+			"loc": 83,
+			"complexity": 18,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 3
+		},
+		{
+			"id": "packages/forms/src/lib/state/FormLookups.svelte.js",
+			"label": "FormLookups.svelte.js",
+			"package": "forms",
+			"component": "forms/lib",
+			"loc": 94,
+			"complexity": 16,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 1
+		},
+		{
+			"id": "packages/forms/src/lib/state/FormSteps.svelte.js",
+			"label": "FormSteps.svelte.js",
+			"package": "forms",
+			"component": "forms/lib",
+			"loc": 81,
+			"complexity": 13,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 2,
+			"abstract": 0,
+			"fanIn": 2,
+			"fanOut": 0
+		},
+		{
+			"id": "packages/forms/src/lib/state/FormValidation.svelte.js",
+			"label": "FormValidation.svelte.js",
+			"package": "forms",
+			"component": "forms/lib",
+			"loc": 132,
+			"complexity": 15,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 2
+		},
+		{
+			"id": "packages/forms/src/lib/state/FormValues.svelte.js",
+			"label": "FormValues.svelte.js",
+			"package": "forms",
+			"component": "forms/lib",
+			"loc": 68,
+			"complexity": 3,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 1
+		},
+		{
 			"id": "packages/forms/src/lib/validation.js",
 			"label": "validation.js",
 			"package": "forms",
@@ -4672,6 +4756,20 @@
 			"declarations": 5,
 			"abstract": 1,
 			"fanIn": 3,
+			"fanOut": 0
+		},
+		{
+			"id": "packages/forms/src/lib/values.js",
+			"label": "values.js",
+			"package": "forms",
+			"component": "forms/lib",
+			"loc": 77,
+			"complexity": 20,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 4,
+			"abstract": 0,
+			"fanIn": 1,
 			"fanOut": 0
 		},
 		{

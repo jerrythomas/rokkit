@@ -5120,7 +5120,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 1129
+				"lines": 248
 			}
 		},
 		{
@@ -5157,6 +5157,24 @@
 				"tested": 0,
 				"files": 1,
 				"lines": 59
+			}
+		},
+		{
+			"id": "packages/forms/src/lib/elements.js",
+			"label": "elements.js",
+			"kind": "function",
+			"group": "forms",
+			"path": [
+				"rokkit",
+				"forms",
+				"lib",
+				"elements.js"
+			],
+			"m": {
+				"declarations": 2,
+				"tested": 0,
+				"files": 1,
+				"lines": 179
 			}
 		},
 		{
@@ -5286,6 +5304,101 @@
 			}
 		},
 		{
+			"id": "packages/forms/src/lib/state/FormDefinition.svelte.js",
+			"label": "FormDefinition.svelte.js",
+			"kind": "function",
+			"group": "forms",
+			"path": [
+				"rokkit",
+				"forms",
+				"lib",
+				"state",
+				"FormDefinition.svelte.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 83
+			}
+		},
+		{
+			"id": "packages/forms/src/lib/state/FormLookups.svelte.js",
+			"label": "FormLookups.svelte.js",
+			"kind": "function",
+			"group": "forms",
+			"path": [
+				"rokkit",
+				"forms",
+				"lib",
+				"state",
+				"FormLookups.svelte.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 94
+			}
+		},
+		{
+			"id": "packages/forms/src/lib/state/FormSteps.svelte.js",
+			"label": "FormSteps.svelte.js",
+			"kind": "function",
+			"group": "forms",
+			"path": [
+				"rokkit",
+				"forms",
+				"lib",
+				"state",
+				"FormSteps.svelte.js"
+			],
+			"m": {
+				"declarations": 2,
+				"tested": 0,
+				"files": 1,
+				"lines": 81
+			}
+		},
+		{
+			"id": "packages/forms/src/lib/state/FormValidation.svelte.js",
+			"label": "FormValidation.svelte.js",
+			"kind": "function",
+			"group": "forms",
+			"path": [
+				"rokkit",
+				"forms",
+				"lib",
+				"state",
+				"FormValidation.svelte.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 132
+			}
+		},
+		{
+			"id": "packages/forms/src/lib/state/FormValues.svelte.js",
+			"label": "FormValues.svelte.js",
+			"kind": "function",
+			"group": "forms",
+			"path": [
+				"rokkit",
+				"forms",
+				"lib",
+				"state",
+				"FormValues.svelte.js"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 68
+			}
+		},
+		{
 			"id": "packages/forms/src/lib/validation.js",
 			"label": "validation.js",
 			"kind": "function",
@@ -5301,6 +5414,24 @@
 				"tested": 0,
 				"files": 1,
 				"lines": 307
+			}
+		},
+		{
+			"id": "packages/forms/src/lib/values.js",
+			"label": "values.js",
+			"kind": "function",
+			"group": "forms",
+			"path": [
+				"rokkit",
+				"forms",
+				"lib",
+				"values.js"
+			],
+			"m": {
+				"declarations": 4,
+				"tested": 0,
+				"files": 1,
+				"lines": 77
 			}
 		},
 		{
@@ -12083,36 +12214,46 @@
 		},
 		{
 			"source": "packages/forms/src/lib/builder.svelte.js",
-			"target": "packages/forms/src/lib/schema.js",
+			"target": "packages/forms/src/lib/elements.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/forms/src/lib/builder.svelte.js",
-			"target": "packages/forms/src/lib/layout.js",
+			"target": "packages/forms/src/lib/state/FormValues.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/forms/src/lib/builder.svelte.js",
-			"target": "packages/forms/src/lib/fields.js",
+			"target": "packages/forms/src/lib/state/FormDefinition.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/forms/src/lib/builder.svelte.js",
-			"target": "packages/forms/src/lib/lookup.svelte.js",
+			"target": "packages/forms/src/lib/state/FormSteps.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/forms/src/lib/builder.svelte.js",
-			"target": "packages/forms/src/lib/conditions.js",
+			"target": "packages/forms/src/lib/state/FormValidation.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/forms/src/lib/builder.svelte.js",
-			"target": "packages/forms/src/lib/validation.js",
+			"target": "packages/forms/src/lib/state/FormLookups.svelte.js",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/forms/src/lib/conditions.spec.js",
+			"target": "packages/forms/src/lib/conditions.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/forms/src/lib/elements.js",
+			"target": "packages/forms/src/lib/fields.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/forms/src/lib/elements.js",
 			"target": "packages/forms/src/lib/conditions.js",
 			"kind": "imports"
 		},
@@ -12289,6 +12430,41 @@
 		{
 			"source": "packages/forms/src/lib/schema.js",
 			"target": "packages/data/src/index.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/forms/src/lib/state/FormDefinition.svelte.js",
+			"target": "packages/forms/src/lib/schema.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/forms/src/lib/state/FormDefinition.svelte.js",
+			"target": "packages/forms/src/lib/layout.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/forms/src/lib/state/FormDefinition.svelte.js",
+			"target": "packages/forms/src/lib/fields.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/forms/src/lib/state/FormLookups.svelte.js",
+			"target": "packages/forms/src/lib/lookup.svelte.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/forms/src/lib/state/FormValidation.svelte.js",
+			"target": "packages/forms/src/lib/validation.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/forms/src/lib/state/FormValidation.svelte.js",
+			"target": "packages/forms/src/lib/state/FormSteps.svelte.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/forms/src/lib/state/FormValues.svelte.js",
+			"target": "packages/forms/src/lib/values.js",
 			"kind": "imports"
 		},
 		{

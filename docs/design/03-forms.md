@@ -52,7 +52,7 @@ flowchart TD
     H --> F
     I --> F
     F --> J["getSchemaWithLayout(schema, layout)\n→ merged element descriptors"]
-    J --> K["FormBuilder.#buildElements()\n→ FormElement[]"]
+    J --> K["buildElements() — lib/elements.js\n→ FormElement[]"]
     K --> L["FormRenderer iterates elements"]
     L --> M{"element.type?"}
     M -- separator --> N["&lt;div data-form-separator&gt;"]
@@ -85,47 +85,36 @@ flowchart LR
 
 ## FormBuilder Responsibilities
 
-`FormBuilder` (`lib/builder.svelte.js`) is the reactive core. It manages all mutable form state using Svelte 5 runes. `FormRenderer` creates one stable instance at mount and wires prop changes to it via `$effect`.
+`FormBuilder` (`lib/builder.svelte.js`) is the reactive core, and a COMPOSITION (decomposed
+2026-09-30, plan `docs/plans/2026-09-30-formbuilder-decomposition.md`): it builds five job
+classes from `lib/state/` and derives `elements` from them through the pure `buildElements`.
+`FormRenderer` creates one stable instance at mount and wires prop changes to it via `$effect`.
 
 ```text
-FormBuilder (reactive state)
+FormBuilder (composition root)
 │
-├── #data ($state)             — current field values, immutable updates
-├── #initialData               — deep clone taken at construction
-├── #schema ($state)           — JSON schema (auto-derived if null)
-├── #layout ($state)           — layout descriptor (auto-derived if null)
-├── #validation ($state)       — Record<fieldPath, { state, text }|null>
-├── #lookupConfigs ($state)    — Record<fieldPath, LookupConfig>
-├── #lookupManager ($state)    — createLookupManager() instance
+├── values           FormValues        data ($state), the non-reactive initial snapshot,
+│                                      get/set by slash path, isDirty / dirtyFields /
+│                                      isFieldDirty, snapshot(), reset()
+├── definition       FormDefinition    schema + layout ($state) and the rules deriving each
+│                                      from the other or the data; combined; field schema/label
+├── steps            FormSteps         multi-step: total, current, canAdvance, advance/back/goTo,
+│                                      active elements, every step's elements
+├── validationState  FormValidation    the message map; validateField / validateAll /
+│                                      validateStep; isValid / errors / sorted; clearHidden
+│                                      (visible paths arrive as a function — no cycle)
+├── lookups          FormLookups       the lookup manager; per-field state; dependent clearing;
+│                                      folding lookup state into element props
 │
-├── elements ($derived)        — FormElement[] from #buildElements()
-│
-├── Field access
-│   ├── getValue(path)         — reads nested value by slash-separated path
-│   └── updateField(path, v)  — immutable update + lookup cascade
-│
-├── Validation
-│   ├── validateField(path)    — validates one field, stores message
-│   ├── validate()             — validates all fields (validateAll)
-│   ├── setFieldValidation()   — store an external validation message
-│   ├── clearValidation()      — wipe all messages
-│   ├── isValid (get)          — no error-state messages remain
-│   ├── errors (get)           — array of { path, state, text } errors
-│   └── messages (get)         — all messages ordered by severity
-│
-├── Dirty tracking
-│   ├── isDirty (get)          — any field differs from initialData
-│   ├── dirtyFields (get)      — Set<string> of changed paths
-│   ├── isFieldDirty(path)     — single-field dirty check
-│   ├── reset()                — restore initialData, clear validation
-│   └── snapshot()             — advance initialData to current (post-save)
-│
-└── Lookups
-    ├── initializeLookups()    — called on mount, calls fetch() for all lookups
-    ├── getLookupState(path)   — { options, loading, error, fields, disabled }
-    ├── isFieldDisabled(path)  — true when dependencies unmet
-    └── refreshLookup(path)    — manual re-fetch with current form data
+└── elements ($derived)  buildElements(steps.activeElements, context) — lib/elements.js, pure
 ```
+
+The public API (`data`, `schema`, `layout`, `validation`, `getValue`, `updateField`, `validate`,
+`next`, `getLookupState`, …) is unchanged, as delegations grouped by job. Only three methods span
+two jobs: `next()` validates the step, then advances; `updateField()` writes, drops hidden
+fields' messages, then re-fetches dependent lookups; `getVisibleData()` filters the data by the
+elements. Measured: 1128 lines / ~175 decision points → 247 / 5; a differential against the old
+class over 588 form × operation cases matched exactly.
 
 `FormRenderer` maintains a single `FormBuilder` instance using `untrack()` at construction and then synchronizes prop changes via `$effect`:
 
@@ -251,7 +240,7 @@ The `format` field controls which input component is selected for string fields:
 
 The `renderer` field (set in the layout element) bypasses all type inference and directly names a key in the renderer registry.
 
-### Type resolution priority in `#convertToFormElement`
+### Type resolution priority — `resolveInputType` (`lib/elements.js`)
 
 1. `props.renderer` is set → look up that key in the renderer registry
 2. `props.format` is set (and not `'text'` or `'number'`) → use format as type key
@@ -390,7 +379,7 @@ On submit, `formBuilder.validate()` runs `validateAll` across every field regard
 
 Validation messages are stored in `#validation` as a `Record<fieldPath, { state, text }>`. The `state` field is one of `'error'`, `'warning'`, `'info'`, `'success'`. Only `'error'`-state messages block submission (`isValid` checks that no message has `state === 'error'`).
 
-`FormBuilder.#buildElements()` injects each field's validation message into the `FormElement.props.message` object. `InputField` renders the message below the input via `data-message` and reflects the state on the root element via `data-field-state`.
+`buildElements` injects each field's validation message into the `FormElement.props.message` object. `InputField` renders the message below the input via `data-message` and reflects the state on the root element via `data-field-state`.
 
 ### Data flow diagram
 
@@ -493,7 +482,7 @@ sequenceDiagram
 
 ### Disabled state and loading
 
-`#convertToFormElement` in `FormBuilder` calls `getLookupState(fieldPath)` for every element and injects lookup-derived props:
+`buildElements` calls the context's `applyLookup` (FormLookups `applyTo`) for every input element, injecting lookup-derived props:
 
 - `options` — from `lookupState.options` (overwrites schema enum)
 - `loading: true` — when the fetch is in flight
@@ -585,9 +574,9 @@ Fields can be shown or hidden based on the values of other fields. The condition
 
 Supported operators: `equals`, `notEquals`. If `showWhen` is absent the field is always shown.
 
-`FormBuilder.#buildElements()` evaluates conditions reactively against the current `#data` — hidden elements are excluded from the returned `elements` array entirely. Since `elements` is `$derived`, no imperative toggle code is needed.
+`buildElements` evaluates conditions reactively against the current data — hidden elements are excluded from the returned `elements` array entirely. Since `elements` is `$derived`, no imperative toggle code is needed.
 
-`#data` is never mutated when a field is hidden — the value is preserved in memory. A user who re-shows a conditional field sees their previously entered value. Hidden field values are stripped at submit time via `getVisibleData()`, not eagerly.
+The data is never mutated when a field is hidden — the value is preserved in memory. A user who re-shows a conditional field sees their previously entered value. Hidden field values are stripped at submit time via `getVisibleData()`, not eagerly.
 
 On submission, `FormRenderer` passes `formBuilder.getVisibleData()` (not raw `data`) to `onsubmit`. Validation skips hidden fields.
 
