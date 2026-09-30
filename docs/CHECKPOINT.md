@@ -10,15 +10,13 @@
 
 Earlier today: the Navigator (journal (7)) and the open items (journal (8)).
 
-**Remaining:** push `develop` and confirm CI is green.
+`789772ae` makes the geom fuzz a permanent spec: 15 geoms on 8 awkward datasets. Pushed, and CI is green.
 
-**Next command:** `git push origin develop`, then watch the Check (check + browser) and Coverage runs.
+**Next slice: `unocss/src/preset.ts`** (cx 74, churn 34). Read it and its specs, then write the plan.
 
 **Open questions:**
 
 - The next hotspots are `unocss/preset.ts` (cx 74, churn 34), `core/utils.js` (47/52),
   `ui/Select.svelte` (100/19) and `graph/GraphState.svelte.ts` (88/17).
-- The geom fuzz harness (`/tmp/geom-fuzz.spec.js`) found two crashes. Should it become a
-  permanent spec?
 
 **Known broken:** nothing. The sensei MCP server is disconnected, so this file is the only record.
