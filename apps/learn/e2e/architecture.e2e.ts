@@ -95,6 +95,50 @@ test.describe('architecture recipes', () => {
 		expect(await page.locator('[data-plot-element="contour"]').count()).toBeGreaterThan(0)
 	})
 
+	test('a point grows and shrinks IN PLACE on hover — it never jumps toward the corner', async ({
+		page
+	}) => {
+		// Reported as "the point flashes from a nearby location". The hover scale's
+		// transform-box lived only on :hover, so on leave it snapped to the SVG origin while the
+		// scale eased back — an 87px jump for a point near the bottom-right. Sample every frame
+		// of the leave and require the centre to stay put.
+		await openChart(page, 'main-sequence')
+		const target = await page.evaluate(() => {
+			const pts = [...document.querySelectorAll('circle[data-plot-element="point"]')]
+			let best = { x: 0, y: 0, i: -1, d: -1 }
+			pts.forEach((el, i) => {
+				const r = el.getBoundingClientRect()
+				const x = r.x + r.width / 2
+				const y = r.y + r.height / 2
+				const d = Number(el.getAttribute('cx')) + Number(el.getAttribute('cy'))
+				if (document.elementFromPoint(x, y) === el && d > best.d) best = { x, y, i, d }
+			})
+			return best
+		})
+		expect(target.i).toBeGreaterThanOrEqual(0)
+		await page.mouse.move(target.x, target.y)
+		await page.waitForTimeout(300)
+		await page.evaluate((i) => {
+			const el = document.querySelectorAll('circle[data-plot-element="point"]')[i]
+			const w = window as unknown as { __drift: number }
+			w.__drift = 0
+			const r0 = el.getBoundingClientRect()
+			const x0 = r0.x + r0.width / 2
+			const y0 = r0.y + r0.height / 2
+			const t0 = performance.now()
+			const tick = () => {
+				const r = el.getBoundingClientRect()
+				w.__drift = Math.max(w.__drift, Math.hypot(r.x + r.width / 2 - x0, r.y + r.height / 2 - y0))
+				if (performance.now() - t0 < 400) requestAnimationFrame(tick)
+			}
+			requestAnimationFrame(tick)
+		}, target.i)
+		await page.mouse.move(2, 2)
+		await page.waitForTimeout(450)
+		const drift = await page.evaluate(() => (window as unknown as { __drift: number }).__drift)
+		expect(drift).toBeLessThan(2)
+	})
+
 	for (const [type, region] of [
 		['hotspots', 'hotspot'],
 		['coverage', 'risk'],
