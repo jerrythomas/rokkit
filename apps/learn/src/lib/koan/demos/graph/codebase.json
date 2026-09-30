@@ -79,10 +79,10 @@
 				"index.js"
 			],
 			"m": {
-				"declarations": 19,
+				"declarations": 20,
 				"tested": 1,
 				"files": 1,
-				"lines": 21
+				"lines": 24
 			}
 		},
 		{
@@ -1696,7 +1696,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 232
+				"lines": 223
 			}
 		},
 		{
@@ -3888,7 +3888,7 @@
 				"declarations": 5,
 				"tested": 1,
 				"files": 1,
-				"lines": 28
+				"lines": 27
 			}
 		},
 		{
@@ -3926,6 +3926,23 @@
 			}
 		},
 		{
+			"id": "packages/core/src/dom.js",
+			"label": "dom.js",
+			"kind": "function",
+			"group": "core",
+			"path": [
+				"rokkit",
+				"core",
+				"dom.js"
+			],
+			"m": {
+				"declarations": 3,
+				"tested": 0,
+				"files": 1,
+				"lines": 61
+			}
+		},
+		{
 			"id": "packages/core/src/events.js",
 			"label": "events.js",
 			"kind": "function",
@@ -3960,6 +3977,23 @@
 			}
 		},
 		{
+			"id": "packages/core/src/icons.js",
+			"label": "icons.js",
+			"kind": "function",
+			"group": "core",
+			"path": [
+				"rokkit",
+				"core",
+				"icons.js"
+			],
+			"m": {
+				"declarations": 3,
+				"tested": 0,
+				"files": 1,
+				"lines": 95
+			}
+		},
+		{
 			"id": "packages/core/src/index.js",
 			"label": "index.js",
 			"kind": "function",
@@ -3991,6 +4025,23 @@
 				"tested": 1,
 				"files": 1,
 				"lines": 36
+			}
+		},
+		{
+			"id": "packages/core/src/keys.js",
+			"label": "keys.js",
+			"kind": "function",
+			"group": "core",
+			"path": [
+				"rokkit",
+				"core",
+				"keys.js"
+			],
+			"m": {
+				"declarations": 2,
+				"tested": 0,
+				"files": 1,
+				"lines": 20
 			}
 		},
 		{
@@ -4062,6 +4113,40 @@
 			}
 		},
 		{
+			"id": "packages/core/src/oklch.js",
+			"label": "oklch.js",
+			"kind": "function",
+			"group": "core",
+			"path": [
+				"rokkit",
+				"core",
+				"oklch.js"
+			],
+			"m": {
+				"declarations": 3,
+				"tested": 0,
+				"files": 1,
+				"lines": 125
+			}
+		},
+		{
+			"id": "packages/core/src/snippets.js",
+			"label": "snippets.js",
+			"kind": "function",
+			"group": "core",
+			"path": [
+				"rokkit",
+				"core",
+				"snippets.js"
+			],
+			"m": {
+				"declarations": 2,
+				"tested": 0,
+				"files": 1,
+				"lines": 46
+			}
+		},
+		{
 			"id": "packages/core/src/string.js",
 			"label": "string.js",
 			"kind": "function",
@@ -4092,7 +4177,7 @@
 				"declarations": 8,
 				"tested": 1,
 				"files": 1,
-				"lines": 372
+				"lines": 398
 			}
 		},
 		{
@@ -4140,10 +4225,27 @@
 				"utils.js"
 			],
 			"m": {
-				"declarations": 18,
+				"declarations": 6,
 				"tested": 1,
 				"files": 1,
-				"lines": 391
+				"lines": 12
+			}
+		},
+		{
+			"id": "packages/core/src/values.js",
+			"label": "values.js",
+			"kind": "function",
+			"group": "core",
+			"path": [
+				"rokkit",
+				"core",
+				"values.js"
+			],
+			"m": {
+				"declarations": 5,
+				"tested": 0,
+				"files": 1,
+				"lines": 57
 			}
 		},
 		{
@@ -5587,10 +5689,10 @@
 				"GraphState.svelte.ts"
 			],
 			"m": {
-				"declarations": 4,
+				"declarations": 3,
 				"tested": 0,
 				"files": 1,
-				"lines": 768
+				"lines": 529
 			}
 		},
 		{
@@ -6024,6 +6126,24 @@
 			}
 		},
 		{
+			"id": "packages/graph/src/layout/extent.ts",
+			"label": "extent.ts",
+			"kind": "function",
+			"group": "graph",
+			"path": [
+				"rokkit",
+				"graph",
+				"layout",
+				"extent.ts"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 33
+			}
+		},
+		{
 			"id": "packages/graph/src/layout/flow.ts",
 			"label": "flow.ts",
 			"kind": "function",
@@ -6348,6 +6468,24 @@
 			}
 		},
 		{
+			"id": "packages/graph/src/model/entities.ts",
+			"label": "entities.ts",
+			"kind": "function",
+			"group": "graph",
+			"path": [
+				"rokkit",
+				"graph",
+				"model",
+				"entities.ts"
+			],
+			"m": {
+				"declarations": 2,
+				"tested": 0,
+				"files": 1,
+				"lines": 25
+			}
+		},
+		{
 			"id": "packages/graph/src/model/normalize.ts",
 			"label": "normalize.ts",
 			"kind": "function",
@@ -6381,6 +6519,24 @@
 				"tested": 1,
 				"files": 1,
 				"lines": 24
+			}
+		},
+		{
+			"id": "packages/graph/src/model/relationships.ts",
+			"label": "relationships.ts",
+			"kind": "function",
+			"group": "graph",
+			"path": [
+				"rokkit",
+				"graph",
+				"model",
+				"relationships.ts"
+			],
+			"m": {
+				"declarations": 2,
+				"tested": 0,
+				"files": 1,
+				"lines": 73
 			}
 		},
 		{
@@ -6542,6 +6698,42 @@
 				"tested": 0,
 				"files": 1,
 				"lines": 83
+			}
+		},
+		{
+			"id": "packages/graph/src/state/GraphConfig.svelte.ts",
+			"label": "GraphConfig.svelte.ts",
+			"kind": "function",
+			"group": "graph",
+			"path": [
+				"rokkit",
+				"graph",
+				"state",
+				"GraphConfig.svelte.ts"
+			],
+			"m": {
+				"declarations": 3,
+				"tested": 0,
+				"files": 1,
+				"lines": 225
+			}
+		},
+		{
+			"id": "packages/graph/src/state/GraphSelection.svelte.ts",
+			"label": "GraphSelection.svelte.ts",
+			"kind": "function",
+			"group": "graph",
+			"path": [
+				"rokkit",
+				"graph",
+				"state",
+				"GraphSelection.svelte.ts"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 117
 			}
 		},
 		{
@@ -7747,7 +7939,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 354
+				"lines": 332
 			}
 		},
 		{
@@ -7927,7 +8119,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 502
+				"lines": 425
 			}
 		},
 		{
@@ -9279,6 +9471,24 @@
 			}
 		},
 		{
+			"id": "packages/ui/src/utils/dropdown.ts",
+			"label": "dropdown.ts",
+			"kind": "function",
+			"group": "ui",
+			"path": [
+				"rokkit",
+				"ui",
+				"utils",
+				"dropdown.ts"
+			],
+			"m": {
+				"declarations": 8,
+				"tested": 0,
+				"files": 1,
+				"lines": 93
+			}
+		},
+		{
 			"id": "packages/ui/src/utils/palette.ts",
 			"label": "palette.ts",
 			"kind": "function",
@@ -9364,7 +9574,7 @@
 				"declarations": 1,
 				"tested": 1,
 				"files": 1,
-				"lines": 132
+				"lines": 130
 			}
 		},
 		{
@@ -9569,6 +9779,11 @@
 		{
 			"source": "packages/actions/src/index.js",
 			"target": "packages/actions/src/navigator.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/actions/src/index.js",
+			"target": "packages/actions/src/navigator/focus.js",
 			"kind": "imports"
 		},
 		{
@@ -11797,6 +12012,11 @@
 			"kind": "imports"
 		},
 		{
+			"source": "packages/core/src/icons.js",
+			"target": "packages/core/src/constants.js",
+			"kind": "imports"
+		},
+		{
 			"source": "packages/core/src/index.js",
 			"target": "packages/core/src/types.js",
 			"kind": "imports"
@@ -11882,6 +12102,11 @@
 			"kind": "imports"
 		},
 		{
+			"source": "packages/core/src/snippets.js",
+			"target": "packages/core/src/constants.js",
+			"kind": "imports"
+		},
+		{
 			"source": "packages/core/src/theme.ts",
 			"target": "packages/core/src/constants.js",
 			"kind": "imports"
@@ -11903,7 +12128,32 @@
 		},
 		{
 			"source": "packages/core/src/utils.js",
-			"target": "packages/core/src/constants.js",
+			"target": "packages/core/src/dom.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/core/src/utils.js",
+			"target": "packages/core/src/values.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/core/src/utils.js",
+			"target": "packages/core/src/icons.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/core/src/utils.js",
+			"target": "packages/core/src/keys.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/core/src/utils.js",
+			"target": "packages/core/src/snippets.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/core/src/utils.js",
+			"target": "packages/core/src/oklch.js",
 			"kind": "imports"
 		},
 		{
@@ -12752,6 +13002,31 @@
 			"kind": "imports"
 		},
 		{
+			"source": "packages/graph/src/GraphState.svelte.ts",
+			"target": "packages/graph/src/model/relationships.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/GraphState.svelte.ts",
+			"target": "packages/graph/src/model/entities.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/GraphState.svelte.ts",
+			"target": "packages/graph/src/layout/extent.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/GraphState.svelte.ts",
+			"target": "packages/graph/src/state/GraphConfig.svelte.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/GraphState.svelte.ts",
+			"target": "packages/graph/src/state/GraphSelection.svelte.ts",
+			"kind": "imports"
+		},
+		{
 			"source": "packages/graph/src/controls/DensityControl.svelte",
 			"target": "packages/graph/src/layout/types.ts",
 			"kind": "imports"
@@ -13312,6 +13587,11 @@
 			"kind": "imports"
 		},
 		{
+			"source": "packages/graph/src/layout/extent.ts",
+			"target": "packages/graph/src/layout/types.ts",
+			"kind": "imports"
+		},
+		{
 			"source": "packages/graph/src/layout/flow.ts",
 			"target": "packages/graph/src/layout/cards.ts",
 			"kind": "imports"
@@ -13617,12 +13897,27 @@
 			"kind": "imports"
 		},
 		{
+			"source": "packages/graph/src/model/entities.ts",
+			"target": "packages/graph/src/types.ts",
+			"kind": "imports"
+		},
+		{
 			"source": "packages/graph/src/model/normalize.ts",
 			"target": "packages/graph/src/model/path.ts",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/graph/src/model/normalize.ts",
+			"target": "packages/graph/src/types.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/model/relationships.ts",
+			"target": "packages/graph/src/layout/types.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/model/relationships.ts",
 			"target": "packages/graph/src/types.ts",
 			"kind": "imports"
 		},
@@ -13719,6 +14014,41 @@
 		{
 			"source": "packages/graph/src/schema/index.ts",
 			"target": "packages/graph/src/schema/column-type.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/state/GraphConfig.svelte.ts",
+			"target": "packages/graph/src/preset.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/state/GraphConfig.svelte.ts",
+			"target": "packages/graph/src/layout/types.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/state/GraphConfig.svelte.ts",
+			"target": "packages/graph/src/types.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/state/GraphConfig.svelte.ts",
+			"target": "packages/graph/src/GraphState.svelte.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/state/GraphSelection.svelte.ts",
+			"target": "packages/graph/src/model/relationships.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/state/GraphSelection.svelte.ts",
+			"target": "packages/graph/src/layout/types.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/graph/src/state/GraphSelection.svelte.ts",
+			"target": "packages/graph/src/types.ts",
 			"kind": "imports"
 		},
 		{
@@ -14383,6 +14713,11 @@
 		},
 		{
 			"source": "packages/ui/src/components/MultiSelect.svelte",
+			"target": "packages/ui/src/utils/dropdown.ts",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/ui/src/components/MultiSelect.svelte",
 			"target": "packages/ui/src/types/select.ts",
 			"kind": "imports"
 		},
@@ -14509,6 +14844,11 @@
 		{
 			"source": "packages/ui/src/components/Select.svelte",
 			"target": "packages/ui/src/components/ItemContent.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/ui/src/components/Select.svelte",
+			"target": "packages/ui/src/utils/dropdown.ts",
 			"kind": "imports"
 		},
 		{

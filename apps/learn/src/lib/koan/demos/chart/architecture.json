@@ -6,13 +6,13 @@
 			"component": "actions",
 			"package": "actions",
 			"files": 22,
-			"loc": 1850,
-			"churn": 184,
+			"loc": 1853,
+			"churn": 185,
 			"ca": 22,
-			"ce": 5,
-			"instability": 0.185,
-			"abstractness": 0.219,
-			"distance": 0.596
+			"ce": 6,
+			"instability": 0.214,
+			"abstractness": 0.215,
+			"distance": 0.57
 		},
 		{
 			"component": "actions/lib",
@@ -32,11 +32,11 @@
 			"files": 4,
 			"loc": 288,
 			"churn": 5,
-			"ca": 1,
+			"ca": 2,
 			"ce": 2,
-			"instability": 0.667,
+			"instability": 0.5,
 			"abstractness": 0,
-			"distance": 0.333
+			"distance": 0.5
 		},
 		{
 			"component": "app",
@@ -162,8 +162,8 @@
 			"component": "chart/geoms",
 			"package": "chart",
 			"files": 43,
-			"loc": 4039,
-			"churn": 258,
+			"loc": 4030,
+			"churn": 259,
 			"ca": 15,
 			"ce": 34,
 			"instability": 0.694,
@@ -257,21 +257,21 @@
 		{
 			"component": "core",
 			"package": "core",
-			"files": 17,
-			"loc": 2184,
-			"churn": 321,
+			"files": 23,
+			"loc": 2235,
+			"churn": 329,
 			"ca": 60,
 			"ce": 2,
 			"instability": 0.032,
-			"abstractness": 0.196,
-			"distance": 0.771
+			"abstractness": 0.186,
+			"distance": 0.782
 		},
 		{
 			"component": "core/colors",
 			"package": "core",
 			"files": 2,
-			"loc": 42,
-			"churn": 4,
+			"loc": 41,
+			"churn": 5,
 			"ca": 2,
 			"ce": 0,
 			"instability": 0,
@@ -354,13 +354,13 @@
 			"component": "graph",
 			"package": "graph",
 			"files": 7,
-			"loc": 1742,
-			"churn": 75,
-			"ca": 29,
+			"loc": 1503,
+			"churn": 78,
+			"ca": 33,
 			"ce": 4,
-			"instability": 0.121,
-			"abstractness": 0.385,
-			"distance": 0.494
+			"instability": 0.108,
+			"abstractness": 0.373,
+			"distance": 0.519
 		},
 		{
 			"component": "graph/controls",
@@ -389,26 +389,26 @@
 		{
 			"component": "graph/layout",
 			"package": "graph",
-			"files": 25,
-			"loc": 4146,
-			"churn": 82,
-			"ca": 8,
+			"files": 26,
+			"loc": 4179,
+			"churn": 83,
+			"ca": 11,
 			"ce": 18,
-			"instability": 0.692,
-			"abstractness": 0.341,
-			"distance": 0.033
+			"instability": 0.621,
+			"abstractness": 0.337,
+			"distance": 0.042
 		},
 		{
 			"component": "graph/model",
 			"package": "graph",
-			"files": 3,
-			"loc": 617,
-			"churn": 11,
-			"ca": 6,
-			"ce": 2,
-			"instability": 0.25,
-			"abstractness": 0.2,
-			"distance": 0.55
+			"files": 5,
+			"loc": 715,
+			"churn": 13,
+			"ca": 7,
+			"ce": 4,
+			"instability": 0.364,
+			"abstractness": 0.333,
+			"distance": 0.303
 		},
 		{
 			"component": "graph/schema",
@@ -421,6 +421,18 @@
 			"instability": 1,
 			"abstractness": 0.227,
 			"distance": 0.227
+		},
+		{
+			"component": "graph/state",
+			"package": "graph",
+			"files": 2,
+			"loc": 342,
+			"churn": 2,
+			"ca": 1,
+			"ce": 2,
+			"instability": 0.667,
+			"abstractness": 0.25,
+			"distance": 0.083
 		},
 		{
 			"component": "helpers",
@@ -510,8 +522,8 @@
 			"component": "ui/components",
 			"package": "ui",
 			"files": 63,
-			"loc": 7832,
-			"churn": 367,
+			"loc": 7733,
+			"churn": 371,
 			"ca": 1,
 			"ce": 62,
 			"instability": 0.984,
@@ -533,21 +545,21 @@
 		{
 			"component": "ui/utils",
 			"package": "ui",
-			"files": 4,
-			"loc": 1048,
-			"churn": 20,
-			"ca": 9,
+			"files": 5,
+			"loc": 1141,
+			"churn": 21,
+			"ca": 11,
 			"ce": 0,
 			"instability": 0,
-			"abstractness": 0.243,
-			"distance": 0.757
+			"abstractness": 0.267,
+			"distance": 0.733
 		},
 		{
 			"component": "unocss",
 			"package": "unocss",
 			"files": 12,
-			"loc": 1140,
-			"churn": 71,
+			"loc": 1138,
+			"churn": 72,
 			"ca": 2,
 			"ce": 6,
 			"instability": 0.75,
@@ -617,14 +629,14 @@
 			"label": "index.js",
 			"package": "actions",
 			"component": "actions",
-			"loc": 21,
-			"complexity": 2,
-			"churn": 29,
+			"loc": 24,
+			"complexity": 3,
+			"churn": 30,
 			"coverage": null,
-			"declarations": 19,
+			"declarations": 20,
 			"abstract": 0,
 			"fanIn": 20,
-			"fanOut": 19
+			"fanOut": 20
 		},
 		{
 			"id": "packages/actions/src/keyboard.svelte.js",
@@ -777,7 +789,7 @@
 			"coverage": 1,
 			"declarations": 3,
 			"abstract": 0,
-			"fanIn": 1,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -1667,9 +1679,9 @@
 			"label": "Bar.svelte",
 			"package": "chart",
 			"component": "chart/geoms",
-			"loc": 232,
-			"complexity": 62,
-			"churn": 24,
+			"loc": 223,
+			"complexity": 51,
+			"churn": 25,
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
@@ -3571,9 +3583,9 @@
 			"label": "index.ts",
 			"package": "core",
 			"component": "core/colors",
-			"loc": 28,
-			"complexity": 1,
-			"churn": 3,
+			"loc": 27,
+			"complexity": 2,
+			"churn": 4,
 			"coverage": 1,
 			"declarations": 5,
 			"abstract": 0,
@@ -3605,8 +3617,22 @@
 			"coverage": 1,
 			"declarations": 13,
 			"abstract": 0,
-			"fanIn": 6,
+			"fanIn": 7,
 			"fanOut": 1
+		},
+		{
+			"id": "packages/core/src/dom.js",
+			"label": "dom.js",
+			"package": "core",
+			"component": "core",
+			"loc": 61,
+			"complexity": 8,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 3,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 0
 		},
 		{
 			"id": "packages/core/src/events.js",
@@ -3637,6 +3663,20 @@
 			"fanOut": 2
 		},
 		{
+			"id": "packages/core/src/icons.js",
+			"label": "icons.js",
+			"package": "core",
+			"component": "core",
+			"loc": 95,
+			"complexity": 21,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 3,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 1
+		},
+		{
 			"id": "packages/core/src/index.js",
 			"label": "index.js",
 			"package": "core",
@@ -3662,6 +3702,20 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 0,
+			"fanOut": 0
+		},
+		{
+			"id": "packages/core/src/keys.js",
+			"label": "keys.js",
+			"package": "core",
+			"component": "core",
+			"loc": 20,
+			"complexity": 1,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 2,
+			"abstract": 0,
+			"fanIn": 1,
 			"fanOut": 0
 		},
 		{
@@ -3721,6 +3775,34 @@
 			"fanOut": 1
 		},
 		{
+			"id": "packages/core/src/oklch.js",
+			"label": "oklch.js",
+			"package": "core",
+			"component": "core",
+			"loc": 125,
+			"complexity": 6,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 3,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 0
+		},
+		{
+			"id": "packages/core/src/snippets.js",
+			"label": "snippets.js",
+			"package": "core",
+			"component": "core",
+			"loc": 46,
+			"complexity": 9,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 2,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 1
+		},
+		{
 			"id": "packages/core/src/string.js",
 			"label": "string.js",
 			"package": "core",
@@ -3739,9 +3821,9 @@
 			"label": "theme.ts",
 			"package": "core",
 			"component": "core",
-			"loc": 372,
+			"loc": 398,
 			"complexity": 50,
-			"churn": 29,
+			"churn": 30,
 			"coverage": 1,
 			"declarations": 8,
 			"abstract": 0,
@@ -3781,14 +3863,28 @@
 			"label": "utils.js",
 			"package": "core",
 			"component": "core",
-			"loc": 391,
-			"complexity": 47,
-			"churn": 52,
-			"coverage": 1,
-			"declarations": 18,
+			"loc": 12,
+			"complexity": 2,
+			"churn": 53,
+			"coverage": null,
+			"declarations": 6,
 			"abstract": 0,
 			"fanIn": 3,
-			"fanOut": 1
+			"fanOut": 6
+		},
+		{
+			"id": "packages/core/src/values.js",
+			"label": "values.js",
+			"package": "core",
+			"component": "core",
+			"loc": 57,
+			"complexity": 9,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 5,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 0
 		},
 		{
 			"id": "packages/core/src/vite/icon-collections.js",
@@ -5139,14 +5235,14 @@
 			"label": "GraphState.svelte.ts",
 			"package": "graph",
 			"component": "graph",
-			"loc": 768,
-			"complexity": 88,
-			"churn": 17,
+			"loc": 529,
+			"complexity": 40,
+			"churn": 20,
 			"coverage": 1,
-			"declarations": 4,
-			"abstract": 3,
-			"fanIn": 13,
-			"fanOut": 8
+			"declarations": 3,
+			"abstract": 2,
+			"fanIn": 14,
+			"fanOut": 13
 		},
 		{
 			"id": "packages/graph/src/icons.ts",
@@ -5273,6 +5369,20 @@
 			"abstract": 0,
 			"fanIn": 4,
 			"fanOut": 3
+		},
+		{
+			"id": "packages/graph/src/layout/extent.ts",
+			"label": "extent.ts",
+			"package": "graph",
+			"component": "graph/layout",
+			"loc": 33,
+			"complexity": 9,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/layout/flow.ts",
@@ -5509,7 +5619,7 @@
 			"coverage": null,
 			"declarations": 13,
 			"abstract": 13,
-			"fanIn": 23,
+			"fanIn": 27,
 			"fanOut": 1
 		},
 		{
@@ -5525,6 +5635,20 @@
 			"abstract": 0,
 			"fanIn": 1,
 			"fanOut": 4
+		},
+		{
+			"id": "packages/graph/src/model/entities.ts",
+			"label": "entities.ts",
+			"package": "graph",
+			"component": "graph/model",
+			"loc": 25,
+			"complexity": 3,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 2,
+			"abstract": 1,
+			"fanIn": 1,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/model/normalize.ts",
@@ -5555,6 +5679,20 @@
 			"fanOut": 0
 		},
 		{
+			"id": "packages/graph/src/model/relationships.ts",
+			"label": "relationships.ts",
+			"package": "graph",
+			"component": "graph/model",
+			"loc": 73,
+			"complexity": 11,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 2,
+			"abstract": 1,
+			"fanIn": 2,
+			"fanOut": 2
+		},
+		{
 			"id": "packages/graph/src/model/tree.ts",
 			"label": "tree.ts",
 			"package": "graph",
@@ -5579,7 +5717,7 @@
 			"coverage": 1,
 			"declarations": 6,
 			"abstract": 3,
-			"fanIn": 9,
+			"fanIn": 10,
 			"fanOut": 1
 		},
 		{
@@ -5681,6 +5819,34 @@
 			"fanOut": 0
 		},
 		{
+			"id": "packages/graph/src/state/GraphConfig.svelte.ts",
+			"label": "GraphConfig.svelte.ts",
+			"package": "graph",
+			"component": "graph/state",
+			"loc": 225,
+			"complexity": 7,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 3,
+			"abstract": 1,
+			"fanIn": 1,
+			"fanOut": 4
+		},
+		{
+			"id": "packages/graph/src/state/GraphSelection.svelte.ts",
+			"label": "GraphSelection.svelte.ts",
+			"package": "graph",
+			"component": "graph/state",
+			"loc": 117,
+			"complexity": 10,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 3
+		},
+		{
 			"id": "packages/graph/src/types.ts",
 			"label": "types.ts",
 			"package": "graph",
@@ -5691,7 +5857,7 @@
 			"coverage": null,
 			"declarations": 8,
 			"abstract": 8,
-			"fanIn": 32,
+			"fanIn": 36,
 			"fanOut": 0
 		},
 		{
@@ -6623,14 +6789,14 @@
 			"label": "MultiSelect.svelte",
 			"package": "ui",
 			"component": "ui/components",
-			"loc": 354,
-			"complexity": 62,
-			"churn": 14,
-			"coverage": 0.928,
+			"loc": 332,
+			"complexity": 56,
+			"churn": 16,
+			"coverage": 0.932,
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 5
+			"fanOut": 6
 		},
 		{
 			"id": "packages/ui/src/components/NavContent.svelte",
@@ -6763,14 +6929,14 @@
 			"label": "Select.svelte",
 			"package": "ui",
 			"component": "ui/components",
-			"loc": 502,
-			"complexity": 100,
-			"churn": 19,
-			"coverage": 0.938,
+			"loc": 425,
+			"complexity": 78,
+			"churn": 21,
+			"coverage": 0.939,
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 5
+			"fanOut": 6
 		},
 		{
 			"id": "packages/ui/src/components/Shine.svelte",
@@ -7823,6 +7989,20 @@
 			"fanOut": 0
 		},
 		{
+			"id": "packages/ui/src/utils/dropdown.ts",
+			"label": "dropdown.ts",
+			"package": "ui",
+			"component": "ui/utils",
+			"loc": 93,
+			"complexity": 11,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 8,
+			"abstract": 3,
+			"fanIn": 2,
+			"fanOut": 0
+		},
+		{
 			"id": "packages/ui/src/utils/palette.ts",
 			"label": "palette.ts",
 			"package": "ui",
@@ -7883,9 +8063,9 @@
 			"label": "backgrounds.ts",
 			"package": "unocss",
 			"component": "unocss",
-			"loc": 132,
+			"loc": 130,
 			"complexity": 1,
-			"churn": 3,
+			"churn": 4,
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
@@ -8056,7 +8236,7 @@
 		{
 			"source": "actions",
 			"target": "actions/navigator",
-			"count": 4
+			"count": 5
 		},
 		{
 			"source": "actions",
@@ -8421,12 +8601,17 @@
 		{
 			"source": "graph",
 			"target": "graph/layout",
-			"count": 9
+			"count": 10
 		},
 		{
 			"source": "graph",
 			"target": "graph/model",
-			"count": 4
+			"count": 6
+		},
+		{
+			"source": "graph",
+			"target": "graph/state",
+			"count": 2
 		},
 		{
 			"source": "graph/controls",
@@ -8461,7 +8646,12 @@
 		{
 			"source": "graph/model",
 			"target": "graph",
-			"count": 2
+			"count": 4
+		},
+		{
+			"source": "graph/model",
+			"target": "graph/layout",
+			"count": 1
 		},
 		{
 			"source": "graph/schema",
@@ -8476,6 +8666,21 @@
 		{
 			"source": "graph/schema",
 			"target": "ui",
+			"count": 1
+		},
+		{
+			"source": "graph/state",
+			"target": "graph",
+			"count": 4
+		},
+		{
+			"source": "graph/state",
+			"target": "graph/layout",
+			"count": 2
+		},
+		{
+			"source": "graph/state",
+			"target": "graph/model",
 			"count": 1
 		},
 		{
@@ -8551,7 +8756,7 @@
 		{
 			"source": "ui/components",
 			"target": "ui/utils",
-			"count": 7
+			"count": 9
 		},
 		{
 			"source": "ui/types",
@@ -8608,7 +8813,7 @@
 		{
 			"source": "graph",
 			"target": "graph/layout",
-			"count": 17,
+			"count": 18,
 			"imported": true
 		},
 		{
@@ -8648,15 +8853,21 @@
 			"imported": true
 		},
 		{
+			"source": "actions",
+			"target": "ui/components",
+			"count": 9,
+			"imported": true
+		},
+		{
 			"source": "chart/charts",
 			"target": "chart/lib",
 			"count": 9,
 			"imported": false
 		},
 		{
-			"source": "actions",
-			"target": "ui/components",
-			"count": 8,
+			"source": "graph",
+			"target": "graph/model",
+			"count": 9,
 			"imported": true
 		},
 		{
@@ -8690,12 +8901,6 @@
 			"imported": true
 		},
 		{
-			"source": "graph",
-			"target": "graph/model",
-			"count": 8,
-			"imported": true
-		},
-		{
 			"source": "ui",
 			"target": "ui/types",
 			"count": 8,
@@ -8715,6 +8920,12 @@
 		},
 		{
 			"source": "core",
+			"target": "unocss",
+			"count": 7,
+			"imported": true
+		},
+		{
+			"source": "core",
 			"target": "states",
 			"count": 7,
 			"imported": true
@@ -8722,6 +8933,12 @@
 		{
 			"source": "forms",
 			"target": "forms/lib",
+			"count": 7,
+			"imported": true
+		},
+		{
+			"source": "graph/layout",
+			"target": "graph/model",
 			"count": 7,
 			"imported": true
 		},
@@ -8739,12 +8956,6 @@
 		},
 		{
 			"source": "core",
-			"target": "unocss",
-			"count": 6,
-			"imported": true
-		},
-		{
-			"source": "core",
 			"target": "ui/components",
 			"count": 6,
 			"imported": true
@@ -8752,12 +8963,6 @@
 		{
 			"source": "forms",
 			"target": "forms/input",
-			"count": 6,
-			"imported": true
-		},
-		{
-			"source": "graph/layout",
-			"target": "graph/model",
 			"count": 6,
 			"imported": true
 		},
@@ -8858,6 +9063,12 @@
 			"imported": true
 		},
 		{
+			"source": "ui/components",
+			"target": "ui/utils",
+			"count": 4,
+			"imported": true
+		},
+		{
 			"source": "actions",
 			"target": "ui/types",
 			"count": 3,
@@ -8900,6 +9111,12 @@
 			"imported": false
 		},
 		{
+			"source": "core",
+			"target": "core/colors",
+			"count": 3,
+			"imported": true
+		},
+		{
 			"source": "data",
 			"target": "states",
 			"count": 3,
@@ -8932,12 +9149,6 @@
 		{
 			"source": "states",
 			"target": "ui/types",
-			"count": 3,
-			"imported": true
-		},
-		{
-			"source": "ui/components",
-			"target": "ui/utils",
 			"count": 3,
 			"imported": true
 		}
