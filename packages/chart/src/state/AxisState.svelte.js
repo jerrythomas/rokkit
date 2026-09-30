@@ -29,7 +29,7 @@ export class AxisState {
 		if (cross !== undefined) return y(cross)
 		const domain = y.domain()
 		if (domain[0] <= 0 && domain[domain.length - 1] >= 0) return y(0)
-		return y(domain[0]) + this.#config.axisOffset
+		return this.#offset(y(domain[0]), 1)
 	})
 
 	/** The y axis's screen x. */
@@ -41,6 +41,16 @@ export class AxisState {
 		if (typeof x.bandwidth === 'function') return 0
 		const domain = x.domain()
 		if (domain[0] <= 0 && domain[domain.length - 1] >= 0) return x(0)
-		return x(domain[0]) - this.#config.axisOffset
+		return this.#offset(x(domain[0]), -1)
 	})
+
+	/**
+	 * Push an edge-pinned axis outward by `axisOffset`. Only when there IS an offset: a scale with
+	 * an empty domain (a race's first frame, before any rows) returns undefined, and
+	 * `undefined + 0` is NaN — which lands in the axis transform as `translate(NaN, 0)`.
+	 */
+	#offset(base, direction) {
+		const offset = this.#config.axisOffset
+		return offset ? base + direction * offset : base
+	}
 }

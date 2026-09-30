@@ -33,6 +33,12 @@ describe('AxisState — where the axes cross', () => {
 		expect([a.xAxisY, a.yAxisX]).toEqual([206, -6])
 	})
 
+	it('never turns an empty domain into NaN — a race’s first frame has no rows yet', () => {
+		const a = make(scaleLinear().domain([]).range([0, 300]), scaleLinear().domain([]).range([200, 0]))
+		expect(Number.isNaN(a.xAxisY)).toBe(false)
+		expect(Number.isNaN(a.yAxisX)).toBe(false)
+	})
+
 	it('pins a band x axis to the left, and defaults with no scales', () => {
 		const band = make(scaleBand().domain(['a']).range([0, 300]), scaleLinear().domain([1, 5]).range([200, 0]))
 		expect(band.yAxisX).toBe(0)
