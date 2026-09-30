@@ -3,6 +3,7 @@
 	import type { Component, Snippet } from 'svelte'
 	import { defaultPreset } from './lib/preset.js'
 	import type { PlotSpec, PlotHelpers } from './lib/plot/types.js'
+	import { resolvePlotConfig, resolveChrome, tableColumns, specGeomProps } from './lib/plot/spec.js'
 	import PlotSurface from './PlotSurface.svelte'
 	import Axis from './Plot/Axis.svelte'
 	import Grid from './Plot/Grid.svelte'
@@ -122,62 +123,41 @@
 	const chartPresetCtx = getContext<ChartPresetCtx | undefined>('chart-preset')
 	const chartPreset = $derived(chartPresetCtx?.current ?? defaultPreset)
 
-	const gridValue = $derived(spec?.grid ?? grid)
-	const showGrid = $derived(gridValue !== false)
-	const gridLines = $derived(gridValue === true || gridValue === false ? 'auto' : gridValue)
-	const showLegend = $derived(spec?.legend ?? legend)
-	const chartTitle = $derived(spec?.title ?? title)
-	const chartSummary = $derived(spec?.summary ?? summary)
+	// Spec-over-prop precedence lives in lib/plot/spec.js — one table, not a `??` per field.
+	const chrome = $derived(
+		resolveChrome(spec, { grid, legend, title, summary, x, y })
+	)
 
 	// Accessible data table — screen reader fallback
 	const tableData = $derived(spec?.data ?? data)
-	const tableColumns = $derived.by(() => {
-		// Dedupe: a channel may repeat (e.g. x === color), and the table's keyed each
-		// requires unique column names.
-		const cols = [
-			...new Set(
-				[spec?.x, spec?.y, spec?.color ?? spec?.fill].filter((c): c is string => Boolean(c))
-			)
-		]
-		if (cols.length > 0) return cols
-		const first = tableData[0]
-		return first ? Object.keys(first) : []
-	})
+	const columns = $derived(tableColumns(spec, tableData))
 
 	// Config for the shared PlotSurface (which owns PlotState, the responsive width, context,
 	// animation, patterns, and zoom). `width` is the fallback — PlotSurface observes the container.
 	function buildPlotConfig() {
-		return {
-			data: spec?.data ?? data,
-			width: spec?.width ?? width,
-			height: spec?.height ?? height,
-			mode,
-			margin,
-			channels: spec ? { x: spec.x, y: spec.y, color: spec.color ?? spec.fill } : {},
-			labels: spec?.labels ?? {},
-			helpers,
-			xDomain: spec?.xDomain ?? xDomain,
-			yDomain: spec?.yDomain ?? yDomain,
-			colorDomain: spec?.colorDomain,
-			colorScale: spec?.colorScale,
-			colorScheme: spec?.colorScheme,
-			colorMidpoint: spec?.colorMidpoint,
-			orientation: orientation ?? spec?.orientation,
-			axisOrigin: spec?.axisOrigin ?? axisOrigin,
-			axisOffset: spec?.axisOffset ?? axisOffset,
-			sort: spec?.sort,
-			continuousCategory: spec?.continuousCategory,
-			chartPreset,
-			onselect,
-			selectable
-		}
+		return resolvePlotConfig(
+			spec,
+			{
+				data,
+				width,
+				height,
+				mode,
+				margin,
+				helpers,
+				xDomain,
+				yDomain,
+				orientation,
+				axisOrigin,
+				axisOffset,
+				onselect,
+				selectable
+			},
+			chartPreset
+		)
 	}
 
 	// Geoms from spec (spec-driven API)
 	const specGeoms = $derived(spec?.geoms ?? [])
-
-	const overlayX = $derived(spec?.x ?? x)
-	const overlayY = $derived(spec?.y ?? y)
 
 	// Geom component resolver for spec-driven mode. Typed as a lookup table, not the union of
 	// its members: a spec names geoms by string at runtime, exactly like `helpers.geoms`, and the
@@ -216,8 +196,8 @@
 </script>
 
 <div class="plot-root">
-	{#if chartTitle}
-		<div class="plot-title" data-plot-title>{chartTitle}</div>
+	{#if chrome.title}
+		<div class="plot-title" data-plot-title>{chrome.title}</div>
 	{/if}
 
 	<!-- The shared root shell (PlotState, responsive width, context, animation, patterns, zoom).
@@ -226,13 +206,13 @@
 		config={buildPlotConfig()}
 		{animate}
 		{zoom}
-		ariaLabel={chartTitle || 'Chart visualization'}
-		summary={chartSummary}
+		ariaLabel={chrome.title || 'Chart visualization'}
+		summary={chrome.summary}
 		bind:selected
 	>
 		<!-- Grid (behind everything) -->
-		{#if showGrid}
-			<Grid lines={gridLines} {xTicks} {yTicks} />
+		{#if chrome.showGrid}
+			<Grid lines={chrome.gridLines} {xTicks} {yTicks} />
 		{/if}
 
 		<!-- Declarative children (geom components) -->
@@ -246,22 +226,7 @@
 			{#if Annotation && !helpers?.geoms?.[geomSpec.type]}
 				<Annotation {...geomSpec.props ?? {}} />
 			{:else if GeomComponent}
-				<GeomComponent
-					x={geomSpec.x ?? spec?.x}
-					y={geomSpec.y ?? spec?.y}
-					color={geomSpec.color ?? spec?.color}
-					fill={geomSpec.fill ?? spec?.fill}
-					pattern={geomSpec.pattern}
-					symbol={geomSpec.symbol}
-					stat={geomSpec.stat}
-					label={geomSpec.label}
-					options={{
-						...(spec?.stack !== undefined ? { stack: spec.stack } : {}),
-						...(spec?.orientation !== undefined ? { orientation: spec.orientation } : {}),
-						...(geomSpec.options ?? {})
-					}}
-					{...geomSpec.props ?? {}}
-				/>
+				<GeomComponent {...specGeomProps(geomSpec, spec)} />
 			{/if}
 		{/each}
 
@@ -269,14 +234,14 @@
 		{#if axes}
 			<Axis
 				type="x"
-				label={spec?.labels?.[spec?.x ?? ''] ?? ''}
+				label={chrome.xLabel}
 				format={xFormat}
 				ticks={xTicks}
 				{minorTicks}
 			/>
 			<Axis
 				type="y"
-				label={spec?.labels?.[spec?.y ?? ''] ?? ''}
+				label={chrome.yLabel}
 				format={yFormat}
 				ticks={yTicks}
 				{minorTicks}
@@ -284,16 +249,16 @@
 		{/if}
 
 		{#if trend !== null && trend !== undefined}
-			<Trend x={overlayX} y={overlayY} {trend} />
+			<Trend x={chrome.overlayX} y={chrome.overlayY} {trend} />
 		{/if}
 
 		{#if (highlight !== null && highlight !== undefined) || selectable || selected.length}
-			<Highlight x={overlayX} y={overlayY} {highlight} {label} />
+			<Highlight x={chrome.overlayX} y={chrome.overlayY} {highlight} {label} />
 		{/if}
 
 		<!-- HTML overlays — outside the svg but INSIDE the plot-state context. -->
 		{#snippet overlay()}
-			{#if showLegend}
+			{#if chrome.showLegend}
 				<Legend labels={spec?.labels ?? {}} />
 			{/if}
 
@@ -301,14 +266,14 @@
 				<Tooltip {tooltip} />
 			{/if}
 
-			{#if tableData.length > 0 && tableColumns.length > 0}
-				<table class="plot-sr-table" aria-label={chartTitle || 'Chart data'}>
-					{#if chartTitle}
-						<caption>{chartTitle}</caption>
+			{#if tableData.length > 0 && columns.length > 0}
+				<table class="plot-sr-table" aria-label={chrome.title || 'Chart data'}>
+					{#if chrome.title}
+						<caption>{chrome.title}</caption>
 					{/if}
 					<thead>
 						<tr>
-							{#each tableColumns as col (col)}
+							{#each columns as col (col)}
 								<th scope="col">{col}</th>
 							{/each}
 						</tr>
@@ -316,7 +281,7 @@
 					<tbody>
 						{#each tableData as row, i (i)}
 							<tr>
-								{#each tableColumns as col (col)}
+								{#each columns as col (col)}
 									<td>{row[col] ?? ''}</td>
 								{/each}
 							</tr>
