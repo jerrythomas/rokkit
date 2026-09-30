@@ -1,8 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import type { Preset } from 'unocss'
+import type { Preset, Rule } from 'unocss'
 
-const GRAPH_PAPER_RULE = [
+const GRAPH_PAPER_RULE: Rule = [
 	'bg-graph-paper',
 	{
 		'background-image': [
@@ -24,9 +22,9 @@ const GRAPH_PAPER_RULE = [
 			'calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px))'
 		].join(',')
 	}
-] as const
+]
 
-const GRID_PAPER_RULE = [
+const GRID_PAPER_RULE: Rule = [
 	'bg-grid-paper',
 	{
 		'background-image': [
@@ -39,9 +37,9 @@ const GRID_PAPER_RULE = [
 			'calc(-1 * var(--grid-line, 0.5px)) calc(-1 * var(--grid-line, 0.5px))'
 		].join(',')
 	}
-] as const
+]
 
-const RULED_PAPER_RULE = [
+const RULED_PAPER_RULE: Rule = [
 	'bg-ruled-paper',
 	{
 		'background-image':
@@ -49,58 +47,58 @@ const RULED_PAPER_RULE = [
 		'background-size': '100% var(--unit, 1.5rem)',
 		'background-position': '0 calc(-1 * var(--rule-size, 0.5px))'
 	}
-] as const
+]
 
-const PATTERN_DIAGONAL_RULE = [
+const PATTERN_DIAGONAL_RULE: Rule = [
 	'bg-pattern-diagonal',
 	{
 		'background-image':
 			'repeating-linear-gradient(45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm))'
 	}
-] as const
+]
 
-const PATTERN_DIAGONAL_REVERSE_RULE = [
+const PATTERN_DIAGONAL_REVERSE_RULE: Rule = [
 	'bg-pattern-diagonal-reverse',
 	{
 		'background-image':
 			'repeating-linear-gradient(-45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm))'
 	}
-] as const
+]
 
-const PATTERN_VERTICAL_RULE = [
+const PATTERN_VERTICAL_RULE: Rule = [
 	'bg-pattern-vertical',
 	{
 		'background-image':
 			'repeating-linear-gradient(90deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm))'
 	}
-] as const
+]
 
-const PATTERN_HORIZONTAL_RULE = [
+const PATTERN_HORIZONTAL_RULE: Rule = [
 	'bg-pattern-horizontal',
 	{
 		'background-image':
 			'repeating-linear-gradient(0deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm))'
 	}
-] as const
+]
 
-const PATTERN_CROSSHATCH_RULE = [
+const PATTERN_CROSSHATCH_RULE: Rule = [
 	'bg-pattern-crosshatch',
 	{
 		'background-image':
 			'repeating-linear-gradient(45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm)), repeating-linear-gradient(-45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm))'
 	}
-] as const
+]
 
-const PATTERN_DOTS_RULE = [
+const PATTERN_DOTS_RULE: Rule = [
 	'bg-pattern-dots',
 	{
 		'background-image':
 			'radial-gradient(circle, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px))',
 		'background-size': 'var(--pattern-size, 3mm) var(--pattern-size, 3mm)'
 	}
-] as const
+]
 
-const PATTERN_CHECKER_RULE = [
+const PATTERN_CHECKER_RULE: Rule = [
 	'bg-pattern-checker',
 	{
 		'background-image':
@@ -110,7 +108,7 @@ const PATTERN_CHECKER_RULE = [
 		'background-position':
 			'0 0, 0 var(--pattern-size, 3mm), var(--pattern-size, 3mm) calc(-1 * var(--pattern-size, 3mm)), calc(-1 * var(--pattern-size, 3mm)) 0'
 	}
-] as const
+]
 
 export function presetBackgrounds(): Preset {
 	return {

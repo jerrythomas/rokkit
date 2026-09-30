@@ -1,7 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { colors } from '@unocss/preset-mini/colors'
-import type { PresetMiniColors } from '@unocss/preset-mini/colors'
 import syntaxColorPalette from './syntax.json' with { type: 'json' }
 import extraColors from './extra.json' with { type: 'json' }
 
@@ -19,7 +16,9 @@ export const defaultPalette = [
 ]
 
 export const syntaxColors = syntaxColorPalette
-export const defaultColors: PresetMiniColors & typeof extraColors = {
+// `typeof colors`: preset-mini 66 no longer exports a `PresetMiniColors` type — the value is
+// the source of truth for its own shape.
+export const defaultColors: typeof colors & typeof extraColors = {
 	...colors,
 	...extraColors
 }

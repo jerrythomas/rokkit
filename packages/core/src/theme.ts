@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { DEFAULT_THEME_MAPPING, defaultColors } from './constants'
 import { shades } from './colors/index'
 import { ColorSpace, relativeLuminance } from './color-space'
@@ -8,6 +6,23 @@ import {
   NAMED_TOKEN_SHADE_MAP,
   NAMED_TOKEN_ROLE_MAP
 } from './named-tokens'
+import type { NamedToken } from './named-tokens'
+
+/** One palette: shade (`'50'`…`'950'`, `'DEFAULT'`) → colour value in the adapter's notation. */
+type Palette = Record<string, string>
+/** Palette name → palette. */
+type Colors = Record<string, Palette>
+/** Role (`primary`, `surface`…) → palette name. */
+type Mapping = Record<string, string>
+type Adapter = ReturnType<typeof ColorSpace.create>
+
+/**
+ * The default colours seen as palettes only. preset-mini's map also holds keyword entries
+ * (`inherit`, `current`, `transparent`…) that are plain strings, but a Theme only reaches a
+ * colour through a role mapping, and roles map to palette names — so the keyword entries are
+ * never indexed by shade here.
+ */
+const DEFAULT_COLORS = defaultColors as unknown as Colors
 
 /**
  * Generate shades for a color using css variable and a ColorSpace adapter.
@@ -16,10 +31,10 @@ import {
  * @param {string|import('./color-space').ColorSpace} space - color space name or adapter instance
  * @returns {Record<string|number, string>}
  */
-export function shadesOf(name, space = 'rgb') {
+export function shadesOf(name: string, space: string | Adapter = 'rgb'): Record<string, string> {
 	const adapter = typeof space === 'string' ? ColorSpace.create(space) : space
 
-	return shades.reduce(
+	return shades.reduce<Record<string, string>>(
 		(result, shade) => ({
 			...result,
 			[shade]: adapter.themeColor(`--color-${name}-${shade}`)
@@ -39,7 +54,7 @@ export function shadesOf(name, space = 'rgb') {
  * @param {import('./color-space').ColorSpace} adapter - ColorSpace adapter instance.
  * @returns {import('./types').ShadeMappings} An array containing the color rules for both light and dark modes.
  */
-function generateColorRules(variant, colors, mapping, adapter) {
+function generateColorRules(variant: string, colors: Colors, mapping: Mapping, adapter: Adapter) {
 	return ['DEFAULT', ...shades].flatMap((shade) => [
 		{
 			key: shade === 'DEFAULT' ? `--color-${variant}` : `--color-${variant}-${shade}`,
@@ -56,14 +71,18 @@ function generateColorRules(variant, colors, mapping, adapter) {
  * @param {string} [colorSpace] - Color space name for CSS variable values.
  * @returns {Array<Array>} An array containing two arrays, one for the light theme variant and another for the dark theme.
  */
-export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColors, colorSpace) {
+export function themeRules(
+	mapping: Mapping = DEFAULT_THEME_MAPPING,
+	colors: Colors = DEFAULT_COLORS,
+	colorSpace?: string
+): Record<string, string> {
 	mapping = { ...DEFAULT_THEME_MAPPING, ...mapping }
-	colors = { ...defaultColors, ...colors }
+	colors = { ...(DEFAULT_COLORS), ...colors }
 	const adapter = ColorSpace.create(colorSpace || 'rgb')
 	const variants = Object.keys(mapping)
 	const rules = variants
 		.flatMap((variant) => generateColorRules(variant, colors, mapping, adapter))
-		.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {})
+		.reduce<Record<string, string>>((acc, { key, value }) => ({ ...acc, [key]: value }), {})
 
 	return rules
 }
@@ -84,10 +103,13 @@ export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColo
  * @param {string} [onColor='#fafafa'] - resolved on-color hex for this role
  * @returns {Array} Array of shortcut definitions
  */
-export function contrastShortcuts(name, onColor = '#fafafa') {
+export function contrastShortcuts(name: string, onColor = '#fafafa') {
 	return [
-		[new RegExp(`^text-on-${name}(\\/\\d+)?$`), ([, end]) => `text-[${onColor}]${end || ''}`],
-		[new RegExp(`^text-on-${name}-muted(\\/\\d+)?$`), ([, end]) => `text-[${onColor}]${end || ''}`]
+		[new RegExp(`^text-on-${name}(\\/\\d+)?$`), ([, end]: string[]) => `text-[${onColor}]${end || ''}`],
+		[
+			new RegExp(`^text-on-${name}-muted(\\/\\d+)?$`),
+			([, end]: string[]) => `text-[${onColor}]${end || ''}`
+		]
 	]
 }
 
@@ -128,7 +150,7 @@ export function pickOnColor(y: number | null): string {
  * Fallback chain for nullable color mappings.
  * If a semantic color is null, it inherits from another semantic color.
  */
-const COLOR_FALLBACKS = {
+const COLOR_FALLBACKS: Record<string, keyof typeof DEFAULT_THEME_MAPPING> = {
 	ink: 'surface',
 	tertiary: 'primary',
 	secondary: 'primary',
@@ -141,30 +163,34 @@ const COLOR_FALLBACKS = {
  * @param {Record<string, string | null>} mapping
  * @returns {Record<string, string>}
  */
-function resolveColors(mapping) {
+function resolveColors(mapping: Record<string, string | null | undefined>): Mapping {
 	const resolved = { ...mapping }
 	for (const [key, fallbackKey] of Object.entries(COLOR_FALLBACKS)) {
 		if (resolved[key] === null || resolved[key] === undefined) {
 			resolved[key] = resolved[fallbackKey] ?? DEFAULT_THEME_MAPPING[fallbackKey]
 		}
 	}
-	return resolved
+	return resolved as Mapping
 }
 
 /**
  * Theme class for managing color palettes, mappings, and semantic shortcuts.
  */
 export class Theme {
-	#colors
-	#mapping
-	#adapter
+	#colors: Colors
+	#mapping: Mapping
+	#adapter: Adapter
 
 	/**
 	 *
 	 * @param {import('./types.js').ColorTheme & { colorSpace?: string }} param0
 	 */
-	constructor({ colors = defaultColors, mapping = DEFAULT_THEME_MAPPING, colorSpace = 'rgb' } = {}) {
-		this.#colors = { ...defaultColors, ...colors }
+	constructor({
+		colors = DEFAULT_COLORS,
+		mapping = DEFAULT_THEME_MAPPING as Record<string, string | null>,
+		colorSpace = 'rgb'
+	}: { colors?: Colors; mapping?: Record<string, string | null>; colorSpace?: string } = {}) {
+		this.#colors = { ...(DEFAULT_COLORS), ...colors }
 		this.#mapping = resolveColors({ ...DEFAULT_THEME_MAPPING, ...mapping })
 		this.#adapter = ColorSpace.create(colorSpace)
 	}
@@ -172,26 +198,26 @@ export class Theme {
 	get colors() {
 		return this.#colors
 	}
-	set colors(colors) {
+	set colors(colors: Colors) {
 		this.#colors = { ...colors }
 	}
 
 	get mapping() {
 		return this.#mapping
 	}
-	set mapping(mapping) {
+	set mapping(mapping: Record<string, string | null>) {
 		this.#mapping = resolveColors({ ...mapping })
 	}
 
 	get colorSpace() {
 		return this.#adapter.name
 	}
-	set colorSpace(colorSpace) {
+	set colorSpace(colorSpace: string) {
 		this.#adapter = ColorSpace.create(colorSpace)
 	}
 
-	mapVariant(color, variant) {
-		return Object.keys(color).reduce(
+	mapVariant(color: Palette, variant: string): Record<string, string> {
+		return Object.keys(color).reduce<Record<string, string>>(
 			(acc, key) => ({
 				...acc,
 				[key]:
@@ -203,9 +229,9 @@ export class Theme {
 		)
 	}
 
-	getColorRules(mapping = null) {
+	getColorRules(mapping: Mapping | null = null): Record<string, Record<string, string>> {
 		const variants = Object.entries({ ...this.#mapping, ...mapping })
-		return variants.reduce(
+		return variants.reduce<Record<string, Record<string, string>>>(
 			(acc, [variant, key]) => ({
 				...acc,
 				[variant]: this.mapVariant(this.#colors[key], variant)
@@ -214,13 +240,13 @@ export class Theme {
 		)
 	}
 
-	getPalette(mapping = null) {
+	getPalette(mapping: Mapping | null = null): Record<string, string> {
 		const useMapping = { ...this.#mapping, ...mapping }
-		const useColors = { ...defaultColors, ...this.#colors }
+		const useColors = { ...(DEFAULT_COLORS), ...this.#colors }
 		const variants = Object.keys(useMapping)
 		const rules = variants
 			.flatMap((variant) => generateColorRules(variant, useColors, useMapping, this.#adapter))
-			.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {})
+			.reduce<Record<string, string>>((acc, { key, value }) => ({ ...acc, [key]: value }), {})
 		return rules
 	}
 
@@ -245,7 +271,7 @@ export class Theme {
 	 *   (and for the whole map when undefined).
 	 */
 	getNamedTokens(_mode = 'light', perRoleModes?: Record<string, 'core' | 'extended'>) {
-		const colors = { ...defaultColors, ...this.#colors }
+		const colors: Colors = { ...(DEFAULT_COLORS), ...this.#colors }
 		const result: Record<string, string> = {}
 		for (const name of NAMED_TOKENS) {
 			const value = this.#resolveNamedToken(name, colors, perRoleModes)
@@ -258,7 +284,7 @@ export class Theme {
 	 * Resolves a single named token to its CSS value, respecting per-role mode.
 	 * Returns undefined when the role's palette is missing.
 	 */
-	#resolveNamedToken(name: string, colors: Record<string, Record<string, string>>, perRoleModes?: Record<string, 'core' | 'extended'>): string | undefined {
+	#resolveNamedToken(name: NamedToken, colors: Record<string, Record<string, string>>, perRoleModes?: Record<string, 'core' | 'extended'>): string | undefined {
 		const role = NAMED_TOKEN_ROLE_MAP[name]
 		const shadeOrDerived = NAMED_TOKEN_SHADE_MAP[name]
 		const paletteName = this.#mapping[role]
@@ -330,7 +356,7 @@ export class Theme {
 	 * or near-white), matching the core-mode derivation.
 	 */
 	getZAliasesForExtended(): Record<string, string> {
-		const colors = { ...defaultColors, ...this.#colors }
+		const colors: Colors = { ...(DEFAULT_COLORS), ...this.#colors }
 		const result: Record<string, string> = {}
 		for (const name of NAMED_TOKENS) {
 			const role = NAMED_TOKEN_ROLE_MAP[name]
@@ -350,7 +376,7 @@ export class Theme {
 	 * Mirrors what getPalette does for all roles, but scoped to one.
 	 */
 	getPaletteForRole(role: string): Record<string, string> {
-		const colors = { ...defaultColors, ...this.#colors }
+		const colors: Colors = { ...(DEFAULT_COLORS), ...this.#colors }
 		const paletteName = this.#mapping[role]
 		if (!paletteName || !colors[paletteName]) return {}
 		const palette = colors[paletteName]
@@ -363,8 +389,8 @@ export class Theme {
 		return result
 	}
 
-	getShortcuts(name) {
-		const colors = { ...defaultColors, ...this.#colors }
+	getShortcuts(name: string) {
+		const colors: Colors = { ...(DEFAULT_COLORS), ...this.#colors }
 		return contrastShortcuts(name, this.#onColorHex(name, colors))
 	}
 
