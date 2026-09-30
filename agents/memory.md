@@ -150,6 +150,15 @@ Extracted from dbd's ER viewer (#159), rebuilt data-first. Design: `docs/design/
   step sized by the largest dot; a circular cluster discards 21% of its bounding box), which
   presented as a zoom bug. Rounded rects shelf-packed fixed both.
 
+## @rokkit/forms — FormBuilder is a composition
+
+- `FormBuilder` composes `lib/state/` (FormValues → FormDefinition → FormSteps → FormValidation →
+  FormLookups); `elements` is the pure `buildElements` (`lib/elements.js`). Add behaviour to the
+  owning job. The schema/layout setters carry derivation rules (`FormDefinition`) — pinned by
+  `builder-definition.spec`.
+- Known latent bug: `FormDefinition.fieldSchema` does not descend into nested `properties`, so
+  `validateField` on a nested path validates nothing.
+
 ## @rokkit/chart — PlotState is a composition
 
 - `PlotState` derives nothing: nine job classes in `src/state/` (config → geoms → frame →

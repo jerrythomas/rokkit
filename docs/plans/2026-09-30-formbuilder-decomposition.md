@@ -1,6 +1,6 @@
 # FormBuilder decomposition
 
-**Status:** IMPLEMENT (2026-09-30 — the next hotspot after PlotState; same agreed approach)
+**Status:** DONE (2026-09-30) — see journal 2026-09-30 (4).
 **Package:** `@rokkit/forms`
 
 ## Why

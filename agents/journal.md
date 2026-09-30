@@ -10043,3 +10043,32 @@ themes files). No uncommitted work of the user's was involved; the five files we
 HEAD and every stash entry is intact.
 
 Gates: `bun run coverage` 7727 / 484 files, all thresholds; lint 0/0; check:svelte 0/0; e2e 129/129.
+
+---
+
+## 2026-09-30 (4) — FormBuilder decomposed; the previous slice pushed
+
+Pushed `ade409b3..af811b8b` (40 commits: architecture primitives + PlotState); CI Check and
+Coverage both green on it.
+
+Then the next hotspot, same approach. Plan `docs/plans/2026-09-30-formbuilder-decomposition.md`
+(done), commits `7609ccce..e7d299d3`. `FormBuilder` composes `FormValues`, `FormDefinition`,
+`FormSteps`, `FormValidation`, `FormLookups` (`lib/state/`), with `elements` derived by the pure
+`buildElements` (`lib/elements.js`), public API unchanged. Measured: complexity 175 → 5, 1128 →
+247 lines, out of the hotspot corner; largest piece `elements.js` at 38 (< p95 47).
+
+- Characterised first: the schema ⇄ layout setter rules (7 cases).
+- Dead code gone: `#lookupConfigs` (written, never read); `#getAllStepPaths` ("defined for future
+  use", hidden from coverage by a v8-ignore).
+- The visible-paths ↔ elements ↔ messages cycle is broken by passing visible paths into
+  FormValidation as a function.
+- Differential old vs new over 588 form × operation cases: identical. The harness flags 72 of
+  them when one rule is deliberately broken, so the zero means something.
+
+**Wrong assumptions the specs caught (mine, in the specs, not the code):** a nested field's
+schema lookup does find nothing — `validateField('group/n')` validates nothing, a real latent
+bug, characterised and left for its own fix; an unknown layout scope does not silently drop, it
+throws and the whole layout falls back to plain inputs, as it always did; the lookup `filter`
+receives the whole source array.
+
+Gates: `bun run coverage` 7777 / 492 files, all thresholds; lint 0/0; check:svelte 0/0; e2e 129/129.
