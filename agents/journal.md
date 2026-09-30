@@ -10256,3 +10256,39 @@ A real bug surfaced when `@ts-nocheck` came off. Every key of `config.icons`, in
 
 Gates: 7,921 unit tests pass, plus 129 e2e and the themes build. The preset is off the hotspot
 list; the top is now `core/utils.js` (47/52).
+
+---
+
+## 2026-09-30 (11) — the remaining hotspots and the last @ts-nocheck files
+
+The user asked to finish "these", then start on the open issues from #165. "These" meant the
+remaining hotspots and the three files still carrying `@ts-nocheck`.
+
+- **`core/utils.js`** (`a43e855c`). The grab-bag (52 commits) split into single-job modules:
+  dom, values, icons, keys, snippets and oklch. `utils.js` stays as a barrel, and its export
+  list is pinned. A 63-case old-vs-new check was identical. Fixed on the way:
+  `resolveSnippet`'s JSDoc was attached to the private `asSnippet`. Also, `index.spec` pinned
+  vitest's export ORDER, which real ESM doesn't have; it now compares the set.
+- **Select / MultiSelect** (`50e38677`, `b7304e22`). New shared `utils/dropdown.ts` (filter,
+  group labels, dividers, value key, placement), and `@rokkit/actions` now exports `focusItem`.
+  **Real bug:** MultiSelect's focus effect called `focus()` and then `scrollIntoView()`, which
+  scrolled the page. Select had deleted that same effect for exactly that reason. A render
+  differential over 224 cases was identical. A 30 ms harness wait first produced 33 false
+  diffs, by sampling focus before the open's animation frame.
+- **GraphState** (`deb10469`, `bb2e239a`, `df565680`). The pure relationships, entities and
+  extent helpers, `GraphConfig` (a declarative field table, with `raw` for the four fields
+  that kept a `null`), and `GraphSelection`. Complexity went from 88 to 40. Four stray JSDoc
+  blocks were put back on their members. The differential covered 432 cases.
+  **Process slip:** a `;` let a commit through while the coverage gate was red. The cause was
+  dead fallbacks on the raw fields. They were removed by making `raw` and `fallback`
+  exclusive in the type, and the commit was amended before pushing.
+- **Bar** (`50e7d434`). A filterable bar filtered on click and ALSO fired `onselect`, although
+  the spec's rule (and the keyboard path) says filterable takes precedence. There's now one
+  `activate()`, and dimming is a `$derived` rather than an effect writing state.
+- **`@ts-nocheck` removed** (`d355a586`) from `theme.ts` (JSDoc types that a `.ts` file never
+  checked), `colors/index.ts` (a type import preset-mini 66 had removed) and `backgrounds.ts`.
+  A workspace guard now bans type suppressions in package sources.
+
+Gates: 7,963 unit tests pass, plus 34 browser and 129 e2e; lint is 0/0. Complexity leaders are
+now Select 78, theme 50 and Bar 51. None is above 100, where this morning's leaders were at 157
+and 175.

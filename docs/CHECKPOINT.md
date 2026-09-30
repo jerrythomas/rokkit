@@ -1,26 +1,23 @@
 # CHECKPOINT
 
-**Last slice: unocss preset decomposition. DONE.** Plan: `docs/plans/2026-09-30-unocss-preset-decomposition.md`.
+**Last slice: remaining hotspots + type suppressions. DONE.** Journal 2026-09-30 (11).
 
-- `e0741fed`: `typography.js`.
-- `29aada96`: `colors.js` and `contrast.js`.
-- `e97744b1`: `shortcuts.js`. `preset.ts` is a 64-line root, and its `@ts-nocheck` is gone.
-  Also fixed: icon settings keys were being registered as icon collections.
+- `a43e855c`: `core/utils.js` is a barrel over single-job modules.
+- `50e38677`, `b7304e22`: Select and MultiSelect share `utils/dropdown.ts`. MultiSelect's focus no longer scrolls the page.
+- `deb10469`, `bb2e239a`, `df565680`: GraphState is `GraphConfig` + `GraphSelection` + pure helpers (complexity 88 → 40).
+- `50e7d434`: a filterable Bar filters on click without also selecting.
+- `d355a586`: no `@ts-nocheck` remains in any package, and a workspace guard bans it.
 
-`preset.ts` went from complexity 74 to 1. The differential over 640 configs was identical, and
-13 planted bugs were caught.
+**Next slice: the open issues from #165**, as the user asked.
 
-Before that today: the Navigator (7), the open items (8) and Plot.svelte (9). Journal entries
-2026-09-30 (7)–(10).
+- #165 [graph] P0: drill-down/up events so the host can supply each level's data
+- #166 [graph] P1: a collapsed group node (SCC condensation) that expands to its members
+- #167 [graph] P2: a layered DAG layout, with edges that climb marked as violations
+- #168 [graph] P3: a polymetric tree (Lanza's System Complexity)
+- #169 [chart] P4: a dual arc diagram (co-change vs imports on one axis)
 
-**Pushed:** `develop` is at `016b7cb2`, and CI is green (check, browser, coverage).
+**Next command:** `gh issue view 165`, then plan it against `docs/design/23-graph.md` (drill state is listed there as future work).
 
-**Next command:** read `packages/core/src/utils.js` and its specs, then plan its slice. It is the top hotspot now.
-
-**Open questions:**
-
-- The next hotspots are `core/utils.js` (47/52), `ui/Select.svelte` (100/19),
-  `graph/GraphState.svelte.ts` (88/17), `chart/geoms/Bar.svelte` (62/24) and `core/theme.ts` (50/29).
-- `@ts-nocheck` remains in `unocss/backgrounds.ts`, `core/theme.ts` and `core/colors/index.ts`.
+**Open questions:** MultiSelect lacks Select's fixed positioning and `maxRows`, so it clips inside `overflow` containers. Noted, not fixed.
 
 **Known broken:** nothing. The sensei MCP server is disconnected, so this file is the only record.
