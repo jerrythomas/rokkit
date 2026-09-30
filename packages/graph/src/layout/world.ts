@@ -116,6 +116,8 @@ function clusterOf(entry: Placed, groupIndex: number): Cluster {
 		ramp: entry.ramp,
 		nodeId: leaf?.id,
 		kind: leaf?.kind,
+		path: entry.tree.path,
+		leaf: entry.tree.children.length === 0,
 		list: entry.tree.children.map((c) => c.node).filter((n) => n !== undefined),
 		count: entry.tree.children.length,
 		groupIndex,

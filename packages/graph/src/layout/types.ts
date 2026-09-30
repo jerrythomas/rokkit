@@ -99,6 +99,16 @@ export type Cluster = {
 	 * radians — building the arc is the renderer's job.
 	 */
 	wedge?: { r0: number; r1: number; a0: number; a1: number }
+	/**
+	 * A containment box's full path from the tree root, outermost first — its ADDRESS.
+	 *
+	 * The name repeats across branches (a `table` box under `public` and under `billing`); the
+	 * path cannot. Drilling into a box sets `focusPath` to exactly this, and it stays absolute
+	 * when the canvas is itself scoped by `focusPath`. Set by the containment layouts only.
+	 */
+	path?: string[]
+	/** Whether nothing lies below this box in the data — so only a host loader can go deeper. */
+	leaf?: boolean
 }
 
 /**

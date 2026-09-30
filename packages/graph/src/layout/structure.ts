@@ -188,6 +188,9 @@ function band(node: TreeNode, ctx: BandCtx, index: number): Cluster {
 		// no band appears at all rather than one looking wrong.
 		parent: node.path.slice(0, -1).join('/'),
 		ramp: node.path[ctx.origin],
+		// A band is a container by construction — its leaves are the node cards on the rim.
+		path: node.path,
+		leaf: false,
 		count: node.children.length,
 		list: node.children.map((c) => c.node).filter((n) => n !== undefined),
 		groupIndex: index,
