@@ -157,11 +157,23 @@ for (const pkg of packages) {
 	}
 }
 
+/**
+ * Resolve a relative import to a file that exists.
+ *
+ * TypeScript source imports its siblings by their EMITTED name — `'../types/chat.js'` for
+ * `chat.ts`, `'./config.svelte.js'` for `config.svelte.ts` — so a `.js` specifier is also tried
+ * as `.ts`. Without that, 332 of 1090 relative imports in this repo went unresolved, which
+ * zeroed `ui/types`' afferent coupling and invented co-change "hidden coupling" between modules
+ * that plainly import each other.
+ */
 function resolveRelative(fromId, spec) {
 	const base = join(dirname(fromId), spec)
-	for (const ext of ['', '.ts', '.js', '.svelte', '/index.ts', '/index.js']) {
-		const candidate = (base + ext).replace(/\/\.\//g, '/')
-		if (byId.has(candidate)) return candidate
+	const stems = base.endsWith('.js') ? [base, base.slice(0, -3) + '.ts'] : [base]
+	for (const stem of stems) {
+		for (const ext of ['', '.ts', '.js', '.svelte', '/index.ts', '/index.js']) {
+			const candidate = (stem + ext).replace(/\/\.\//g, '/')
+			if (byId.has(candidate)) return candidate
+		}
 	}
 	return undefined
 }

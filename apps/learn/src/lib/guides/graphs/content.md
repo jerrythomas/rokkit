@@ -103,8 +103,9 @@ import list reads as-is. Row headers are buttons that select through `GraphState
 `state` with a node-link view and both follow the same selection.
 
 The graph demo's **Dependency matrix** and **Hidden coupling** examples read rokkit itself at
-component grain — 17 of its 81 component dependencies sit above the diagonal, and 19 pairs of
-components change together with no import between them.
+component grain — 15 of its 101 component dependencies sit above the diagonal (a package's
+root files and its sub-folders importing each other, and `forms/lib` ↔ `forms/input`), and 15
+pairs of components change together with no import between them.
 
 ## Three views, one state
 

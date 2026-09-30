@@ -27,16 +27,28 @@
 			"distance": 1
 		},
 		{
+			"component": "app",
+			"package": "app",
+			"files": 1,
+			"loc": 14,
+			"churn": 5,
+			"ca": 0,
+			"ce": 1,
+			"instability": 1,
+			"abstractness": 0,
+			"distance": 0
+		},
+		{
 			"component": "app/components",
 			"package": "app",
 			"files": 4,
 			"loc": 267,
 			"churn": 21,
-			"ca": 0,
+			"ca": 1,
 			"ce": 3,
-			"instability": 1,
+			"instability": 0.75,
 			"abstractness": 0,
-			"distance": 0
+			"distance": 0.25
 		},
 		{
 			"component": "app/types",
@@ -44,11 +56,23 @@
 			"files": 3,
 			"loc": 141,
 			"churn": 12,
-			"ca": 0,
+			"ca": 3,
 			"ce": 1,
-			"instability": 1,
+			"instability": 0.25,
 			"abstractness": 0.545,
-			"distance": 0.545
+			"distance": 0.205
+		},
+		{
+			"component": "app/utils",
+			"package": "app",
+			"files": 1,
+			"loc": 97,
+			"churn": 6,
+			"ca": 3,
+			"ce": 0,
+			"instability": 0,
+			"abstractness": 0.5,
+			"distance": 0.5
 		},
 		{
 			"component": "blocks",
@@ -66,13 +90,13 @@
 			"component": "chart",
 			"package": "chart",
 			"files": 15,
-			"loc": 2853,
-			"churn": 212,
-			"ca": 41,
+			"loc": 2874,
+			"churn": 213,
+			"ca": 42,
 			"ce": 13,
-			"instability": 0.241,
+			"instability": 0.236,
 			"abstractness": 0,
-			"distance": 0.759
+			"distance": 0.764
 		},
 		{
 			"component": "chart/charts",
@@ -125,26 +149,26 @@
 		{
 			"component": "chart/geoms",
 			"package": "chart",
-			"files": 42,
-			"loc": 3999,
-			"churn": 246,
+			"files": 43,
+			"loc": 4035,
+			"churn": 250,
 			"ca": 14,
-			"ce": 32,
-			"instability": 0.696,
-			"abstractness": 0.018,
-			"distance": 0.287
+			"ce": 33,
+			"instability": 0.702,
+			"abstractness": 0.017,
+			"distance": 0.281
 		},
 		{
 			"component": "chart/lib",
 			"package": "chart",
 			"files": 33,
-			"loc": 3179,
-			"churn": 199,
+			"loc": 3200,
+			"churn": 201,
 			"ca": 38,
 			"ce": 6,
 			"instability": 0.136,
-			"abstractness": 0.125,
-			"distance": 0.739
+			"abstractness": 0.124,
+			"distance": 0.74
 		},
 		{
 			"component": "chart/patterns",
@@ -308,11 +332,11 @@
 			"files": 7,
 			"loc": 1733,
 			"churn": 72,
-			"ca": 7,
-			"ce": 2,
-			"instability": 0.222,
+			"ca": 29,
+			"ce": 4,
+			"instability": 0.121,
 			"abstractness": 0.385,
-			"distance": 0.393
+			"distance": 0.494
 		},
 		{
 			"component": "graph/controls",
@@ -320,11 +344,11 @@
 			"files": 6,
 			"loc": 202,
 			"churn": 6,
-			"ca": 8,
-			"ce": 0,
-			"instability": 0,
+			"ca": 9,
+			"ce": 2,
+			"instability": 0.182,
 			"abstractness": 0,
-			"distance": 1
+			"distance": 0.818
 		},
 		{
 			"component": "graph/diagrams",
@@ -333,10 +357,34 @@
 			"loc": 1101,
 			"churn": 15,
 			"ca": 1,
-			"ce": 7,
-			"instability": 0.875,
+			"ce": 8,
+			"instability": 0.889,
 			"abstractness": 0,
-			"distance": 0.125
+			"distance": 0.111
+		},
+		{
+			"component": "graph/layout",
+			"package": "graph",
+			"files": 25,
+			"loc": 4138,
+			"churn": 81,
+			"ca": 8,
+			"ce": 18,
+			"instability": 0.692,
+			"abstractness": 0.341,
+			"distance": 0.033
+		},
+		{
+			"component": "graph/model",
+			"package": "graph",
+			"files": 3,
+			"loc": 617,
+			"churn": 11,
+			"ca": 6,
+			"ce": 2,
+			"instability": 0.25,
+			"abstractness": 0.2,
+			"distance": 0.55
 		},
 		{
 			"component": "graph/schema",
@@ -345,7 +393,7 @@
 			"loc": 481,
 			"churn": 10,
 			"ca": 0,
-			"ce": 1,
+			"ce": 3,
 			"instability": 1,
 			"abstractness": 0.227,
 			"distance": 0.227
@@ -429,10 +477,10 @@
 			"loc": 211,
 			"churn": 34,
 			"ca": 15,
-			"ce": 0,
-			"instability": 0,
+			"ce": 1,
+			"instability": 0.063,
 			"abstractness": 0.25,
-			"distance": 0.75
+			"distance": 0.688
 		},
 		{
 			"component": "ui/components",
@@ -440,11 +488,11 @@
 			"files": 63,
 			"loc": 7832,
 			"churn": 367,
-			"ca": 0,
-			"ce": 41,
-			"instability": 1,
+			"ca": 1,
+			"ce": 62,
+			"instability": 0.984,
 			"abstractness": 0,
-			"distance": 0
+			"distance": 0.016
 		},
 		{
 			"component": "ui/types",
@@ -452,11 +500,11 @@
 			"files": 53,
 			"loc": 3859,
 			"churn": 135,
-			"ca": 0,
-			"ce": 19,
-			"instability": 1,
+			"ca": 63,
+			"ce": 20,
+			"instability": 0.241,
 			"abstractness": 0.692,
-			"distance": 0.692
+			"distance": 0.067
 		},
 		{
 			"component": "ui/utils",
@@ -464,7 +512,7 @@
 			"files": 4,
 			"loc": 1048,
 			"churn": 20,
-			"ca": 2,
+			"ca": 9,
 			"ce": 0,
 			"instability": 0,
 			"abstractness": 0.243,
@@ -845,7 +893,7 @@
 			"coverage": null,
 			"declarations": 3,
 			"abstract": 0,
-			"fanIn": 0,
+			"fanIn": 1,
 			"fanOut": 3
 		},
 		{
@@ -860,7 +908,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/app/src/components/TableOfContents.svelte",
@@ -888,7 +936,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 4
 		},
 		{
 			"id": "packages/app/src/index.ts",
@@ -902,7 +950,7 @@
 			"declarations": 3,
 			"abstract": 0,
 			"fanIn": 0,
-			"fanOut": 0
+			"fanOut": 3
 		},
 		{
 			"id": "packages/app/src/types/index.ts",
@@ -915,8 +963,8 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 2
 		},
 		{
 			"id": "packages/app/src/types/skin-switcher.ts",
@@ -929,7 +977,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -943,8 +991,8 @@
 			"coverage": null,
 			"declarations": 7,
 			"abstract": 5,
-			"fanIn": 0,
-			"fanOut": 3
+			"fanIn": 2,
+			"fanOut": 4
 		},
 		{
 			"id": "packages/app/src/utils/color-mode.svelte.ts",
@@ -957,7 +1005,7 @@
 			"coverage": 1,
 			"declarations": 4,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 3,
 			"fanOut": 0
 		},
 		{
@@ -971,7 +1019,7 @@
 			"coverage": 1,
 			"declarations": 3,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 3,
 			"fanOut": 1
 		},
 		{
@@ -986,7 +1034,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/blocks/src/index.ts",
@@ -1000,7 +1048,7 @@
 			"declarations": 9,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 9
+			"fanOut": 10
 		},
 		{
 			"id": "packages/blocks/src/ListPlugin.svelte",
@@ -1042,7 +1090,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/blocks/src/SparklinePlugin.svelte",
@@ -1581,14 +1629,14 @@
 			"label": "Contour.svelte",
 			"package": "chart",
 			"component": "chart/geoms",
-			"loc": 81,
+			"loc": 89,
 			"complexity": 5,
-			"churn": 1,
+			"churn": 2,
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 1,
-			"fanOut": 3
+			"fanIn": 2,
+			"fanOut": 4
 		},
 		{
 			"id": "packages/chart/src/geoms/Heatmap.svelte",
@@ -1643,7 +1691,7 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 1,
+			"fanIn": 2,
 			"fanOut": 3
 		},
 		{
@@ -1969,6 +2017,20 @@
 			"fanOut": 1
 		},
 		{
+			"id": "packages/chart/src/geoms/lib/PlotAreaClip.svelte",
+			"label": "PlotAreaClip.svelte",
+			"package": "chart",
+			"component": "chart/geoms",
+			"loc": 19,
+			"complexity": 2,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 2,
+			"fanOut": 1
+		},
+		{
 			"id": "packages/chart/src/geoms/Line.svelte",
 			"label": "Line.svelte",
 			"package": "chart",
@@ -2015,14 +2077,14 @@
 			"label": "Region.svelte",
 			"package": "chart",
 			"component": "chart/geoms",
-			"loc": 117,
+			"loc": 114,
 			"complexity": 9,
-			"churn": 2,
+			"churn": 3,
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 1,
-			"fanOut": 2
+			"fanIn": 2,
+			"fanOut": 3
 		},
 		{
 			"id": "packages/chart/src/geoms/Ribbon.svelte",
@@ -2043,13 +2105,13 @@
 			"label": "Rule.svelte",
 			"package": "chart",
 			"component": "chart/geoms",
-			"loc": 152,
-			"complexity": 16,
-			"churn": 3,
-			"coverage": 0.986,
+			"loc": 164,
+			"complexity": 18,
+			"churn": 4,
+			"coverage": 0.988,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 1,
+			"fanIn": 2,
 			"fanOut": 2
 		},
 		{
@@ -2113,11 +2175,11 @@
 			"label": "abline.js",
 			"package": "chart",
 			"component": "chart/lib",
-			"loc": 33,
-			"complexity": 4,
-			"churn": 1,
+			"loc": 50,
+			"complexity": 6,
+			"churn": 2,
 			"coverage": 1,
-			"declarations": 1,
+			"declarations": 2,
 			"abstract": 0,
 			"fanIn": 1,
 			"fanOut": 0
@@ -2463,9 +2525,9 @@
 			"label": "types.js",
 			"package": "chart",
 			"component": "chart/lib",
-			"loc": 73,
+			"loc": 77,
 			"complexity": 2,
-			"churn": 7,
+			"churn": 8,
 			"coverage": null,
 			"declarations": 4,
 			"abstract": 3,
@@ -2645,14 +2707,14 @@
 			"label": "Plot.svelte",
 			"package": "chart",
 			"component": "chart",
-			"loc": 337,
-			"complexity": 67,
-			"churn": 37,
-			"coverage": 0.936,
+			"loc": 358,
+			"complexity": 72,
+			"churn": 38,
+			"coverage": 0.94,
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 14,
-			"fanOut": 22
+			"fanOut": 26
 		},
 		{
 			"id": "packages/chart/src/Plot/Axis.svelte",
@@ -2763,7 +2825,7 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 27,
+			"fanIn": 28,
 			"fanOut": 8
 		},
 		{
@@ -3211,7 +3273,7 @@
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 0,
-			"fanIn": 0,
+			"fanIn": 1,
 			"fanOut": 0
 		},
 		{
@@ -3226,7 +3288,7 @@
 			"declarations": 5,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/core/src/connector.js",
@@ -3296,7 +3358,7 @@
 			"declarations": 15,
 			"abstract": 0,
 			"fanIn": 59,
-			"fanOut": 14
+			"fanOut": 15
 		},
 		{
 			"id": "packages/core/src/key-event-map.js",
@@ -3393,7 +3455,7 @@
 			"coverage": 1,
 			"declarations": 8,
 			"abstract": 0,
-			"fanIn": 0,
+			"fanIn": 1,
 			"fanOut": 4
 		},
 		{
@@ -4500,7 +4562,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 3,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/controls/DepthControl.svelte",
@@ -4528,7 +4590,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 4,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/controls/zoom.ts",
@@ -4541,7 +4603,7 @@
 			"coverage": 1,
 			"declarations": 4,
 			"abstract": 0,
-			"fanIn": 0,
+			"fanIn": 3,
 			"fanOut": 0
 		},
 		{
@@ -4556,7 +4618,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 8,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/diagrams/CallTree.svelte",
@@ -4570,7 +4632,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 5
+			"fanOut": 8
 		},
 		{
 			"id": "packages/graph/src/diagrams/DependencyDiagram.svelte",
@@ -4584,7 +4646,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 6
+			"fanOut": 10
 		},
 		{
 			"id": "packages/graph/src/diagrams/DependencyMatrix.svelte",
@@ -4598,7 +4660,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 4
 		},
 		{
 			"id": "packages/graph/src/diagrams/DiagramFrame.svelte",
@@ -4626,7 +4688,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 6
+			"fanOut": 10
 		},
 		{
 			"id": "packages/graph/src/diagrams/Neighborhood.svelte",
@@ -4640,7 +4702,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 6
+			"fanOut": 10
 		},
 		{
 			"id": "packages/graph/src/diagrams/StructureDiagram.svelte",
@@ -4654,7 +4716,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 6
+			"fanOut": 9
 		},
 		{
 			"id": "packages/graph/src/diagrams/Sunburst.svelte",
@@ -4668,7 +4730,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 5
+			"fanOut": 8
 		},
 		{
 			"id": "packages/graph/src/diagrams/Treemap.svelte",
@@ -4682,7 +4744,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 5
+			"fanOut": 8
 		},
 		{
 			"id": "packages/graph/src/Graph.svelte",
@@ -4696,7 +4758,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 8,
-			"fanOut": 0
+			"fanOut": 4
 		},
 		{
 			"id": "packages/graph/src/GraphLegend.svelte",
@@ -4710,7 +4772,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 8,
-			"fanOut": 0
+			"fanOut": 2
 		},
 		{
 			"id": "packages/graph/src/GraphState.svelte.ts",
@@ -4723,8 +4785,8 @@
 			"coverage": 1,
 			"declarations": 4,
 			"abstract": 3,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 13,
+			"fanOut": 8
 		},
 		{
 			"id": "packages/graph/src/icons.ts",
@@ -4737,7 +4799,7 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
+			"fanIn": 3,
 			"fanOut": 0
 		},
 		{
@@ -4752,7 +4814,7 @@
 			"declarations": 31,
 			"abstract": 6,
 			"fanIn": 0,
-			"fanOut": 15
+			"fanOut": 27
 		},
 		{
 			"id": "packages/graph/src/layout/arc.ts",
@@ -4765,7 +4827,7 @@
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 1,
 			"fanOut": 0
 		},
 		{
@@ -4779,7 +4841,7 @@
 			"coverage": 1,
 			"declarations": 5,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 1,
 			"fanOut": 0
 		},
 		{
@@ -4793,8 +4855,8 @@
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 1,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 3,
+			"fanOut": 3
 		},
 		{
 			"id": "packages/graph/src/layout/cluster.ts",
@@ -4807,8 +4869,8 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 6
 		},
 		{
 			"id": "packages/graph/src/layout/clusters.ts",
@@ -4821,8 +4883,8 @@
 			"coverage": 1,
 			"declarations": 7,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 2,
+			"fanOut": 3
 		},
 		{
 			"id": "packages/graph/src/layout/constants.ts",
@@ -4835,7 +4897,7 @@
 			"coverage": 1,
 			"declarations": 12,
 			"abstract": 0,
-			"fanIn": 0,
+			"fanIn": 6,
 			"fanOut": 0
 		},
 		{
@@ -4849,8 +4911,8 @@
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 4,
+			"fanOut": 3
 		},
 		{
 			"id": "packages/graph/src/layout/flow.ts",
@@ -4863,8 +4925,8 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 7
 		},
 		{
 			"id": "packages/graph/src/layout/hierarchy.ts",
@@ -4877,8 +4939,8 @@
 			"coverage": 1,
 			"declarations": 4,
 			"abstract": 2,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/layout/index.ts",
@@ -4891,22 +4953,22 @@
 			"coverage": 1,
 			"declarations": 5,
 			"abstract": 1,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 2,
+			"fanOut": 10
 		},
 		{
 			"id": "packages/graph/src/layout/matrix.ts",
 			"label": "matrix.ts",
 			"package": "graph",
 			"component": "graph/layout",
-			"loc": 121,
-			"complexity": 16,
-			"churn": 1,
+			"loc": 124,
+			"complexity": 17,
+			"churn": 2,
 			"coverage": 1,
 			"declarations": 5,
 			"abstract": 4,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 2,
+			"fanOut": 3
 		},
 		{
 			"id": "packages/graph/src/layout/neighborhood.ts",
@@ -4919,8 +4981,8 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 7
 		},
 		{
 			"id": "packages/graph/src/layout/nested.ts",
@@ -4933,8 +4995,8 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 4
 		},
 		{
 			"id": "packages/graph/src/layout/options.ts",
@@ -4947,8 +5009,8 @@
 			"coverage": 1,
 			"declarations": 6,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 11,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/layout/order.ts",
@@ -4961,8 +5023,8 @@
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/layout/points.ts",
@@ -4975,8 +5037,8 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 5
 		},
 		{
 			"id": "packages/graph/src/layout/radial.ts",
@@ -4989,8 +5051,8 @@
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 5
 		},
 		{
 			"id": "packages/graph/src/layout/rank.ts",
@@ -5003,8 +5065,8 @@
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 1,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 2,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/layout/rings.ts",
@@ -5017,8 +5079,8 @@
 			"coverage": 1,
 			"declarations": 3,
 			"abstract": 2,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/layout/sizing.ts",
@@ -5031,8 +5093,8 @@
 			"coverage": 1,
 			"declarations": 7,
 			"abstract": 2,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 3,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/layout/squarify.ts",
@@ -5045,7 +5107,7 @@
 			"coverage": 1,
 			"declarations": 4,
 			"abstract": 3,
-			"fanIn": 0,
+			"fanIn": 1,
 			"fanOut": 0
 		},
 		{
@@ -5059,8 +5121,8 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 6
 		},
 		{
 			"id": "packages/graph/src/layout/sunburst.ts",
@@ -5073,8 +5135,8 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 3
 		},
 		{
 			"id": "packages/graph/src/layout/types.ts",
@@ -5087,8 +5149,8 @@
 			"coverage": null,
 			"declarations": 13,
 			"abstract": 13,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 23,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/layout/world.ts",
@@ -5101,8 +5163,8 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 4
 		},
 		{
 			"id": "packages/graph/src/model/normalize.ts",
@@ -5115,8 +5177,8 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 3,
+			"fanOut": 2
 		},
 		{
 			"id": "packages/graph/src/model/path.ts",
@@ -5129,7 +5191,7 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -5143,8 +5205,8 @@
 			"coverage": 1,
 			"declarations": 3,
 			"abstract": 1,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 4,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/preset.ts",
@@ -5157,7 +5219,7 @@
 			"coverage": 1,
 			"declarations": 6,
 			"abstract": 3,
-			"fanIn": 0,
+			"fanIn": 9,
 			"fanOut": 1
 		},
 		{
@@ -5171,7 +5233,7 @@
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 0,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -5186,7 +5248,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 4
 		},
 		{
 			"id": "packages/graph/src/schema/EntityView.svelte",
@@ -5200,7 +5262,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 4
 		},
 		{
 			"id": "packages/graph/src/schema/fromSchemaModel.ts",
@@ -5213,8 +5275,8 @@
 			"coverage": 1,
 			"declarations": 5,
 			"abstract": 1,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 1,
+			"fanOut": 2
 		},
 		{
 			"id": "packages/graph/src/schema/index.ts",
@@ -5228,7 +5290,7 @@
 			"declarations": 8,
 			"abstract": 2,
 			"fanIn": 0,
-			"fanOut": 3
+			"fanOut": 6
 		},
 		{
 			"id": "packages/graph/src/schema/NoteBlocks.svelte",
@@ -5242,7 +5304,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 3,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/graph/src/schema/notes.ts",
@@ -5255,7 +5317,7 @@
 			"coverage": 1,
 			"declarations": 4,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -5269,7 +5331,7 @@
 			"coverage": null,
 			"declarations": 8,
 			"abstract": 8,
-			"fanIn": 0,
+			"fanIn": 32,
 			"fanOut": 0
 		},
 		{
@@ -5746,7 +5808,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/Avatar.svelte",
@@ -5760,7 +5822,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/Badge.svelte",
@@ -5774,7 +5836,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/BreadCrumbs.svelte",
@@ -5788,7 +5850,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/Button.svelte",
@@ -5802,7 +5864,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/ButtonGroup.svelte",
@@ -5816,7 +5878,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/Card.svelte",
@@ -5830,7 +5892,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/Carousel.svelte",
@@ -5844,7 +5906,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/ChatComposer.svelte",
@@ -5858,7 +5920,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/ChatHistory.svelte",
@@ -5872,7 +5934,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 0
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/ChatMessage.svelte",
@@ -5886,7 +5948,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 1
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/ChatShell.svelte",
@@ -5900,7 +5962,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 3
+			"fanOut": 4
 		},
 		{
 			"id": "packages/ui/src/components/ChatTimeline.svelte",
@@ -5914,7 +5976,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/Code.svelte",
@@ -5928,7 +5990,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 4
 		},
 		{
 			"id": "packages/ui/src/components/CodeBlock.svelte",
@@ -5942,7 +6004,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 1
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/CodeGroup.svelte",
@@ -5956,7 +6018,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 3
+			"fanOut": 4
 		},
 		{
 			"id": "packages/ui/src/components/CommandPalette.svelte",
@@ -5970,7 +6032,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/Connector.svelte",
@@ -5984,7 +6046,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 4,
-			"fanOut": 0
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/Divider.svelte",
@@ -5998,7 +6060,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/Dropdown.svelte",
@@ -6012,7 +6074,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 3
+			"fanOut": 4
 		},
 		{
 			"id": "packages/ui/src/components/FloatingAction.svelte",
@@ -6026,7 +6088,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/FloatingNavigation.svelte",
@@ -6040,7 +6102,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/Frame.svelte",
@@ -6054,7 +6116,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/Grid.svelte",
@@ -6068,7 +6130,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 4
+			"fanOut": 5
 		},
 		{
 			"id": "packages/ui/src/components/index.ts",
@@ -6081,7 +6143,7 @@
 			"coverage": null,
 			"declarations": 62,
 			"abstract": 0,
-			"fanIn": 0,
+			"fanIn": 1,
 			"fanOut": 62
 		},
 		{
@@ -6096,7 +6158,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 11,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/ItemSwitch.svelte",
@@ -6110,7 +6172,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/ItemToggle.svelte",
@@ -6124,7 +6186,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/LazyTree.svelte",
@@ -6138,7 +6200,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 6
+			"fanOut": 7
 		},
 		{
 			"id": "packages/ui/src/components/List.svelte",
@@ -6152,7 +6214,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 4
+			"fanOut": 5
 		},
 		{
 			"id": "packages/ui/src/components/LockMode.svelte",
@@ -6166,7 +6228,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/Menu.svelte",
@@ -6180,7 +6242,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 4
+			"fanOut": 5
 		},
 		{
 			"id": "packages/ui/src/components/Message.svelte",
@@ -6194,7 +6256,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/MultiSelect.svelte",
@@ -6208,7 +6270,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 4
+			"fanOut": 5
 		},
 		{
 			"id": "packages/ui/src/components/NavContent.svelte",
@@ -6222,7 +6284,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/PaletteManager.svelte",
@@ -6236,7 +6298,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/Pill.svelte",
@@ -6250,7 +6312,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/ProgressBar.svelte",
@@ -6264,7 +6326,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/Range.svelte",
@@ -6278,7 +6340,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 3
+			"fanOut": 4
 		},
 		{
 			"id": "packages/ui/src/components/Rating.svelte",
@@ -6292,7 +6354,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/ResponsiveGrid.svelte",
@@ -6306,7 +6368,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/Reveal.svelte",
@@ -6320,7 +6382,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/SearchFilter.svelte",
@@ -6334,7 +6396,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/Select.svelte",
@@ -6348,7 +6410,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 4
+			"fanOut": 5
 		},
 		{
 			"id": "packages/ui/src/components/Shine.svelte",
@@ -6362,7 +6424,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/Stack.svelte",
@@ -6376,7 +6438,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/StatusList.svelte",
@@ -6390,7 +6452,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/Stepper.svelte",
@@ -6404,7 +6466,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/Swatch.svelte",
@@ -6418,7 +6480,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/Switch.svelte",
@@ -6432,7 +6494,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/Table.svelte",
@@ -6446,7 +6508,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/components/Tabs.svelte",
@@ -6460,7 +6522,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 3
+			"fanOut": 5
 		},
 		{
 			"id": "packages/ui/src/components/Tilt.svelte",
@@ -6474,7 +6536,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/Timeline.svelte",
@@ -6488,7 +6550,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/components/Toggle.svelte",
@@ -6502,7 +6564,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 3
+			"fanOut": 5
 		},
 		{
 			"id": "packages/ui/src/components/Toolbar.svelte",
@@ -6516,7 +6578,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 4
 		},
 		{
 			"id": "packages/ui/src/components/ToolbarGroup.svelte",
@@ -6530,7 +6592,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/Tooltip.svelte",
@@ -6544,7 +6606,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/components/Tree.svelte",
@@ -6558,7 +6620,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 5
+			"fanOut": 6
 		},
 		{
 			"id": "packages/ui/src/components/TreeTable.svelte",
@@ -6572,7 +6634,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 4
+			"fanOut": 6
 		},
 		{
 			"id": "packages/ui/src/components/UploadFileStatus.svelte",
@@ -6586,7 +6648,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 3
+			"fanOut": 4
 		},
 		{
 			"id": "packages/ui/src/components/UploadProgress.svelte",
@@ -6600,7 +6662,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 4
+			"fanOut": 5
 		},
 		{
 			"id": "packages/ui/src/components/UploadTarget.svelte",
@@ -6614,7 +6676,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/index.ts",
@@ -6628,7 +6690,7 @@
 			"declarations": 6,
 			"abstract": 1,
 			"fanIn": 14,
-			"fanOut": 1
+			"fanOut": 6
 		},
 		{
 			"id": "packages/ui/src/markdown-plugin.ts",
@@ -6641,7 +6703,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -6656,7 +6718,7 @@
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 2,
-			"fanOut": 0
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/types/alert-list.ts",
@@ -6669,7 +6731,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -6683,7 +6745,7 @@
 			"coverage": null,
 			"declarations": 4,
 			"abstract": 4,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -6697,7 +6759,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -6711,7 +6773,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -6725,7 +6787,7 @@
 			"coverage": null,
 			"declarations": 4,
 			"abstract": 4,
-			"fanIn": 0,
+			"fanIn": 3,
 			"fanOut": 0
 		},
 		{
@@ -6739,7 +6801,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -6753,7 +6815,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -6767,7 +6829,7 @@
 			"coverage": null,
 			"declarations": 10,
 			"abstract": 10,
-			"fanIn": 0,
+			"fanIn": 6,
 			"fanOut": 0
 		},
 		{
@@ -6781,7 +6843,7 @@
 			"coverage": null,
 			"declarations": 9,
 			"abstract": 8,
-			"fanIn": 0,
+			"fanIn": 4,
 			"fanOut": 1
 		},
 		{
@@ -6795,7 +6857,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -6809,8 +6871,8 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 2,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/types/divider.ts",
@@ -6823,7 +6885,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -6837,8 +6899,8 @@
 			"coverage": null,
 			"declarations": 11,
 			"abstract": 9,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 2,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/types/floating-navigation.ts",
@@ -6851,7 +6913,7 @@
 			"coverage": null,
 			"declarations": 6,
 			"abstract": 6,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -6865,7 +6927,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -6879,8 +6941,8 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
-			"fanOut": 1
+			"fanIn": 2,
+			"fanOut": 2
 		},
 		{
 			"id": "packages/ui/src/types/index.ts",
@@ -6893,8 +6955,8 @@
 			"coverage": null,
 			"declarations": 52,
 			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 2,
+			"fanOut": 52
 		},
 		{
 			"id": "packages/ui/src/types/item-content.ts",
@@ -6907,7 +6969,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -6921,7 +6983,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -6935,7 +6997,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -6949,8 +7011,8 @@
 			"coverage": null,
 			"declarations": 7,
 			"abstract": 4,
-			"fanIn": 0,
-			"fanOut": 2
+			"fanIn": 2,
+			"fanOut": 4
 		},
 		{
 			"id": "packages/ui/src/types/lock-mode.ts",
@@ -6963,7 +7025,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -6977,8 +7039,8 @@
 			"coverage": null,
 			"declarations": 4,
 			"abstract": 2,
-			"fanIn": 0,
-			"fanOut": 2
+			"fanIn": 7,
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/types/message.ts",
@@ -6991,7 +7053,7 @@
 			"coverage": null,
 			"declarations": 3,
 			"abstract": 3,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7005,7 +7067,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7019,8 +7081,8 @@
 			"coverage": null,
 			"declarations": 9,
 			"abstract": 6,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 2,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/types/pill.ts",
@@ -7033,7 +7095,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -7047,7 +7109,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7061,7 +7123,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7075,7 +7137,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7089,7 +7151,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7103,7 +7165,7 @@
 			"coverage": null,
 			"declarations": 2,
 			"abstract": 2,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7117,7 +7179,7 @@
 			"coverage": null,
 			"declarations": 3,
 			"abstract": 3,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7131,8 +7193,8 @@
 			"coverage": null,
 			"declarations": 8,
 			"abstract": 6,
-			"fanIn": 0,
-			"fanOut": 1
+			"fanIn": 4,
+			"fanOut": 3
 		},
 		{
 			"id": "packages/ui/src/types/shine.ts",
@@ -7145,7 +7207,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7159,7 +7221,7 @@
 			"coverage": null,
 			"declarations": 3,
 			"abstract": 3,
-			"fanIn": 0,
+			"fanIn": 8,
 			"fanOut": 1
 		},
 		{
@@ -7173,7 +7235,7 @@
 			"coverage": null,
 			"declarations": 5,
 			"abstract": 5,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7187,7 +7249,7 @@
 			"coverage": null,
 			"declarations": 3,
 			"abstract": 3,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -7201,7 +7263,7 @@
 			"coverage": null,
 			"declarations": 4,
 			"abstract": 4,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7215,7 +7277,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -7229,7 +7291,7 @@
 			"coverage": null,
 			"declarations": 3,
 			"abstract": 3,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7243,7 +7305,7 @@
 			"coverage": null,
 			"declarations": 11,
 			"abstract": 9,
-			"fanIn": 0,
+			"fanIn": 4,
 			"fanOut": 1
 		},
 		{
@@ -7257,7 +7319,7 @@
 			"coverage": null,
 			"declarations": 5,
 			"abstract": 5,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -7271,7 +7333,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7285,7 +7347,7 @@
 			"coverage": null,
 			"declarations": 5,
 			"abstract": 3,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7299,7 +7361,7 @@
 			"coverage": null,
 			"declarations": 4,
 			"abstract": 4,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -7313,7 +7375,7 @@
 			"coverage": null,
 			"declarations": 8,
 			"abstract": 7,
-			"fanIn": 0,
+			"fanIn": 3,
 			"fanOut": 0
 		},
 		{
@@ -7327,7 +7389,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7341,8 +7403,8 @@
 			"coverage": null,
 			"declarations": 6,
 			"abstract": 6,
-			"fanIn": 0,
-			"fanOut": 0
+			"fanIn": 2,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/ui/src/types/tree.ts",
@@ -7355,8 +7417,8 @@
 			"coverage": null,
 			"declarations": 14,
 			"abstract": 8,
-			"fanIn": 0,
-			"fanOut": 2
+			"fanIn": 5,
+			"fanOut": 4
 		},
 		{
 			"id": "packages/ui/src/types/upload-file-status.ts",
@@ -7369,7 +7431,7 @@
 			"coverage": null,
 			"declarations": 1,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -7383,7 +7445,7 @@
 			"coverage": null,
 			"declarations": 4,
 			"abstract": 4,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -7397,7 +7459,7 @@
 			"coverage": null,
 			"declarations": 3,
 			"abstract": 3,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7411,7 +7473,7 @@
 			"coverage": 1,
 			"declarations": 27,
 			"abstract": 8,
-			"fanIn": 0,
+			"fanIn": 3,
 			"fanOut": 0
 		},
 		{
@@ -7425,7 +7487,7 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 0,
+			"fanIn": 2,
 			"fanOut": 0
 		},
 		{
@@ -7439,7 +7501,7 @@
 			"coverage": 1,
 			"declarations": 4,
 			"abstract": 1,
-			"fanIn": 0,
+			"fanIn": 3,
 			"fanOut": 0
 		},
 		{
@@ -7581,8 +7643,33 @@
 			"count": 1
 		},
 		{
+			"source": "app",
+			"target": "app/components",
+			"count": 1
+		},
+		{
+			"source": "app",
+			"target": "app/types",
+			"count": 1
+		},
+		{
+			"source": "app",
+			"target": "app/utils",
+			"count": 1
+		},
+		{
 			"source": "app/components",
 			"target": "actions",
+			"count": 1
+		},
+		{
+			"source": "app/components",
+			"target": "app/types",
+			"count": 2
+		},
+		{
+			"source": "app/components",
+			"target": "app/utils",
 			"count": 1
 		},
 		{
@@ -7594,6 +7681,11 @@
 			"source": "app/components",
 			"target": "ui",
 			"count": 2
+		},
+		{
+			"source": "app/types",
+			"target": "app/utils",
+			"count": 1
 		},
 		{
 			"source": "app/types",
@@ -7648,7 +7740,7 @@
 		{
 			"source": "chart",
 			"target": "chart/geoms",
-			"count": 40
+			"count": 44
 		},
 		{
 			"source": "chart",
@@ -7728,7 +7820,7 @@
 		{
 			"source": "chart/geoms",
 			"target": "chart",
-			"count": 20
+			"count": 21
 		},
 		{
 			"source": "chart/geoms",
@@ -7883,7 +7975,7 @@
 		{
 			"source": "graph",
 			"target": "graph/controls",
-			"count": 5
+			"count": 7
 		},
 		{
 			"source": "graph",
@@ -7891,14 +7983,59 @@
 			"count": 8
 		},
 		{
+			"source": "graph",
+			"target": "graph/layout",
+			"count": 9
+		},
+		{
+			"source": "graph",
+			"target": "graph/model",
+			"count": 4
+		},
+		{
+			"source": "graph/controls",
+			"target": "graph/layout",
+			"count": 2
+		},
+		{
 			"source": "graph/diagrams",
 			"target": "graph",
-			"count": 14
+			"count": 37
 		},
 		{
 			"source": "graph/diagrams",
 			"target": "graph/controls",
 			"count": 18
+		},
+		{
+			"source": "graph/diagrams",
+			"target": "graph/layout",
+			"count": 5
+		},
+		{
+			"source": "graph/layout",
+			"target": "graph",
+			"count": 16
+		},
+		{
+			"source": "graph/layout",
+			"target": "graph/model",
+			"count": 3
+		},
+		{
+			"source": "graph/model",
+			"target": "graph",
+			"count": 2
+		},
+		{
+			"source": "graph/schema",
+			"target": "graph",
+			"count": 5
+		},
+		{
+			"source": "graph/schema",
+			"target": "graph/model",
+			"count": 1
 		},
 		{
 			"source": "graph/schema",
@@ -7931,6 +8068,21 @@
 			"count": 1
 		},
 		{
+			"source": "ui",
+			"target": "ui/components",
+			"count": 1
+		},
+		{
+			"source": "ui",
+			"target": "ui/types",
+			"count": 1
+		},
+		{
+			"source": "ui",
+			"target": "ui/utils",
+			"count": 2
+		},
+		{
 			"source": "ui/components",
 			"target": "actions",
 			"count": 19
@@ -7957,8 +8109,13 @@
 		},
 		{
 			"source": "ui/components",
+			"target": "ui/types",
+			"count": 68
+		},
+		{
+			"source": "ui/components",
 			"target": "ui/utils",
-			"count": 2
+			"count": 7
 		},
 		{
 			"source": "ui/types",
@@ -7971,6 +8128,11 @@
 			"count": 15
 		},
 		{
+			"source": "ui/types",
+			"target": "ui/utils",
+			"count": 1
+		},
+		{
 			"source": "unocss",
 			"target": "core",
 			"count": 5
@@ -7980,13 +8142,13 @@
 		{
 			"source": "chart",
 			"target": "chart/lib",
-			"count": 32,
+			"count": 33,
 			"imported": true
 		},
 		{
 			"source": "chart/geoms",
 			"target": "chart/lib",
-			"count": 31,
+			"count": 32,
 			"imported": true
 		},
 		{
@@ -8005,7 +8167,13 @@
 			"source": "ui/components",
 			"target": "ui/types",
 			"count": 20,
-			"imported": false
+			"imported": true
+		},
+		{
+			"source": "graph",
+			"target": "graph/layout",
+			"count": 17,
+			"imported": true
 		},
 		{
 			"source": "ui",
@@ -8086,10 +8254,16 @@
 			"imported": true
 		},
 		{
+			"source": "graph",
+			"target": "graph/model",
+			"count": 8,
+			"imported": true
+		},
+		{
 			"source": "ui",
 			"target": "ui/types",
 			"count": 8,
-			"imported": false
+			"imported": true
 		},
 		{
 			"source": "chart",
@@ -8136,6 +8310,12 @@
 		{
 			"source": "forms",
 			"target": "forms/input",
+			"count": 6,
+			"imported": true
+		},
+		{
+			"source": "graph/layout",
+			"target": "graph/model",
 			"count": 6,
 			"imported": true
 		},
@@ -8245,7 +8425,7 @@
 			"source": "app/components",
 			"target": "app/types",
 			"count": 3,
-			"imported": false
+			"imported": true
 		},
 		{
 			"source": "app/types",
@@ -8287,7 +8467,13 @@
 			"source": "graph",
 			"target": "graph/schema",
 			"count": 3,
-			"imported": false
+			"imported": true
+		},
+		{
+			"source": "graph/diagrams",
+			"target": "graph/layout",
+			"count": 3,
+			"imported": true
 		},
 		{
 			"source": "states",
