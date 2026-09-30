@@ -9972,3 +9972,32 @@ shipped geoms and the whole spec layer as "Planned", graph guides claiming two/t
 
 Gates: `bun run coverage` 7575 tests / 468 files, every threshold met; lint 0/0; check:svelte
 0/0 across 7 projects; check:types clean; e2e 128/128 on a fresh build.
+
+---
+
+## 2026-09-30 (2) — correction: the metric generators missed 30% of imports; hover drift
+
+**The figures in the entry above were wrong.** Asked what sits in the zone of pain, I checked
+before answering and found `ui/types` with zero dependents despite 63 components using it. Both
+generators (`build-architecture-metrics.mjs`, and `build-codebase-graph.mjs` it was copied from)
+resolved `'../types/chat.js'` literally, but TS source imports `chat.ts` by its EMITTED name —
+332 of 1090 relative imports unresolved. Corrected (`1e04dda0`): 1183 imports (was 872), 44
+components (40), **15 of 101** component dependencies above the DSM diagonal (not 17 of 81),
+15 of 59 co-change pairs with no import (not 19). `ui/types` moves from the zone of uselessness
+to near the main sequence (I 0.24, A 0.69, D 0.07); the "hidden coupling" `ui/components` ↔
+`ui/types` I reported was a false positive — they import each other.
+
+**Hover jitter (`5a811b5d`).** User-reported: points "flash from a nearby location" on hover.
+Pre-existing in `base/chart.css` — `transform-box: fill-box` / `transform-origin: center` lived
+only on `:hover`, so on leave they snapped to the SVG origin mid-transition: 87px measured for a
+point near the bottom-right. Moved to the resting rule; e2e samples every frame of a hover-out.
+My earlier sampling missed it because it read `cx`/`cy` attributes, which never change — only
+the rendered box moves.
+
+**Treemap label (`0c60e7be`).** The regenerated data shrank a zero-declaration module to a 4px
+box; its nested label's 0.15rem padding hung 1.6px past the edge (a box cannot be shorter than its
+padding). Offset moved into `top`, border-box, zero-height exemption in the spill test.
+
+Lesson: a derived dataset needs a sanity check against a fact you already know (63 components
+use `ui/types`) before any finding from it is reported. Gates: 7577 unit / 469 files, all
+thresholds; lint 0/0; e2e 129/129.
