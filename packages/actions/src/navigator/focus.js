@@ -38,3 +38,15 @@ export function focusItem(root, key) {
 	if (el !== document.activeElement) el.focus({ preventScroll: true })
 	scrollWithin(root, el)
 }
+
+/**
+ * Where focus goes when it lands on the root itself (tabbing in before any item is focusable):
+ * the wrapper's focused item, else the first enabled one.
+ *
+ * @param {HTMLElement} root
+ * @param {string | null | undefined} key
+ * @returns {HTMLElement | null}
+ */
+export function entryItem(root, key) {
+	return root.querySelector(key ? `[data-path="${key}"]` : '[data-path]:not([disabled])')
+}

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { focusItem, scrollWithin } from '../../src/navigator/focus.js'
+import { focusItem, scrollWithin, entryItem } from '../../src/navigator/focus.js'
 
 let root
 beforeEach(() => {
@@ -75,5 +75,18 @@ describe('focusItem', () => {
 		document.body.insertAdjacentHTML('beforeend', '<div data-path="2" tabindex="-1" id="out"></div>')
 		focusItem(root, '2')
 		expect(document.activeElement).not.toBe($('out'))
+	})
+})
+
+describe('entryItem', () => {
+	it('is the item at the focused key', () => {
+		expect(entryItem(root, '1')).toBe($('b'))
+	})
+	it('is the first enabled item when there is no key', () => {
+		document.body.innerHTML = `<div id="r"><button data-path="0" disabled></button><div data-path="1" id="first"></div></div>`
+		expect(entryItem(document.getElementById('r'), null)).toBe(document.getElementById('first'))
+	})
+	it('is null when the key has no item', () => {
+		expect(entryItem(root, '9')).toBeNull()
 	})
 })

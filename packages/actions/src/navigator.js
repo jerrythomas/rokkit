@@ -4,13 +4,15 @@
  * Wires DOM events on a root element to Wrapper actions.
  * Designed as a plain class so it works as a Svelte action or standalone.
  *
- * Responsibilities:
- *   - keydown   → keymap lookup → wrapper action (+ focus and in-root scroll)
- *   - click     → click action lookup → wrapper action
- *   - focusin   → find nearest data-path → wrapper.moveTo(path)
- *                 if no data-path found (tabbed into container) → redirect to focusedKey
- *   - focusout  → detect when focus leaves the list entirely → call wrapper.blur()
- *   - typeahead → buffer printable chars → wrapper.findByText → wrapper.moveTo
+ * Responsibilities, each decided by a pure part and acted on here:
+ *   - keydown   → `intent.keyAction` → wrapper action, then `focus.focusItem` (in-root scroll)
+ *   - click     → `intent.clickIntent` → wrapper action (a link keeps its default)
+ *   - focusin   → nearest data-path → wrapper.moveTo(path); focus on the root itself
+ *                 redirects to `focus.entryItem`
+ *   - focusout  → `intent.focusLeft` → wrapper.blur(), deferred past teardown
+ *   - typeahead → `Typeahead` buffers printable keys → wrapper.findByText → wrapper.moveTo
+ *
+ *   A control nested inside an item (`dom.isNestedInteractive`) owns its own keys and focus.
  *
  * Usage:
  *   const nav = new Navigator(rootEl, wrapper, { collapsible: true })
@@ -24,10 +26,11 @@
  *   })
  */
 
-import { buildKeymap, resolveAction } from './keymap.js'
-import { pathOf, clickAction, isNestedInteractive, isDisabledItem } from './navigator/dom.js'
+import { buildKeymap } from './keymap.js'
+import { pathOf, isNestedInteractive } from './navigator/dom.js'
+import { keyAction, clickIntent, focusLeft } from './navigator/intent.js'
 import { Typeahead } from './navigator/typeahead.js'
-import { focusItem } from './navigator/focus.js'
+import { focusItem, entryItem } from './navigator/focus.js'
 
 // ─── Navigator ────────────────────────────────────────────────────────────────
 
@@ -76,82 +79,41 @@ export class Navigator {
 	// ─── Keydown ────────────────────────────────────────────────────────────
 
 	#onKeydown = (/** @type {KeyboardEvent} */ event) => {
-		// Defer to a nested interactive descendant (Toggle / Switch / input /
-		// contenteditable inside an item snippet) — it owns its own keys.
+		// A control nested in an item (Toggle, Switch, input, contenteditable) owns its keys.
 		if (isNestedInteractive(event.target, this.#root)) return
-
-		// Typeahead: single printable character (no modifiers except shift for caps)
 		if (this.#tryTypeahead(event)) return
-
-		const action = resolveAction(event, this.#keymap)
+		const action = keyAction(event, this.#root, this.#keymap)
 		if (!action) return
-
-		// Links handle Enter/Space natively — browser fires a synthetic click
-		if (action === 'select' && event.target.closest('a[href]')) return
-
-		// Item explicitly marked disabled via attributes (div/span items opt in
-		// this way since they cannot use the native `disabled` attribute).
-		if (isDisabledItem(document.activeElement, this.#root)) return
-
 		event.preventDefault()
 		event.stopPropagation()
-
-		// Resolve current path from the focused element so all actions get context
-		const path = pathOf(document.activeElement, this.#root)
-		this.#dispatch(action, path)
-
-		// Focus the new item and scroll it into view after keyboard navigation
+		// Every action gets the focused item's path; movement ignores it.
+		this.#dispatch(action, pathOf(document.activeElement, this.#root))
 		this.#syncFocus()
 	}
 
 	// ─── Click ──────────────────────────────────────────────────────────────
 
 	#onClick = (/** @type {MouseEvent} */ event) => {
-		// Defer to a nested interactive descendant — the click is meant for it.
-		if (isNestedInteractive(event.target, this.#root)) return
-
-		const path = pathOf(event.target, this.#root)
-		if (path === null) return
-
-		// Item explicitly marked disabled via attributes.
-		if (isDisabledItem(event.target, this.#root)) return
-
-		const action = clickAction(event)
-
-		// Links: let browser navigate naturally, still update state
-		if (!event.target.closest('a[href]')) {
-			event.preventDefault()
-		}
-
-		this.#dispatch(action, path)
-		// No scrollIntoView — user clicked where they wanted
+		const intent = clickIntent(event, this.#root)
+		if (!intent) return
+		// A link still navigates; state updates either way.
+		if (!intent.native) event.preventDefault()
+		// No focus sync: the user clicked where they wanted.
+		this.#dispatch(intent.action, intent.path)
 	}
 
 	// ─── Focusin ────────────────────────────────────────────────────────────
 
 	#onFocusin = (/** @type {FocusEvent} */ event) => {
-		// Focus landed inside a nested interactive (e.g. tabbed to a Switch
-		// inside a row) — leave the wrapper's focusedKey alone and let the
-		// nested control own the focus context.
+		// Tabbed into a control nested in a row: it owns the focus context, the wrapper keeps its key.
 		if (isNestedInteractive(event.target, this.#root)) return
-
 		const path = pathOf(event.target, this.#root)
-
 		if (path !== null) {
-			// Focused a specific item (click, programmatic focus, or tab with roving tabindex)
 			this.#wrapper.moveTo(path)
 			return
 		}
-
-		// Focused the container itself (user tabbed in, no roving tabindex item yet)
-		// Redirect focus to the currently focused item, or first item if none
-		const targetKey = this.#wrapper.focusedKey
-		const selector = targetKey ? `[data-path="${targetKey}"]` : '[data-path]:not([disabled])'
-		const el = /** @type {HTMLElement|null} */ (this.#root.querySelector(selector))
-		if (el) {
-			el.focus()
-			// focusin will re-fire with the item as target, handled above
-		}
+		// Focus landed on the root itself — redirect to an item; focusin re-fires on it.
+		entryItem(this.#root, this.#wrapper.focusedKey)?.focus()
 	}
 
 	// ─── Wheel ──────────────────────────────────────────────────────────────
@@ -165,23 +127,17 @@ export class Navigator {
 	// ─── Focusout ───────────────────────────────────────────────────────────
 
 	#onFocusout = (/** @type {FocusEvent} */ event) => {
-		// relatedTarget is the element receiving focus next
-		// If it's null or outside this root, focus left the list
-		const next = /** @type {Node|null} */ (event.relatedTarget)
-		if (!next || !this.#root.contains(next)) {
-			// Removing a focused element also fires focusout with a null
-			// relatedTarget, so teardown looks exactly like a real blur here. Calling
-			// wrapper.blur() synchronously in that case mutates state during Svelte's
-			// effect-cleanup phase, which throws `state_unsafe_mutation`. Deferring by
-			// a microtask lets destroy() land first, so a torn-down navigator stays
-			// quiet while a genuine blur still reaches the wrapper.
-			// JSDOM never fires focusout on removal, so this only shows up in a real
-			// browser — see packages/ui/browser/Select.browser.spec.ts.
-			queueMicrotask(() => {
-				if (this.#destroyed) return
-				this.#wrapper.blur?.()
-			})
-		}
+		if (!focusLeft(this.#root, /** @type {Node | null} */ (event.relatedTarget))) return
+		// Removing a focused element also fires focusout with a null relatedTarget, so teardown
+		// looks exactly like a real blur here. Calling wrapper.blur() synchronously then mutates
+		// state during Svelte's effect-cleanup phase, which throws `state_unsafe_mutation`.
+		// Deferring by a microtask lets destroy() land first, so a torn-down navigator stays quiet
+		// while a genuine blur still reaches the wrapper. JSDOM never fires focusout on removal, so
+		// this only shows up in a real browser — see packages/ui/browser/Select.browser.spec.ts.
+		queueMicrotask(() => {
+			if (this.#destroyed) return
+			this.#wrapper.blur?.()
+		})
 	}
 
 	// ─── Dispatch ───────────────────────────────────────────────────────────
