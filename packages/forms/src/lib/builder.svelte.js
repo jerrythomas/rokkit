@@ -1,9 +1,9 @@
 import { SvelteMap, SvelteSet } from 'svelte/reactivity'
 import { getSchemaWithLayout } from './fields.js'
-import { createLookupManager } from './lookup.svelte.js'
 import { evaluateCondition } from './conditions.js'
 import { FormValues } from './state/FormValues.svelte.js'
 import { FormDefinition } from './state/FormDefinition.svelte.js'
+import { FormLookups } from './state/FormLookups.svelte.js'
 import {
 	validateField as validateFieldValue,
 	validateAll as validateAllFields
@@ -44,11 +44,8 @@ export class FormBuilder {
 	/** @type {Object} */
 	#validation = $state({})
 
-	/** @type {Object<string, import('./lookup.svelte.js').LookupConfig>} */
-	#lookupConfigs = $state({})
-
-	/** @type {ReturnType<typeof createLookupManager>|null} */
-	#lookupManager = $state(null)
+	/** Fields whose options come from elsewhere, and what they depend on. */
+	lookups
 
 	/** @type {number} */
 	#currentStep = $state(0)
@@ -112,17 +109,6 @@ export class FormBuilder {
 	}
 
 	/**
-	 * Initialise the lookup manager if any lookups are provided
-	 * @private
-	 */
-	#initLookups(lookups) {
-		this.#lookupConfigs = lookups
-		if (Object.keys(lookups).length > 0) {
-			this.#lookupManager = createLookupManager(lookups)
-		}
-	}
-
-	/**
 	 * Create a new FormBuilder instance
 	 * @param {Record<string, unknown>} [data={}] - Initial data object
 	 * @param {Object|null} [schema=null] - Optional schema override
@@ -132,15 +118,12 @@ export class FormBuilder {
 	constructor(data = {}, schema = null, layout = null, lookups = {}) {
 		this.values = new FormValues(data)
 		this.definition = new FormDefinition(this.values, schema, layout)
-		this.#initLookups(lookups)
+		this.lookups = new FormLookups(this.values, lookups)
 	}
 
-	/**
-	 * Get the lookup manager
-	 * @returns {ReturnType<typeof createLookupManager>|null}
-	 */
+	/** The underlying lookup manager, or null for a form without lookups. */
 	get lookupManager() {
-		return this.#lookupManager
+		return this.lookups.manager
 	}
 
 	/**
@@ -148,8 +131,7 @@ export class FormBuilder {
 	 * @param {Object<string, import('./lookup.svelte.js').LookupConfig>} lookups - Lookup configurations
 	 */
 	setLookups(lookups) {
-		this.#lookupConfigs = lookups
-		this.#lookupManager = createLookupManager(lookups)
+		this.lookups.configure(lookups)
 	}
 
 	/**
@@ -158,66 +140,25 @@ export class FormBuilder {
 	 * @returns {{ options: any[], loading: boolean, error: string|null, fields: Object, disabled: boolean }|null}
 	 */
 	getLookupState(fieldPath) {
-		if (!this.#lookupManager) return null
-		const lookup = this.#lookupManager.getLookup(fieldPath)
-		if (!lookup) return null
-		return {
-			options: lookup.options,
-			loading: lookup.loading,
-			error: lookup.error,
-			fields: lookup.fields,
-			disabled: lookup.disabled
-		}
+		return this.lookups.state(fieldPath)
 	}
 
-	/**
-	 * Check if a field is disabled due to unmet lookup dependencies
-	 * @param {string} path - Field path
-	 * @returns {boolean}
-	 */
+	/** Disabled because a field its lookup depends on is not set yet. */
 	isFieldDisabled(path) {
-		return this.#lookupManager?.getLookup(path)?.disabled ?? false
+		return this.lookups.isDisabled(path)
 	}
 
-	/**
-	 * Manually refresh a field's lookup with the current form data
-	 * @param {string} path - Field path
-	 * @returns {Promise<void>}
-	 */
+	/** Re-fetch one field's lookup with the current data. */
 	async refreshLookup(path) {
-		const lookup = this.#lookupManager?.getLookup(path)
-		if (lookup) await lookup.fetch(this.values.data)
+		await this.lookups.refresh(path)
 	}
 
-	/**
-	 * Check if a field has a lookup configured
-	 * @param {string} fieldPath - Field path
-	 * @returns {boolean}
-	 */
 	hasLookup(fieldPath) {
-		return this.#lookupManager?.hasLookup(fieldPath) ?? false
+		return this.lookups.has(fieldPath)
 	}
 
-	/**
-	 * Initialize all lookups
-	 * @returns {Promise<void>}
-	 */
 	async initializeLookups() {
-		if (this.#lookupManager) {
-			await this.#lookupManager.initialize(this.values.data)
-		}
-	}
-
-	/**
-	 * Clear dependent field values for a changed path
-	 * @private
-	 */
-	#clearDependentFields(path) {
-		for (const [depPath, lookup] of this.#lookupManager.lookups) {
-			if (!lookup.dependsOn.includes(path)) continue
-			const depKeys = depPath.split('/')
-			if (depKeys.length === 1) this.values.set(depKeys[0], null)
-		}
+		await this.lookups.initialize()
 	}
 
 	/**
@@ -232,11 +173,8 @@ export class FormBuilder {
 		// Clear stale validation errors for fields that are now hidden
 		this.#clearHiddenValidation()
 
-		// Trigger dependent lookups if configured
-		if (triggerLookups && this.#lookupManager) {
-			this.#clearDependentFields(path)
-			this.#lookupManager.handleFieldChange(path, this.values.data)
-		}
+		// Clear and re-fetch the lookups that depend on this field
+		if (triggerLookups) this.lookups.fieldChanged(path)
 	}
 
 	/**
@@ -499,16 +437,6 @@ export class FormBuilder {
 	}
 
 	/**
-	 * Apply lookup state into finalProps (mutates finalProps)
-	 * @private
-	 */
-	#applyLookupState(fieldPath, finalProps) {
-		const lookupState = this.getLookupState(fieldPath)
-		if (!lookupState) return
-		applyLookupProps(lookupState, finalProps)
-	}
-
-	/**
 	 * Build a standard (non-nested, non-readonly) form element
 	 * @private
 	 */
@@ -527,7 +455,7 @@ export class FormBuilder {
 			message: this.#validation[fieldPath] || null,
 			dirty: this.isFieldDirty(fieldPath)
 		}
-		this.#applyLookupState(fieldPath, finalProps)
+		this.lookups.applyTo(fieldPath, finalProps)
 		return {
 			scope,
 			type,
@@ -860,31 +788,4 @@ export class FormBuilder {
  */
 function isAllValid(results) {
 	return Object.values(results).every((msg) => msg?.state !== 'error')
-}
-
-/**
- * Apply options/loading state from lookup to finalProps
- * @private
- */
-function applyLookupData(lookupState, finalProps) {
-	if (lookupState.options?.length > 0) finalProps.options = lookupState.options
-	if (lookupState.loading) finalProps.loading = true
-}
-
-/**
- * Apply disabled/fields state from lookup to finalProps
- * @private
- */
-function applyLookupMeta(lookupState, finalProps) {
-	if (lookupState.disabled) finalProps.disabled = true
-	if (lookupState.fields && !finalProps.fields) finalProps.fields = lookupState.fields
-}
-
-/**
- * Merge all lookup properties into finalProps
- * @private
- */
-function applyLookupProps(lookupState, finalProps) {
-	applyLookupData(lookupState, finalProps)
-	applyLookupMeta(lookupState, finalProps)
 }
