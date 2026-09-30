@@ -379,3 +379,27 @@ describe('MultiSelect', () => {
 		})
 	})
 })
+
+describe('MultiSelect — focus never scrolls the page', () => {
+	it('focuses the first option with preventScroll and never calls scrollIntoView', async () => {
+		const scrollIntoView = vi.fn()
+		const proto = HTMLElement.prototype as unknown as { scrollIntoView?: unknown }
+		const original = proto.scrollIntoView
+		proto.scrollIntoView = scrollIntoView
+		const focus = vi.spyOn(HTMLElement.prototype, 'focus')
+		try {
+			const { container } = render(MultiSelect, { props: { items: flatItems } })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			await new Promise((r) => setTimeout(r, 60))
+			const first = container.querySelector('[data-select-option]')
+			expect(document.activeElement).toBe(first)
+			const intoOption = focus.mock.calls.filter((_c, i) => focus.mock.contexts[i] === first)
+			expect(intoOption.length).toBeGreaterThan(0)
+			for (const [options] of intoOption) expect(options).toEqual({ preventScroll: true })
+			expect(scrollIntoView).not.toHaveBeenCalled()
+		} finally {
+			proto.scrollIntoView = original
+			focus.mockRestore()
+		}
+	})
+})

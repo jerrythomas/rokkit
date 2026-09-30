@@ -39,7 +39,7 @@
 	 */
 	import type { ProxyItem } from '@rokkit/states'
 	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
-	import { Navigator, Trigger } from '@rokkit/actions'
+	import { Navigator, Trigger, focusItem } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
 	import {
@@ -167,31 +167,12 @@
 
 	// ─── Trigger action ───────────────────────────────────────────────────────
 
-	/** Bring `el` into view inside the dropdown only — never scroll an ancestor. */
-	function scrollIntoDropdown(el: HTMLElement) {
-		if (!dropdownRef) return
-		const top = el.offsetTop
-		const bottom = top + el.offsetHeight
-		if (top < dropdownRef.scrollTop) {
-			dropdownRef.scrollTop = top
-		} else if (bottom > dropdownRef.scrollTop + dropdownRef.clientHeight) {
-			dropdownRef.scrollTop = bottom - dropdownRef.clientHeight
-		}
-	}
-
 	/**
-	 * Move DOM focus to the wrapper's focused item so subsequent keydown events
-	 * fire inside the dropdown, where Navigator is listening. preventScroll plus
-	 * the dropdown-only scroll above keeps ancestor containers still.
+	 * Move DOM focus to the wrapper's focused item so subsequent keydown events fire inside the
+	 * dropdown, where Navigator is listening — without scrolling any ancestor (focusItem).
 	 */
 	function focusFocusedItem() {
-		if (!dropdownRef) return
-		const key = wrapper.focusedKey
-		if (!key) return
-		const el = dropdownRef.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-		if (!el) return
-		el.focus({ preventScroll: true })
-		scrollIntoDropdown(el)
+		if (dropdownRef) focusItem(dropdownRef, wrapper.focusedKey)
 	}
 
 	/** Where focus lands once the dropdown is open: the filter box, or the current item. */
@@ -291,7 +272,7 @@
 		}
 	})
 
-	// Focus sync is owned by Navigator (#syncFocus). The previous duplicate
+	// Focus sync after a key is owned by Navigator (focusItem). The previous duplicate
 	// $effect here competed with Navigator's own focus + scroll logic and
 	// caused race conditions (page-scroll on arrow nav, layout shift on
 	// reopen). Single source of truth lives in the Navigator class.

@@ -26,7 +26,7 @@
 	 */
 	import type { ProxyItem } from '@rokkit/states'
 	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
-	import { Navigator, Trigger } from '@rokkit/actions'
+	import { Navigator, Trigger, focusItem } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
 	import { groupsAsLabels, groupDividerKeys } from '../utils/dropdown.js'
@@ -185,16 +185,13 @@
 		return () => nav.destroy()
 	})
 
-	// DOM focus sync
+	// DOM focus sync. focusItem, not focus() + scrollIntoView(): those scroll every scrollable
+	// ancestor, so arrowing through a MultiSelect inside a scrolling panel moved the page.
 	$effect(() => {
 		const key = wrapper.focusedKey
 		if (!isOpen || !dropdownRef || !key) return
 		requestAnimationFrame(() => {
-			const target = dropdownRef?.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-			if (target && target !== document.activeElement) {
-				target.focus()
-				target.scrollIntoView?.({ block: 'nearest' })
-			}
+			if (dropdownRef) focusItem(dropdownRef, key)
 		})
 	})
 

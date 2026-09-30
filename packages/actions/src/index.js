@@ -1,6 +1,9 @@
 // skipcq: JS-E1004 - Needed for exposing all types
 export * from './types.js'
 export { Navigator } from './navigator.js'
+// Focus a list item without scrolling any ancestor, then scroll it into view within its root —
+// what the Navigator does after a key; exported for components that move focus themselves.
+export { focusItem } from './navigator/focus.js'
 export { Trigger } from './trigger.js'
 export { buildKeymap, resolveAction, ACTIONS } from './keymap.js'
 export { keyboard } from './keyboard.svelte.js'
