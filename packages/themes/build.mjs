@@ -43,7 +43,7 @@ const uno = await createGenerator({
   shortcuts: [
     // NOTE: the former `skin-default` shortcut was removed — palette.css no
     // longer `@apply`s it. The default skin's named-token vars now come from
-    // the preset's `:root` preflight (see @rokkit/unocss buildPreflights).
+    // the preset's `:root` preflight (see rootPreflights in @rokkit/unocss src/colors.js).
     ...theme.getShortcuts('surface'),
     ...theme.getShortcuts('primary'),
     ...theme.getShortcuts('secondary'),

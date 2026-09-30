@@ -58,7 +58,7 @@ proof-of-concept onto the core and finishes `data-skin`.
 
 ### Unit 3 — preset + themes emit `[data-skin]` CSS (`@rokkit/unocss` + `@rokkit/themes`)
 
-- `buildSkinShortcuts` (`packages/unocss/src/preset.ts`) changes from emitting `skin-{name}`
+- `buildSkinShortcuts` (since 2026-09-30: `skinPreflights` in `packages/unocss/src/colors.js`) changes from emitting `skin-{name}`
   classes to emitting:
   - the **default** skin's named-token vars on `:root` (bare), and
   - each **non-default** skin as `[data-skin='name'] { --paper: …; --ink: …; … }`, plus

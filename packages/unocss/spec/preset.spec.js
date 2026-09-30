@@ -338,7 +338,7 @@ describe('presetRokkit', () => {
 
 		it('agrees with the base-layer defaults in @rokkit/themes', () => {
 			// The scale is declared twice on purpose — base/typography.css so the tokens exist
-			// without the UnoCSS preset, and buildTypeScaleVars so a config can retune them.
+			// without the UnoCSS preset, and typeScaleVars (src/typography.js) so a config can retune them.
 			// Two sources of one truth drift silently unless something pins them together.
 			const base = readFileSync(
 				resolve(import.meta.dirname, '../../themes/src/base/typography.css'),

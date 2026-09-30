@@ -38,7 +38,7 @@
      tightening as size grows. Levels are h1–h4 + body + small; h5/h6 are
      deliberately absent because nothing consumes them, and a token nothing reads
      cannot be verified. The UnoCSS preset re-emits these from
-     `typography: { ratio, base, levels }` — see buildTypeScaleVars. Deliberately
+     `typography: { ratio, base, levels }` — see typeScaleVars in @rokkit/unocss src/typography.js. Deliberately
      density-independent, matching the fixed control-height scale. */
   --text-h1: 2.441rem;
   --text-h2: 1.953rem;

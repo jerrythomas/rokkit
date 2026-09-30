@@ -297,7 +297,11 @@ Generates a CSS theme stub file at `src/themes/<name>.css`. The stub contains on
 | `packages/cli/src/skin.js` | `rokkit skin create` — scaffold a custom skin |
 | `packages/cli/src/theme.js` | `rokkit theme create` — scaffold a custom CSS theme |
 | `packages/cli/src/config.js` | `loadConfig()` — read and normalize `rokkit.config.js` |
-| `packages/unocss/src/preset.ts` | `presetRokkit()` — UnoCSS preset factory |
+| `packages/unocss/src/preset.ts` | `presetRokkit()` — UnoCSS preset factory; composition root over the modules below |
+| `packages/unocss/src/typography.js` | Font roles (with legacy aliases), type scale, radius → `:root` vars |
+| `packages/unocss/src/colors.js` | Colour preflights (`:root` light, dark, per-skin blocks), `themeFor`, theme colour rules |
+| `packages/unocss/src/contrast.js` | Ink-on-surface lightness warning |
+| `packages/unocss/src/shortcuts.js` | Semantic / named / override-token / icon shortcuts, icon collections, safelist |
 | `packages/unocss/src/config.js` | Config loader for the preset |
 | `packages/unocss/src/backgrounds.ts` | Background pattern utilities |
 | `packages/core/src/theme.ts` | `Theme` class — color rules, z-level shortcuts, skin generation |
