@@ -103,9 +103,10 @@ import list reads as-is. Row headers are buttons that select through `GraphState
 `state` with a node-link view and both follow the same selection.
 
 The graph demo's **Dependency matrix** and **Hidden coupling** examples read rokkit itself at
-component grain — 15 of its 101 component dependencies sit above the diagonal (a package's
+component grain — measured 2026-09-30, 15 of its 103 component dependencies sat above the diagonal (a package's
 root files and its sub-folders importing each other, and `forms/lib` ↔ `forms/input`), and 15
-pairs of components change together with no import between them.
+pairs of components changed together with no import between them. The figures move as the code
+does; re-run `apps/learn/scripts/build-architecture-metrics.mjs` to refresh them.
 
 ## Three views, one state
 

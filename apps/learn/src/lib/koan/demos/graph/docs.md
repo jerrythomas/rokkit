@@ -92,7 +92,7 @@ already aggregated to components is read as-is. Row headers are buttons that sel
 is exported for anyone drawing their own.
 
 The **Dependency matrix** and **Hidden coupling** examples here read rokkit itself, one level
-up from files: 44 components, their imports, and the pairs that change together in git history
+up from files: about 45 components, their imports, and the pairs that change together in git history
 without an import between them.
 
 ## Three views, one state

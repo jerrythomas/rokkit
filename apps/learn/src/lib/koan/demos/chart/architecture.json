@@ -90,8 +90,8 @@
 			"component": "chart",
 			"package": "chart",
 			"files": 15,
-			"loc": 2874,
-			"churn": 213,
+			"loc": 2471,
+			"churn": 221,
 			"ca": 42,
 			"ce": 13,
 			"instability": 0.236,
@@ -150,25 +150,25 @@
 			"component": "chart/geoms",
 			"package": "chart",
 			"files": 43,
-			"loc": 4035,
-			"churn": 250,
+			"loc": 4006,
+			"churn": 252,
 			"ca": 14,
-			"ce": 33,
-			"instability": 0.702,
+			"ce": 34,
+			"instability": 0.708,
 			"abstractness": 0.017,
-			"distance": 0.281
+			"distance": 0.274
 		},
 		{
 			"component": "chart/lib",
 			"package": "chart",
-			"files": 33,
-			"loc": 3200,
-			"churn": 201,
-			"ca": 38,
+			"files": 36,
+			"loc": 3392,
+			"churn": 206,
+			"ca": 44,
 			"ce": 6,
-			"instability": 0.136,
-			"abstractness": 0.124,
-			"distance": 0.74
+			"instability": 0.12,
+			"abstractness": 0.115,
+			"distance": 0.765
 		},
 		{
 			"component": "chart/patterns",
@@ -205,6 +205,18 @@
 			"instability": 0,
 			"abstractness": 0,
 			"distance": 1
+		},
+		{
+			"component": "chart/state",
+			"package": "chart",
+			"files": 9,
+			"loc": 753,
+			"churn": 11,
+			"ca": 2,
+			"ce": 6,
+			"instability": 0.75,
+			"abstractness": 0.25,
+			"distance": 0
 		},
 		{
 			"component": "chart/symbols",
@@ -1755,14 +1767,14 @@
 			"label": "bars.js",
 			"package": "chart",
 			"component": "chart/geoms",
-			"loc": 218,
-			"complexity": 35,
-			"churn": 14,
+			"loc": 201,
+			"complexity": 30,
+			"churn": 15,
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 2
+			"fanOut": 3
 		},
 		{
 			"id": "packages/chart/src/geoms/lib/GeomState.svelte.js",
@@ -2007,14 +2019,14 @@
 			"label": "waterfall.js",
 			"package": "chart",
 			"component": "chart/geoms",
-			"loc": 59,
-			"complexity": 17,
-			"churn": 1,
+			"loc": 47,
+			"complexity": 14,
+			"churn": 2,
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 1,
-			"fanOut": 1
+			"fanOut": 2
 		},
 		{
 			"id": "packages/chart/src/geoms/lib/PlotAreaClip.svelte",
@@ -2195,7 +2207,7 @@
 			"coverage": 1,
 			"declarations": 7,
 			"abstract": 0,
-			"fanIn": 14,
+			"fanIn": 16,
 			"fanOut": 2
 		},
 		{
@@ -2437,6 +2449,20 @@
 			"fanOut": 0
 		},
 		{
+			"id": "packages/chart/src/lib/plot/domains.js",
+			"label": "domains.js",
+			"package": "chart",
+			"component": "chart/lib",
+			"loc": 130,
+			"complexity": 27,
+			"churn": 3,
+			"coverage": 1,
+			"declarations": 5,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 2
+		},
+		{
 			"id": "packages/chart/src/lib/plot/facet.js",
 			"label": "facet.js",
 			"package": "chart",
@@ -2493,6 +2519,20 @@
 			"fanOut": 4
 		},
 		{
+			"id": "packages/chart/src/lib/plot/running.js",
+			"label": "running.js",
+			"package": "chart",
+			"component": "chart/lib",
+			"loc": 27,
+			"complexity": 6,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 2,
+			"fanOut": 0
+		},
+		{
 			"id": "packages/chart/src/lib/plot/scales.js",
 			"label": "scales.js",
 			"package": "chart",
@@ -2503,8 +2543,22 @@
 			"coverage": 1,
 			"declarations": 5,
 			"abstract": 0,
-			"fanIn": 2,
+			"fanIn": 4,
 			"fanOut": 0
+		},
+		{
+			"id": "packages/chart/src/lib/plot/stacking.js",
+			"label": "stacking.js",
+			"package": "chart",
+			"component": "chart/lib",
+			"loc": 35,
+			"complexity": 12,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 2,
+			"abstract": 0,
+			"fanIn": 2,
+			"fanOut": 1
 		},
 		{
 			"id": "packages/chart/src/lib/plot/stat.js",
@@ -2517,7 +2571,7 @@
 			"coverage": 1,
 			"declarations": 3,
 			"abstract": 0,
-			"fanIn": 3,
+			"fanIn": 2,
 			"fanOut": 1
 		},
 		{
@@ -2819,14 +2873,14 @@
 			"label": "PlotState.svelte.js",
 			"package": "chart",
 			"component": "chart",
-			"loc": 614,
-			"complexity": 157,
-			"churn": 41,
+			"loc": 241,
+			"complexity": 2,
+			"churn": 48,
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 28,
-			"fanOut": 8
+			"fanOut": 9
 		},
 		{
 			"id": "packages/chart/src/PlotSurface.svelte",
@@ -2875,9 +2929,9 @@
 			"label": "SparkState.svelte.js",
 			"package": "chart",
 			"component": "chart",
-			"loc": 332,
-			"complexity": 39,
-			"churn": 8,
+			"loc": 302,
+			"complexity": 32,
+			"churn": 9,
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 0,
@@ -2897,6 +2951,132 @@
 			"abstract": 0,
 			"fanIn": 1,
 			"fanOut": 0
+		},
+		{
+			"id": "packages/chart/src/state/AestheticState.svelte.js",
+			"label": "AestheticState.svelte.js",
+			"package": "chart",
+			"component": "chart/state",
+			"loc": 79,
+			"complexity": 13,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 4
+		},
+		{
+			"id": "packages/chart/src/state/AxisState.svelte.js",
+			"label": "AxisState.svelte.js",
+			"package": "chart",
+			"component": "chart/state",
+			"loc": 57,
+			"complexity": 10,
+			"churn": 2,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 0
+		},
+		{
+			"id": "packages/chart/src/state/ChannelState.svelte.js",
+			"label": "ChannelState.svelte.js",
+			"package": "chart",
+			"component": "chart/state",
+			"loc": 68,
+			"complexity": 13,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 1
+		},
+		{
+			"id": "packages/chart/src/state/GeomRegistry.svelte.js",
+			"label": "GeomRegistry.svelte.js",
+			"package": "chart",
+			"component": "chart/state",
+			"loc": 87,
+			"complexity": 5,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 2,
+			"fanOut": 1
+		},
+		{
+			"id": "packages/chart/src/state/InteractionState.svelte.js",
+			"label": "InteractionState.svelte.js",
+			"package": "chart",
+			"component": "chart/state",
+			"loc": 70,
+			"complexity": 8,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 0
+		},
+		{
+			"id": "packages/chart/src/state/OrientationState.svelte.js",
+			"label": "OrientationState.svelte.js",
+			"package": "chart",
+			"component": "chart/state",
+			"loc": 64,
+			"complexity": 9,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 2,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 1
+		},
+		{
+			"id": "packages/chart/src/state/PlotConfig.svelte.js",
+			"label": "PlotConfig.svelte.js",
+			"package": "chart",
+			"component": "chart/state",
+			"loc": 192,
+			"complexity": 7,
+			"churn": 2,
+			"coverage": 1,
+			"declarations": 7,
+			"abstract": 4,
+			"fanIn": 2,
+			"fanOut": 3
+		},
+		{
+			"id": "packages/chart/src/state/PlotFrame.svelte.js",
+			"label": "PlotFrame.svelte.js",
+			"package": "chart",
+			"component": "chart/state",
+			"loc": 19,
+			"complexity": 2,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 1
+		},
+		{
+			"id": "packages/chart/src/state/ScaleState.svelte.js",
+			"label": "ScaleState.svelte.js",
+			"package": "chart",
+			"component": "chart/state",
+			"loc": 117,
+			"complexity": 13,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 2
 		},
 		{
 			"id": "packages/chart/src/Symbol.svelte",
@@ -7745,7 +7925,7 @@
 		{
 			"source": "chart",
 			"target": "chart/lib",
-			"count": 26
+			"count": 17
 		},
 		{
 			"source": "chart",
@@ -7761,6 +7941,11 @@
 			"source": "chart",
 			"target": "chart/spec",
 			"count": 1
+		},
+		{
+			"source": "chart",
+			"target": "chart/state",
+			"count": 10
 		},
 		{
 			"source": "chart",
@@ -7830,7 +8015,7 @@
 		{
 			"source": "chart/geoms",
 			"target": "chart/lib",
-			"count": 32
+			"count": 34
 		},
 		{
 			"source": "chart/lib",
@@ -7871,6 +8056,11 @@
 			"source": "chart/Plot",
 			"target": "chart/lib",
 			"count": 3
+		},
+		{
+			"source": "chart/state",
+			"target": "chart/lib",
+			"count": 12
 		},
 		{
 			"source": "chart/symbols",
@@ -8142,13 +8332,13 @@
 		{
 			"source": "chart",
 			"target": "chart/lib",
-			"count": 33,
+			"count": 34,
 			"imported": true
 		},
 		{
 			"source": "chart/geoms",
 			"target": "chart/lib",
-			"count": 32,
+			"count": 34,
 			"imported": true
 		},
 		{
@@ -8263,6 +8453,12 @@
 			"source": "ui",
 			"target": "ui/types",
 			"count": 8,
+			"imported": true
+		},
+		{
+			"source": "chart",
+			"target": "chart/state",
+			"count": 7,
 			"imported": true
 		},
 		{

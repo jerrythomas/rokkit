@@ -79,17 +79,36 @@ Thin wrappers over `PlotChart` with a `spec` pre-built from named channel props:
 
 ## PlotState — Reactive Core
 
-`PlotState` is a plain Svelte 5 class (not a component) holding all chart state as `$state`/
-`$derived`. `PlotChart` creates one instance per render; geoms `registerGeom()` into it.
+`PlotState` is a plain Svelte 5 class (not a component). `PlotSurface` creates one per chart
+and publishes it on the `'plot-state'` context; geoms `registerGeom()` into it.
 
-**Inputs:** `data`, optional `spec`, `channels` (`{ x, y, color, fill, pattern, symbol, size }`),
-`width`/`height`/`margin`, `mode` (`'light'|'dark'`), and `chartPreset` (from `ChartProvider`
-context or `defaultPreset`).
+**It is a composition, not a monolith** (decomposed 2026-09-30, plan
+`docs/plans/2026-09-30-plotstate-decomposition.md`). `PlotState` derives nothing: it builds
+nine job classes from `src/state/` in dependency order, each owning one concern and reading only
+those built before it —
 
-**Key derived state:** `orientation` (auto-detected from field types), `xScale`/`yScale`,
-`colorMap` (`Map<value,{fill,stroke}>` via `assignColors()`), `patternMap`, `symbolMap`,
-`hovered` (tooltip), `focusedKey` (keyboard nav), `interactive` (selection hit-targets on/off),
-a `SvelteSet` of selected rows, and `zoomTransform`.
+| Job class | Owns |
+| --- | --- |
+| `PlotConfig` | every input, and the only thing `update()` writes. `CONFIG_FIELDS` says, per field, whether an omitted field is **kept** (data, size, mode…) or **reset** to its default (margin, x/y domain, axis origin, orientation, sort, colour domain, continuous category — overrides) |
+| `GeomRegistry` | the mounted geoms and `geomData(id)` (stat, undefined-channel strip, identity rows). Shared with `SparkState` |
+| `PlotFrame` | effective margin, inner width/height |
+| `ChannelState` | effective channels (container, each omitted field from the first geom), field getters, the shared palette's category values |
+| `OrientationState` | `orientation`, `bandIsX`, `flipped`, `hasBandGeom`, `place()` |
+| `InteractionState` | hover, the selected-row set, `handleSelect`, zoom |
+| `ScaleState` | `x`/`y` scales, band/value scale. Geometry-driven value domains (box, stacked, waterfall) come from pure resolvers in `lib/plot/domains.js`, which share their rules with the builders (`lib/plot/stacking.js`, `lib/plot/running.js`) |
+| `AestheticState` | `colors`, `patterns`, `symbols`, colour-scale type, continuous colour scale |
+| `AxisState` | where the axes cross (`xAxisY`, `yAxisX`) |
+
+Everything below `PlotState`'s constructor is the consumer contract — `GEOM_CONTRACT` plus what
+axes, legend and tooltip read — kept as one-line delegations, so no consumer changed. New code
+can depend on a job directly (`plotState.scales`, `plotState.interactionState`).
+
+**Row identity.** `data` and every identity geom's rows are the same proxied objects (one
+`config.data`), which is what `plotState.data.indexOf(row)` and the selection set rely on.
+
+**Measured:** `PlotState.svelte.js` went from 614 lines / ~157 decision points to 241 / 2 and left
+the repo's hotspot corner (`build-architecture-metrics.mjs`). A differential run of the old and new
+class over 1,937 configurations agreed everywhere except the intended stacked-domain fix.
 
 ---
 

@@ -431,7 +431,7 @@ export const codebaseFields: GraphFields = {
 /* ─── 4. this repository, one level up ──────────────────────────────────────
    The same code at COMPONENT grain — a top-level folder under a package's `src/` — measured
    by `scripts/build-architecture-metrics.mjs`, which the chart demo's Architecture recipes
-   also read. 44 components rather than 507 files is what keeps a dependency matrix readable:
+   also read. ~45 components rather than ~500 files is what keeps a dependency matrix readable:
    every node is a row AND a column, so the drawing grows with the square.
 
    `cochange` adds the pairs that change in the same commit, mined from git history. The ones

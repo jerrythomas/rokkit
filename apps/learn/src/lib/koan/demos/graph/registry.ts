@@ -169,7 +169,7 @@ export const registry: Record<DiagramId, DiagramConfig> = {
 	},
 	coupling: {
 		id: 'coupling',
-		// `points`, not `flow`: flow spreads 44 components over ten card columns, and fitting
+		// `points`, not `flow`: flow spreads ~45 components over ten card columns, and fitting
 		// that to the canvas shrinks every card — and every overlay between them — to a speck.
 		// Packed by package, the dotted co-change edges visibly cross package lines.
 		layout: 'points',

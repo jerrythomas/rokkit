@@ -158,7 +158,23 @@ const spec = {
 
 ## Plot State (advanced)
 
-`PlotState` is the reactive state manager used by `PlotChart`. It coordinates scales, colors, and geom registration.
+`PlotState` is the reactive state `PlotChart` publishes on the `'plot-state'` context. It is a
+composition of job classes, each exposed as a member:
+
+| Member | Job |
+|--------|-----|
+| `config` | every input; `update(config)` re-applies them (omitted overrides — margin, domains, orientation, sort, axis origin — reset; everything else is kept) |
+| `geoms` | mounted geoms, `data(id)` for a geom's rows |
+| `frame` | margin, inner width/height |
+| `channelState` | effective channels and field getters |
+| `orientationState` | orientation, flip, `place(u, v)` |
+| `interactionState` | hover, selection, zoom |
+| `scales` | `x`, `y`, `band`, `value` |
+| `aesthetics` | `colors`, `patterns`, `symbols`, continuous colour |
+| `axes` | `xAxisY`, `yAxisX` |
+
+The flat getters geoms have always read (`xScale`, `colors`, `place`, `innerWidth`, …) remain,
+as delegations.
 
 ```javascript
 import { PlotState } from '@rokkit/chart'

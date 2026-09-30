@@ -12,7 +12,8 @@ and symbols. There is no per-chart `palette` array prop; customization goes thro
 
 ```text
 data + channels (or spec)
-   → PlotState  (scales, colorMap, patternMap, symbolMap, geom registry, selection, zoom)
+   → PlotState  (a composition of job classes: config, geoms, frame, channels, orientation,
+                 interaction, scales, aesthetics, axes — see docs/design/20-chart.md)
    → PlotChart  (SVG: geoms + axes + grid + legend + tooltip + overlays)
 
 preset (colors / patterns / symbols / shades / opacity)
