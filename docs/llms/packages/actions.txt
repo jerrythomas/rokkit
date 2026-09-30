@@ -73,6 +73,19 @@ Each interactive element must carry `data-path={node.key}` — Navigator walks u
 
 ---
 
+### `focusItem(root, key)`
+
+Focuses the item with `data-path="<key>"` inside `root` without scrolling any ancestor
+(`preventScroll`), then scrolls it into view within `root` only. It's what the Navigator does after
+a key. Use it when a component moves focus itself, for example on opening a dropdown. Don't use
+`el.focus()` + `el.scrollIntoView()`: those scroll the page when the list sits inside a
+scrolling panel.
+
+```js
+import { focusItem } from '@rokkit/actions'
+requestAnimationFrame(() => focusItem(dropdownEl, wrapper.focusedKey))
+```
+
 ## `Trigger` class
 
 Manages dropdown open/close from a trigger button. Handles click, Enter/Space, ArrowDown/Up to open, Escape and outside-click to close. Pairs with `Navigator` on the dropdown container.

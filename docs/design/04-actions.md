@@ -169,7 +169,7 @@ Three details are worth noting. First, `focusItem()` both focuses the DOM elemen
 | `navigator/focus.js` | `focusItem` — focus the wrapper's item without scrolling ancestors, then `scrollWithin` the root; `entryItem` — where focus on the root itself is redirected |
 | `navigator/typeahead.js` | `Typeahead` — the printable-key rule, the search buffer and its 500 ms reset; the first key of a search starts after the focused item |
 
-Only `Navigator` is exported from the `@rokkit/actions` index; the parts are implementation, free to change. The decomposition was proved behaviour-preserving by replaying 30,318 event scenarios against the previous class (journal, 2026-09-30).
+`Navigator` and `focusItem` are exported from the `@rokkit/actions` index. `focusItem` is public for components that move focus themselves (Select, MultiSelect on open). The other parts are implementation, free to change. The decomposition was proved behaviour-preserving by replaying 30,318 event scenarios against the previous class (journal, 2026-09-30).
 
 ### The `data-path` Convention
 

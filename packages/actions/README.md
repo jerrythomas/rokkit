@@ -158,6 +158,12 @@ Default mappings: alphabet keys dispatch `add`, Enter dispatches `submit`, Escap
 | `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | Arrow key axis for prev/next movement |
 | `collapsible` | `boolean`                    | `false`      | Enable expand/collapse via arrow keys |
 
+### focusItem
+
+`focusItem(root, key)` focuses the `[data-path="<key>"]` item inside `root` without scrolling any
+ancestor, then scrolls it into view within `root`. That's what the Navigator does after a key; use
+it when a component moves focus itself.
+
 ### buildKeymap / resolveAction
 
 Low-level utilities for constructing custom keymaps:

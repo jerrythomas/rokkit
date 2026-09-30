@@ -1,6 +1,6 @@
 # Select decomposition
 
-**Status:** IMPLEMENT (2026-09-30). The user said "after these start picking up open issues from #165"; this is one of "these".
+**Status:** DONE (2026-09-30): `50e38677`, `b7304e22`. See journal 2026-09-30 (11). The user said "after these start picking up open issues from #165"; this is one of "these".
 **Package:** `@rokkit/ui`
 
 ## Why
