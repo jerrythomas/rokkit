@@ -10292,3 +10292,44 @@ remaining hotspots and the three files still carrying `@ts-nocheck`.
 Gates: 7,963 unit tests pass, plus 34 browser and 129 e2e; lint is 0/0. Complexity leaders are
 now Select 78, theme 50 and Bar 51. None is above 100, where this morning's leaders were at 157
 and 175.
+
+---
+
+## 2026-09-30 (12) — #165: drill-down / drill-up events, and the bugs a real browser found
+
+Plan: `docs/plans/2026-09-30-graph-drill-events.md`, built on design 24 Decision 3.
+
+- `1a232ff5`: `Cluster.path` / `leaf`.
+- `c3cd8407`: `GraphDrill`. `drillPath` (= `focusPath`), `breadcrumbs`, `canDrill`,
+  `drillInto`, `drillOut`, `drillTo`, `pending` and `drillError`. `ondrill` / `ondrillup`
+  arrive with a promise contract (only the latest drill counts; a rejection or a throw
+  restores). `onfocuspath` syncs a component that owns a bindable `focusPath`.
+  `Cluster.declared` carries a container's own node id. 15 specs.
+- `44afc071`: gestures (a drillable container is a button, "Open …"; a leaf opens on
+  double-click), `DrillBar`, and the pending attributes; `Graph` and the three diagrams take
+  the events. **Model fix:** a host-loaded level is a chain of undeclared single-child
+  containers that folding removed, so the new level rendered EMPTY. Now `TreeNode.address`
+  (never folded) is what `Cluster.path` and `focusPath` use, and `buildTree` keeps the focus
+  chain unfolded.
+- `fc76817f` / `2613bd8b`: theme CSS. The error is a soft fill plus border (a status 500 fails
+  AA as text), and hover no longer lifts a drillable container over its children.
+- `c89685f2`: **four bugs only the e2e saw.**
+  1. A press on a box started a canvas pan and captured the pointer, so a treemap box was
+     neither openable NOR SELECTABLE by mouse. That predates this issue.
+  2. `clusterKey` collided on `lib/marks` under two parents, throwing `each_key_duplicate`.
+  3. Setters were undone by the next `apply()`.
+  4. A diagram given a caller's state pushed a stale `focusPath` over the drill.
+- `182930e7`: the "Treemap, per level" demo (`LazyCodebase`: one level at a time, cached
+  climbs). The explorer carries the drill path back the way it carries the selection.
+  `graph-drill.e2e` has 4 tests.
+- `18645c0b`: docs (llms ×2, design 23/24, README, the learn guide).
+
+Tooling lessons, all folded into the gate:
+- A stale local `dist` masked a CI type failure (learn resolves package types through it). The
+  gate now runs every type check and learn's `svelte-check` with package `dist/` moved aside,
+  as CI sees it.
+- A reused preview server on 4173 would serve stale code. None was running this time.
+- jsdom never emulates native button activation or pointer capture. Both bugs needed a real
+  browser.
+
+Gates: 8,035 unit tests pass, plus 34 browser and 133 e2e; lint is 0/0.
