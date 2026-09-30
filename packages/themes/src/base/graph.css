@@ -921,7 +921,11 @@ svg[data-legend-swatch] {
 /* ─── the dependency matrix ─────────────────────────────────────────────────
    Structure only. Cell intensity comes from --cell-weight (count / max, set per cell), so a
    pair joined by many edges reads heavier than a pair joined by one. */
+/* max-height, not height: inside a sized canvas the matrix scrolls rather than spilling out
+   of it; in normal flow, with no parent height to take a share of, it is simply as tall as
+   its drawing. */
 [data-graph-matrix] {
+  max-height: 100%;
   overflow: auto;
   font-size: 11px;
 }
