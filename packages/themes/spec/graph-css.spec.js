@@ -332,3 +332,26 @@ describe('graph theme CSS — drilling (#165)', () => {
 		expect(error.some((r) => /border[a-z-]*:[^;]*var\(--error\)/.test(r)), style).toBe(true)
 	})
 })
+
+describe('graph theme CSS — a drillable container never covers its own children', () => {
+	// Boxes are a flat list of positioned siblings, outer first. Hover lifts a box (z-index) so
+	// its label can pop; a plain region never took the pointer, so it was never hovered — but a
+	// drillable container does, and lifting it put the WHOLE box over its children, which then
+	// could not be clicked. Found by the drill e2e: "Open types … intercepts pointer events".
+	it('lifts only boxes that are not drillable containers on hover / focus', () => {
+		const lifts = declarations('base/graph.css')
+			.split('}')
+			.filter(
+				(rule) =>
+					/\[data-graph-cluster\](:not\([^)]*\))?:(hover|focus-visible)/.test(rule) && /z-index/.test(rule)
+			)
+			.filter((rule) => !/>\s*\[data-graph-cluster-label\]/.test(rule))
+		// Per SELECTOR, not per rule: a group where one line kept the old selector must fail.
+		const selectors = lifts
+			.flatMap((rule) => rule.slice(0, rule.indexOf('{')).split(','))
+			.map((sel) => sel.trim())
+			.filter((sel) => /\[data-graph-cluster\](:not\([^)]*\))?:(hover|focus-visible)/.test(sel))
+		expect(selectors.length).toBeGreaterThan(0)
+		for (const sel of selectors) expect(sel).toMatch(/:not\(\[data-graph-drillable\]\)/)
+	})
+})

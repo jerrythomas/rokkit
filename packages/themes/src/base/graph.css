@@ -478,8 +478,11 @@
 
 /* Hover brings the label back at any size, over the neighbours rather than inside a box too
    small to hold it — the same deal the points layout makes. */
-[data-graph-layout='world'] [data-graph-cluster]:hover,
-[data-graph-layout='world'] [data-graph-cluster]:focus-visible {
+/* Not a drillable container: it takes the pointer too, and lifting the whole box would put it
+   over its own children — they could no longer be clicked. Its label still pops, below, because
+   the box forms no stacking context of its own. */
+[data-graph-layout='world'] [data-graph-cluster]:not([data-graph-drillable]):hover,
+[data-graph-layout='world'] [data-graph-cluster]:not([data-graph-drillable]):focus-visible {
   z-index: 3;
 }
 
