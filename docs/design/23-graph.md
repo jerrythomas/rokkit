@@ -198,6 +198,20 @@ package's contract is `nodes`/`edges`/`fields` and it never fetches.
 `GraphState` follows the house idiom — private `$state` inputs, `$derived` outputs, explicit
 getters, named methods for every transition.
 
+Since 2026-09-30 it is a composition over parts that can each be tested alone. Its public
+surface is unchanged, and each member delegates in one line:
+
+| Part | Owns |
+| --- | --- |
+| `state/GraphConfig.svelte.ts` | every input. `CONFIG_FIELDS` gives each field's fallback and normaliser: the depth and level floors, nestBy ≠ groupBy, and `raw` for the four that keep a `null` as given. `update` / `apply` / `setDensity` / `setGrouping` |
+| `state/GraphSelection.svelte.ts` | value, expanded cards, related, entity, relationships; `select` / `clear` / `adopt` / `toggleExpanded`, `nodeState` / `edgeState` |
+| `model/relationships.ts`, `model/entities.ts`, `layout/extent.ts` | the pure derivations: a node's relationships over the canonical edges, the entity rows, and the content extent |
+| `GraphState` itself | the layout pipeline (model → layout function → result → overlay routing), group styles, and the view queries the templates read |
+
+The decomposition was checked against the previous class. Every getter and every per-node,
+per-edge and per-cluster method was compared before and after a transition sequence, over
+432 cases, and all were identical.
+
 **`update(config)` follows `SparkState`, not `PlotState`.** The two differ, and the difference
 matters: `SparkState.update` (`packages/chart/src/SparkState.svelte.js:174-185`) reassigns every
 field unconditionally and documents itself as "re-callable… it must fully re-apply config rather

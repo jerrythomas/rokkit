@@ -1,6 +1,6 @@
 # GraphState decomposition
 
-**Status:** IMPLEMENT (2026-09-30). One of the hotspots to finish before the open issues from #165.
+**Status:** DONE (2026-09-30): `deb10469`, `bb2e239a`, `df565680`. See journal 2026-09-30 (11). One of the hotspots to finish before the open issues from #165.
 **Package:** `@rokkit/graph`
 
 ## Why
