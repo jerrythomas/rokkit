@@ -82,6 +82,14 @@ describe('Contour.svelte', () => {
 		expect(levels(container).length).toBeGreaterThan(0)
 	})
 
+	it('clips to the plot area — a density ring must not spill across the axes', () => {
+		const { container } = render(TestContour, { props: { state: state(), x: 'i', y: 'a' } })
+		const clip = container.querySelector('clipPath rect')
+		expect([clip.getAttribute('width'), clip.getAttribute('height')]).toEqual(['300', '200'])
+		const group = container.querySelector('[data-plot-geom="contour"]')
+		expect(group.getAttribute('clip-path')).toBe(`url(#${container.querySelector('clipPath').id})`)
+	})
+
 	it('renders nothing with no data', () => {
 		const { container } = render(TestContour, { props: { state: state([]), x: 'i', y: 'a' } })
 		expect(container.querySelector('[data-plot-geom="contour"]')).toBeNull()

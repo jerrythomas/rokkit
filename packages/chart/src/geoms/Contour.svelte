@@ -11,6 +11,7 @@
 	import type { PlotState } from '../PlotState.svelte.js'
 	import { GeomState } from './lib/GeomState.svelte.js'
 	import { buildContourMarks } from './lib/marks/contour.js'
+	import PlotAreaClip from './lib/PlotAreaClip.svelte'
 
 	type Props = {
 		x?: string
@@ -32,6 +33,8 @@
 	let { x, y, fill, color, bandwidth = 20, thresholds = 8, filled = false, alpha }: Props = $props()
 
 	const plotState = getContext<PlotState>('plot-state')
+	const uid = $props.id()
+	const clipId = `plot-contour-clip-${uid}`
 	const geom = new GeomState(plotState, () => ({
 		type: 'contour',
 		channels: { x, y, fill, color },
@@ -48,7 +51,12 @@
 </script>
 
 {#if rings.length > 0}
-	<g data-plot-geom="contour" data-plot-contour-mode={filled ? 'filled' : 'lines'}>
+	<PlotAreaClip id={clipId} />
+	<g
+		data-plot-geom="contour"
+		data-plot-contour-mode={filled ? 'filled' : 'lines'}
+		clip-path="url(#{clipId})"
+	>
 		{#each rings as r (r.key)}
 			<path
 				d={r.d}

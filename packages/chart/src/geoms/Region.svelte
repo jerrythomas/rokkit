@@ -13,6 +13,7 @@
 	import { getContext } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
 	import { regionVertices, positionOf, centroid, polygonPath } from '../lib/region.js'
+	import PlotAreaClip from './lib/PlotAreaClip.svelte'
 
 	type Value = number | string
 	type Props = {
@@ -70,11 +71,7 @@
 </script>
 
 {#if shape}
-	<defs>
-		<clipPath id={clipId}>
-			<rect x="0" y="0" width={plotState.innerWidth} height={plotState.innerHeight} />
-		</clipPath>
-	</defs>
+	<PlotAreaClip id={clipId} />
 	<g data-plot-geom="region" data-plot-region={name} clip-path="url(#{clipId})">
 		<path
 			d={shape.d}
