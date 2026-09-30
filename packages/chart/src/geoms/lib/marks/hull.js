@@ -1,25 +1,7 @@
 import { convexHull, hullPath } from '../../../lib/hull.js'
 import { centroid } from '../../../lib/region.js'
 import { resolveFillStroke, resolveAlpha } from '../aesthetics.js'
-
-/** Screen position of one value, or null when the row has no usable coordinate. */
-function coord(scale, v) {
-	if (v === null || v === undefined || v === '') return null
-	const s = scale(v)
-	if (s === null || s === undefined || Number.isNaN(s)) return null
-	return typeof scale.bandwidth === 'function' ? s + scale.bandwidth() / 2 : s
-}
-
-/** Rows bucketed by the group field, in first-seen order. One bucket when there is no field. */
-function groupRows(data, field) {
-	const groups = new Map()
-	for (const row of data) {
-		const key = field ? row[field] : null
-		if (!groups.has(key)) groups.set(key, [])
-		groups.get(key).push(row)
-	}
-	return groups
-}
+import { groupRows, screenPoints } from '../grouping.js'
 
 /**
  * One outline per group of the `fill` (else `color`) channel — ggplot's discrete-colour
@@ -36,14 +18,7 @@ export function buildHullMarks({ data, plot, channels, alpha, type = 'hull' }) {
 
 	const marks = []
 	for (const [key, rows] of groupRows(data, groupField)) {
-		const pts = []
-		for (const row of rows) {
-			const u = coord(xScale, row[channels.x])
-			const v = coord(yScale, row[channels.y])
-			if (u === null || v === null) continue
-			const p = plot.place(u, v)
-			pts.push([p.x, p.y])
-		}
+		const pts = screenPoints(rows, plot, channels)
 		if (pts.length === 0) continue
 		const hull = convexHull(pts)
 		const { fill } = resolveFillStroke(rows[0], { fill: groupField }, colors)

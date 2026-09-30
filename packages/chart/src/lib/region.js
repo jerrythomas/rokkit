@@ -22,7 +22,7 @@ const isBand = (scale) => typeof scale.bandwidth === 'function'
  */
 function endValue(scale, v, side) {
 	if (v !== null && v !== undefined) return v
-	const domain = /** @type {{ domain: () => unknown[] }} */ (/** @type {unknown} */ (scale)).domain()
+	const domain = scale.domain()
 	if (isBand(scale)) return side === 'lo' ? domain[0] : domain[domain.length - 1]
 	const nums = domain.map(Number)
 	return side === 'lo' ? Math.min(...nums) : Math.max(...nums)

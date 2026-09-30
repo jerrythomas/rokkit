@@ -24,6 +24,11 @@ describe('region geometry', () => {
 		expect(spanOf(y, [5, null])).toEqual([0, 50])
 	})
 
+	it('spanOf runs an open end to the first / last category on a band axis', () => {
+		expect(spanOf(band, ['b', null])).toEqual([30, 90])
+		expect(spanOf(band, [null, 'a'])).toEqual([0, 30])
+	})
+
 	it('spanOf covers whole bands', () => {
 		expect(spanOf(band, ['b', 'c'])).toEqual([30, 90])
 	})
@@ -46,6 +51,10 @@ describe('region geometry', () => {
 	it('centroid falls back to the vertex mean for a collinear polygon', () => {
 		expect(centroid([{ x: 0, y: 0 }, { x: 2, y: 0 }, { x: 4, y: 0 }])).toEqual({ x: 2, y: 0 })
 		expect(centroid([{ x: 0, y: 0 }, { x: 4, y: 0 }, { x: 4, y: 4 }, { x: 0, y: 4 }])).toEqual({ x: 2, y: 2 })
+	})
+
+	it('centroid of no points is the origin rather than NaN', () => {
+		expect(centroid([])).toEqual({ x: 0, y: 0 })
 	})
 
 	it('polygonPath closes the shape and rounds to 3 decimals', () => {
