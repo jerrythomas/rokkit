@@ -54,7 +54,7 @@
     "dompurify": "^3.4.13"
   },
   "peerDependencies": {
-    "shiki": "^3.23.0",
+    "shiki": "^3.23.0 || ^4",
     "svelte": "^5.0.0"
   },
   "devDependencies": {
