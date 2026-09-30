@@ -55,6 +55,20 @@ describe('Bar — keyboard activation', () => {
 		// filterable takes precedence: the bar filters rather than emitting a selection.
 		expect(onselect).not.toHaveBeenCalled()
 	})
+
+	it('applies the same rule to a click — a filterable bar filters, it does not also select', async () => {
+		const onselect = vi.fn()
+		const { container } = render(TestBar, { state: barState(), filterable: true, onselect })
+		await fireEvent.click(bars(container)[0])
+		expect(onselect).not.toHaveBeenCalled()
+	})
+
+	it('selects on click when the bar is not filterable', async () => {
+		const onselect = vi.fn()
+		const { container } = render(TestBar, { state: barState(), onselect })
+		await fireEvent.click(bars(container)[0])
+		expect(onselect).toHaveBeenCalledWith(barData[0])
+	})
 })
 
 describe('Bar — inside-label contrast', () => {

@@ -91,25 +91,21 @@
 	const effectiveOrientation = $derived(options.orientation ?? plotState.orientation)
 	const seriesField = $derived(fill ?? color)
 
-	let dimmedByKey = $state<Record<string, boolean>>({})
-
-	$effect(() => {
-		if (!cf) {
-			dimmedByKey = {}
-			return
-		}
-		// cf.version is a $state counter that increments on every filter mutation.
-		// Reading it here establishes a reactive dependency so the effect re-runs
-		// whenever any filter changes — including changes from sibling FilterBars.
+	/** Bars the crossfilter dims, by key. A derivation, so it needs no effect writing state. */
+	const dimmedByKey = $derived.by((): Record<string, boolean> => {
+		if (!cf) return {}
+		// cf.version is a $state counter that increments on every filter mutation. Reading it
+		// makes this re-derive whenever any filter changes — including a sibling FilterBar's.
 		void cf.version
-		const next: Record<string, boolean> = {}
+		const dimmed: Record<string, boolean> = {}
 		for (const bar of bars) {
-			const dimmedByX = x ? cf.isDimmed(x, bar.data[x]) : false
-			const dimmedByY = y ? cf.isDimmed(y, bar.data[y]) : false
-			next[bar.key] = dimmedByX || dimmedByY
+			dimmed[bar.key] = (x ? cf.isDimmed(x, bar.data[x]) : false) || (y ? cf.isDimmed(y, bar.data[y]) : false)
 		}
-		dimmedByKey = next
+		return dimmed
 	})
+
+	/** Whether a bar takes clicks and keys at all. */
+	const activatable = $derived(filterable || Boolean(onselect) || keyboard || plotState.interactive)
 
 	function handleBarClick(barX: unknown) {
 		if (!filterable || !x || !cf) return
@@ -130,20 +126,19 @@
 			)
 	}
 
-	function handleBarActivate(bar: { data: Row }, event: MouseEvent) {
+	/**
+	 * A bar activated by click, Enter or Space. A filterable bar FILTERS — it does not also emit
+	 * `onselect`, the rule the keyboard path always had and a click did not; otherwise it
+	 * selects. The plot-level selection (`selectBar`) runs either way.
+	 */
+	function activate(bar: { data: Row }, event: MouseEvent | KeyboardEvent) {
 		if (filterable && x) handleBarClick(bar.data[x])
-		onselect?.(bar.data)
+		else onselect?.(bar.data)
 		selectBar(bar, event)
 	}
 
 	function handleBarKeyActivate(bar: { data: Row }, event: KeyboardEvent) {
-		if (event.key !== 'Enter' && event.key !== ' ') return
-		if (filterable && x) {
-			handleBarClick(bar.data[x])
-		} else {
-			onselect?.(bar.data)
-		}
-		selectBar(bar, event)
+		if (event.key === 'Enter' || event.key === ' ') activate(bar, event)
 	}
 </script>
 
@@ -165,14 +160,10 @@
 				data-plot-category={bar.data[x ?? '']}
 				data-dimmed={dimmedByKey[bar.key] ? true : undefined}
 				style:cursor={filterable || onselect || plotState.interactive ? 'pointer' : undefined}
-				onclick={filterable || onselect || keyboard || plotState.interactive
-					? (e) => handleBarActivate(bar, e)
-					: undefined}
-				onkeydown={filterable || onselect || keyboard || plotState.interactive
-					? (e) => handleBarKeyActivate(bar, e)
-					: undefined}
-				role={filterable || onselect || keyboard || plotState.interactive ? 'button' : 'graphics-symbol'}
-				tabindex={filterable || onselect || keyboard || plotState.interactive ? 0 : undefined}
+				onclick={activatable ? (e) => activate(bar, e) : undefined}
+				onkeydown={activatable ? (e) => handleBarKeyActivate(bar, e) : undefined}
+				role={activatable ? 'button' : 'graphics-symbol'}
+				tabindex={activatable ? 0 : undefined}
 				use:keyboardNav={keyboard}
 				aria-label="{bar.data[x ?? '']}: {bar.data[y ?? '']}"
 				onmouseenter={() => plotState.setHovered(bar.data)}
