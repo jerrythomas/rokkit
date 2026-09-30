@@ -4,11 +4,8 @@ import { evaluateCondition } from './conditions.js'
 import { FormValues } from './state/FormValues.svelte.js'
 import { FormDefinition } from './state/FormDefinition.svelte.js'
 import { FormLookups } from './state/FormLookups.svelte.js'
-import { FormSteps, stepPaths } from './state/FormSteps.svelte.js'
-import {
-	validateField as validateFieldValue,
-	validateAll as validateAllFields
-} from './validation.js'
+import { FormSteps } from './state/FormSteps.svelte.js'
+import { FormValidation } from './state/FormValidation.svelte.js'
 
 /**
  * @typedef {Object} FormElement
@@ -42,8 +39,8 @@ export class FormBuilder {
 	/** Schema and layout, and how each derives from the other. */
 	definition
 
-	/** @type {Object} */
-	#validation = $state({})
+	/** Validation messages, and the ways of producing them. Suffixed: `validation` is the public message map. */
+	validationState
 
 	/** Fields whose options come from elsewhere, and what they depend on. */
 	lookups
@@ -95,20 +92,12 @@ export class FormBuilder {
 		this.definition.layout = value
 	}
 
-	/**
-	 * Get the current validation state
-	 * @returns {Object} Current validation object
-	 */
+	/** The validation messages, by field path. */
 	get validation() {
-		return this.#validation
+		return this.validationState.map
 	}
-
-	/**
-	 * Set validation messages for fields
-	 * @param {Object} value - Validation object with field paths as keys
-	 */
 	set validation(value) {
-		this.#validation = value
+		this.validationState.map = value
 	}
 
 	/**
@@ -122,6 +111,12 @@ export class FormBuilder {
 		this.values = new FormValues(data)
 		this.definition = new FormDefinition(this.values, schema, layout)
 		this.steps = new FormSteps(this.definition)
+		this.validationState = new FormValidation({
+			values: this.values,
+			definition: this.definition,
+			steps: this.steps,
+			visiblePaths: () => this.#visiblePaths()
+		})
 		this.lookups = new FormLookups(this.values, lookups)
 	}
 
@@ -175,7 +170,7 @@ export class FormBuilder {
 		this.values.set(path, value)
 
 		// Clear stale validation errors for fields that are now hidden
-		this.#clearHiddenValidation()
+		this.validationState.clearHidden()
 
 		// Clear and re-fetch the lookups that depend on this field
 		if (triggerLookups) this.lookups.fieldChanged(path)
@@ -190,20 +185,9 @@ export class FormBuilder {
 		return this.values.get(path)
 	}
 
-	/**
-	 * Clear validation errors for fields that are no longer visible
-	 * @private
-	 */
-	#clearHiddenValidation() {
-		const visiblePaths = new SvelteSet(
-			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
-		)
-		const cleaned = Object.fromEntries(
-			Object.entries(this.#validation).filter(([path]) => visiblePaths.has(path))
-		)
-		if (Object.keys(cleaned).length !== Object.keys(this.#validation).length) {
-			this.#validation = cleaned
-		}
+	/** The field paths that currently render — a `showWhen`-hidden field has no element. */
+	#visiblePaths() {
+		return this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
 	}
 
 	/**
@@ -343,7 +327,7 @@ export class FormBuilder {
 		const props = {
 			label: label || fieldPath,
 			...layoutProps,
-			message: this.#validation[fieldPath] || null,
+			message: this.validationState.message(fieldPath),
 			dirty: this.isFieldDirty(fieldPath),
 			type
 		}
@@ -375,7 +359,7 @@ export class FormBuilder {
 				...topLevelProps,
 				...groupProps,
 				elements: nestedElements,
-				message: this.#validation[fieldPath] || null
+				message: this.validationState.message(fieldPath)
 			}
 		}
 	}
@@ -385,7 +369,7 @@ export class FormBuilder {
 	 * @private
 	 */
 	#convertReadonlyElement(element, fieldPath, scope, value) {
-		const validationMessage = this.#validation[fieldPath] || null
+		const validationMessage = this.validationState.message(fieldPath)
 		return {
 			scope,
 			type: 'info',
@@ -456,7 +440,7 @@ export class FormBuilder {
 		const finalProps = {
 			...props,
 			type,
-			message: this.#validation[fieldPath] || null,
+			message: this.validationState.message(fieldPath),
 			dirty: this.isFieldDirty(fieldPath)
 		}
 		this.lookups.applyTo(fieldPath, finalProps)
@@ -506,24 +490,15 @@ export class FormBuilder {
 	/**
 	 * Set validation message for a specific field
 	 * @param {string} fieldPath - Field path (without '#/' prefix)
-	 * @param {Object|null} message - Validation message object or null to clear
-	 * @param {string} message.state - Message state: 'error', 'warning', 'info', 'success'
-	 * @param {string} message.text - Message text content
+	 * @param {Object|null} message - Validation message object, or null to clear
 	 */
 	setFieldValidation(fieldPath, message) {
-		if (message) {
-			this.#validation = { ...this.#validation, [fieldPath]: message }
-		} else {
-			const { [fieldPath]: _, ...rest } = this.#validation
-			this.#validation = rest
-		}
+		this.validationState.set(fieldPath, message)
 	}
 
-	/**
-	 * Clear all validation messages
-	 */
+	/** Clear all validation messages */
 	clearValidation() {
-		this.#validation = {}
+		this.validationState.clear()
 	}
 
 	/**
@@ -532,15 +507,7 @@ export class FormBuilder {
 	 * @returns {import('./validation.js').ValidationMessage|null} Validation result
 	 */
 	validateField(fieldPath) {
-		const fieldSchema = this.definition.fieldSchema(fieldPath)
-		if (!fieldSchema) return null
-
-		const value = this.getValue(fieldPath)
-		const label = this.definition.fieldLabel(fieldPath)
-		const result = validateFieldValue(value, fieldSchema, label)
-
-		this.setFieldValidation(fieldPath, result)
-		return result
+		return this.validationState.validateField(fieldPath)
 	}
 
 	/**
@@ -548,65 +515,31 @@ export class FormBuilder {
 	 * @returns {Object} Validation results keyed by field path
 	 */
 	validate() {
-		if (this.isMultiStep) {
-			// Flatten all step elements into a synthetic layout for full validation
-			const flatLayout = { ...this.definition.layout, elements: this.steps.allStepElements }
-			const results = validateAllFields(this.values.data, this.definition.schema, flatLayout)
-			this.#validation = results
-			return results
-		}
-		const results = validateAllFields(this.values.data, this.definition.schema, this.definition.layout)
-		const visiblePaths = new SvelteSet(
-			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
-		)
-		const filtered = Object.fromEntries(
-			Object.entries(results).filter(([path]) => visiblePaths.has(path))
-		)
-		this.#validation = filtered
-		return filtered
+		return this.validationState.validateAll()
 	}
 
 	/**
-	 * Get form data with hidden field values stripped out
-	 * Hidden fields are those absent from this.elements (the derived list)
-	 * Does not mutate this.values.data
-	 * @returns {Record<string, unknown>} Filtered data containing only visible field keys
+	 * Form data with hidden fields' values stripped out. Does not mutate the data.
+	 * @returns {Record<string, unknown>}
 	 */
 	getVisibleData() {
-		const visiblePaths = new SvelteSet(
-			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
-		)
-		return Object.fromEntries(Object.entries(this.values.data).filter(([key]) => visiblePaths.has(key)))
+		const visible = new SvelteSet(this.#visiblePaths())
+		return Object.fromEntries(Object.entries(this.values.data).filter(([key]) => visible.has(key)))
 	}
 
-	/**
-	 * Whether all fields pass validation (no error-state messages)
-	 * @returns {boolean}
-	 */
+	/** Whether all fields pass validation (no error-state messages) */
 	get isValid() {
-		return Object.values(this.#validation).every((msg) => msg.state !== 'error')
+		return this.validationState.isValid
 	}
 
-	/**
-	 * Array of current error messages with paths
-	 * @returns {Array<{path: string, state: string, text: string}>}
-	 */
+	/** @returns {Array<{path: string, state: string, text: string}>} current error messages */
 	get errors() {
-		return Object.entries(this.#validation)
-			.filter(([, msg]) => msg.state === 'error')
-			.map(([path, msg]) => ({ path, ...msg }))
+		return this.validationState.errors
 	}
 
-	/**
-	 * Array of all validation messages with paths, ordered by severity
-	 * @returns {Array<{path: string, state: string, text: string}>}
-	 */
+	/** @returns {Array<{path: string, state: string, text: string}>} every message, most severe first */
 	get messages() {
-		const order = { error: 0, warning: 1, info: 2, success: 3 }
-		return Object.entries(this.#validation)
-			.filter(([, msg]) => msg !== null && msg !== undefined)
-			.map(([path, msg]) => ({ path, ...msg }))
-			.sort((a, b) => (order[a.state] ?? 4) - (order[b.state] ?? 4))
+		return this.validationState.sorted
 	}
 
 	// ── Dirty Tracking ────────────────────────────────────────
@@ -649,7 +582,7 @@ export class FormBuilder {
 	 */
 	reset() {
 		this.values.reset()
-		this.#validation = {}
+		this.validationState.clear()
 	}
 
 	// ── Multi-Step ────────────────────────────────────────────
@@ -709,34 +642,6 @@ export class FormBuilder {
 	 * @returns {boolean} true if no errors
 	 */
 	validateStep(index) {
-		const stepEl = this.steps.step(index)
-		if (!stepEl) return true
-		const stepLayout = { ...this.definition.layout, elements: stepEl.elements ?? [] }
-		const results = validateAllFields(this.values.data, this.definition.schema, stepLayout)
-		this.#applyStepValidation(results, stepEl.elements)
-		return isAllValid(results)
+		return this.validationState.validateStep(index)
 	}
-
-	/**
-	 * Apply validation results for a step's fields into the validation state.
-	 * @private
-	 */
-	#applyStepValidation(results, elements) {
-		const paths = new SvelteSet(stepPaths(elements))
-		for (const path of paths) {
-			this.setFieldValidation(path, results[path] ?? null)
-		}
-	}
-
-
-}
-
-// ── Module-level helpers (no `this`) ──────────────────────────────────────────
-
-/**
- * Returns true when no result in the map has state === 'error'
- * @private
- */
-function isAllValid(results) {
-	return Object.values(results).every((msg) => msg?.state !== 'error')
 }
