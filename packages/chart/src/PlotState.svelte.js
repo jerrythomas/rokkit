@@ -1,6 +1,4 @@
-import { untrack } from 'svelte'
 import { SvelteMap, SvelteSet } from 'svelte/reactivity'
-import { applyGeomStat } from './lib/plot/stat.js'
 import {
 	inferFieldType,
 	inferOrientation,
@@ -9,17 +7,15 @@ import {
 	inferColorScaleType
 } from './lib/plot/scales.js'
 import { PlotConfig, DEFAULT_MARGIN } from './state/PlotConfig.svelte.js'
+import { GeomRegistry } from './state/GeomRegistry.svelte.js'
 import { distinct, assignColors, isLiteralColor, buildSequentialScale, buildDivergingScale } from './lib/brewing/colors.js'
 import { assignPatterns } from './lib/brewing/patterns.js'
 import { assignSymbols } from './lib/brewing/marks/points.js'
-
-let nextId = 0
 
 // Geoms that treat the x channel as categorical (band scale), even for numeric x.
 const CATEGORICAL_X = new Set(['bar', 'box', 'violin', 'jitter'])
 
 export class PlotState {
-	#geoms = $state([])
 	#hovered = $state(null)
 	#selected = $state(new SvelteSet())
 	#zoomTransform = $state(null)
@@ -55,7 +51,7 @@ export class PlotState {
 		}
 		addField(this.config.channels.color)
 		addField(this.config.channels.fill)
-		for (const g of this.#geoms) {
+		for (const g of this.geoms.list) {
 			addField(g.channels?.color)
 			addField(g.channels?.fill)
 		}
@@ -72,13 +68,13 @@ export class PlotState {
 
 	#effectiveChannels = $derived.by(() => {
 		const tc = this.config.channels
-		const firstGeom = this.#geoms[0]
+		const firstGeom = this.geoms.first
 		if (!firstGeom) return tc
 		return this.#mergeGeomChannels(tc, firstGeom)
 	})
 
 	#resolveXType(rawXType, yType) {
-		const hasBandGeom = this.#geoms.some((g) => CATEGORICAL_X.has(g.type))
+		const hasBandGeom = this.geoms.list.some((g) => CATEGORICAL_X.has(g.type))
 		return hasBandGeom && rawXType === 'continuous' && yType === 'continuous' ? 'band' : rawXType
 	}
 
@@ -163,14 +159,14 @@ export class PlotState {
 		const field = this.#effectiveChannels.x
 		if (!field) return null
 		const datasets =
-			this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.config.data]
+			this.geoms.list.length > 0 ? this.geoms.list.map((g) => this.geomData(g.id)) : [this.config.data]
 		// includeZero applies to the VALUE axis. When flipped, x is the category axis, not
 		// the value axis, so it must NOT include zero.
 		const includeZero = this.orientation === 'horizontal' && !this.#flipped
 		// Force scaleBand when x is the categorical axis (incl. flipped, where numeric categories
 		// must stay a band). Exception: a CONTINUOUS category axis (a bar race's tweened rank) is
 		// kept LINEAR so fractional positions tween smoothly — buildBars positions it directly.
-		const hasBandGeom = this.#geoms.some((g) => CATEGORICAL_X.has(g.type))
+		const hasBandGeom = this.geoms.list.some((g) => CATEGORICAL_X.has(g.type))
 		const bandX =
 			hasBandGeom &&
 			!this.config.continuousCategory &&
@@ -196,7 +192,7 @@ export class PlotState {
 
 	// For box/violin geoms, compute y domain from iqr_min/iqr_max instead of raw y values.
 	#resolveBoxDomain() {
-		const boxGeom = this.#geoms.find((g) => g.type === 'box' || g.type === 'violin')
+		const boxGeom = this.geoms.find((g) => g.type === 'box' || g.type === 'violin')
 		if (!boxGeom) return null
 		const boxData = this.geomData(boxGeom.id)
 		const isValid = (v) => v !== null && v !== undefined && !isNaN(v)
@@ -208,7 +204,7 @@ export class PlotState {
 
 	// For stacked bars, compute y domain from per-x column totals.
 	#resolveStackDomain(field) {
-		const stackGeom = this.#geoms.find(
+		const stackGeom = this.geoms.find(
 			(g) => g.options?.stack || g.options?.position === 'stack' || g.options?.position === 'fill'
 		)
 		if (!stackGeom) return null
@@ -255,7 +251,7 @@ export class PlotState {
 	// Waterfall bars sit at the RUNNING TOTAL, not the per-step value — so the y-domain must
 	// span the cumulative range, else bars overflow the axis. Mirrors buildWaterfallMarks.
 	#resolveWaterfallDomain(field) {
-		const geom = this.#geoms.find((g) => g.type === 'waterfall')
+		const geom = this.geoms.find((g) => g.type === 'waterfall')
 		if (!geom) return null
 		const data = this.geomData(geom.id)
 		if (data.length === 0) return null
@@ -281,7 +277,7 @@ export class PlotState {
 		const field = this.#effectiveChannels.y
 		if (!field) return null
 		const datasets =
-			this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.config.data]
+			this.geoms.list.length > 0 ? this.geoms.list.map((g) => this.geomData(g.id)) : [this.config.data]
 		// includeZero applies to the VALUE axis: vertical charts (value on y) and flipped
 		// charts (value still y, but now the horizontal screen axis) both want a 0 baseline.
 		const includeZero = this.orientation === 'vertical' || this.#flipped
@@ -345,7 +341,9 @@ export class PlotState {
 	symbolField = $derived(this.#effectiveChannels.symbol)
 
 	// Set of geom types currently registered (used by Legend to pick swatch style)
-	geomTypes = $derived(new SvelteSet(this.#geoms.map((g) => g.type)))
+	get geomTypes() {
+		return this.geoms.types
+	}
 
 	xAxisY = $derived.by(() => {
 		if (!this.yScale || typeof this.yScale !== 'function') return this.#innerHeight
@@ -381,8 +379,12 @@ export class PlotState {
 	/** The plot's inputs. The only thing `update()` writes. */
 	config
 
+	/** The mounted geoms and the rows each draws. */
+	geoms
+
 	constructor(config = {}) {
 		this.config = new PlotConfig(config)
+		this.geoms = new GeomRegistry(this.config, 'geom')
 		if (config.selected) this.#selected = new SvelteSet(config.selected)
 	}
 
@@ -399,35 +401,16 @@ export class PlotState {
 	}
 
 	registerGeom(config) {
-		const id = `geom-${nextId++}`
-		this.#geoms = [...this.#geoms, { id, ...config }]
-		return id
+		return this.geoms.register(config)
 	}
-
 	updateGeom(id, config) {
-		// untrack the read of #geoms to avoid effect_update_depth_exceeded when
-		// called from a geom's $effect (which would otherwise track #geoms as a dependency)
-		this.#geoms = untrack(() => this.#geoms).map((g) => (g.id === id ? { ...g, ...config } : g))
+		this.geoms.update(id, config)
 	}
-
 	unregisterGeom(id) {
-		this.#geoms = this.#geoms.filter((g) => g.id !== id)
+		this.geoms.unregister(id)
 	}
-
 	geomData(id) {
-		const geom = this.#geoms.find((g) => g.id === id)
-		if (!geom) return []
-		const stat = geom.stat ?? 'identity'
-		if (stat === 'identity') return this.config.data
-		// Strip explicit `undefined` values before spreading: a geom that omits a channel
-		// to inherit it from the container sends `{ x: undefined }`, not `{}`, which would
-		// otherwise become an own property that clobbers the container's value below (see
-		// SparkState.geomData for the fuller writeup — same bug, same fix, both classes).
-		const geomChannels = Object.fromEntries(
-			Object.entries(geom.channels ?? {}).filter(([, v]) => v !== undefined)
-		)
-		const mergedChannels = { ...this.config.channels, ...geomChannels }
-		return applyGeomStat(this.config.data, { stat, channels: mergedChannels }, this.config.helpers)
+		return this.geoms.data(id)
 	}
 
 	label(field) {

@@ -1,11 +1,8 @@
-import { untrack } from 'svelte'
 import { buildUnifiedXScale, buildUnifiedYScale } from './lib/plot/scales.js'
 import { defaultPreset } from './lib/preset.js'
-import { applyGeomStat } from './lib/plot/stat.js'
+import { GeomRegistry } from './state/GeomRegistry.svelte.js'
 import { distinct, assignColors } from './lib/brewing/colors.js'
 import { PATTERNS } from './patterns/patterns.js'
-
-let nextGeomId = 0
 
 /**
  * The full set of members a geom reads off its `'plot-state'` context — derived by
@@ -117,7 +114,6 @@ export class SparkState {
 	#max = $state(undefined)
 	#baseline = $state(undefined)
 	#pattern = $state(undefined)
-	#geoms = $state([])
 
 	// Mirrors Sparkline's current yMin/yMax logic: an explicit min/max wins; otherwise
 	// the domain is the raw data extent, widened to include the baseline when one is
@@ -167,7 +163,12 @@ export class SparkState {
 		return assignColors(values, 'light', defaultPreset)
 	})
 
+	#registry
+
 	constructor(config = {}) {
+		// The registry reads rows and container channels live, through this state's own
+		// `data` / `channels` getters.
+		this.#registry = new GeomRegistry(this, 'spark-geom')
 		this.update(config)
 	}
 
@@ -284,48 +285,17 @@ export class SparkState {
 	clearHovered() {}
 	handleSelect() {}
 
-	// Mirrors PlotState.registerGeom at smaller scope: GeomState.register() (called
-	// from a geom's onMount) calls this once per mounted geom and keeps the returned id.
+	// The same registry PlotState composes — one lifecycle, so a fix to it lands in both.
 	registerGeom(config) {
-		const id = `spark-geom-${nextGeomId++}`
-		this.#geoms = [...this.#geoms, { id, ...config }]
-		return id
+		return this.#registry.register(config)
 	}
-
-	// untrack the read of #geoms, same as PlotState: GeomState.sync() calls this from
-	// a geom's `$effect`, which would otherwise track #geoms as a dependency and retrigger
-	// itself on every update (effect_update_depth_exceeded).
 	updateGeom(id, config) {
-		this.#geoms = untrack(() => this.#geoms).map((g) => (g.id === id ? { ...g, ...config } : g))
+		this.#registry.update(id, config)
 	}
-
-	// No untrack needed here (unlike updateGeom above): this only ever runs from a geom's
-	// onDestroy, which Svelte always executes outside any reactive tracking scope — there's
-	// no enclosing effect for a #geoms read to register against, so no self-retrigger risk
-	// exists. Mirrors PlotState.unregisterGeom, which is untrack-free for the same reason.
 	unregisterGeom(id) {
-		this.#geoms = this.#geoms.filter((g) => g.id !== id)
+		this.#registry.unregister(id)
 	}
-
-	// Identity stat returns `this.#data` itself, not a copy — geoms look up rows via
-	// `plotState.data.indexOf(row)` (see e.g. Line.svelte's selectPoint), which only
-	// works if geomData's rows are the exact same object instances as `data`.
 	geomData(id) {
-		const geom = this.#geoms.find((g) => g.id === id)
-		if (!geom) return []
-		const stat = geom.stat ?? 'identity'
-		if (stat === 'identity') return this.#data
-		// Strip explicit `undefined` values before spreading: geom components always pass
-		// every channel key (e.g. Line.svelte's `channels: { x, y, color, fill, symbol }`),
-		// so a geom that omits x/y to inherit them from the container sends
-		// `{ x: undefined, y: undefined }`, not `{}`. Left unstripped, that `undefined`
-		// becomes an own property that overrides the container's value in the spread below,
-		// silently clobbering an inherited channel (applyGeomStat's primary-key lookup then
-		// finds nothing and falls back to identity with no warning).
-		const geomChannels = Object.fromEntries(
-			Object.entries(geom.channels ?? {}).filter(([, v]) => v !== undefined)
-		)
-		const mergedChannels = { ...this.#channels, ...geomChannels }
-		return applyGeomStat(this.#data, { stat, channels: mergedChannels })
+		return this.#registry.data(id)
 	}
 }
