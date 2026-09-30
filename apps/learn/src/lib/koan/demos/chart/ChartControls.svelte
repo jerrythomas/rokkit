@@ -50,6 +50,12 @@
 		{#if explorer.applies('alpha')}
 			<div class="row"><span>Opacity</span><input type="range" min="0.1" max="1" step="0.1" value={s.alpha ?? 1} oninput={(e) => explorer.set('alpha', Number(e.currentTarget.value))} /></div>
 		{/if}
+		{#if explorer.applies('hull')}
+			<label class="row check"><input type="checkbox" checked={s.hull} onchange={(e) => explorer.set('hull', e.currentTarget.checked)} /><span>Outline each package</span></label>
+		{/if}
+		{#if explorer.applies('contour')}
+			<label class="row check"><input type="checkbox" checked={s.contour} onchange={(e) => explorer.set('contour', e.currentTarget.checked)} /><span>{explorer.type === 'contour' ? 'Filled bands' : 'Density contours'}</span></label>
+		{/if}
 		{#if explorer.applies('legend')}
 			<label class="row check"><input type="checkbox" checked={s.legend} onchange={(e) => explorer.set('legend', e.currentTarget.checked)} /><span>Show legend</span></label>
 		{/if}

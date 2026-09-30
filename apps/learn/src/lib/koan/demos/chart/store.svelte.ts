@@ -10,6 +10,10 @@ export type Settings = {
 	legend: boolean
 	innerRadius: number
 	size: string
+	/** Architecture recipes / Hull: outline each package. */
+	hull: boolean
+	/** Contour: filled bands; Architecture recipes: overlay density contours. */
+	contour: boolean
 }
 
 const BASE_SETTINGS: Settings = {
@@ -21,7 +25,9 @@ const BASE_SETTINGS: Settings = {
 	alpha: undefined,
 	legend: false,
 	innerRadius: 0,
-	size: ''
+	size: '',
+	hull: false,
+	contour: false
 }
 
 /**
@@ -57,7 +63,11 @@ const DATASET_CONTEXT: Record<string, string> = {
 	points: 'a dense 2-D point cloud',
 	ohlc: 'open/high/low/close prices over 12 sessions',
 	waterfall: 'a running total built up step by step',
-	flows: 'flows between source and target groups'
+	flows: 'flows between source and target groups',
+	clusters: 'two separated point clouds',
+	components: "rokkit's own components — instability against abstractness, measured from this repo",
+	modules: "rokkit's own source modules, measured from this repo",
+	covered: "rokkit's own source modules that have executable statements, with their test coverage"
 }
 
 /** What each position mode does to how the chart reads. */
@@ -129,7 +139,9 @@ export class ChartExplorerStore {
 			['orientation', s.orientation === 'horizontal', 'Bars run horizontally.'],
 			['pattern', Boolean(s.pattern), 'Fills use textured patterns.'],
 			['innerRadius', Boolean(s.innerRadius), 'The centre is cut out into a donut.'],
-			['legend', Boolean(s.legend), 'A colour legend is shown.']
+			['legend', Boolean(s.legend), 'A colour legend is shown.'],
+			['hull', Boolean(s.hull), 'Each package is outlined by its hull.'],
+			['contour', Boolean(s.contour), 'Density contours show where points pile up.']
 		]
 		return flags.filter(([setting, on]) => on && this.applies(setting)).map(([, , copy]) => copy)
 	}

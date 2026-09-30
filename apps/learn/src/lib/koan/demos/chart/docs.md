@@ -1,4 +1,4 @@
-## Data-driven charts — one family, nine shapes
+## Data-driven charts — one family, many shapes
 
 The `@rokkit/chart` package ships nine chart components that all
 follow the same data-first contract: pass an array of rows, name
@@ -63,6 +63,38 @@ Colours come from the active theme palette by default — the same
 power every other Rokkit component. Pass a `palette` array of CSS
 colour strings to override for a specific chart (e.g. brand-aligned
 report).
+
+## Annotating the plane — Rule, Region, Hull, Contour
+
+Four primitives describe the metric plane rather than any one row. Put them **before** the
+marks they sit behind — SVG paints in document order.
+
+| Primitive | Draws |
+| --- | --- |
+| `Plot.Rule` | reference lines: `x` / `y` values, or `slope` + `intercept` (clipped to the plot) |
+| `Plot.Region` | a shaded band (`x` / `y` as `[lo, hi]`; `null` runs to the axis edge) or a polygon (`points`) in data coordinates, with a label |
+| `Plot.Hull` | the convex hull of each group of the `fill` / `color` field, padded clear of its points |
+| `Plot.Contour` | kernel-density contours per group — rings, or `filled` bands |
+
+A region reads no data and never moves the scales, so when the theory — not the rows —
+defines the frame, fix it: `<PlotChart xDomain={[0, 1]} yDomain={[0, 1]}>`.
+
+## Architecture analysis
+
+The **Architecture** group composes those primitives over real metrics measured from this
+repo (`apps/learn/scripts/build-architecture-metrics.mjs`), so every dot is a rokkit component
+or module:
+
+- **Main sequence** — Robert Martin's instability × abstractness. The line `A + I = 1` is a
+  sloped `Rule`; the zones of pain and uselessness are `Region` polygons; hulls outline each
+  package; contours show the pile-up on the `A = 0` edge.
+- **Hotspots** — complexity × churn. Code that is complex *and* keeps changing is where
+  refactoring pays back.
+- **Complexity × coverage** — the complex, under-tested corner.
+- **Fan-in × fan-out** — hubs everyone leans on, and modules that reach everywhere.
+- **God modules** — past the 95th percentile on both complexity and fan-out.
+
+The thresholds are percentiles of the codebase itself — what counts as complex is relative.
 
 ## When to reach for `Plot` instead
 

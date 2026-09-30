@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { PlotChart, FacetPlot, AnimatedPlot, Plot } from '@rokkit/chart'
+	import ArchitectureChart from './ArchitectureChart.svelte'
 	import { explorer } from './store.svelte'
 	import { datasets } from './datasets'
 
@@ -22,7 +23,9 @@
 
 	<div class="chart" data-plot-explorer-chart>
 		{#key explorer.type}
-			{#if explorer.type === 'facet'}
+			{#if config.group === 'Architecture'}
+				<ArchitectureChart />
+			{:else if explorer.type === 'facet'}
 				<FacetPlot {data} x={f.x} y={f.y} facet={{ by: 'class', cols: 3 }} width={640} height={460} legend={s.legend}>
 					<Plot.Point color={f.color || undefined} alpha={s.alpha} />
 				</FacetPlot>
@@ -76,6 +79,17 @@
 				{:else if explorer.type === 'rule'}
 					<Plot.Line x={f.x} y={f.y} alpha={s.alpha} />
 					<Plot.Rule y={[60, 85]} label="target" />
+				{:else if explorer.type === 'region'}
+					<!-- Regions first: SVG paints in order, so they sit behind the points. -->
+					<Plot.Region name="efficient" y={[30, null]} label="30+ mpg highway" />
+					<Plot.Region name="large" x={[4, null]} label="Large engines" />
+					<Plot.Point x={f.x} y={f.y} color={s.color || undefined} alpha={s.alpha} />
+				{:else if explorer.type === 'hull'}
+					<Plot.Hull x={f.x} y={f.y} color={f.color} label />
+					<Plot.Point x={f.x} y={f.y} color={f.color} alpha={s.alpha} />
+				{:else if explorer.type === 'contour'}
+					<Plot.Contour x={f.x} y={f.y} color={f.color} filled={s.contour} alpha={s.contour ? s.alpha : undefined} />
+					<Plot.Point x={f.x} y={f.y} color={f.color} alpha={0.35} options={{ radius: 2.5 }} />
 				{/if}
 				</PlotChart>
 			{/if}

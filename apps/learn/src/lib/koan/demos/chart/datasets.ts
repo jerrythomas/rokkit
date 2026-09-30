@@ -1,6 +1,9 @@
 // Deterministic sample datasets for the chart explorer (no RNG — stable across renders).
 // Each dataset is shaped for the chart types that consume it (see registry.ts).
 
+// Real metrics measured from this repo — see architecture.ts.
+import { components, modules, covered } from './architecture'
+
 /** Quarterly revenue across two products — Bar / Line / Area. */
 export const productSeries = [
 	{ quarter: 'Q1', product: 'Pro', revenue: 80 },
@@ -106,6 +109,18 @@ export const profiles = [
 	{ metric: 'Value', score: 7, team: 'Model B' }
 ]
 
+/** Two separated clouds, deterministic — enough rows for a density contour to find peaks. */
+export const clusters = Array.from({ length: 160 }, (_, i) => {
+	const group = i % 2 === 0 ? 'north' : 'south'
+	const t = i * 2.399963 // golden angle: spreads points evenly without RNG
+	const r = Math.sqrt((i % 80) + 1) * 1.1
+	return {
+		group,
+		x: (group === 'north' ? 30 : 68) + r * Math.cos(t),
+		y: (group === 'north' ? 70 : 32) + r * Math.sin(t)
+	}
+})
+
 export const datasets = {
 	productSeries,
 	segments,
@@ -116,6 +131,10 @@ export const datasets = {
 	ohlc,
 	waterfall,
 	flows,
-	profiles
+	profiles,
+	clusters,
+	components,
+	modules,
+	covered
 }
 export type DatasetKey = keyof typeof datasets

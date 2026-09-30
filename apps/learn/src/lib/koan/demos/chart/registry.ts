@@ -11,6 +11,8 @@ export type Setting =
 	| 'legend'
 	| 'innerRadius'
 	| 'size'
+	| 'hull'
+	| 'contour'
 
 /**
  * A chart type's purpose group. Every type is a geom (geom_bar, geom_line,
@@ -27,6 +29,7 @@ export type ChartGroup =
 	| 'Flow'
 	| 'Reference'
 	| 'Composition'
+	| 'Architecture'
 
 /** A leading guidance nudge — one tap either switches `to` a type or `set`s settings. */
 export type Tip = { text: string; to?: string; set?: Record<string, unknown> }
@@ -46,6 +49,8 @@ export type ChartTypeConfig = {
 	tips: Tip[]
 	/** Data-coordinate axis crossing `[x, y]` for quadrant charts (BCG/risk matrices). */
 	axisOrigin?: [number, number]
+	/** What the axes measure, in words — the Architecture recipes read as nonsense without it. */
+	axes?: { x: string; y: string }
 }
 
 export const registry: Record<string, ChartTypeConfig> = {
@@ -199,6 +204,93 @@ export const registry: Record<string, ChartTypeConfig> = {
 		defaults: {},
 		tips: [{ text: 'Reference lines mark thresholds or targets' }]
 	},
+	region: {
+		id: 'region', label: 'Region', group: 'Reference', dataset: 'cars',
+		fields: { x: 'displ', y: 'hwy', color: 'class' },
+		applies: ['alpha', 'legend'],
+		defaults: { alpha: 0.9 },
+		tips: [
+			{ text: 'A region is a statement about the plane, not a row — it reads no data' },
+			{ text: 'See regions do real work on the main-sequence diagram', to: 'main-sequence' }
+		]
+	},
+	hull: {
+		id: 'hull', label: 'Hull', group: 'Relationship', dataset: 'cars',
+		fields: { x: 'displ', y: 'hwy', color: 'class' },
+		applies: ['alpha', 'legend'],
+		defaults: { legend: true, alpha: 0.9 },
+		tips: [
+			{ text: 'A hull outlines each group — how spread out is each class?' },
+			{ text: 'Hulls per package on real code: the main sequence', to: 'main-sequence' }
+		]
+	},
+	contour: {
+		id: 'contour', label: 'Contour', group: 'Distribution', dataset: 'clusters',
+		fields: { x: 'x', y: 'y', color: 'group' },
+		applies: ['alpha', 'legend', 'contour'],
+		defaults: { alpha: 0.7, legend: true },
+		tips: [
+			{ text: 'Rings show where points pile up; toggle filled bands', set: { contour: true } },
+			{ text: 'Prefer binned cells? Try a hexbin', to: 'hexbin' }
+		]
+	},
+	'main-sequence': {
+		id: 'main-sequence', label: 'Main sequence', group: 'Architecture', dataset: 'components',
+		fields: { x: 'instability', y: 'abstractness', color: 'package', size: 'loc' },
+		axes: { x: 'Instability  I = Ce / (Ca + Ce)', y: 'Abstractness  A' },
+		applies: ['alpha', 'legend', 'hull', 'contour'],
+		defaults: { alpha: 0.85 },
+		tips: [
+			{ text: 'Near (0,0) is the zone of pain: concrete, and everything depends on it' },
+			{ text: 'Outline each package — how far do its components spread?', set: { hull: true } },
+			{ text: 'Show where components pile up', set: { contour: true } },
+			{ text: 'Which of those components change most? See hotspots', to: 'hotspots' }
+		]
+	},
+	hotspots: {
+		id: 'hotspots', label: 'Hotspots', group: 'Architecture', dataset: 'modules',
+		fields: { x: 'complexity', y: 'churn', color: 'package', size: 'loc' },
+		axes: { x: 'Complexity (decision points)', y: 'Churn (commits)' },
+		applies: ['alpha', 'legend', 'contour'],
+		defaults: { alpha: 0.7 },
+		tips: [
+			{ text: 'Top-right is complex AND changing — where refactoring pays back' },
+			{ text: 'Is the complex code tested?', to: 'coverage' }
+		]
+	},
+	coverage: {
+		id: 'coverage', label: 'Complexity × coverage', group: 'Architecture', dataset: 'covered',
+		fields: { x: 'complexity', y: 'coverage', color: 'package' },
+		axes: { x: 'Complexity (decision points)', y: 'Statement coverage' },
+		applies: ['alpha', 'legend'],
+		defaults: { alpha: 0.7 },
+		tips: [
+			{ text: 'Bottom-right is complex and under-tested — the risky corner' },
+			{ text: 'Where does the complexity come from? Check coupling', to: 'coupling' }
+		]
+	},
+	coupling: {
+		id: 'coupling', label: 'Fan-in × fan-out', group: 'Architecture', dataset: 'modules',
+		fields: { x: 'fanOut', y: 'fanIn', color: 'package' },
+		axes: { x: 'Fan-out (imports)', y: 'Fan-in (imported by)' },
+		applies: ['alpha', 'legend', 'contour'],
+		defaults: { alpha: 0.7 },
+		tips: [
+			{ text: 'High fan-in is a hub everyone leans on; high fan-out reaches everywhere' },
+			{ text: 'Combine with complexity to find god modules', to: 'smells' }
+		]
+	},
+	smells: {
+		id: 'smells', label: 'God modules', group: 'Architecture', dataset: 'modules',
+		fields: { x: 'complexity', y: 'fanOut', color: 'package', size: 'loc' },
+		axes: { x: 'Complexity (decision points)', y: 'Fan-out (imports)' },
+		applies: ['alpha', 'legend'],
+		defaults: { alpha: 0.7 },
+		tips: [
+			{ text: 'A god module is complex AND reaches into everything — both past p95' },
+			{ text: 'Back to the component-level view', to: 'main-sequence' }
+		]
+	},
 	facet: {
 		id: 'facet', label: 'Facet', group: 'Composition', dataset: 'cars',
 		fields: { x: 'displ', y: 'hwy', color: 'drv' },
@@ -231,5 +323,6 @@ export const chartGroups: ChartGroup[] = [
 	'Financial',
 	'Flow',
 	'Reference',
-	'Composition'
+	'Composition',
+	'Architecture'
 ]

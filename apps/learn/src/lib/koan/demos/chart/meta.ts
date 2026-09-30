@@ -4,14 +4,18 @@ const meta: DemoMeta = {
 	id: 'chart',
 	title: 'Charts',
 	description:
-		'Interactive chart explorer — pick from 15 chart types (bar, line, area, pie, radar, scatter, bubble, box, violin + heatmap, hexbin, candlestick, waterfall, ribbon, rule) and tweak orientation, position (stack/dodge/fill), color/fill, pattern and opacity live, with guided suggestions.',
+		'Interactive chart explorer — bar, line, area, pie, radar, scatter, bubble, quadrant, box, violin, heatmap, hexbin, contour, candlestick, waterfall, ribbon, rule, region and hull, plus Architecture recipes over metrics measured from this repo: Robert Martin’s main sequence, hotspots, complexity × coverage, fan-in × fan-out and god modules. Tweak orientation, position, colour, pattern, hulls, contours and opacity live, with guided suggestions.',
 	keywords: [
 		'chart', 'charts', 'plot', 'plots',
 		'visualization', 'viz', 'analytics', 'data', 'metrics', 'svg',
 		'bar', 'bar-chart', 'line', 'line-chart', 'area', 'area-chart',
 		'pie', 'pie-chart', 'scatter', 'scatter-plot', 'bubble', 'bubble-chart',
 		'box', 'box-plot', 'violin', 'violin-plot',
-		'trends', 'distribution', 'kpi'
+		'trends', 'distribution', 'kpi',
+		'region', 'hull', 'contour', 'density', 'abline', 'reference-line',
+		'architecture', 'main-sequence', 'instability', 'abstractness', 'zone-of-pain',
+		'hotspots', 'churn', 'complexity', 'coverage', 'coupling', 'fan-in', 'fan-out',
+		'code-smells', 'god-module', 'codebase-analysis'
 	],
 	category: 'data',
 	icon: '図',
@@ -21,7 +25,7 @@ const meta: DemoMeta = {
 		description:
 			'Mount the interactive chart explorer on the canvas — the user picks a chart type and tweaks its settings live. Pass `type` to open a specific chart (e.g. "violin", "bar").',
 		parameters: {
-			type: 'optional chart type to open: bar | line | area | pie | scatter | bubble | box | violin | heatmap | hexbin | candlestick | waterfall | ribbon | rule (defaults to bar)'
+			type: 'optional chart type to open: bar | line | area | pie | scatter | bubble | quadrant | box | violin | heatmap | hexbin | contour | candlestick | waterfall | ribbon | radar | rule | region | hull | facet | animated | main-sequence | hotspots | coverage | coupling | smells (defaults to bar)'
 		}
 	},
 	inline: { capable: true },
@@ -63,7 +67,11 @@ const meta: DemoMeta = {
 			{ selector: '[data-plot-grid-line="x"|"y"]', desc: 'Grid line, per orientation — theme via --chart-grid-{color,width,dash,opacity}' },
 			{ selector: '[data-plot-trend]', desc: 'Trend/reference line (data-plot-trend="<method>") — theme via --chart-trend-{color,width,dash,opacity}' },
 			{ selector: '[data-plot-highlight]', desc: 'Highlighted observation marker — theme via --chart-highlight-{color,radius,ring}' },
-			{ selector: '[data-plot-selected="true"]', desc: 'A selected (clicked) observation marker — theme via --chart-selected-{ring,ring-width,fill}' }
+			{ selector: '[data-plot-selected="true"]', desc: 'A selected (clicked) observation marker — theme via --chart-selected-{ring,ring-width,fill}' },
+			{ selector: '[data-plot-rule="x"|"y"|"slope"]', desc: 'Reference line kind — slope is the abline (slope + intercept), clipped to the visible domain' },
+			{ selector: '[data-plot-geom="region"][data-plot-region]', desc: 'A shaded region in data coordinates; data-plot-region carries its name — theme via --chart-region-{fill,opacity,label-color,label-size,label-opacity}' },
+			{ selector: '[data-plot-hull]', desc: 'One group’s convex hull (value = the group) — padded by a round-joined stroke; --chart-hull-label-{color,size}' },
+			{ selector: '[data-plot-contour][data-plot-contour-level]', desc: 'A density contour ring/band per group and level (0 = outermost) — --chart-contour-{color,width,opacity}' }
 		]
 	},
 	snippets: [
@@ -124,6 +132,37 @@ const meta: DemoMeta = {
 			title: 'ViolinPlot',
 			lang: 'svelte',
 			code: `<ViolinPlot {data} x="class" y="hwy" fill="drv" legend />`
+		},
+		{
+			id: 'main-sequence',
+			title: 'Main sequence (Martin)',
+			lang: 'svelte',
+			code: `<script>
+  import { PlotChart, Plot } from '@rokkit/chart'
+  // one row per component: instability I = Ce/(Ca+Ce), abstractness A
+  let { components } = $props()
+  const pain = [[0, 0], [0.5, 0], [0, 0.5]]
+  const useless = [[1, 1], [0.5, 1], [1, 0.5]]
+</script>
+
+<PlotChart data={components} xDomain={[0, 1]} yDomain={[0, 1]} legend tooltip>
+  <Plot.Region name="pain" points={pain} label="Zone of pain" />
+  <Plot.Region name="uselessness" points={useless} label="Zone of uselessness" />
+  <Plot.Hull x="instability" y="abstractness" color="package" />
+  <Plot.Rule slope={-1} intercept={1} label="main sequence" />
+  <Plot.Point x="instability" y="abstractness" color="package" size="loc" />
+</PlotChart>`
+		},
+		{
+			id: 'hotspots',
+			title: 'Hotspots — an open-ended Region',
+			lang: 'svelte',
+			code: `<PlotChart data={modules} tooltip>
+  <!-- null runs to the edge: "p95 and beyond" -->
+  <Plot.Region x={[p95.complexity, null]} y={[p95.churn, null]} label="Hotspots" />
+  <Plot.Contour x="complexity" y="churn" bandwidth={24} />
+  <Plot.Point x="complexity" y="churn" color="package" size="loc" />
+</PlotChart>`
 		},
 		{
 			id: 'sparkline',
