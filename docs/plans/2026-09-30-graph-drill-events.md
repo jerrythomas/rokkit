@@ -1,6 +1,7 @@
 # Graph drill-down / drill-up events (#165)
 
-**Status:** IMPLEMENT (2026-09-30). The user said to pick up the open issues from #165.
+**Status:** DONE (2026-09-30), `1a232ff5`..`182930e7` plus docs. See journal 2026-09-30 (12).
+The user said to pick up the open issues from #165.
 **Package:** `@rokkit/graph` · **Design:** `docs/design/24-world-view.md` Decision 3 (drill state), build step 4.
 
 ## The gap
@@ -61,3 +62,17 @@ These fill the gaps the design and the issue leave open.
 - Drilling up restores the previous level without a refetch if the host still has it (the
   host decides; the event carries the path).
 - `onselect` keeps meaning selection, distinct from drilling.
+
+## What building it changed
+
+- **The address is the DATA path.** `TreeNode.address` and `Cluster.path` never fold, and the
+  focus chain is kept unfolded. Without that, a host-loaded level rendered empty.
+- **Found by the e2e, invisible to jsdom:**
+  - a press on a box started a canvas pan, so boxes were neither drillable NOR selectable by
+    mouse;
+  - `clusterKey` collided on repeated names across branches;
+  - setters were undone by the next `apply()`;
+  - a diagram given a caller's state pushed a stale `focusPath` over the drill;
+  - a hovered drillable container covered its own children.
+- **The gesture for a container is a click, not a double-click.** A container isn't
+  selectable, so its click was free.

@@ -706,8 +706,9 @@ than in the geometry.
   dependency question is about whether `@rokkit/graph` should take `d3-hierarchy` as its
   first third-party runtime dependency — today it has none, and `dependencies.spec.js`
   enforces that. Deliberate decision, not an accident to drift into.
-- **Drill state on `GraphState`** — a focus stack with `drillInto`/`drillOut`, exposed as
-  breadcrumbs. This is state, so it stays testable without a renderer.
+- ~~**Drill state on `GraphState`**~~ — built for #165 (2026-09-30): `GraphDrill`, with
+  `ondrill` / `ondrillup` host events, a pending state and the `DrillBar`. See
+  24-world-view.md, Decision 3.
 - **A `value` field** for node weight, so a bubble is sized by declarations rather than by
   degree as `points` does today.
 

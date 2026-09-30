@@ -147,6 +147,19 @@ canvas zooms:
 
 Set `zoomable={false}` to turn all of that off, or bind `zoom` to drive it yourself.
 
+Zooming magnifies. **Drilling changes scope**, and it's what makes a very large tree
+readable. In the treemap, sunburst and structure views, click a box (or press Enter on it) to
+make it the whole canvas. The trail at the bottom climbs back.
+
+The component tells you with `ondrill(path, node)`, so the page never has to hold the whole
+tree. Load each level when the reader opens it, and return the promise: the canvas waits,
+dimmed, until it arrives. The **Treemap, per level** example does exactly this with the repo
+itself:
+
+```svelte
+<Treemap {nodes} {fields} bind:focusPath ondrill={(path) => load(path)} ondrillup={(path) => load(path)} />
+```
+
 ## Colour
 
 Two vocabularies, handled deliberately differently.

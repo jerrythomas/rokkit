@@ -86,6 +86,9 @@ note predicted.
 reference folds them, and so should we: a wrapper is not a level. Folding is a property of the
 tree build, so it is testable without geometry.
 
+Two exceptions since #165. A declared node is never a wrapper. And the containers on the current
+`focusPath` are never folded, because they are the scope the reader asked for (see Decision 3).
+
 ## Decision 2 — what it looks like
 
 The obvious reaches are circle packing and the radial family. Both are wrong here, for reasons
@@ -166,6 +169,28 @@ affordance that call methods and display `state.breadcrumbs`.
 
 `focus` is **not** reusable for this. It already means "centre on this node" and belongs to
 `neighborhood`; overloading it would make two layouts fight over one field.
+
+### Built (#165, 2026-09-30) — and what the design left open
+
+`state/GraphDrill.svelte.ts` holds the drill state; `drillPath` IS `focusPath`. What #165 added
+on top, and the decisions made building it:
+
+- **Events.** `ondrill(path, node)` / `ondrillup(path)`. A promise return makes the state
+  `pending` until it settles. Only the latest drill's settlement counts. A rejection, or a
+  handler that throws, restores the previous path and exposes `drillError`, because an empty
+  canvas would read as a broken level, not a failed load.
+- **The DATA path, not the display path.** Folding splices a wrapper's segment out of a box's
+  `path`, but a host loads by the path in its own data. So every tree node keeps its unfolded
+  `address`; `Cluster.path` and `focusPath` are addresses.
+- **The focus chain is never folded.** A host answering a drill sends ONE level: a crate's
+  modules, with nothing declaring the crate. Every container above them is then an undeclared
+  single-child wrapper, exactly what folding removes, so the focusPath naming them stopped
+  resolving and the new level rendered empty. `buildTree(model, { keep: focusPath })` keeps
+  the containers on that path.
+- **Gestures.** A drillable container is a real button ("Open …"). A leaf selects on click
+  and opens on double-click, or via the drill bar's *Open*. A leaf is drillable only when the
+  host loads levels. Only a layout that DECLARES `focusPath` drills.
+- **Drilling is not selecting**, as the `root` doc comment already drew the line.
 
 ## Decision 4 — the second measure (#164)
 

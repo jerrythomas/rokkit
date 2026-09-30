@@ -145,7 +145,7 @@ import {
 | `depth` | `1` | `neighborhood` only — how many hops out from the focus |
 | `sizeBy` | `'degree'` | `points` / `world` — the measure area encodes |
 | `sizeScale` | `'linear'` | `points` only — `log` for a measure spanning orders of magnitude |
-| `focusPath` | `[]` | `world` / `sunburst` — the subtree to render as the whole canvas |
+| `focusPath` | `[]` | `world` / `sunburst` / `structure` — the subtree drawn as the whole canvas (DATA path). Bindable: drilling moves it |
 | `levels` | `2` | `world` / `sunburst` — how many levels below the focus to materialise |
 | `radialMode` | `'tree'` | `radial` only — `tree` reads radius as depth, `dendrogram` pins leaves to the rim |
 | `bundleTension` | `0.85` | `structure` only — how hard edges are pulled onto the tree. 0 is a straight chord |
@@ -293,6 +293,45 @@ reversed — so a layered graph is lower-triangular and **a cell above the diago
 dependency against the grain**: a cycle, or a layer reaching up. It stays readable at sizes
 where a node-link drawing is a hairball; the drawing grows with the square of the node count,
 so aggregate to modules or components first.
+
+### Drilling (#165)
+
+`ondrill(path, node)` and `ondrillup(path)` tell you the reader opened or left a box. Return a
+promise while you load that level.
+
+```svelte
+<script>
+  import { Treemap } from '@rokkit/graph'
+  let nodes = $state(level0)          // what you have — never the whole tree
+  let focusPath = $state([])
+
+  async function ondrill(path, node) {  // node: the declared node there, or null
+    nodes = await fetchLevel(path)       // return the promise: the canvas shows it pending
+  }
+  function ondrillup(path) {
+    nodes = cache.get(path.join('/'))    // a level you still hold — no promise, no wait
+  }
+</script>
+
+<Treemap {nodes} {fields} bind:focusPath {ondrill} {ondrillup} controls />
+```
+
+- **`path` is the DATA path**: the `path` your nodes carry, which is what you load by. An
+  undeclared single-child wrapper folds out of the *picture*, but never out of the address a
+  drill reports.
+- **Send one level at a time.** The containers on the current `focusPath` are never folded,
+  so a level you load on its own (a crate's modules, with nothing declaring the crate) still
+  resolves.
+- **`bind:focusPath`, or omit it.** Drilling moves it; a plain, unbound prop is yours, and
+  re-rendering would put your old value back.
+- **Pending and failure.** A returned promise dims the old level (`data-graph-pending`,
+  `aria-busy`) and the drill bar says *Loading…*. Only the latest drill counts. A rejection,
+  or a handler that throws, restores the previous level and shows why (`role="alert"`).
+- **Drilling is not selecting.** `onselect` is not called, and the selection is left alone.
+- **Gestures.** Click a container, or press Enter / Space on it (it is a button,
+  "Open …"). A leaf selects on click and opens on double-click, or with the drill bar's
+  *Open* after Enter selects it. A leaf opens only if you handle `ondrill`: with no loader,
+  there is nothing below it to show.
 
 ```svelte
 <DependencyMatrix {nodes} {edges} {fields} groupBy="group" cell={14} bind:value />

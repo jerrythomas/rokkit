@@ -35,7 +35,7 @@ height** or it collapses.
 | `depth` | `number` | `1` | `neighborhood` only — how many hops out from the focus |
 | `sizeBy` | `string` | `'degree'` | `points` / `world` — the measure area encodes. `degree`, `weight`, or a `measures` key |
 | `sizeScale` | `'linear' \| 'log'` | `'linear'` | `points` only — how the measure maps onto area |
-| `focusPath` | `string[]` | `[]` | `world` / `sunburst` — the subtree to render as the whole canvas. Drilling, not zooming |
+| `focusPath` | `string[]` | `[]` | `world` / `sunburst` / `structure` — the subtree drawn as the whole canvas, as the DATA path. **Bindable**: drilling moves it |
 | `levels` | `number` | `2` | `world` / `sunburst` — how many levels below the focus to materialise |
 | `radialMode` | `'tree' \| 'dendrogram'` | `'tree'` | `radial` only — radius as depth, or every leaf on the rim |
 | `value` | `string \| null` | — | Selected node id. Input and output both |
@@ -47,6 +47,53 @@ height** or it collapses.
 | `label` | `string` | — | Accessible name. Derived from node/edge counts when omitted |
 | `icons` | `Record<string, string>` | — | Icon class per node kind and row badge, merged over `DEFAULT_ICONS` |
 | `onselect` | `(id: string \| null) => void` | — | Fires when a node is activated, and with `null` when the selection is cleared |
+| `ondrill` | `(path, node) => void \| Promise<void>` | — | The reader opened a box. `node` is the declared node at `path`, `null` for a synthesised container. Return a promise while you load that level |
+| `ondrillup` | `(path) => void \| Promise<void>` | — | The reader climbed out to `path`. Same promise contract |
+
+### Drilling — loading a large tree one level at a time
+
+`world`, `sunburst` and `structure` scope the canvas to `focusPath`. The reader drills by
+opening a box, and you hear about it, so a tree too large to load at once (a whole monorepo
+index) can be fetched level by level:
+
+```svelte
+<script>
+  import { Treemap } from '@rokkit/graph'
+  let nodes = $state(level0)          // what you have — never the whole tree
+  let focusPath = $state([])
+
+  async function ondrill(path, node) {  // node: the declared node there, or null
+    nodes = await fetchLevel(path)       // return the promise: the canvas shows it pending
+  }
+  function ondrillup(path) {
+    nodes = cache.get(path.join('/'))    // a level you still hold — no promise, no wait
+  }
+</script>
+
+<Treemap {nodes} {fields} bind:focusPath {ondrill} {ondrillup} controls />
+```
+
+- **`path` is the DATA path**: the `path` your nodes carry, which is what you load by. An
+  undeclared single-child wrapper folds out of the *picture*, but never out of the address a
+  drill reports.
+- **Send one level at a time.** The containers on the current `focusPath` are never folded,
+  so a level you load on its own (a crate's modules, with nothing declaring the crate) still
+  resolves.
+- **`bind:focusPath`, or omit it.** Drilling moves it; a plain, unbound prop is yours, and
+  re-rendering would put your old value back.
+- **Pending and failure.** A returned promise dims the old level (`data-graph-pending`,
+  `aria-busy`) and the drill bar says *Loading…*. Only the latest drill counts. A rejection,
+  or a handler that throws, restores the previous level and shows why (`role="alert"`).
+- **Drilling is not selecting.** `onselect` is not called, and the selection is left alone.
+- **Gestures.** Click a container, or press Enter / Space on it (it is a button,
+  "Open …"). A leaf selects on click and opens on double-click, or with the drill bar's
+  *Open* after Enter selects it. A leaf opens only if you handle `ondrill`: with no loader,
+  there is nothing below it to show.
+
+The state behind it (`GraphState`): `drillPath`, `breadcrumbs`, `canDrill(box)`,
+`drillInto(box)`, `drillOut(levels)`, `drillTo(ancestor)`, `pending`, `drillError`. Every
+containment box carries `path`, `leaf` and `declared` (the id of the node it is, leaf or
+container).
 
 **`mode` does not infer itself.** Left at `'light'` in a dark app, the group ramp resolves
 from the light ladder forever and every cluster keeps a pale fill — the canvas reads as light

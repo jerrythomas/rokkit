@@ -136,6 +136,23 @@ const er = toGraphInput(model, 'er')             // tables + refs
 const deps = toGraphInput(model, 'dependencies') // tables + entities, deps as edges
 ```
 
+## Drilling a tree too large to load
+
+`Treemap`, `Sunburst` and `StructureDiagram` draw the subtree at `focusPath`. The reader
+opens a box (a click, or Enter on it), and `ondrill(path, node)` tells you, so you can load that
+level on demand:
+
+```svelte
+<Treemap {nodes} {fields} bind:focusPath ondrill={(path) => load(path)} ondrillup={(path) => load(path)} />
+```
+
+- Return a promise while you fetch. The old level dims and the drill bar says *Loading…*. A
+  rejection returns to the previous level and says why.
+- `path` is the path in YOUR data. Send one level at a time: the containers on the focus path
+  are kept even when nothing declares them.
+- `bind:focusPath` (or omit it). An unbound prop is yours, and a re-render puts it back.
+- Drilling never selects. `onselect` is not called.
+
 ## Icons need a safelist
 
 The component picks a node's icon at runtime from its kind, so the class names never appear in
