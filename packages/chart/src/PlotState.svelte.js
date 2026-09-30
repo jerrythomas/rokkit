@@ -1,7 +1,6 @@
 import { SvelteMap, SvelteSet } from 'svelte/reactivity'
 import {
 	inferFieldType,
-	inferOrientation,
 	buildUnifiedXScale,
 	buildUnifiedYScale,
 	inferColorScaleType
@@ -9,23 +8,16 @@ import {
 import { PlotConfig } from './state/PlotConfig.svelte.js'
 import { PlotFrame } from './state/PlotFrame.svelte.js'
 import { ChannelState } from './state/ChannelState.svelte.js'
+import { OrientationState } from './state/OrientationState.svelte.js'
 import { GeomRegistry } from './state/GeomRegistry.svelte.js'
 import { distinct, assignColors, isLiteralColor, buildSequentialScale, buildDivergingScale } from './lib/brewing/colors.js'
 import { assignPatterns } from './lib/brewing/patterns.js'
 import { assignSymbols } from './lib/brewing/marks/points.js'
 
-// Geoms that treat the x channel as categorical (band scale), even for numeric x.
-const CATEGORICAL_X = new Set(['bar', 'box', 'violin', 'jitter'])
-
 export class PlotState {
 	#hovered = $state(null)
 	#selected = $state(new SvelteSet())
 	#zoomTransform = $state(null)
-
-	#resolveXType(rawXType, yType) {
-		const hasBandGeom = this.geoms.list.some((g) => CATEGORICAL_X.has(g.type))
-		return hasBandGeom && rawXType === 'continuous' && yType === 'continuous' ? 'band' : rawXType
-	}
 
 	// Category order sorted by aggregated value (sum of the value channel per category).
 	// Drives "sort bars by size" for the band axis + its ticks. Returns null when not sorting.
@@ -51,34 +43,9 @@ export class PlotState {
 		return [...totals.keys()].sort((a, b) => dir * ((totals.get(a) ?? 0) - (totals.get(b) ?? 0)))
 	}
 
-	orientation = $derived.by(() => {
-		if (this.config.orientation) return this.config.orientation
-		const xField = this.channelState.effective.x
-		const yField = this.channelState.effective.y
-		if (!xField || !yField) return 'none'
-		const rawXType = inferFieldType(this.config.data, xField)
-		const yType = inferFieldType(this.config.data, yField)
-		// Bar geoms treat numeric X as categorical (e.g. year on X → vertical bars).
-		return inferOrientation(this.#resolveXType(rawXType, yType), yType)
-	})
-
-	// True when the x-channel is the categorical (band) axis — a string category, or a numeric
-	// category a bar/box/violin/jitter geom bands (incl. a race's rank via continuousCategory).
-	// Only such charts flip; a plain scatter (both continuous, no banding geom) is false → the
-	// orientation is a no-op for the scales.
-	#bandIsX = $derived.by(() => {
-		const x = this.channelState.effective.x
-		const y = this.channelState.effective.y
-		if (!x || !y) return false
-		// Resolved type: a bar/box/violin/jitter geom bands a numeric x (e.g. year, week),
-		// so those NUMERIC categories are flippable too — not just string categories.
-		return this.#resolveXType(inferFieldType(this.config.data, x), inferFieldType(this.config.data, y)) === 'band'
-	})
-
-	// Flip = render a category-on-x chart horizontally: the category (x) axis stands up on the
-	// vertical screen and the value (y) axis runs along the horizontal screen. x/y channels are
-	// unchanged — only the screen mapping rotates.
-	#flipped = $derived(this.orientation === 'horizontal' && this.#bandIsX)
+	get orientation() {
+		return this.orientationState.orientation
+	}
 
 	colorScaleType = $derived.by(() => {
 		const field = this.channelState.effective.color
@@ -111,17 +78,17 @@ export class PlotState {
 			this.geoms.list.length > 0 ? this.geoms.list.map((g) => this.geomData(g.id)) : [this.config.data]
 		// includeZero applies to the VALUE axis. When flipped, x is the category axis, not
 		// the value axis, so it must NOT include zero.
-		const includeZero = this.orientation === 'horizontal' && !this.#flipped
+		const includeZero = this.orientation === 'horizontal' && !this.orientationState.flipped
 		// Force scaleBand when x is the categorical axis (incl. flipped, where numeric categories
 		// must stay a band). Exception: a CONTINUOUS category axis (a bar race's tweened rank) is
 		// kept LINEAR so fractional positions tween smoothly — buildBars positions it directly.
-		const hasBandGeom = this.geoms.list.some((g) => CATEGORICAL_X.has(g.type))
+		const hasBandGeom = this.orientationState.hasBandGeom
 		const bandX =
 			hasBandGeom &&
 			!this.config.continuousCategory &&
-			(this.orientation !== 'horizontal' || this.#flipped)
+			(this.orientation !== 'horizontal' || this.orientationState.flipped)
 		// Flip: the category (x) axis stands up on the vertical screen → range over height.
-		const range = this.#flipped ? [this.frame.innerHeight, 0] : undefined
+		const range = this.orientationState.flipped ? [this.frame.innerHeight, 0] : undefined
 		// Sort the band domain by aggregated value when requested (bars by size); an explicit
 		// xDomain override wins.
 		const domain = this.config.xDomain ?? (bandX ? this.#sortedBandDomain(datasets) : null) ?? undefined
@@ -229,14 +196,14 @@ export class PlotState {
 			this.geoms.list.length > 0 ? this.geoms.list.map((g) => this.geomData(g.id)) : [this.config.data]
 		// includeZero applies to the VALUE axis: vertical charts (value on y) and flipped
 		// charts (value still y, but now the horizontal screen axis) both want a 0 baseline.
-		const includeZero = this.orientation === 'vertical' || this.#flipped
+		const includeZero = this.orientation === 'vertical' || this.orientationState.flipped
 		const yDomain =
 			this.config.yDomain ??
 			this.#resolveBoxDomain() ??
 			this.#resolveStackDomain(field) ??
 			this.#resolveWaterfallDomain(field)
 		// Flip: the value (y) axis runs along the horizontal screen → range over width.
-		const range = this.#flipped ? [0, this.frame.innerWidth] : undefined
+		const range = this.orientationState.flipped ? [0, this.frame.innerWidth] : undefined
 		const base = buildUnifiedYScale(datasets, field, this.frame.innerHeight, { domain: yDomain, includeZero, range })
 		return this.#zoomTransform ? this.#zoomTransform.rescaleY(base) : base
 	})
@@ -337,12 +304,15 @@ export class PlotState {
 	frame
 	/** Which field feeds each aesthetic. (`channels` is the caller's raw map.) */
 	channelState
+	/** Which way the chart reads; `place()` maps channel space to screen. */
+	orientationState
 
 	constructor(config = {}) {
 		this.config = new PlotConfig(config)
 		this.geoms = new GeomRegistry(this.config, 'geom')
 		this.frame = new PlotFrame(this.config)
 		this.channelState = new ChannelState(this.config, this.geoms)
+		this.orientationState = new OrientationState(this.config, this.channelState, this.geoms)
 		if (config.selected) this.#selected = new SvelteSet(config.selected)
 	}
 
@@ -401,7 +371,7 @@ export class PlotState {
 	// True when the chart is rendered horizontally (category axis stood up on the
 	// vertical screen, value axis along the horizontal screen). x/y channels unchanged.
 	get isFlipped() {
-		return this.#flipped
+		return this.orientationState.flipped
 	}
 	// True when the category (x) axis is a continuous position scale (kept linear) rather than a
 	// band — a bar-chart race's tweened rank. buildBars uses continuous positioning for it.
@@ -412,15 +382,15 @@ export class PlotState {
 	// the two screen axes swap. Geoms compute u = xScale(d[x]), v = yScale(d[y]) then
 	// `const { x, y } = plotState.place(u, v)`.
 	place(u, v) {
-		return this.#flipped ? { x: v, y: u } : { x: u, y: v }
+		return this.orientationState.place(u, v)
 	}
 	// The categorical (band) scale and the continuous (value) scale, regardless of
 	// orientation — their ranges are already oriented to the correct screen axis.
 	get bandScale() {
-		return this.#bandIsX ? this.xScale : this.yScale
+		return this.orientationState.bandIsX ? this.xScale : this.yScale
 	}
 	get valueScale() {
-		return this.#bandIsX ? this.yScale : this.xScale
+		return this.orientationState.bandIsX ? this.yScale : this.xScale
 	}
 	get margin() {
 		return this.frame.margin
