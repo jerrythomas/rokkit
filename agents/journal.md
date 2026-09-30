@@ -9914,3 +9914,61 @@ in the checkpoint as the repo-wide refactor it is.
 
 7435 unit and 115 e2e green twice consecutively; lint/types 0/0; graph coverage
 gate passes; zero a11y compile warnings.
+
+---
+
+## 2026-09-30 — architecture-analysis primitives: chart annotations, overlay edges, the DSM
+
+Plan: `docs/plans/2026-09-30-architecture-analysis-primitives.md` (done). 20 commits,
+`7cb774e7..06ca843c`.
+
+**The question was "did we build Martin's zones diagram?" — no.** Nothing in chart or graph
+drew a metric plane. The gap was four primitives, not one chart: `Rule` could only draw
+axis-aligned lines, and nothing filled a data-coordinate polygon, outlined a group, or contoured
+density. Built those instead of a `MainSequenceChart`, so the package keeps no architecture
+vocabulary and the same parts draw hotspots, complexity × coverage, fan-in × fan-out and god
+modules.
+
+- `@rokkit/chart`: `Rule` `slope`/`intercept` (clipped in data space; midpoint label rotated along
+  the line), `Plot.Region` (bands with `null` open ends, polygons; reads no data, never moves the
+  scales), `Plot.Hull` (monotone chain, padded by a round-joined stroke under element opacity so
+  1- and 2-member groups draw — d3-polygon returns null for both), `Plot.Contour` (d3-contour,
+  bandwidth in px), `PlotChart` `xDomain`/`yDomain`, and the spec path rendering all four via a
+  new `GeomSpec.props`.
+- `@rokkit/graph`: overlay edges live in `model.overlays`, routed after the layout — never in
+  `model.edges`, so "never shapes the layout" is structural, not a convention every layout must
+  remember. Optional edge `weight` → `--edge-weight`. `DependencyMatrix` + pure `buildMatrix`:
+  providers first by reversing `rank`, groups as diagonal blocks, weighted edges count as weight.
+- learn: `build-architecture-metrics.mjs` measures rokkit itself — per-component Ca/Ce/I/A/D,
+  per-module complexity/churn/coverage/fan-in/fan-out, component imports, co-change pairs from
+  git. Chart explorer: Region/Hull/Contour demos + an Architecture group; graph demo: dependency
+  matrix + hidden coupling. `e2e/architecture.e2e.ts` (13 tests).
+
+**What rokkit's own data says.** `core` and `states` sit near the zone of pain (heavily depended
+on, concrete) — expected for a component library. 17 of 81 component dependencies sit above the
+DSM diagonal, inside `chart` and `forms`. 19 component pairs change together in focused commits
+with no import between them (`ui/components` ↔ `ui/types` 20 times).
+
+**Defects caught by LOOKING, which no test had:**
+
+- Hulls on by default stacked 18 packages' translucent fills over the zones — now opt-in.
+- The sloped rule's label sat at its end — a plot corner, under the densest points.
+- Contour rings spilled across the axes (Region clipped, Contour did not) — shared `PlotAreaClip`.
+- `flow` spread 40 components over ten columns and fit-to-container shrank the co-change
+  overlays to specks — hidden coupling moved to `points`.
+- p90 thresholds on heavy-tailed metrics: median fan-in is 1, p90 is 3, and the region shaded
+  most of the plot. p95 now, with a test that fewer than 10% of modules sit past each line.
+
+**Caught by gates:** `graph-meta.spec` (ten new theme attributes undocumented); the 100%
+statement gate on the new chart JS (which also flushed out `coord`/`groupRows` duplicated
+between Hull and Contour); spec geoms keyed by type, so two regions in one spec would have
+thrown `each_key_duplicate`. **Own mistakes:** a chart-only coverage run overwrote
+`coverage-final.json`, so the first generated dataset had coverage for chart files only;
+the first coverage run was reported green by a trailing `echo` while `coverage` had exited 1.
+
+Stale docs corrected on the way: geom tables missing five geoms, the chart feature spec listing
+shipped geoms and the whole spec layer as "Planned", graph guides claiming two/three layouts
+(eight ship), a "58 data attributes" count that was 81, no graph section in the inventory.
+
+Gates: `bun run coverage` 7575 tests / 468 files, every threshold met; lint 0/0; check:svelte
+0/0 across 7 projects; check:types clean; e2e 128/128 on a fresh build.

@@ -141,13 +141,30 @@ Extracted from dbd's ER viewer (#159), rebuilt data-first. Design: `docs/design/
   code, the theme comments and the docs all described working icons. Only a computed-style
   check in a real browser catches that — `spec/icons.spec.ts` now checks each name against
   the shipped collection.
+- **Overlays never enter `model.edges`.** Co-change / rule-violation edges live in
+  `model.overlays` and are routed after the layout. A flag every layout had to filter would be a
+  convention the next layout forgets; a separate list makes "never shapes the layout" structural.
+- **A DSM is not a layout.** `DependencyMatrix` reads the model and orders it (reversed `rank`);
+  it draws no `Graph` canvas, so registry specs that assert a layout must skip it.
 - **Measure fill, not just fit.** The `points` layout declared a canvas 64% empty (one spiral
   step sized by the largest dot; a circular cluster discards 21% of its bounding box), which
   presented as a zoom bug. Rounded rects shelf-packed fixed both.
 
+## @rokkit/chart — plane annotations
+
+- **An annotation reads no data and never moves the scales.** `Region` registers no geom; when
+  theory defines the frame (Martin's `[0,1]²`), fix it with `PlotChart` `xDomain`/`yDomain`.
+- **Annotations paint in document order** — place `Region`/`Hull`/`Contour` before the points.
+- **On the spec path, annotation geoms take ONLY `props`** — a Region's `x`/`y` are ranges, so
+  inheriting the spec's field names is wrong. Spec geoms are keyed by position, not type.
+- **Thresholds on code metrics: p95 of the codebase itself.** They are heavy-tailed; p90 of a
+  fan-in whose median is 1 is 3, which marks the ordinary as extreme.
+- **Look at the picture.** Hull-by-default mud, a label buried in a corner and contours spilling
+  over the axes all passed their tests; only screenshots found them.
+
 ## Current Status
 
-- Tests: 5798 passing (384 files)
+- Tests: 7575 passing (468 files) — 2026-09-30
 - Lint: **0 errors, 0 warnings** — enforced by `--max-warnings 0` in the root
   `lint` script, so any new warning fails the build
 - Phase: ProxyItem migration complete. All components use ProxyItem + ProxyTree + Wrapper stack. Ready for new features (Upload, Table phases, etc.)
