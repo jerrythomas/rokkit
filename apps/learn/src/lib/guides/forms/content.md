@@ -31,6 +31,21 @@ The renderer picks the right input per type: string → text,
 boolean → toggle, enum → radio / segmented, number → number,
 date → date picker.
 
+Required fields can also be declared the standard JSON Schema way,
+on the parent object. This works at any depth, and both forms mark
+the input `required` and fail validation when it is empty:
+
+```js
+const schema = {
+  type: 'object',
+  required: ['name', 'email'],
+  properties: {
+    name:  { type: 'string' },
+    email: { type: 'string', format: 'email' }
+  }
+}
+```
+
 ## Auto-derived schema
 
 Skip the schema and Rokkit infers one from the data:

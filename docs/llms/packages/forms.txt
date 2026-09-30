@@ -369,6 +369,20 @@ builder.isValid  // false
 builder.errors   // [{ path: 'name', state: 'error', text: '...' }, ...]
 ```
 
+Required fields can be declared the JSON Schema way, on the parent object, at any depth. Or say `required: true` on the field itself. Both are honoured, both mark the rendered input `required`, and an object's `required` list never makes the object itself required:
+
+```js
+const schema = {
+  type: 'object',
+  required: ['name'],
+  properties: {
+    name: { type: 'string' },
+    addr: { type: 'object', required: ['city'], properties: { city: { type: 'string' }, zip: { type: 'string' } } }
+  }
+}
+// validate() on {} → { name: …'is required', 'addr/city': …'is required' } — no error for addr or addr/zip
+```
+
 ### Validation Message Shape
 
 ```ts

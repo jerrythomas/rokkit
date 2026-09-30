@@ -196,7 +196,7 @@ const layout = {
 ## Validation
 
 ### Built-in Validators
-- `required` - Field must have value
+- `required` - Field must have value: `required: true` on the field, or JSON Schema's `required: ['field']` on its parent object
 - `minLength` / `maxLength` - String length
 - `min` / `max` - Numeric range
 - `pattern` - Regex matching

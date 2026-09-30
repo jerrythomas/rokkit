@@ -357,7 +357,11 @@ Custom renderers registered via the `renderers` prop extend this table. The cons
 
 Validation rules come from the schema. The `validateField` function in `validation.js` processes each rule in this order:
 
-1. **Required** — if `fieldSchema.required` and value is empty (`null`, `undefined`, or `''`), return an error.
+1. **Required** — if the field is required and its value is empty (`null`, `undefined`, or `''`), return an error. `requiredAt(schema, path)` in `schema.js` decides, for validation and the input's `required` prop alike. A field is required when either:
+   - its parent object lists it, the JSON Schema form (`{ type: 'object', required: ['city'], properties: { city } }`), at any depth; or
+   - it says `required: true` itself.
+
+   An object's own `required` array is its children's rule. It never makes the object itself required, which is why `validateField` checks `required === true`.
 2. **Type-specific rules** (only when the value is not empty):
    - `string`: `pattern` (regex), `minLength`, `maxLength`, `enum` membership
    - `number`/`integer`: numeric validity, integer check, `min`/`minimum`, `max`/`maximum`

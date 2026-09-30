@@ -86,9 +86,14 @@ form.isDirty // any field changed
 ```js
 import { validateField, validateAll, patterns } from '@rokkit/forms'
 
-const result = validateField(value, { required: true, pattern: patterns.email })
-// result → { state: 'error', text: 'Invalid email address' } | null
+const result = validateField('bad', { type: 'string', required: true, pattern: patterns.email }, 'Email')
+// result → { state: 'error', text: 'Email format is invalid' } — null when valid
+// Rules are checked per `type`: without one, only `required` applies.
 ```
+
+A field is required when it says `required: true`, or when its parent object lists it, the
+JSON Schema way (`{ type: 'object', required: ['email'], properties: { email } }`), at any depth.
+`validateAll` / `form.validate()` and the rendered input's `required` attribute honour both.
 
 ### Dependent lookups with createLookup
 
