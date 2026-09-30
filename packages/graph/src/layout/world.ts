@@ -116,7 +116,7 @@ function clusterOf(entry: Placed, groupIndex: number): Cluster {
 		ramp: entry.ramp,
 		nodeId: leaf?.id,
 		kind: leaf?.kind,
-		path: entry.tree.path,
+		path: entry.tree.address,
 		leaf: entry.tree.children.length === 0,
 		declared: entry.tree.node?.id,
 		list: entry.tree.children.map((c) => c.node).filter((n) => n !== undefined),
@@ -139,7 +139,7 @@ function clusterOf(entry: Placed, groupIndex: number): Cluster {
 export const world: LayoutFn = (model, options): LayoutResult => {
 	warnUnknownOptions(options, 'world')
 
-	const tree = buildTree(model, { measure: options.sizeBy ?? 'weight' })
+	const tree = buildTree(model, { measure: options.sizeBy ?? 'weight', keep: options.focusPath })
 	const root = findNode(tree, options.focusPath ?? [])
 	if (!root || root.children.length === 0) {
 		return { clusters: [], cards: {}, edges: [], size: { w: 0, h: 0 } }

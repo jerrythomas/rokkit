@@ -33,11 +33,11 @@ describe.each(['world', 'sunburst', 'structure'])('%s boxes carry their tree pat
 		expect(lexer?.leaf).toBe(false)
 	})
 
-	it('uses the TREE path — an undeclared single-child wrapper folds out of it', () => {
-		// `plan` is declared at dbd/core/apply/plan; `apply` holds nothing else and folds away,
-		// so the box — and the focusPath that drills into it — is dbd/core/plan.
+	it('is the DATA path — the address the host knows — even where a wrapper folded out of view', () => {
+		// `plan` is declared at dbd/core/apply/plan. `apply` holds nothing else and folds out of
+		// the picture, but a drill reports — and a host loads by — the path in its own data.
 		const plan = state(layout, { levels: 4 }).clusters.find((c) => c.name === 'plan')
-		if (layout !== 'structure') expect(plan?.path).toEqual(['dbd', 'core', 'plan'])
+		if (layout !== 'structure') expect(plan?.path).toEqual(['dbd', 'core', 'apply', 'plan'])
 	})
 
 	it('keeps paths absolute when the canvas is scoped by focusPath', () => {

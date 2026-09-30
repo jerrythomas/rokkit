@@ -31,6 +31,9 @@
 		arrows = true,
 		label = undefined,
 		onselect = undefined,
+		focusPath = $bindable([]),
+		ondrill = undefined,
+		ondrillup = undefined,
 		icons: userIcons = undefined,
 		class: className = ''
 	}: GraphProps = $props()
@@ -55,7 +58,13 @@
 		preset,
 		mode,
 		label,
-		onselect
+		onselect,
+		focusPath,
+		ondrill,
+		ondrillup,
+		// Drilling moves focusPath inside the state; keep the bindable prop in step, or the next
+		// update() would put the old value back.
+		onfocuspath: (path) => (focusPath = path)
 	})
 
 	// untrack: the constructor's initial read must not register as a dependency of whatever
@@ -176,6 +185,8 @@
 		data-graph-detail={detail}
 		data-graph-group-tint={graph.groupTint ? '' : undefined}
 		data-graph-panning={panning ? '' : undefined}
+		data-graph-pending={graph.pending ? '' : undefined}
+		aria-busy={graph.pending}
 		role="presentation"
 		bind:this={paper}
 		bind:clientWidth={vw}
@@ -249,6 +260,31 @@
 									event.preventDefault()
 									event.stopPropagation()
 									graph.select(cluster.nodeId!)
+								}}
+								ondblclick={(event: Event) => {
+									event.stopPropagation()
+									graph.drillInto(cluster)
+								}}><title>{caption}</title></path
+							>
+						{:else if graph.canDrill(cluster)}
+							<path
+								data-graph-wedge
+								data-graph-drillable
+								{...shared}
+								style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+								d={graph.wedgePath(cluster)}
+								role="button"
+								tabindex={0}
+								aria-label="Open {caption}"
+								onclick={(event: Event) => {
+									event.stopPropagation()
+									graph.drillInto(cluster)
+								}}
+								onkeydown={(event: KeyboardEvent) => {
+									if (event.key !== 'Enter' && event.key !== ' ') return
+									event.preventDefault()
+									event.stopPropagation()
+									graph.drillInto(cluster)
 								}}><title>{caption}</title></path
 							>
 						{:else}
@@ -288,6 +324,32 @@
 						onclick={(event) => {
 							event.stopPropagation()
 							graph.select(cluster.nodeId!)
+						}}
+						ondblclick={(event) => {
+							event.stopPropagation()
+							graph.drillInto(cluster)
+						}}
+					>
+						<span data-graph-cluster-label>{caption}</span>
+					</button>
+				{:else if graph.canDrill(cluster)}
+					<!-- A container that can be opened. Not selectable (it is a region, not a thing),
+					     so its click is free to mean "go in" — a real <button>, so Enter and Space
+					     open it too. -->
+					<button
+						type="button"
+						data-graph-cluster
+						data-graph-drillable
+						{...shared}
+						style:left="{cluster.x}px"
+						style:top="{cluster.y}px"
+						style:width="{cluster.w}px"
+						style:height="{cluster.h}px"
+						style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+						aria-label="Open {caption}"
+						onclick={(event) => {
+							event.stopPropagation()
+							graph.drillInto(cluster)
 						}}
 					>
 						<span data-graph-cluster-label>{caption}</span>

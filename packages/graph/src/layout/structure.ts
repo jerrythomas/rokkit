@@ -189,7 +189,7 @@ function band(node: TreeNode, ctx: BandCtx, index: number): Cluster {
 		parent: node.path.slice(0, -1).join('/'),
 		ramp: node.path[ctx.origin],
 		// A band is a container by construction — its leaves are the node cards on the rim.
-		path: node.path,
+		path: node.address,
 		leaf: false,
 		declared: node.node?.id,
 		count: node.children.length,
@@ -406,7 +406,7 @@ function dots(
 export const structure: LayoutFn = (model, options): LayoutResult => {
 	warnUnknownOptions(options, 'structure')
 
-	const tree = buildTree(model, { measure: options.sizeBy ?? 'weight' })
+	const tree = buildTree(model, { measure: options.sizeBy ?? 'weight', keep: options.focusPath })
 	const root = findNode(tree, options.focusPath ?? [])
 	if (!root || root.children.length === 0) {
 		return { clusters: [], cards: {}, edges: [], size: { w: 0, h: 0 } }

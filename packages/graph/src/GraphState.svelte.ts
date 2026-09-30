@@ -270,6 +270,24 @@ export class GraphState {
 	drillTo(path: string[]): boolean {
 		return this.drill.drillTo(path)
 	}
+	/**
+	 * The selected box, when it can be opened — what a drill bar's "Open" acts on. The keyboard
+	 * route into a leaf: Enter selects it, and this is the next step.
+	 */
+	get drillTarget(): Cluster | null {
+		const value = this.value
+		if (!value) return null
+		return this.clusters.find((c) => c.nodeId === value && this.canDrill(c)) ?? null
+	}
+	/** Whether a drill bar has anything to show: a trail, a load, a failure, or a box to open. */
+	get showsDrillBar(): boolean {
+		return (
+			this.drillPath.length > 0 ||
+			this.pending ||
+			this.drillError !== null ||
+			this.drillTarget !== null
+		)
+	}
 
 	/**
 	 * The more-row's text, or null when the card is hiding nothing and needs no control.

@@ -175,6 +175,15 @@ export type GraphProps = {
 	label?: string
 	/** Fires on selection AND on clear, where it receives `null`. */
 	onselect?: (id: string | null) => void
+	/**
+	 * The containment subtree drawn as the whole canvas (`world`, `sunburst`, `structure`).
+	 * Bindable: drilling moves it. `[]` is the root.
+	 */
+	focusPath?: string[]
+	/** The reader drilled into a box — see `GraphStateConfig.ondrill`. */
+	ondrill?: (path: string[], node: GraphNode | null) => void | Promise<void>
+	/** The reader drilled out — see `GraphStateConfig.ondrillup`. */
+	ondrillup?: (path: string[]) => void | Promise<void>
 	/** Icon class per node kind and row badge, merged over the built-in map. */
 	icons?: Record<string, string>
 	class?: string

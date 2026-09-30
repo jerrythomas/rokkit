@@ -15,10 +15,11 @@
 	import GraphLegend from '../GraphLegend.svelte'
 	import DiagramFrame from './DiagramFrame.svelte'
 	import DepthControl from '../controls/DepthControl.svelte'
+	import DrillBar from '../controls/DrillBar.svelte'
 	import BundleControl from '../controls/BundleControl.svelte'
 	import ZoomControl from '../controls/ZoomControl.svelte'
 	import { GraphState } from '../GraphState.svelte.js'
-	import type { GraphFields } from '../types.js'
+	import type { GraphFields, GraphNode } from '../types.js'
 	import type { GraphPreset } from '../preset.js'
 
 	type Props = {
@@ -44,6 +45,14 @@
 		mode?: 'light' | 'dark'
 		label?: string
 		onselect?: (id: string | null) => void
+		/**
+		 * The reader opened a box — `path` is the new `focusPath`, `node` the declared node there
+		 * (null for a synthesised container). Return a promise while you load that level; the
+		 * canvas shows it pending, and a rejection returns to the previous level.
+		 */
+		ondrill?: (path: string[], node: GraphNode | null) => void | Promise<void>
+		/** The reader climbed out; `path` is the new, shorter `focusPath`. */
+		ondrillup?: (path: string[]) => void | Promise<void>
 		class?: string
 	}
 
@@ -65,6 +74,8 @@
 		mode = 'light',
 		label = undefined,
 		onselect = undefined,
+		ondrill = undefined,
+		ondrillup = undefined,
 		class: className = ''
 	}: Props = $props()
 
@@ -84,7 +95,12 @@
 		preset,
 		mode,
 		label,
-		onselect
+		onselect,
+		ondrill,
+		ondrillup,
+		// Drilling moves focusPath inside the state; keep the bindable prop in step, or the next
+		// update() would put the old value back.
+		onfocuspath: (path: string[]) => (focusPath = path)
 	})
 
 	// svelte-ignore state_referenced_locally
@@ -111,9 +127,12 @@
      inside is always defined, so the frame would render an empty control bar over
      every diagram that asked for none. -->
 {#snippet controlBar()}
-	<DepthControl {levels} max={maxLevels} onchange={(v) => (levels = v)} />
-	<BundleControl {bundleTension} onchange={(v) => (bundleTension = v)} />
-	<ZoomControl {zoom} onchange={(v) => (zoom = v)} />
+	<DrillBar state={graph} />
+	{#if controls}
+		<DepthControl {levels} max={maxLevels} onchange={(v) => (levels = v)} />
+		<BundleControl {bundleTension} onchange={(v) => (bundleTension = v)} />
+		<ZoomControl {zoom} onchange={(v) => (zoom = v)} />
+	{/if}
 {/snippet}
 
 {#snippet legendBar()}
@@ -122,7 +141,7 @@
 
 <DiagramFrame
 	class={className}
-	overlay={controls ? controlBar : undefined}
+	overlay={controls || graph.showsDrillBar ? controlBar : undefined}
 	footer={legend ? legendBar : undefined}
 >
 	{#snippet canvas()}

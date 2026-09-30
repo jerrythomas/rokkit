@@ -215,3 +215,36 @@ describe('buildTree', () => {
 		expect(t.value).toBe(0)
 	})
 })
+
+describe('buildTree — the focus chain is never folded', () => {
+	// A host that loads one level at a time sends ONLY that level: a crate's modules, and
+	// nothing declaring the crate. Every container above them is then an undeclared
+	// single-child wrapper — exactly what folding removes — and the focusPath naming them
+	// would stop resolving, rendering an empty canvas where the level should be.
+	const level = normalizeGraph(
+		[
+			{ id: 'f1', label: 'walk.rs', path: ['senseid', 'indexer', 'walk.rs'] },
+			{ id: 'f2', label: 'scan.rs', path: ['senseid', 'indexer', 'scan.rs'] }
+		],
+		[],
+		{ id: 'id', label: 'label', path: 'path' }
+	)
+
+	it('keeps every container on the kept path, so the focus resolves', () => {
+		const t = buildTree(level, { keep: ['senseid', 'indexer'] })
+		expect(findNode(t, ['senseid', 'indexer'])?.children.map((c) => c.label).sort()).toEqual(['scan.rs', 'walk.rs'])
+		expect(findNode(buildTree(level, { keep: ['senseid'] }), ['senseid'])?.children.map((c) => c.label)).toEqual(['indexer'])
+	})
+
+	it('still folds a wrapper OFF the kept path', () => {
+		const t = buildTree(level, { keep: [] })
+		expect(findNode(t, ['senseid'])).toBeUndefined()
+	})
+
+	it('records every node’s unfolded data address, even when its displayed path was folded', () => {
+		const addresses = (n: ReturnType<typeof buildTree>): string[][] => [n.address, ...n.children.flatMap(addresses)]
+		const all = addresses(buildTree(level))
+		expect(all).toContainEqual(['senseid', 'indexer', 'walk.rs'])
+		expect(all).toContainEqual(['senseid', 'indexer', 'scan.rs'])
+	})
+})

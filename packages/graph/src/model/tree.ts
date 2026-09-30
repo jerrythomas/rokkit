@@ -21,8 +21,13 @@ export type TreeNode = {
 	/** Path joined by `/`. The root is `''`. */
 	id: string
 	label: string
-	/** Full path to this node, outermost first. Empty at the root. */
+	/** Full path to this node, outermost first. Empty at the root. Folding splices it. */
 	path: string[]
+	/**
+	 * The node's path in the DATA — never folded. What a host knows a node by, so what a drill
+	 * reports and what `focusPath` names; `path` is only where the box sits in the picture.
+	 */
+	address: string[]
 	/** 0 at the root. A layout materialising N levels reads this. */
 	depth: number
 	/** The real node behind this box. Absent only on a container nothing declared. */
@@ -42,6 +47,7 @@ function container(path: string[]): TreeNode {
 		id: idOf(path),
 		label: path[path.length - 1] ?? ROOT,
 		path,
+		address: path,
 		depth: path.length,
 		children: [],
 		value: 0
@@ -125,6 +131,8 @@ function attach(
 			id: node.id,
 			label: node.label,
 			path: [],
+			// No address either: a pathless node has no place in the containment tree to drill to.
+			address: [],
 			depth: 1,
 			node,
 			children: [],
@@ -166,10 +174,14 @@ function summarise(node: TreeNode, depth: number): number {
  * edges, and folding it would silently drop them. The rule is "a wrapper is not a level", and
  * a thing the data names is not a wrapper.
  */
-function fold(node: TreeNode): TreeNode {
-	node.children = node.children.map(fold)
+function fold(node: TreeNode, keep: string[]): TreeNode {
+	node.children = node.children.map((child) => fold(child, keep))
 
-	if (node.children.length === 1 && node.node === undefined && node.depth > 0) {
+	// A container ON the focus chain is the scope the reader asked for, not punctuation: folding
+	// it would make the focusPath naming it stop resolving. A host loading one level at a time
+	// sends exactly such a chain — a crate's modules, with nothing declaring the crate.
+	const onFocusChain = node.address.every((segment, i) => keep[i] === segment)
+	if (node.children.length === 1 && node.node === undefined && node.depth > 0 && !onFocusChain) {
 		const only = node.children[0]
 		// The child takes this box's PLACE, so the segment this box contributed is spliced out
 		// of its path — not merely trimmed from the end, which would leave a leaf sitting at
@@ -195,7 +207,10 @@ function sort(node: TreeNode): void {
  * makes a container an ordinary node — it keeps its own id, label, note and edges, and there
  * is no convention to satisfy. A prefix nothing declares is synthesised.
  */
-export function buildTree(model: GraphModel, options: { measure?: string } = {}): TreeNode {
+export function buildTree(
+	model: GraphModel,
+	options: { measure?: string; keep?: string[] } = {}
+): TreeNode {
 	const measure = options.measure ?? 'weight'
 	const degree = measure === 'degree' ? degreesIn(model) : new Map<string, number>()
 	const root = container([])
@@ -205,7 +220,7 @@ export function buildTree(model: GraphModel, options: { measure?: string } = {})
 	// a descendant arriving first synthesises the box, and its owner fills in the identity.
 	for (const node of model.nodes) attach(root, node, measure, degree)
 
-	const folded = fold(root)
+	const folded = fold(root, options.keep ?? [])
 	sort(folded)
 	summarise(folded, 0)
 

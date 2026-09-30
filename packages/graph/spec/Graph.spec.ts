@@ -784,7 +784,7 @@ describe('Graph — accessibility and construction', () => {
 			for (const p of paths) expect(p.getAttribute('d')?.length ?? 0).toBeGreaterThan(10)
 		})
 
-		it('makes a leaf wedge a button and a region wedge scenery', () => {
+		it('makes a leaf wedge a button, and a region wedge a button that OPENS it (#165)', () => {
 			const { container } = render(Graph, { state: burst() })
 			const leaf = container.querySelector('[data-graph-node-id="p.parse"]')
 			const region = [...container.querySelectorAll('[data-graph-wedge]')].find(
@@ -792,7 +792,11 @@ describe('Graph — accessibility and construction', () => {
 			)
 
 			expect(leaf?.getAttribute('role')).toBe('button')
-			expect(region?.hasAttribute('role')).toBe(false)
+			// A region is not a node — it does not select — but it can be drilled into, so it is
+			// interactive and says what it does rather than posing as a selectable thing.
+			expect(region?.getAttribute('role')).toBe('button')
+			expect(region?.getAttribute('aria-label')).toMatch(/^Open dbd/)
+			expect(region?.hasAttribute('data-graph-node-id')).toBe(false)
 		})
 
 		it('names a wedge for assistive tech, which cannot read an arc', () => {
@@ -882,11 +886,12 @@ describe('Graph — accessibility and construction', () => {
 			expect(leaf?.hasAttribute('data-graph-cluster')).toBe(true)
 		})
 
-		it('makes a leaf box a real button, and a region box not', () => {
-			// One box shape on screen, honest semantics underneath: a leaf is clickable and
-			// focusable so it is a <button> — Enter/Space, focus order and the announcement come
-			// free. A region is scenery. role+tabindex on a div would describe an interactive
-			// element to a screen reader and leave the keyboard handling to be rebuilt by hand.
+		it('makes a leaf box a real button, and a region box a button that OPENS it (#165)', () => {
+			// One box shape on screen, honest semantics underneath: anything interactive is a real
+			// <button> — Enter/Space, focus order and the announcement come free, where
+			// role+tabindex on a div would leave the keyboard handling to be rebuilt by hand. A
+			// leaf selects; a region is not a node and does not select, but it can be drilled
+			// into, and its label says so.
 			const { container } = world()
 			const leaf = container.querySelector('[data-graph-node-id="p.parse"]')
 			const region = [...container.querySelectorAll('[data-graph-cluster]')].find(
@@ -894,7 +899,8 @@ describe('Graph — accessibility and construction', () => {
 			)
 
 			expect(leaf?.tagName).toBe('BUTTON')
-			expect(region?.tagName).toBe('DIV')
+			expect(region?.tagName).toBe('BUTTON')
+			expect(region?.getAttribute('aria-label')).toMatch(/^Open dbd/)
 		})
 
 		it('leaves a region box unaddressable, because it is not a node', () => {
