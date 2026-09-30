@@ -10223,3 +10223,36 @@ Bugs found along the way:
   Both are corrected, and the spec-over-prop rule is documented.
 
 Gates: 7,879 unit tests pass, plus 34 browser and 129 e2e; lint is 0/0 and svelte-check clean.
+
+---
+
+## 2026-09-30 (10) — unocss preset decomposition
+
+`@rokkit/unocss` `src/preset.ts` was the next hotspot: 575 lines, complexity 74. It was not a
+monolith; it was about 30 small functions spanning four jobs. The fixes were cohesion, removing
+repeated code (`new Theme(…)` three times, the alias filter four times), and dropping a blanket
+`@ts-nocheck`.
+
+- `e0741fed`: `typography.js` holds the font roles, the type scale and radius.
+- `29aada96`: `colors.js` holds the root/dark/skin preflights, `themeFor`, `withoutAliases` and
+  the theme colours; `contrast.js` holds the ink warning.
+- `e97744b1`: `shortcuts.js` holds the shortcuts, icon collections and safelist. `preset.ts` is
+  a 64-line composition root that type-checks with no suppression.
+
+Differential against `8a45ec8b`: `presetRokkit`'s whole serialised output over 640 configs, 36M
+characters, identical. The grid varied every axis alone and added 600 seeded combinations. 13
+planted bugs were all caught in the end.
+
+What the differential taught:
+- The first grid was 57% configs that threw. Override palette refs resolve only against
+  `config.palettes`, so those configs compared error messages, not output. Check the throw rate
+  before trusting a zero.
+- The contrast plant first went uncaught: no config exercised the warning, and the unit test's
+  pairs failed either threshold. Both now include a pair 0.25 apart.
+
+A real bug surfaced when `@ts-nocheck` came off. Every key of `config.icons`, including the
+`collection` / `style` / `overrides` settings, was registered as an icon collection.
+`iconCollectionsFor` now drops those keys.
+
+Gates: 7,921 unit tests pass, plus 129 e2e and the themes build. The preset is off the hotspot
+list; the top is now `core/utils.js` (47/52).

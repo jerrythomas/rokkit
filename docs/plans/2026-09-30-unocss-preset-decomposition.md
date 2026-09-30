@@ -1,6 +1,7 @@
 # UnoCSS preset decomposition
 
-**Status:** IMPLEMENT (2026-09-30). This follows Plot.svelte, per the user's "keep going".
+**Status:** DONE (2026-09-30): `e0741fed`, `29aada96`, `e97744b1`. See journal 2026-09-30 (10).
+This follows Plot.svelte, per the user's "keep going".
 **Package:** `@rokkit/unocss`
 
 ## Why

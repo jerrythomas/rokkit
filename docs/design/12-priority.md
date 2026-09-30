@@ -58,8 +58,11 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
     against 30,318 replayed event scenarios.
   - `PlotChart` / `Plot.svelte` (72 → 27) is layout over `lib/plot/spec.js` (precedence as a
     table), `Plot/SpecGeoms` and `Plot/DataTable`, checked against 596 rendered cases.
+  - The `@rokkit/unocss` preset (74 → 1) is a composition root over
+    `typography` / `colors` / `contrast` / `shortcuts`. It's checked against 640 configs'
+    full output, and `@ts-nocheck` is gone.
 
-  Plans are in `docs/plans/2026-09-30-*-decomposition.md`. See journal 2026-09-30 (3), (4), (7) and (9).
+  Plans are in `docs/plans/2026-09-30-*-decomposition.md`. See journal 2026-09-30 (3), (4), (7), (9) and (10).
 
 - [x] **Architecture-analysis primitives** — Shipped 2026-09-30 (plan:
   `docs/plans/2026-09-30-architecture-analysis-primitives.md`). `@rokkit/chart`: `Rule`
