@@ -26,71 +26,147 @@
 			{#if config.group === 'Architecture'}
 				<ArchitectureChart />
 			{:else if explorer.type === 'facet'}
-				<FacetPlot {data} x={f.x} y={f.y} facet={{ by: 'class', cols: 3 }} width={640} height={460} legend={s.legend}>
+				<FacetPlot
+					{data}
+					x={f.x}
+					y={f.y}
+					facet={{ by: 'class', cols: 3 }}
+					width={640}
+					height={460}
+					legend={s.legend}
+				>
 					<Plot.Point color={f.color || undefined} alpha={s.alpha} />
 				</FacetPlot>
 			{:else if explorer.type === 'animated'}
-				<AnimatedPlot {data} x={f.x} y={f.y} animate={{ by: 'quarter', duration: 900, loop: true }} width={640} height={460} legend={s.legend}>
+				<AnimatedPlot
+					{data}
+					x={f.x}
+					y={f.y}
+					animate={{ by: 'quarter', duration: 900, loop: true }}
+					width={640}
+					height={460}
+					legend={s.legend}
+				>
 					<Plot.Bar alpha={s.alpha} />
 				</AnimatedPlot>
 			{:else}
-				<PlotChart {data} width={640} height={460} grid={!noAxes} axes={!noAxes} legend={s.legend} orientation={s.orientation} axisOrigin={config.axisOrigin}>
-				{#if explorer.type === 'bar'}
-					<Plot.Bar x={f.x} y={f.y} fill={s.fill || undefined} position={s.position} alpha={s.alpha} pattern={s.pattern || undefined} />
-				{:else if explorer.type === 'line'}
-					<Plot.Line x={f.x} y={f.y} color={s.color || undefined} alpha={s.alpha} />
-				{:else if explorer.type === 'area'}
-					<!-- `dodge` is bar-only — Plot.Area's position union excludes it. The
+				<PlotChart
+					{data}
+					width={640}
+					height={460}
+					grid={!noAxes}
+					axes={!noAxes}
+					legend={s.legend}
+					orientation={s.orientation}
+					axisOrigin={config.axisOrigin}
+				>
+					{#if explorer.type === 'bar'}
+						<Plot.Bar
+							x={f.x}
+							y={f.y}
+							fill={s.fill || undefined}
+							position={s.position}
+							alpha={s.alpha}
+							pattern={s.pattern || undefined}
+						/>
+					{:else if explorer.type === 'line'}
+						<Plot.Line x={f.x} y={f.y} color={s.color || undefined} alpha={s.alpha} />
+					{:else if explorer.type === 'area'}
+						<!-- `dodge` is bar-only — Plot.Area's position union excludes it. The
 						 controls already hide it for area and `select('area')` resets to
 						 'stack', but settings are also reachable from typed tweaks, so
 						 degrade to area's own default rather than assume unreachable. -->
-					<Plot.Area x={f.x} y={f.y} fill={s.fill || undefined} position={s.position === 'dodge' ? 'stack' : s.position} alpha={s.alpha} pattern={s.pattern || undefined} />
-				{:else if explorer.type === 'pie'}
-					<Plot.Arc theta={f.y} fill={s.fill || undefined} alpha={s.alpha} pattern={s.pattern || undefined} options={{ innerRadius: s.innerRadius }} />
-				{:else if explorer.type === 'scatter'}
-					<Plot.Point x={f.x} y={f.y} color={s.color || undefined} alpha={s.alpha} />
-				{:else if explorer.type === 'bubble'}
-					<Plot.Point x={f.x} y={f.y} size={f.size} color={s.color || undefined} alpha={s.alpha} />
+						<Plot.Area
+							x={f.x}
+							y={f.y}
+							fill={s.fill || undefined}
+							position={s.position === 'dodge' ? 'stack' : s.position}
+							alpha={s.alpha}
+							pattern={s.pattern || undefined}
+						/>
+					{:else if explorer.type === 'pie'}
+						<Plot.Arc
+							theta={f.y}
+							fill={s.fill || undefined}
+							alpha={s.alpha}
+							pattern={s.pattern || undefined}
+							options={{ innerRadius: s.innerRadius }}
+						/>
+					{:else if explorer.type === 'scatter'}
+						<Plot.Point x={f.x} y={f.y} color={s.color || undefined} alpha={s.alpha} />
+					{:else if explorer.type === 'bubble'}
+						<Plot.Point
+							x={f.x}
+							y={f.y}
+							size={f.size}
+							color={s.color || undefined}
+							alpha={s.alpha}
+						/>
 					{:else if explorer.type === 'quadrant'}
 						<Plot.Point x={f.x} y={f.y} color={s.color || undefined} alpha={s.alpha} />
-				{:else if explorer.type === 'box'}
-					<Plot.Box x={f.x} y={f.y} fill={s.fill || undefined} alpha={s.alpha} pattern={s.pattern || undefined} />
-				{:else if explorer.type === 'violin'}
-					<Plot.Violin x={f.x} y={f.y} fill={s.fill || undefined} alpha={s.alpha} pattern={s.pattern || undefined} />
-				{:else if explorer.type === 'heatmap'}
-					<Plot.Heatmap x={f.x} y={f.y} color={f.color} alpha={s.alpha} />
-				{:else if explorer.type === 'hexbin'}
-					<Plot.Hexbin x={f.x} y={f.y} alpha={s.alpha} options={{ radius: 16 }} />
-				{:else if explorer.type === 'candlestick'}
-					<Plot.Candlestick x={f.x} alpha={s.alpha} options={{ open: 'open', high: 'high', low: 'low', close: 'close' }} />
-				{:else if explorer.type === 'waterfall'}
-					<Plot.Waterfall x={f.x} y={f.y} alpha={s.alpha} options={{ totalField: 'total' }} />
-				{:else if explorer.type === 'ribbon'}
-					<Plot.Ribbon alpha={s.alpha} options={{ source: 'source', target: 'target', value: 'value' }} />
-				{:else if explorer.type === 'radar'}
-					<Plot.Radar
-						axis={f.axis}
-						value={f.value}
-						series={f.series}
-						alpha={s.alpha}
-						pattern={s.pattern || undefined}
-						options={{ grid: true }}
-					/>
-				{:else if explorer.type === 'rule'}
-					<Plot.Line x={f.x} y={f.y} alpha={s.alpha} />
-					<Plot.Rule y={[60, 85]} label="target" />
-				{:else if explorer.type === 'region'}
-					<!-- Regions first: SVG paints in order, so they sit behind the points. -->
-					<Plot.Region name="efficient" y={[30, null]} label="30+ mpg highway" />
-					<Plot.Region name="large" x={[4, null]} label="Large engines" />
-					<Plot.Point x={f.x} y={f.y} color={s.color || undefined} alpha={s.alpha} />
-				{:else if explorer.type === 'hull'}
-					<Plot.Hull x={f.x} y={f.y} color={f.color} label />
-					<Plot.Point x={f.x} y={f.y} color={f.color} alpha={s.alpha} />
-				{:else if explorer.type === 'contour'}
-					<Plot.Contour x={f.x} y={f.y} color={f.color} filled={s.contour} alpha={s.contour ? s.alpha : undefined} />
-					<Plot.Point x={f.x} y={f.y} color={f.color} alpha={0.35} options={{ radius: 2.5 }} />
-				{/if}
+					{:else if explorer.type === 'box'}
+						<Plot.Box
+							x={f.x}
+							y={f.y}
+							fill={s.fill || undefined}
+							alpha={s.alpha}
+							pattern={s.pattern || undefined}
+						/>
+					{:else if explorer.type === 'violin'}
+						<Plot.Violin
+							x={f.x}
+							y={f.y}
+							fill={s.fill || undefined}
+							alpha={s.alpha}
+							pattern={s.pattern || undefined}
+						/>
+					{:else if explorer.type === 'heatmap'}
+						<Plot.Heatmap x={f.x} y={f.y} color={f.color} alpha={s.alpha} />
+					{:else if explorer.type === 'hexbin'}
+						<Plot.Hexbin x={f.x} y={f.y} alpha={s.alpha} options={{ radius: 16 }} />
+					{:else if explorer.type === 'candlestick'}
+						<Plot.Candlestick
+							x={f.x}
+							alpha={s.alpha}
+							options={{ open: 'open', high: 'high', low: 'low', close: 'close' }}
+						/>
+					{:else if explorer.type === 'waterfall'}
+						<Plot.Waterfall x={f.x} y={f.y} alpha={s.alpha} options={{ totalField: 'total' }} />
+					{:else if explorer.type === 'ribbon'}
+						<Plot.Ribbon
+							alpha={s.alpha}
+							options={{ source: 'source', target: 'target', value: 'value' }}
+						/>
+					{:else if explorer.type === 'radar'}
+						<Plot.Radar
+							axis={f.axis}
+							value={f.value}
+							series={f.series}
+							alpha={s.alpha}
+							pattern={s.pattern || undefined}
+							options={{ grid: true }}
+						/>
+					{:else if explorer.type === 'rule'}
+						<Plot.Line x={f.x} y={f.y} alpha={s.alpha} />
+						<Plot.Rule y={[60, 85]} label="target" />
+					{:else if explorer.type === 'region'}
+						<!-- Regions first: SVG paints in order, so they sit behind the points. -->
+						<Plot.Region name="efficient" y={[30, null]} label="30+ mpg highway" />
+						<Plot.Region name="large" x={[4, null]} label="Large engines" />
+						<Plot.Point x={f.x} y={f.y} color={s.color || undefined} alpha={s.alpha} />
+					{:else if explorer.type === 'hull'}
+						<Plot.Hull x={f.x} y={f.y} color={f.color} label />
+						<Plot.Point x={f.x} y={f.y} color={f.color} alpha={s.alpha} />
+					{:else if explorer.type === 'contour'}
+						<Plot.Contour
+							x={f.x}
+							y={f.y}
+							color={f.color}
+							filled={s.contour}
+							alpha={s.contour ? s.alpha : undefined}
+						/>
+						<Plot.Point x={f.x} y={f.y} color={f.color} alpha={0.35} options={{ radius: 2.5 }} />
+					{/if}
 				</PlotChart>
 			{/if}
 		{/key}

@@ -3,9 +3,16 @@ import { deriveLayoutFromValue, deriveLayoutFromSchema } from '../layout.js'
 import { getSchemaWithLayout } from '../fields.js'
 
 const hasFields = (schema) =>
-	Boolean(schema && typeof schema === 'object' && schema.properties && typeof schema.properties === 'object' && Object.keys(schema.properties).length > 0)
+	Boolean(
+		schema &&
+		typeof schema === 'object' &&
+		schema.properties &&
+		typeof schema.properties === 'object' &&
+		Object.keys(schema.properties).length > 0
+	)
 
-const hasElements = (layout) => Boolean(layout && Array.isArray(layout.elements) && layout.elements.length > 0)
+const hasElements = (layout) =>
+	Boolean(layout && Array.isArray(layout.elements) && layout.elements.length > 0)
 
 /**
  * What the form IS: its schema (the fields and their rules) and its layout (how they are

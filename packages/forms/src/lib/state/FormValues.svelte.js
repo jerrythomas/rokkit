@@ -31,7 +31,9 @@ export class FormValues {
 
 	/** Write one value; the data gets a new root, so readers of `data` re-run. */
 	set(path, value) {
-		this.#data = path.includes('/') ? setPath(this.#data, path, value) : { ...this.#data, [path]: value }
+		this.#data = path.includes('/')
+			? setPath(this.#data, path, value)
+			: { ...this.#data, [path]: value }
 	}
 
 	/** The value a path held in the snapshot. */

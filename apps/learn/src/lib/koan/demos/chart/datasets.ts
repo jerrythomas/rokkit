@@ -53,7 +53,9 @@ export const heatmap = (() => {
 	const hours = ['9a', '12p', '3p', '6p']
 	const out: { day: string; hour: string; count: number }[] = []
 	days.forEach((day, di) =>
-		hours.forEach((hour, hi) => out.push({ day, hour, count: Math.round(20 + 30 * Math.abs(Math.sin(di + hi)) ) }))
+		hours.forEach((hour, hi) =>
+			out.push({ day, hour, count: Math.round(20 + 30 * Math.abs(Math.sin(di + hi))) })
+		)
 	)
 	return out
 })()

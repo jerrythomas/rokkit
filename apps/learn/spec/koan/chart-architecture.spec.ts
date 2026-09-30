@@ -66,8 +66,18 @@ describe('mainSequenceZones', () => {
 describe('thresholds', () => {
 	it('are the upper quantiles of the module metrics', () => {
 		expect(THRESHOLD_QUANTILE).toBe(0.95)
-		expect(thresholds.complexity).toBe(quantile(modules.map((m) => m.complexity), 0.95))
-		expect(thresholds.churn).toBe(quantile(modules.map((m) => m.churn), 0.95))
+		expect(thresholds.complexity).toBe(
+			quantile(
+				modules.map((m) => m.complexity),
+				0.95
+			)
+		)
+		expect(thresholds.churn).toBe(
+			quantile(
+				modules.map((m) => m.churn),
+				0.95
+			)
+		)
 		expect(thresholds.fanOut).toBeGreaterThan(0)
 		expect(thresholds.fanIn).toBeGreaterThan(0)
 	})

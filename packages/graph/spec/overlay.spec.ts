@@ -45,7 +45,11 @@ describe('normalizeGraph — overlay edges', () => {
 
 	it('maps overlay and weight through fields', () => {
 		const fields: GraphFields = { overlay: 'meta.hidden', edgeWeight: 'meta.n' }
-		const model = normalizeGraph(NODES, [{ source: 'a', target: 'b', meta: { hidden: 1, n: 4 } }], fields)
+		const model = normalizeGraph(
+			NODES,
+			[{ source: 'a', target: 'b', meta: { hidden: 1, n: 4 } }],
+			fields
+		)
 		expect(model.edges).toEqual([])
 		expect(model.overlays[0].weight).toBe(4)
 	})
@@ -108,12 +112,16 @@ describe('GraphState — overlay edges', () => {
 
 describe('Graph — overlay edges', () => {
 	it('marks overlay edges and carries their weight as a custom property', () => {
-		const { container } = render(Graph, { props: { nodes: NODES, edges: [...IMPORTS, ...COCHANGE] } })
+		const { container } = render(Graph, {
+			props: { nodes: NODES, edges: [...IMPORTS, ...COCHANGE] }
+		})
 		const overlays = [...container.querySelectorAll('[data-graph-edge][data-edge-overlay]')]
 		expect(overlays.length).toBe(2)
 		expect(overlays[0].getAttribute('data-edge-relation')).toBe('co-change')
 		expect((overlays[0] as HTMLElement).style.getPropertyValue('--edge-weight')).toBe('1')
-		const plain = container.querySelector('[data-graph-edge]:not([data-edge-overlay])') as HTMLElement
+		const plain = container.querySelector(
+			'[data-graph-edge]:not([data-edge-overlay])'
+		) as HTMLElement
 		expect(plain.style.getPropertyValue('--edge-weight')).toBe('')
 	})
 })

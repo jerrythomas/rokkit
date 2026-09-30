@@ -119,9 +119,18 @@
 				onclick={() => toggle(id)}
 				onkeydown={(event) => onKey(event, id)}
 			>
-				<rect x="0" y={labelW + i * cell} width={labelW + n * cell} height={cell} data-matrix-band />
-				<text x={labelW - 6} y={labelW + i * cell + cell / 2} text-anchor="end" dominant-baseline="middle"
-					>{text}</text
+				<rect
+					x="0"
+					y={labelW + i * cell}
+					width={labelW + n * cell}
+					height={cell}
+					data-matrix-band
+				/>
+				<text
+					x={labelW - 6}
+					y={labelW + i * cell + cell / 2}
+					text-anchor="end"
+					dominant-baseline="middle">{text}</text
 				>
 			</g>
 		{/each}
@@ -145,7 +154,12 @@
 				data-matrix-state={cellState(c.source, c.target)}
 				style:--cell-weight={c.count / matrix.maxCount}
 			>
-				<rect x={labelW + c.col * cell + 1} y={labelW + c.row * cell + 1} width={cell} height={cell} />
+				<rect
+					x={labelW + c.col * cell + 1}
+					y={labelW + c.row * cell + 1}
+					width={cell}
+					height={cell}
+				/>
 				<title>{c.source} → {c.target} ({c.count})</title>
 			</g>
 		{/each}

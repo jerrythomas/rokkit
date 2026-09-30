@@ -57,7 +57,9 @@ describe('stackDomain', () => {
 		expect(stackDomain(rows, { y: 'v', fill: 'p' }, 'stack')).toBeNull()
 	})
 	it('ignores a literal colour as a grouping field', () => {
-		expect(stackDomain(rows, { x: 'q', y: 'v', color: '#f00', pattern: 'p' }, 'stack')).toEqual([0, 7])
+		expect(stackDomain(rows, { x: 'q', y: 'v', color: '#f00', pattern: 'p' }, 'stack')).toEqual([
+			0, 7
+		])
 	})
 })
 
@@ -94,6 +96,8 @@ describe('resolveValueDomain — the per-geom resolver table', () => {
 	})
 	it('treats the deprecated stack flag as stacking', () => {
 		const geoms = [{ type: 'bar', id: 's', options: { stack: true } }]
-		expect(resolveValueDomain(geoms, geomData([{ q: 'Q1', p: 'A', v: 3 }]), { x: 'q', fill: 'p' }, 'v')).toEqual([0, 3])
+		expect(
+			resolveValueDomain(geoms, geomData([{ q: 'Q1', p: 'A', v: 3 }]), { x: 'q', fill: 'p' }, 'v')
+		).toEqual([0, 3])
 	})
 })

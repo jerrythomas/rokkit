@@ -43,7 +43,12 @@
 		</PlotChart>
 	{:else if explorer.type === 'coverage'}
 		<PlotChart {data} {...size} yDomain={[0, 1]} legend={s.legend} tooltip>
-			<Plot.Region name="risk" x={[t.complexity, null]} y={[0, 0.8]} label="Complex, under-tested" />
+			<Plot.Region
+				name="risk"
+				x={[t.complexity, null]}
+				y={[0, 0.8]}
+				label="Complex, under-tested"
+			/>
 			<Plot.Rule y={0.8} label="80%" />
 			<Plot.Point x={f.x} y={f.y} color={f.color} alpha={s.alpha} />
 		</PlotChart>

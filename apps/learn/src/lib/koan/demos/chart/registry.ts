@@ -55,7 +55,10 @@ export type ChartTypeConfig = {
 
 export const registry: Record<string, ChartTypeConfig> = {
 	bar: {
-		id: 'bar', label: 'Bar', group: 'Comparison', dataset: 'productSeries',
+		id: 'bar',
+		label: 'Bar',
+		group: 'Comparison',
+		dataset: 'productSeries',
 		fields: { x: 'quarter', y: 'revenue', fill: 'product' },
 		applies: ['orientation', 'position', 'fill', 'pattern', 'alpha', 'legend'],
 		defaults: { position: 'dodge', orientation: 'vertical' },
@@ -67,7 +70,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	line: {
-		id: 'line', label: 'Line', group: 'Trend', dataset: 'productSeries',
+		id: 'line',
+		label: 'Line',
+		group: 'Trend',
+		dataset: 'productSeries',
 		fields: { x: 'quarter', y: 'revenue', color: 'product' },
 		applies: ['alpha', 'legend'],
 		defaults: { legend: true },
@@ -77,7 +83,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	area: {
-		id: 'area', label: 'Area', group: 'Trend', dataset: 'productSeries',
+		id: 'area',
+		label: 'Area',
+		group: 'Trend',
+		dataset: 'productSeries',
 		fields: { x: 'quarter', y: 'revenue', fill: 'product' },
 		applies: ['position', 'fill', 'pattern', 'alpha', 'legend'],
 		defaults: { position: 'stack', alpha: 0.7 },
@@ -88,7 +97,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	pie: {
-		id: 'pie', label: 'Pie', group: 'Part-to-whole', dataset: 'segments',
+		id: 'pie',
+		label: 'Pie',
+		group: 'Part-to-whole',
+		dataset: 'segments',
 		fields: { y: 'share', fill: 'segment' },
 		applies: ['innerRadius', 'pattern', 'alpha', 'legend'],
 		defaults: { innerRadius: 0 },
@@ -98,7 +110,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	scatter: {
-		id: 'scatter', label: 'Scatter', group: 'Relationship', dataset: 'cars',
+		id: 'scatter',
+		label: 'Scatter',
+		group: 'Relationship',
+		dataset: 'cars',
 		fields: { x: 'displ', y: 'hwy', color: 'class' },
 		applies: ['color', 'alpha', 'legend'],
 		defaults: { legend: true, alpha: 0.8 },
@@ -108,16 +123,20 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	bubble: {
-		id: 'bubble', label: 'Bubble', group: 'Relationship', dataset: 'cars',
+		id: 'bubble',
+		label: 'Bubble',
+		group: 'Relationship',
+		dataset: 'cars',
 		fields: { x: 'displ', y: 'hwy', size: 'cty', color: 'class' },
 		applies: ['color', 'alpha', 'legend'],
 		defaults: { legend: true, alpha: 0.7 },
-		tips: [
-			{ text: 'Drop the size channel for a plain scatter', to: 'scatter' }
-		]
+		tips: [{ text: 'Drop the size channel for a plain scatter', to: 'scatter' }]
 	},
 	quadrant: {
-		id: 'quadrant', label: 'Quadrant', group: 'Relationship', dataset: 'cars',
+		id: 'quadrant',
+		label: 'Quadrant',
+		group: 'Relationship',
+		dataset: 'cars',
 		fields: { x: 'displ', y: 'hwy', color: 'class' },
 		applies: ['color', 'alpha', 'legend'],
 		defaults: { legend: true, alpha: 0.8 },
@@ -130,7 +149,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	box: {
-		id: 'box', label: 'Box', group: 'Distribution', dataset: 'cars',
+		id: 'box',
+		label: 'Box',
+		group: 'Distribution',
+		dataset: 'cars',
 		fields: { x: 'class', y: 'hwy', fill: 'class' },
 		applies: ['orientation', 'fill', 'pattern', 'alpha'],
 		defaults: { alpha: 0.5 },
@@ -140,7 +162,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	violin: {
-		id: 'violin', label: 'Violin', group: 'Distribution', dataset: 'cars',
+		id: 'violin',
+		label: 'Violin',
+		group: 'Distribution',
+		dataset: 'cars',
 		fields: { x: 'class', y: 'hwy', fill: 'class' },
 		applies: ['orientation', 'fill', 'pattern', 'alpha'],
 		defaults: { alpha: 0.5 },
@@ -150,42 +175,60 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	heatmap: {
-		id: 'heatmap', label: 'Heatmap', group: 'Distribution', dataset: 'heatmap',
+		id: 'heatmap',
+		label: 'Heatmap',
+		group: 'Distribution',
+		dataset: 'heatmap',
 		fields: { x: 'day', y: 'hour', color: 'count' },
 		applies: ['alpha'],
 		defaults: {},
 		tips: [{ text: 'Color encodes the count in each cell' }]
 	},
 	hexbin: {
-		id: 'hexbin', label: 'Hexbin', group: 'Distribution', dataset: 'points',
+		id: 'hexbin',
+		label: 'Hexbin',
+		group: 'Distribution',
+		dataset: 'points',
 		fields: { x: 'x', y: 'y' },
 		applies: ['alpha'],
 		defaults: {},
 		tips: [{ text: 'Hex bins reveal density where points overlap' }]
 	},
 	candlestick: {
-		id: 'candlestick', label: 'Candlestick', group: 'Financial', dataset: 'ohlc',
+		id: 'candlestick',
+		label: 'Candlestick',
+		group: 'Financial',
+		dataset: 'ohlc',
 		fields: { x: 'day' },
 		applies: ['alpha'],
 		defaults: {},
 		tips: [{ text: 'Green rises, red falls — open vs close' }]
 	},
 	waterfall: {
-		id: 'waterfall', label: 'Waterfall', group: 'Financial', dataset: 'waterfall',
+		id: 'waterfall',
+		label: 'Waterfall',
+		group: 'Financial',
+		dataset: 'waterfall',
 		fields: { x: 'step', y: 'delta' },
 		applies: ['alpha'],
 		defaults: {},
 		tips: [{ text: 'Each bar adds to the running total' }]
 	},
 	ribbon: {
-		id: 'ribbon', label: 'Ribbon', group: 'Flow', dataset: 'flows',
+		id: 'ribbon',
+		label: 'Ribbon',
+		group: 'Flow',
+		dataset: 'flows',
 		fields: {},
 		applies: ['alpha'],
 		defaults: { alpha: 0.5 },
 		tips: [{ text: 'Ribbon width is proportional to the flow' }]
 	},
 	radar: {
-		id: 'radar', label: 'Radar', group: 'Comparison', dataset: 'profiles',
+		id: 'radar',
+		label: 'Radar',
+		group: 'Comparison',
+		dataset: 'profiles',
 		fields: { axis: 'metric', value: 'score', series: 'team' },
 		applies: ['pattern', 'alpha', 'legend'],
 		// Legend on: with two washed-out overlapping fills, colour alone is not enough to
@@ -198,14 +241,20 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	rule: {
-		id: 'rule', label: 'Rule', group: 'Reference', dataset: 'daily',
+		id: 'rule',
+		label: 'Rule',
+		group: 'Reference',
+		dataset: 'daily',
 		fields: { x: 'day', y: 'value' },
 		applies: ['alpha'],
 		defaults: {},
 		tips: [{ text: 'Reference lines mark thresholds or targets' }]
 	},
 	region: {
-		id: 'region', label: 'Region', group: 'Reference', dataset: 'cars',
+		id: 'region',
+		label: 'Region',
+		group: 'Reference',
+		dataset: 'cars',
 		fields: { x: 'displ', y: 'hwy', color: 'class' },
 		applies: ['alpha', 'legend'],
 		defaults: { alpha: 0.9 },
@@ -215,7 +264,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	hull: {
-		id: 'hull', label: 'Hull', group: 'Relationship', dataset: 'cars',
+		id: 'hull',
+		label: 'Hull',
+		group: 'Relationship',
+		dataset: 'cars',
 		fields: { x: 'displ', y: 'hwy', color: 'class' },
 		applies: ['alpha', 'legend'],
 		defaults: { legend: true, alpha: 0.9 },
@@ -225,7 +277,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	contour: {
-		id: 'contour', label: 'Contour', group: 'Distribution', dataset: 'clusters',
+		id: 'contour',
+		label: 'Contour',
+		group: 'Distribution',
+		dataset: 'clusters',
 		fields: { x: 'x', y: 'y', color: 'group' },
 		applies: ['alpha', 'legend', 'contour'],
 		defaults: { alpha: 0.7, legend: true },
@@ -235,7 +290,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	'main-sequence': {
-		id: 'main-sequence', label: 'Main sequence', group: 'Architecture', dataset: 'components',
+		id: 'main-sequence',
+		label: 'Main sequence',
+		group: 'Architecture',
+		dataset: 'components',
 		fields: { x: 'instability', y: 'abstractness', color: 'package', size: 'loc' },
 		axes: { x: 'Instability  I = Ce / (Ca + Ce)', y: 'Abstractness  A' },
 		applies: ['alpha', 'legend', 'hull', 'contour'],
@@ -248,7 +306,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	hotspots: {
-		id: 'hotspots', label: 'Hotspots', group: 'Architecture', dataset: 'modules',
+		id: 'hotspots',
+		label: 'Hotspots',
+		group: 'Architecture',
+		dataset: 'modules',
 		fields: { x: 'complexity', y: 'churn', color: 'package', size: 'loc' },
 		axes: { x: 'Complexity (decision points)', y: 'Churn (commits)' },
 		applies: ['alpha', 'legend', 'contour'],
@@ -259,7 +320,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	coverage: {
-		id: 'coverage', label: 'Complexity × coverage', group: 'Architecture', dataset: 'covered',
+		id: 'coverage',
+		label: 'Complexity × coverage',
+		group: 'Architecture',
+		dataset: 'covered',
 		fields: { x: 'complexity', y: 'coverage', color: 'package' },
 		axes: { x: 'Complexity (decision points)', y: 'Statement coverage' },
 		applies: ['alpha', 'legend'],
@@ -270,7 +334,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	coupling: {
-		id: 'coupling', label: 'Fan-in × fan-out', group: 'Architecture', dataset: 'modules',
+		id: 'coupling',
+		label: 'Fan-in × fan-out',
+		group: 'Architecture',
+		dataset: 'modules',
 		fields: { x: 'fanOut', y: 'fanIn', color: 'package' },
 		axes: { x: 'Fan-out (imports)', y: 'Fan-in (imported by)' },
 		applies: ['alpha', 'legend', 'contour'],
@@ -281,7 +348,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	smells: {
-		id: 'smells', label: 'God modules', group: 'Architecture', dataset: 'modules',
+		id: 'smells',
+		label: 'God modules',
+		group: 'Architecture',
+		dataset: 'modules',
 		fields: { x: 'complexity', y: 'fanOut', color: 'package', size: 'loc' },
 		axes: { x: 'Complexity (decision points)', y: 'Fan-out (imports)' },
 		applies: ['alpha', 'legend'],
@@ -292,7 +362,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	facet: {
-		id: 'facet', label: 'Facet', group: 'Composition', dataset: 'cars',
+		id: 'facet',
+		label: 'Facet',
+		group: 'Composition',
+		dataset: 'cars',
 		fields: { x: 'displ', y: 'hwy', color: 'drv' },
 		applies: ['alpha', 'legend'],
 		defaults: { legend: true, alpha: 0.8 },
@@ -302,7 +375,10 @@ export const registry: Record<string, ChartTypeConfig> = {
 		]
 	},
 	animated: {
-		id: 'animated', label: 'Animated', group: 'Composition', dataset: 'productSeries',
+		id: 'animated',
+		label: 'Animated',
+		group: 'Composition',
+		dataset: 'productSeries',
 		fields: { x: 'product', y: 'revenue' },
 		applies: ['alpha'],
 		defaults: {},

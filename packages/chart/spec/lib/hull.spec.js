@@ -20,7 +20,14 @@ describe('convexHull', () => {
 	})
 
 	it('drops collinear points on an edge', () => {
-		expect(convexHull([[0, 0], [1, 0], [2, 0], [1, 1]])).toEqual([
+		expect(
+			convexHull([
+				[0, 0],
+				[1, 0],
+				[2, 0],
+				[1, 1]
+			])
+		).toEqual([
 			[0, 0],
 			[2, 0],
 			[1, 1]
@@ -29,23 +36,48 @@ describe('convexHull', () => {
 
 	it('de-duplicates and keeps degenerate inputs', () => {
 		expect(convexHull([])).toEqual([])
-		expect(convexHull([[3, 4], [3, 4]])).toEqual([[3, 4]])
-		expect(convexHull([[0, 0], [5, 5], [2, 2]])).toEqual([
+		expect(
+			convexHull([
+				[3, 4],
+				[3, 4]
+			])
+		).toEqual([[3, 4]])
+		expect(
+			convexHull([
+				[0, 0],
+				[5, 5],
+				[2, 2]
+			])
+		).toEqual([
 			[0, 0],
 			[5, 5]
 		])
 	})
 
 	it('does not mutate its input', () => {
-		const pts = [[2, 0], [0, 0], [1, 1]]
+		const pts = [
+			[2, 0],
+			[0, 0],
+			[1, 1]
+		]
 		convexHull(pts)
-		expect(pts).toEqual([[2, 0], [0, 0], [1, 1]])
+		expect(pts).toEqual([
+			[2, 0],
+			[0, 0],
+			[1, 1]
+		])
 	})
 })
 
 describe('hullPath', () => {
 	it('closes a polygon', () => {
-		expect(hullPath([[0, 0], [2, 0], [1, 1]])).toBe('M0,0L2,0L1,1Z')
+		expect(
+			hullPath([
+				[0, 0],
+				[2, 0],
+				[1, 1]
+			])
+		).toBe('M0,0L2,0L1,1Z')
 	})
 
 	it('draws a single point as a zero-length subpath — a round cap makes it a dot', () => {
@@ -53,7 +85,12 @@ describe('hullPath', () => {
 	})
 
 	it('draws two points as a segment — round caps make it a capsule', () => {
-		expect(hullPath([[0, 0], [5, 5]])).toBe('M0,0L5,5Z')
+		expect(
+			hullPath([
+				[0, 0],
+				[5, 5]
+			])
+		).toBe('M0,0L5,5Z')
 	})
 
 	it('is empty for no points', () => {

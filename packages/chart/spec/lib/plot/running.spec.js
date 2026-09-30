@@ -3,7 +3,9 @@ import { runningSpans } from '../../../src/lib/plot/running.js'
 
 describe('runningSpans', () => {
 	it('runs each step from the previous total to the next', () => {
-		expect(runningSpans([{ d: 5 }, { d: -8 }], 'd').map(({ lo, hi, total }) => [lo, hi, total])).toEqual([
+		expect(
+			runningSpans([{ d: 5 }, { d: -8 }], 'd').map(({ lo, hi, total }) => [lo, hi, total])
+		).toEqual([
 			[0, 5, 5],
 			[-3, 5, -3]
 		])

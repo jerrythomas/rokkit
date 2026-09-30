@@ -11,7 +11,11 @@ describe('PlotFrame', () => {
 	})
 
 	it('uses a margin override, and drops it when the override is withdrawn', () => {
-		const config = new PlotConfig({ width: 300, height: 200, margin: { top: 0, right: 0, bottom: 0, left: 0 } })
+		const config = new PlotConfig({
+			width: 300,
+			height: 200,
+			margin: { top: 0, right: 0, bottom: 0, left: 0 }
+		})
 		const f = new PlotFrame(config)
 		expect([f.innerWidth, f.innerHeight]).toEqual([300, 200])
 		config.update({})

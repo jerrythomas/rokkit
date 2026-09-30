@@ -39,18 +39,55 @@ describe('region geometry', () => {
 	})
 
 	it('regionVertices prefers points and needs three of them', () => {
-		expect(regionVertices({ points: [[0, 0], [10, 0], [0, 10]], x: [0, 10] }, lin, lin)).toEqual([
+		expect(
+			regionVertices(
+				{
+					points: [
+						[0, 0],
+						[10, 0],
+						[0, 10]
+					],
+					x: [0, 10]
+				},
+				lin,
+				lin
+			)
+		).toEqual([
 			[0, 0],
 			[100, 0],
 			[0, 100]
 		])
-		expect(regionVertices({ points: [[0, 0], [1, 1]] }, lin, lin)).toEqual([])
+		expect(
+			regionVertices(
+				{
+					points: [
+						[0, 0],
+						[1, 1]
+					]
+				},
+				lin,
+				lin
+			)
+		).toEqual([])
 		expect(regionVertices({}, lin, lin)).toEqual([])
 	})
 
 	it('centroid falls back to the vertex mean for a collinear polygon', () => {
-		expect(centroid([{ x: 0, y: 0 }, { x: 2, y: 0 }, { x: 4, y: 0 }])).toEqual({ x: 2, y: 0 })
-		expect(centroid([{ x: 0, y: 0 }, { x: 4, y: 0 }, { x: 4, y: 4 }, { x: 0, y: 4 }])).toEqual({ x: 2, y: 2 })
+		expect(
+			centroid([
+				{ x: 0, y: 0 },
+				{ x: 2, y: 0 },
+				{ x: 4, y: 0 }
+			])
+		).toEqual({ x: 2, y: 0 })
+		expect(
+			centroid([
+				{ x: 0, y: 0 },
+				{ x: 4, y: 0 },
+				{ x: 4, y: 4 },
+				{ x: 0, y: 4 }
+			])
+		).toEqual({ x: 2, y: 2 })
 	})
 
 	it('centroid of no points is the origin rather than NaN', () => {
@@ -58,6 +95,12 @@ describe('region geometry', () => {
 	})
 
 	it('polygonPath closes the shape and rounds to 3 decimals', () => {
-		expect(polygonPath([{ x: 0, y: 0 }, { x: 1.23456, y: 0 }, { x: 0, y: 2 }])).toBe('M0,0 L1.235,0 L0,2 Z')
+		expect(
+			polygonPath([
+				{ x: 0, y: 0 },
+				{ x: 1.23456, y: 0 },
+				{ x: 0, y: 2 }
+			])
+		).toBe('M0,0 L1.235,0 L0,2 Z')
 	})
 })

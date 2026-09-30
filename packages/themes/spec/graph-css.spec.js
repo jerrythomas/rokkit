@@ -231,7 +231,9 @@ describe('graph theme CSS', () => {
 		// which is auto-computed for contrast.
 		const offenders = read('rokkit/graph.css')
 			.split('}')
-			.filter((rule) => /(^|[;{\s])color:\s*var\(--(primary|accent|success|warning|danger|error|info)\b/.test(rule))
+			.filter((rule) =>
+				/(^|[;{\s])color:\s*var\(--(primary|accent|success|warning|danger|error|info)\b/.test(rule)
+			)
 
 		expect(offenders).toEqual([])
 	})
@@ -266,19 +268,24 @@ describe('graph theme CSS', () => {
 		expect(rules.join('}'), style).toMatch(/stroke-dasharray/)
 	})
 
-	it.each(STYLES)('%s colours the dependency matrix, and marks cells against the grain apart', (style) => {
-		const css = declarations(`${style}/graph.css`)
-		expect(css, style).toContain('[data-matrix-cell]')
-		expect(css, style).toContain('[data-matrix-above]')
-		expect(css, style).toContain('[data-matrix-block]')
-	})
+	it.each(STYLES)(
+		'%s colours the dependency matrix, and marks cells against the grain apart',
+		(style) => {
+			const css = declarations(`${style}/graph.css`)
+			expect(css, style).toContain('[data-matrix-cell]')
+			expect(css, style).toContain('[data-matrix-above]')
+			expect(css, style).toContain('[data-matrix-block]')
+		}
+	)
 
 	it('scales matrix cell intensity from --cell-weight in base', () => {
 		expect(declarations('base/graph.css')).toMatch(/var\(--cell-weight,\s*1\)/)
 	})
 
 	it('sizes a weighted edge from --edge-weight in base, with a zero fallback', () => {
-		expect(declarations('base/graph.css')).toMatch(/stroke-width:\s*calc\([^;]*var\(--edge-weight,\s*0\)/)
+		expect(declarations('base/graph.css')).toMatch(
+			/stroke-width:\s*calc\([^;]*var\(--edge-weight,\s*0\)/
+		)
 	})
 
 	it('falls back to a named token whenever a group custom property is absent', () => {

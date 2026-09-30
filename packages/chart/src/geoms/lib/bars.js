@@ -124,7 +124,17 @@ export function buildBars(
 	})
 }
 
-export function buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place = (x, y) => ({ x, y }), normalize = false) {
+export function buildStackedBars(
+	data,
+	channels,
+	xScale,
+	yScale,
+	colors,
+	innerHeight,
+	patterns,
+	place = (x, y) => ({ x, y }),
+	normalize = false
+) {
 	const { x: xf, y: yf, color: cf, pattern: pf } = channels
 	const lit = literalColor(cf)
 	const field = lit ? undefined : cf

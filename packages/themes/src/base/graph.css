@@ -451,7 +451,9 @@
 }
 
 /* A nested label sits 0.5rem down (above), so its height budget is 0.5rem less. */
-[data-graph-layout='world'] [data-graph-cluster][data-cluster-depth='1'] > [data-graph-cluster-label] {
+[data-graph-layout='world']
+  [data-graph-cluster][data-cluster-depth='1']
+  > [data-graph-cluster-label] {
   max-height: calc((100% - 0.5rem) / var(--graph-label-counter-scale, 1));
 }
 
@@ -925,7 +927,6 @@ svg[data-legend-swatch] {
 [data-graph-detail='dot'] [data-graph-layout='structure'] [data-graph-node-title] {
   display: none;
 }
-
 
 /* ─── the dependency matrix ─────────────────────────────────────────────────
    Structure only. Cell intensity comes from --cell-weight (count / max, set per cell), so a

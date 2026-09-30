@@ -33,9 +33,7 @@ describe('PlotState — fill/color shared categorical scale (Phase 2)', () => {
 		const s = new PlotState({ data, channels: { x: 'region', y: 'v' } })
 		s.registerGeom({ type: 'bar', channels: { color: 'region' } })
 		s.registerGeom({ type: 'point', channels: { color: 'product' } })
-		expect([...s.colors.keys()]).toEqual(
-			expect.arrayContaining(['North', 'South', 'A', 'B', 'C'])
-		)
+		expect([...s.colors.keys()]).toEqual(expect.arrayContaining(['North', 'South', 'A', 'B', 'C']))
 	})
 
 	it('exposes fillField (parallel to colorField) from the effective channels', () => {
@@ -67,8 +65,22 @@ describe('PlotState — fill/color shared categorical scale (Phase 2)', () => {
 describe('preset.opacity covers every geom (Phase 2)', () => {
 	it('has a numeric opacity default for all geoms', () => {
 		const geoms = [
-			'area', 'bar', 'line', 'point', 'arc', 'box', 'violin', 'jitter',
-			'heatmap', 'candlestick', 'hexbin', 'ribbon', 'waterfall', 'rule', 'hull', 'contour'
+			'area',
+			'bar',
+			'line',
+			'point',
+			'arc',
+			'box',
+			'violin',
+			'jitter',
+			'heatmap',
+			'candlestick',
+			'hexbin',
+			'ribbon',
+			'waterfall',
+			'rule',
+			'hull',
+			'contour'
 		]
 		for (const g of geoms) {
 			expect(typeof defaultPreset.opacity[g], `opacity.${g}`).toBe('number')

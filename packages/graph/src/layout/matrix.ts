@@ -99,7 +99,15 @@ function collectCells(model: GraphModel, index: Map<string, number>): MatrixCell
 		const n = edge.weight ?? 1
 		const cell = cells.get(key)
 		if (cell) cell.count += n
-		else cells.set(key, { row, col, source: edge.source, target: edge.target, count: n, above: col > row })
+		else
+			cells.set(key, {
+				row,
+				col,
+				source: edge.source,
+				target: edge.target,
+				count: n,
+				above: col > row
+			})
 	}
 	return [...cells.values()].sort((a, b) => a.row - b.row || a.col - b.col)
 }

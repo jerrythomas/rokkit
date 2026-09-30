@@ -42,14 +42,20 @@ describe('buildMatrix', () => {
 	})
 
 	it('aggregates parallel edges into one cell with a count', () => {
-		const twice = { ...LAYERED, edges: [...LAYERED.edges, { source: 'ui', target: 'app', relation: 'calls' }] }
+		const twice = {
+			...LAYERED,
+			edges: [...LAYERED.edges, { source: 'ui', target: 'app', relation: 'calls' }]
+		}
 		const m = buildMatrix(model(twice))
 		expect(m.cells.find((c) => c.source === 'ui' && c.target === 'app')?.count).toBe(2)
 		expect(m.maxCount).toBe(2)
 	})
 
 	it('counts a weighted edge as its weight — an aggregated import list folds nothing', () => {
-		const weighted = { ...LAYERED, edges: [{ source: 'ui', target: 'app', weight: 7 }, ...LAYERED.edges.slice(1)] }
+		const weighted = {
+			...LAYERED,
+			edges: [{ source: 'ui', target: 'app', weight: 7 }, ...LAYERED.edges.slice(1)]
+		}
 		const m = buildMatrix(model(weighted))
 		expect(m.cells.find((c) => c.source === 'ui' && c.target === 'app')?.count).toBe(7)
 		expect(m.maxCount).toBe(7)
@@ -104,6 +110,14 @@ describe('buildMatrix', () => {
 
 	it('handles an empty model', () => {
 		const m = buildMatrix(normalizeGraph([], []))
-		expect(m).toEqual({ order: [], labels: [], groups: [], cells: [], blocks: [], above: 0, maxCount: 0 })
+		expect(m).toEqual({
+			order: [],
+			labels: [],
+			groups: [],
+			cells: [],
+			blocks: [],
+			above: 0,
+			maxCount: 0
+		})
 	})
 })

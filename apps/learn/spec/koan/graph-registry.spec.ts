@@ -82,7 +82,9 @@ describe('graph demo registry', () => {
 			fields: data.fields,
 			...coupling.props
 		})
-		expect(container.querySelectorAll('[data-graph-edge][data-edge-overlay]').length).toBe(overlays.length)
+		expect(container.querySelectorAll('[data-graph-edge][data-edge-overlay]').length).toBe(
+			overlays.length
+		)
 	})
 
 	it('pairs every diagram with a dataset that exists', () => {

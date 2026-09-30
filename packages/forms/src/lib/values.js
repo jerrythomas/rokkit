@@ -25,7 +25,10 @@ function equalArrays(a, b) {
 
 function equalObjects(a, b) {
 	const keys = Object.keys(a)
-	return keys.length === Object.keys(b).length && keys.every((k) => Object.hasOwn(b, k) && deepEqual(a[k], b[k]))
+	return (
+		keys.length === Object.keys(b).length &&
+		keys.every((k) => Object.hasOwn(b, k) && deepEqual(a[k], b[k]))
+	)
 }
 
 /**

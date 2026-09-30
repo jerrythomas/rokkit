@@ -39,7 +39,8 @@ export class OrientationState {
 		if (!x || !y) return null
 		const rawX = inferFieldType(this.#config.data, x)
 		const yType = inferFieldType(this.#config.data, y)
-		const xType = this.hasBandGeom && rawX === 'continuous' && yType === 'continuous' ? 'band' : rawX
+		const xType =
+			this.hasBandGeom && rawX === 'continuous' && yType === 'continuous' ? 'band' : rawX
 		return { xType, yType }
 	})
 

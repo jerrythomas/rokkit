@@ -388,6 +388,8 @@ describe('validateAll — every field, not just the top level', () => {
 	})
 
 	it('reports nothing for a fully valid nested form', () => {
-		expect(validateAll({ name: 'A', addr: { city: 'Pune', geo: { lat: 1 } } }, schema, layout)).toEqual({})
+		expect(
+			validateAll({ name: 'A', addr: { city: 'Pune', geo: { lat: 1 } } }, schema, layout)
+		).toEqual({})
 	})
 })

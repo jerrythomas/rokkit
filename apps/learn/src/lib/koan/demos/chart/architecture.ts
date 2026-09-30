@@ -100,8 +100,20 @@ export const THRESHOLD_QUANTILE = 0.95
  * marking the ordinary as extreme. p95 leaves about thirty modules past each line.
  */
 export const thresholds = {
-	complexity: quantile(modules.map((m) => m.complexity), THRESHOLD_QUANTILE),
-	churn: quantile(modules.map((m) => m.churn), THRESHOLD_QUANTILE),
-	fanIn: quantile(modules.map((m) => m.fanIn), THRESHOLD_QUANTILE),
-	fanOut: quantile(modules.map((m) => m.fanOut), THRESHOLD_QUANTILE)
+	complexity: quantile(
+		modules.map((m) => m.complexity),
+		THRESHOLD_QUANTILE
+	),
+	churn: quantile(
+		modules.map((m) => m.churn),
+		THRESHOLD_QUANTILE
+	),
+	fanIn: quantile(
+		modules.map((m) => m.fanIn),
+		THRESHOLD_QUANTILE
+	),
+	fanOut: quantile(
+		modules.map((m) => m.fanOut),
+		THRESHOLD_QUANTILE
+	)
 }

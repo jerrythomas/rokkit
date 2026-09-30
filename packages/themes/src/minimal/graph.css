@@ -302,8 +302,14 @@
 /* Hover label — it floats over the canvas, so it carries its own surface. */
 [data-style='minimal'] [data-graph-node]:hover [data-graph-node-title],
 [data-style='minimal'] [data-graph-node]:focus-visible [data-graph-node-title],
-[data-style='minimal'] [data-graph-layout='world'] [data-graph-cluster]:hover > [data-graph-cluster-label],
-[data-style='minimal'] [data-graph-layout='world'] [data-graph-cluster]:focus-visible > [data-graph-cluster-label] {
+[data-style='minimal']
+  [data-graph-layout='world']
+  [data-graph-cluster]:hover
+  > [data-graph-cluster-label],
+[data-style='minimal']
+  [data-graph-layout='world']
+  [data-graph-cluster]:focus-visible
+  > [data-graph-cluster-label] {
   background-color: var(--paper);
   color: var(--ink);
   border: 1px solid var(--paper-edge);
@@ -417,11 +423,16 @@
   color: var(--ink-mute);
 }
 
-[data-style='minimal'] [data-graph-layout='structure'] [data-node-state='selected'] [data-graph-node-title],
-[data-style='minimal'] [data-graph-layout='structure'] [data-graph-node]:hover [data-graph-node-title] {
+[data-style='minimal']
+  [data-graph-layout='structure']
+  [data-node-state='selected']
+  [data-graph-node-title],
+[data-style='minimal']
+  [data-graph-layout='structure']
+  [data-graph-node]:hover
+  [data-graph-node-title] {
   color: var(--ink);
 }
-
 
 /* ─── the dependency matrix ─────────────────────────────────────────────────
    A dependency is ink; one against the grain (above the diagonal) is danger and stays danger

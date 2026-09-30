@@ -29,11 +29,7 @@
 /* Mixed down to 22%: a full-strength group fill under a translucent card would stack
    two colours behind the card's text and make its contrast unpredictable. */
 [data-style='frosted'] [data-graph-cluster] {
-  background-color: color-mix(
-    in oklch,
-    var(--group-fill, var(--paper-mute)) 22%,
-    transparent
-  );
+  background-color: color-mix(in oklch, var(--group-fill, var(--paper-mute)) 22%, transparent);
   /* The glass white is the DEFAULT, not the only option: an explicit group stroke still
      wins, so a consumer's preset reaches this style like any other. */
   border-color: var(--group-stroke, rgba(255, 255, 255, 0.18));
@@ -306,8 +302,14 @@
 /* Hover label — it floats over the canvas, so it carries its own surface. */
 [data-style='frosted'] [data-graph-node]:hover [data-graph-node-title],
 [data-style='frosted'] [data-graph-node]:focus-visible [data-graph-node-title],
-[data-style='frosted'] [data-graph-layout='world'] [data-graph-cluster]:hover > [data-graph-cluster-label],
-[data-style='frosted'] [data-graph-layout='world'] [data-graph-cluster]:focus-visible > [data-graph-cluster-label] {
+[data-style='frosted']
+  [data-graph-layout='world']
+  [data-graph-cluster]:hover
+  > [data-graph-cluster-label],
+[data-style='frosted']
+  [data-graph-layout='world']
+  [data-graph-cluster]:focus-visible
+  > [data-graph-cluster-label] {
   background-color: var(--paper);
   color: var(--ink);
   border: 1px solid var(--paper-edge);
@@ -421,11 +423,16 @@
   color: var(--ink-mute);
 }
 
-[data-style='frosted'] [data-graph-layout='structure'] [data-node-state='selected'] [data-graph-node-title],
-[data-style='frosted'] [data-graph-layout='structure'] [data-graph-node]:hover [data-graph-node-title] {
+[data-style='frosted']
+  [data-graph-layout='structure']
+  [data-node-state='selected']
+  [data-graph-node-title],
+[data-style='frosted']
+  [data-graph-layout='structure']
+  [data-graph-node]:hover
+  [data-graph-node-title] {
   color: var(--ink);
 }
-
 
 /* ─── the dependency matrix ─────────────────────────────────────────────────
    A dependency is ink; one against the grain (above the diagonal) is danger and stays danger

@@ -9,7 +9,10 @@ import { describe, it, expect } from 'vitest'
 import { FormBuilder } from '../../src/lib/builder.svelte.js'
 
 const scopes = (b) => (b.layout.elements ?? []).map((el) => el.scope)
-const schema = { type: 'object', properties: { email: { type: 'string' }, age: { type: 'number' } } }
+const schema = {
+	type: 'object',
+	properties: { email: { type: 'string' }, age: { type: 'number' } }
+}
 const explicit = { type: 'vertical', elements: [{ scope: '#/age', label: 'Age' }] }
 
 describe('FormBuilder — schema ⇄ layout derivation', () => {
@@ -63,7 +66,9 @@ describe('FormBuilder — validating a nested field', () => {
 	it('validateField finds a nested JSON Schema field and validates it', () => {
 		const nested = {
 			type: 'object',
-			properties: { addr: { type: 'object', properties: { city: { type: 'string', required: true } } } }
+			properties: {
+				addr: { type: 'object', properties: { city: { type: 'string', required: true } } }
+			}
 		}
 		const b = new FormBuilder({ addr: {} }, nested)
 		expect(b.validateField('addr/city')?.state).toBe('error')
@@ -80,7 +85,10 @@ describe('FormBuilder — validate() reaches every field', () => {
 	}
 	const layout = {
 		type: 'vertical',
-		elements: [{ scope: '#/name' }, { scope: '#/addr', elements: [{ scope: '#/addr/city', label: 'City' }] }]
+		elements: [
+			{ scope: '#/name' },
+			{ scope: '#/addr', elements: [{ scope: '#/addr/city', label: 'City' }] }
+		]
 	}
 
 	it('reports a nested required field, and keeps its message (it is visible)', () => {

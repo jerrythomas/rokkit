@@ -48,7 +48,10 @@ describe('resolveInputType', () => {
 
 describe('buildElements', () => {
 	it('builds scoped fields with value, type and props', () => {
-		const [name, level] = build([{ scope: '#/name', label: 'Name' }, { scope: '#/level' }], { name: 'Ada', level: 3 })
+		const [name, level] = build([{ scope: '#/name', label: 'Name' }, { scope: '#/level' }], {
+			name: 'Ada',
+			level: 3
+		})
 		expect(name).toMatchObject({ scope: '#/name', type: 'text', value: 'Ada', override: false })
 		expect(name.props).toMatchObject({ label: 'Name', type: 'text', message: null, dirty: false })
 		expect(level.type).toBe('range')
@@ -59,19 +62,31 @@ describe('buildElements', () => {
 			[{ type: 'display-card', scope: '#/name', title: 'T' }, {}, { type: 'spacer', size: 2 }],
 			{ name: 'Ada' }
 		)
-		expect(display).toEqual({ type: 'display-card', scope: '#/name', value: 'Ada', override: false, props: { title: 'T' } })
+		expect(display).toEqual({
+			type: 'display-card',
+			scope: '#/name',
+			value: 'Ada',
+			override: false,
+			props: { title: 'T' }
+		})
 		expect(sep.type).toBe('separator')
 		expect(spacer).toMatchObject({ type: 'spacer', scope: null, props: { size: 2 } })
 	})
 
 	it('drops a field whose showWhen is false', () => {
-		const els = build([{ scope: '#/name', showWhen: { field: 'ok', equals: true } }, { scope: '#/count' }], { ok: false })
+		const els = build(
+			[{ scope: '#/name', showWhen: { field: 'ok', equals: true } }, { scope: '#/count' }],
+			{ ok: false }
+		)
 		expect(els.map((e) => e.scope)).toEqual(['#/count'])
 	})
 
 	it('a readonly field is an info element; a group nests its children', () => {
 		const [note, addr] = build(
-			[{ scope: '#/note' }, { scope: '#/addr', elements: [{ scope: '#/addr/city', label: 'City' }] }],
+			[
+				{ scope: '#/note' },
+				{ scope: '#/addr', elements: [{ scope: '#/addr/city', label: 'City' }] }
+			],
 			{ addr: { city: 'Pune' } }
 		)
 		expect(note.type).toBe('info')
@@ -83,11 +98,15 @@ describe('buildElements', () => {
 		const applyLookup = vi.fn((path, props) => {
 			props.options = ['x']
 		})
-		const [tier] = build([{ scope: '#/tier', override: true }], {}, {
-			message: () => ({ state: 'error', text: 'bad' }),
-			dirty: () => true,
-			applyLookup
-		})
+		const [tier] = build(
+			[{ scope: '#/tier', override: true }],
+			{},
+			{
+				message: () => ({ state: 'error', text: 'bad' }),
+				dirty: () => true,
+				applyLookup
+			}
+		)
 		expect(tier.override).toBe(true)
 		expect(tier.props).toMatchObject({ message: { state: 'error' }, dirty: true, options: ['x'] })
 		expect(tier.props.override).toBeUndefined()
@@ -96,15 +115,30 @@ describe('buildElements', () => {
 
 	it('falls back to plain text elements for the whole layout when building fails', () => {
 		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-		const layout = { type: 'vertical', elements: [{ scope: '#/name', label: 'N' }, { type: 'separator' }] }
-		const els = buildElements([{ scope: '#/name' }], ctx({ name: 'Ada' }, {
-			layout,
-			applyLookup: () => {
-				throw new Error('boom')
-			}
-		}))
+		const layout = {
+			type: 'vertical',
+			elements: [{ scope: '#/name', label: 'N' }, { type: 'separator' }]
+		}
+		const els = buildElements(
+			[{ scope: '#/name' }],
+			ctx(
+				{ name: 'Ada' },
+				{
+					layout,
+					applyLookup: () => {
+						throw new Error('boom')
+					}
+				}
+			)
+		)
 		expect(els).toEqual([
-			{ scope: '#/name', type: 'text', value: 'Ada', override: false, props: { label: 'N', message: null, dirty: false, type: 'text' } }
+			{
+				scope: '#/name',
+				type: 'text',
+				value: 'Ada',
+				override: false,
+				props: { label: 'N', message: null, dirty: false, type: 'text' }
+			}
 		])
 		expect(warn).toHaveBeenCalled()
 		warn.mockRestore()

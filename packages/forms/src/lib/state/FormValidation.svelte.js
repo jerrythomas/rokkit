@@ -97,13 +97,18 @@ export class FormValidation {
 	validateAll() {
 		const { schema, layout } = this.#definition
 		if (this.#steps.isMultiStep) {
-			const results = validateAll(this.#values.data, schema, { ...layout, elements: this.#steps.allStepElements })
+			const results = validateAll(this.#values.data, schema, {
+				...layout,
+				elements: this.#steps.allStepElements
+			})
 			this.#map = results
 			return results
 		}
 		const visible = new SvelteSet(this.#visiblePaths())
 		const results = Object.fromEntries(
-			Object.entries(validateAll(this.#values.data, schema, layout)).filter(([path]) => visible.has(path))
+			Object.entries(validateAll(this.#values.data, schema, layout)).filter(([path]) =>
+				visible.has(path)
+			)
 		)
 		this.#map = results
 		return results
@@ -117,8 +122,12 @@ export class FormValidation {
 		const step = this.#steps.step(index)
 		if (!step) return true
 		const { schema, layout } = this.#definition
-		const results = validateAll(this.#values.data, schema, { ...layout, elements: step.elements ?? [] })
-		for (const path of new SvelteSet(stepPaths(step.elements))) this.set(path, results[path] ?? null)
+		const results = validateAll(this.#values.data, schema, {
+			...layout,
+			elements: step.elements ?? []
+		})
+		for (const path of new SvelteSet(stepPaths(step.elements)))
+			this.set(path, results[path] ?? null)
 		return Object.values(results).every((msg) => msg?.state !== 'error')
 	}
 

@@ -48,7 +48,10 @@
 		v === undefined ? [] : Array.isArray(v) ? v : [v]
 
 	// Position along an axis: band scales resolve to the band centre, linear scales map directly.
-	function axisPos(scale: { (v: unknown): number | undefined; bandwidth?: () => number }, v: unknown) {
+	function axisPos(
+		scale: { (v: unknown): number | undefined; bandwidth?: () => number },
+		v: unknown
+	) {
 		const base = scale(v) ?? 0
 		return typeof scale.bandwidth === 'function' ? base + scale.bandwidth() / 2 : base
 	}
@@ -82,14 +85,27 @@
 		text: labelFor(id.value)
 	})
 
-	type AnyScale = { (v: unknown): number | undefined; bandwidth?: () => number; domain: () => unknown[] }
+	type AnyScale = {
+		(v: unknown): number | undefined
+		bandwidth?: () => number
+		domain: () => unknown[]
+	}
 	const isBand = (scale: AnyScale) => typeof scale.bandwidth === 'function'
 
 	// The sloped line, clipped in DATA space so it stays inside the plot at any zoom. A band
 	// axis has no numeric domain to clip against, so the slope is ignored there.
-	function slopeLine(xs: AnyScale, ys: AnyScale, place: (u: number, v: number) => Point): RuleLine | null {
+	function slopeLine(
+		xs: AnyScale,
+		ys: AnyScale,
+		place: (u: number, v: number) => Point
+	): RuleLine | null {
 		if (slope === undefined || isBand(xs) || isBand(ys)) return null
-		const seg = clipAbline(slope, intercept, xs.domain() as [number, number], ys.domain() as [number, number])
+		const seg = clipAbline(
+			slope,
+			intercept,
+			xs.domain() as [number, number],
+			ys.domain() as [number, number]
+		)
 		if (!seg) return null
 		const a = place(Number(xs(seg.x1)), Number(ys(seg.y1)))
 		const b = place(Number(xs(seg.x2)), Number(ys(seg.y2)))
@@ -144,8 +160,8 @@
 					transform="rotate({at.angle} {at.x} {at.y})"
 					font-size="10"
 					fill={strokeColor}
-					data-plot-element="rule-label"
-				>{rule.text}</text>
+					data-plot-element="rule-label">{rule.text}</text
+				>
 			{:else if rule.text}
 				<text
 					x={rule.x2}
@@ -155,8 +171,8 @@
 					text-anchor="end"
 					font-size="10"
 					fill={strokeColor}
-					data-plot-element="rule-label"
-				>{rule.text}</text>
+					data-plot-element="rule-label">{rule.text}</text
+				>
 			{/if}
 		{/each}
 	</g>

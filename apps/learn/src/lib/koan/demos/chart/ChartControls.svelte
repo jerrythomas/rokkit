@@ -6,7 +6,9 @@
 	const s = $derived(explorer.settings)
 	// Area has no side-by-side "dodge"; every other position applies.
 	const positionOptions = $derived(
-		explorer.type === 'area' ? ['stack', 'fill', 'identity'] : ['stack', 'dodge', 'fill', 'identity']
+		explorer.type === 'area'
+			? ['stack', 'fill', 'identity']
+			: ['stack', 'dodge', 'fill', 'identity']
 	)
 	// Render groups in purpose order, skipping any that ended up empty.
 	const groups = $derived(chartGroups.filter((g) => chartTypes.some((t) => t.group === g)))
@@ -22,42 +24,121 @@
 					class="chip"
 					data-active={explorer.type === t.id ? 'true' : undefined}
 					data-chart-type={t.id}
-					onclick={() => explorer.select(t.id)}
-				>{t.label}</button>
+					onclick={() => explorer.select(t.id)}>{t.label}</button
+				>
 			{/each}
 		</div>
 	{/each}
 
 	<div class="settings">
 		{#if explorer.applies('orientation')}
-			<div class="row"><span>Orientation</span><div class="seg">{#each ['vertical', 'horizontal'] as o (o)}<button type="button" data-active={s.orientation === o ? 'true' : undefined} onclick={() => explorer.set('orientation', o as 'vertical' | 'horizontal')}>{o}</button>{/each}</div></div>
+			<div class="row">
+				<span>Orientation</span>
+				<div class="seg">
+					{#each ['vertical', 'horizontal'] as o (o)}<button
+							type="button"
+							data-active={s.orientation === o ? 'true' : undefined}
+							onclick={() => explorer.set('orientation', o as 'vertical' | 'horizontal')}
+							>{o}</button
+						>{/each}
+				</div>
+			</div>
 		{/if}
 		{#if explorer.applies('position')}
-			<div class="row"><span>Position</span><div class="seg wrap">{#each positionOptions as p (p)}<button type="button" data-active={s.position === p ? 'true' : undefined} onclick={() => explorer.set('position', p as typeof s.position)}>{p}</button>{/each}</div></div>
+			<div class="row">
+				<span>Position</span>
+				<div class="seg wrap">
+					{#each positionOptions as p (p)}<button
+							type="button"
+							data-active={s.position === p ? 'true' : undefined}
+							onclick={() => explorer.set('position', p as typeof s.position)}>{p}</button
+						>{/each}
+				</div>
+			</div>
 		{/if}
 		{#if explorer.applies('fill')}
-			<label class="row check"><input type="checkbox" checked={Boolean(s.fill)} onchange={(e) => explorer.set('fill', e.currentTarget.checked ? (config.fields.fill ?? '') : '')} /><span>Fill by <code>{config.fields.fill}</code></span></label>
+			<label class="row check"
+				><input
+					type="checkbox"
+					checked={Boolean(s.fill)}
+					onchange={(e) =>
+						explorer.set('fill', e.currentTarget.checked ? (config.fields.fill ?? '') : '')}
+				/><span>Fill by <code>{config.fields.fill}</code></span></label
+			>
 		{/if}
 		{#if explorer.applies('color')}
-			<label class="row check"><input type="checkbox" checked={Boolean(s.color)} onchange={(e) => explorer.set('color', e.currentTarget.checked ? (config.fields.color ?? '') : '')} /><span>Color by <code>{config.fields.color}</code></span></label>
+			<label class="row check"
+				><input
+					type="checkbox"
+					checked={Boolean(s.color)}
+					onchange={(e) =>
+						explorer.set('color', e.currentTarget.checked ? (config.fields.color ?? '') : '')}
+				/><span>Color by <code>{config.fields.color}</code></span></label
+			>
 		{/if}
 		{#if explorer.applies('pattern')}
-			<label class="row check"><input type="checkbox" checked={Boolean(s.pattern)} onchange={(e) => explorer.set('pattern', e.currentTarget.checked ? (config.fields.fill ?? config.fields.x ?? '') : '')} /><span>Pattern fill</span></label>
+			<label class="row check"
+				><input
+					type="checkbox"
+					checked={Boolean(s.pattern)}
+					onchange={(e) =>
+						explorer.set(
+							'pattern',
+							e.currentTarget.checked ? (config.fields.fill ?? config.fields.x ?? '') : ''
+						)}
+				/><span>Pattern fill</span></label
+			>
 		{/if}
 		{#if explorer.applies('innerRadius')}
-			<div class="row"><span>Donut hole</span><input type="range" min="0" max="0.8" step="0.1" value={s.innerRadius} oninput={(e) => explorer.set('innerRadius', Number(e.currentTarget.value))} /></div>
+			<div class="row">
+				<span>Donut hole</span><input
+					type="range"
+					min="0"
+					max="0.8"
+					step="0.1"
+					value={s.innerRadius}
+					oninput={(e) => explorer.set('innerRadius', Number(e.currentTarget.value))}
+				/>
+			</div>
 		{/if}
 		{#if explorer.applies('alpha')}
-			<div class="row"><span>Opacity</span><input type="range" min="0.1" max="1" step="0.1" value={s.alpha ?? 1} oninput={(e) => explorer.set('alpha', Number(e.currentTarget.value))} /></div>
+			<div class="row">
+				<span>Opacity</span><input
+					type="range"
+					min="0.1"
+					max="1"
+					step="0.1"
+					value={s.alpha ?? 1}
+					oninput={(e) => explorer.set('alpha', Number(e.currentTarget.value))}
+				/>
+			</div>
 		{/if}
 		{#if explorer.applies('hull')}
-			<label class="row check"><input type="checkbox" checked={s.hull} onchange={(e) => explorer.set('hull', e.currentTarget.checked)} /><span>Outline each package</span></label>
+			<label class="row check"
+				><input
+					type="checkbox"
+					checked={s.hull}
+					onchange={(e) => explorer.set('hull', e.currentTarget.checked)}
+				/><span>Outline each package</span></label
+			>
 		{/if}
 		{#if explorer.applies('contour')}
-			<label class="row check"><input type="checkbox" checked={s.contour} onchange={(e) => explorer.set('contour', e.currentTarget.checked)} /><span>{explorer.type === 'contour' ? 'Filled bands' : 'Density contours'}</span></label>
+			<label class="row check"
+				><input
+					type="checkbox"
+					checked={s.contour}
+					onchange={(e) => explorer.set('contour', e.currentTarget.checked)}
+				/><span>{explorer.type === 'contour' ? 'Filled bands' : 'Density contours'}</span></label
+			>
 		{/if}
 		{#if explorer.applies('legend')}
-			<label class="row check"><input type="checkbox" checked={s.legend} onchange={(e) => explorer.set('legend', e.currentTarget.checked)} /><span>Show legend</span></label>
+			<label class="row check"
+				><input
+					type="checkbox"
+					checked={s.legend}
+					onchange={(e) => explorer.set('legend', e.currentTarget.checked)}
+				/><span>Show legend</span></label
+			>
 		{/if}
 	</div>
 </div>

@@ -58,7 +58,11 @@ describe('Plot.svelte', () => {
 	it('renders a scatter with axes crossing at the data origin (4-quadrant)', () => {
 		const point = (data) =>
 			render(Plot, {
-				props: { spec: { data, x: 'x', y: 'y', geoms: [{ type: 'point' }] }, width: 400, height: 300 }
+				props: {
+					spec: { data, x: 'x', y: 'y', geoms: [{ type: 'point' }] },
+					width: 400,
+					height: 300
+				}
 			})
 		const q1 = point([
 			{ x: 1, y: 1 },
@@ -71,7 +75,8 @@ describe('Plot.svelte', () => {
 			{ x: 5, y: -1 }
 		])
 		const axisCoord = (c, axis, re) => {
-			const t = c.container.querySelector(`[data-plot-axis="${axis}"]`)?.getAttribute('transform') ?? ''
+			const t =
+				c.container.querySelector(`[data-plot-axis="${axis}"]`)?.getAttribute('transform') ?? ''
 			return Number(t.match(re)?.[1])
 		}
 		const xAxisTop = (c) => axisCoord(c, 'x', /translate\(0,\s*(-?[\d.]+)\)/)
@@ -91,11 +96,17 @@ describe('Plot.svelte', () => {
 			{ x: 0.3, y: 0.4 }
 		]
 		const { container } = render(Plot, {
-			props: { spec: { data, x: 'x', y: 'y', geoms: [{ type: 'point' }] }, xDomain: [0, 1], yDomain: [0, 1], width: 400, height: 300 }
+			props: {
+				spec: { data, x: 'x', y: 'y', geoms: [{ type: 'point' }] },
+				xDomain: [0, 1],
+				yDomain: [0, 1],
+				width: 400,
+				height: 300
+			}
 		})
 		const ticks = (axis) =>
-			[...container.querySelectorAll(`[data-plot-axis="${axis}"] [data-plot-tick-label]`)].map((t) =>
-				Number(t.textContent)
+			[...container.querySelectorAll(`[data-plot-axis="${axis}"] [data-plot-tick-label]`)].map(
+				(t) => Number(t.textContent)
 			)
 		expect(Math.max(...ticks('x'))).toBe(1)
 		expect(Math.max(...ticks('y'))).toBe(1)
@@ -122,8 +133,29 @@ describe('Plot.svelte', () => {
 			xDomain: [0, 1],
 			yDomain: [0, 1],
 			geoms: [
-				{ type: 'region', props: { name: 'pain', points: [[0, 0], [0.5, 0], [0, 0.5]], label: 'Zone of pain' } },
-				{ type: 'region', props: { name: 'uselessness', points: [[1, 1], [0.5, 1], [1, 0.5]] } },
+				{
+					type: 'region',
+					props: {
+						name: 'pain',
+						points: [
+							[0, 0],
+							[0.5, 0],
+							[0, 0.5]
+						],
+						label: 'Zone of pain'
+					}
+				},
+				{
+					type: 'region',
+					props: {
+						name: 'uselessness',
+						points: [
+							[1, 1],
+							[0.5, 1],
+							[1, 0.5]
+						]
+					}
+				},
 				{ type: 'hull', props: { padding: 6, label: true } },
 				{ type: 'contour', props: { bandwidth: 30 } },
 				{ type: 'rule', props: { slope: -1, intercept: 1, label: 'main sequence' } },
@@ -131,15 +163,19 @@ describe('Plot.svelte', () => {
 			]
 		}
 		const { container } = render(Plot, { props: { spec, width: 400, height: 300 } })
-		expect([...container.querySelectorAll('[data-plot-region]')].map((r) => r.getAttribute('data-plot-region'))).toEqual([
-			'pain',
-			'uselessness'
-		])
-		expect(container.querySelector('[data-plot-region="pain"] [data-plot-element="region-label"]')?.textContent).toBe(
-			'Zone of pain'
-		)
+		expect(
+			[...container.querySelectorAll('[data-plot-region]')].map((r) =>
+				r.getAttribute('data-plot-region')
+			)
+		).toEqual(['pain', 'uselessness'])
+		expect(
+			container.querySelector('[data-plot-region="pain"] [data-plot-element="region-label"]')
+				?.textContent
+		).toBe('Zone of pain')
 		expect(container.querySelectorAll('[data-plot-element="hull"]').length).toBe(2)
-		expect(container.querySelector('[data-plot-element="hull"]')?.getAttribute('stroke-width')).toBe('12')
+		expect(
+			container.querySelector('[data-plot-element="hull"]')?.getAttribute('stroke-width')
+		).toBe('12')
 		expect(container.querySelector('[data-plot-geom="contour"]')).toBeTruthy()
 		expect(container.querySelector('[data-plot-rule="slope"]')).toBeTruthy()
 		expect(container.querySelectorAll('[data-plot-element="point"]').length).toBe(6)
@@ -232,7 +268,12 @@ describe('Plot.svelte', () => {
 			})
 
 			const root = container.querySelector('[data-plot-root]')
-			resizeCallback([{ target: root, contentRect: { width: 320, height: 0, top: 0, left: 0, right: 320, bottom: 0 } }])
+			resizeCallback([
+				{
+					target: root,
+					contentRect: { width: 320, height: 0, top: 0, left: 0, right: 320, bottom: 0 }
+				}
+			])
 			await tick()
 
 			expect(Number(container.querySelector('svg').getAttribute('width'))).toBe(320)
@@ -254,7 +295,14 @@ describe('wrapper forwarding: grid / highlight / trend', () => {
 	it('AreaChart forwards grid="both" + trend + highlight', () => {
 		const { container } = render(AreaChart, {
 			props: {
-				data, x: 'day', y: 'v', grid: 'both', trend: 'avg', highlight: 'last', width: 400, height: 300
+				data,
+				x: 'day',
+				y: 'v',
+				grid: 'both',
+				trend: 'avg',
+				highlight: 'last',
+				width: 400,
+				height: 300
 			}
 		})
 		expect(container.querySelectorAll('[data-plot-grid-line="x"]').length).toBeGreaterThan(0)
@@ -265,7 +313,13 @@ describe('wrapper forwarding: grid / highlight / trend', () => {
 	it('LineChart forwards highlight + trend array', () => {
 		const { container } = render(LineChart, {
 			props: {
-				data, x: 'day', y: 'v', trend: ['avg', 'max'], highlight: 'max', width: 400, height: 300
+				data,
+				x: 'day',
+				y: 'v',
+				trend: ['avg', 'max'],
+				highlight: 'max',
+				width: 400,
+				height: 300
 			}
 		})
 		expect(container.querySelectorAll('[data-plot-trend]')).toHaveLength(2)

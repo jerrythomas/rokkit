@@ -95,7 +95,14 @@ test.describe('graph demo', () => {
 		// this demo used to do.
 		await expect(page.locator('[data-graph-node]').first()).toBeVisible()
 
-		for (const kind of ['view', 'materialized_view', 'matview', 'function', 'procedure', 'trigger']) {
+		for (const kind of [
+			'view',
+			'materialized_view',
+			'matview',
+			'function',
+			'procedure',
+			'trigger'
+		]) {
 			await expect(page.locator(`[data-graph-node][data-node-kind="${kind}"]`), kind).toHaveCount(0)
 		}
 		expect(await page.locator('[data-graph-node][data-node-kind="table"]').count()).toBeGreaterThan(
@@ -219,8 +226,6 @@ test.describe('graph demo', () => {
 	   behaviour itself is pinned in packages/graph/spec/layout/{cluster,nested}.spec.ts, which
 	   assert the exact pixel output rather than merely that something rendered. */
 
-
-
 	test('the codebase renders as a treemap, sized by a real measure', async ({ page }) => {
 		// 470 modules and 801 imports generated from this repo — the dataset the world layout
 		// exists for, and the only one in the demo with containment more than two deep.
@@ -236,9 +241,9 @@ test.describe('graph demo', () => {
 		// cards put a card's furniture inside a hierarchy of label boxes, down to a row count
 		// that reads `0` for anything without rows, which is every module here.
 		await expect(page.locator('[data-graph-node]')).toHaveCount(0)
-		expect(
-			await page.locator('[data-graph-cluster][data-graph-node-id]').count()
-		).toBeGreaterThan(50)
+		expect(await page.locator('[data-graph-cluster][data-graph-node-id]').count()).toBeGreaterThan(
+			50
+		)
 
 		// Area encodes declarations, so the boxes must NOT all be the same size — an even
 		// split is what a measure the tree does not understand produces.
@@ -255,27 +260,25 @@ test.describe('graph demo', () => {
 		await page.goto('/app/graph?variant=treemap')
 		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
 
-		const spills = await page
-			.locator('[data-graph-cluster]')
-			.evaluateAll((boxes) =>
-				boxes
-					.map((box) => {
-						const label = box.querySelector('[data-graph-cluster-label]')
-						if (!label || getComputedStyle(label).display === 'none') return null
-						const b = box.getBoundingClientRect()
-						const l = label.getBoundingClientRect()
-						// A box narrower (or shorter) than the label's own inset truncates to nothing.
-						// There is no text on screen, so there is nothing to spill — only a rectangle
-						// of zero width, or zero height, sitting past the edge.
-						if (l.width === 0 || l.height === 0) return null
+		const spills = await page.locator('[data-graph-cluster]').evaluateAll((boxes) =>
+			boxes
+				.map((box) => {
+					const label = box.querySelector('[data-graph-cluster-label]')
+					if (!label || getComputedStyle(label).display === 'none') return null
+					const b = box.getBoundingClientRect()
+					const l = label.getBoundingClientRect()
+					// A box narrower (or shorter) than the label's own inset truncates to nothing.
+					// There is no text on screen, so there is nothing to spill — only a rectangle
+					// of zero width, or zero height, sitting past the edge.
+					if (l.width === 0 || l.height === 0) return null
 
-						// 1px for sub-pixel rounding at a fractional fit scale.
-						return l.right > b.right + 1 || l.bottom > b.bottom + 1
-							? `${label.textContent} in ${b.width.toFixed(0)}x${b.height.toFixed(0)}`
-							: null
-					})
-					.filter(Boolean)
-			)
+					// 1px for sub-pixel rounding at a fractional fit scale.
+					return l.right > b.right + 1 || l.bottom > b.bottom + 1
+						? `${label.textContent} in ${b.width.toFixed(0)}x${b.height.toFixed(0)}`
+						: null
+				})
+				.filter(Boolean)
+		)
 
 		expect(spills).toEqual([])
 	})
@@ -358,7 +361,6 @@ test.describe('graph demo', () => {
 		   ports, crossing reduction) are pinned in packages/graph/spec/layout/flow.spec.ts.
 		   What remains testable here is that no link is buried, asserted below. */
 
-
 		test('leaves every source on the right and enters every target on the left', async ({
 			page
 		}) => {
@@ -380,8 +382,10 @@ test.describe('graph demo', () => {
 					if (!head) return false
 
 					// 2px of tolerance for stroke width and the fit scale's rounding.
-					return Math.abs(dot.x + dot.width / 2 - from.right) > 2 ||
+					return (
+						Math.abs(dot.x + dot.width / 2 - from.right) > 2 ||
 						Math.abs(head.x + head.width / 2 - to.left) > 2
+					)
 				}).length
 			})
 
@@ -551,8 +555,10 @@ test.describe('graph demo', () => {
 		await expect(page.locator('[data-graph-explorer]')).toBeVisible()
 
 		for (const kind of KINDS) {
-			await expect(page.locator(`[data-graph-node][data-node-kind="${kind}"]`).first(), kind)
-				.toBeVisible()
+			await expect(
+				page.locator(`[data-graph-node][data-node-kind="${kind}"]`).first(),
+				kind
+			).toBeVisible()
 		}
 	})
 
@@ -568,9 +574,7 @@ test.describe('graph demo', () => {
 			for (const kind of KINDS) {
 				const node = page.locator(`[data-graph-node][data-node-kind="${kind}"]`).first()
 				accents.add(
-					await node.evaluate((el) =>
-						getComputedStyle(el).getPropertyValue('--node-accent').trim()
-					)
+					await node.evaluate((el) => getComputedStyle(el).getPropertyValue('--node-accent').trim())
 				)
 			}
 
@@ -626,7 +630,6 @@ test.describe('graph demo', () => {
 		await expect(page.locator('[data-node-state="dim"]').first()).toBeAttached()
 	})
 
-
 	test('the zoom controls are on the canvas and change the scale', async ({ page }) => {
 		// On the canvas, not in a host app's drawer — driven here through the component's own
 		// controls so this covers @rokkit/graph rather than the demo's chrome.
@@ -672,9 +675,7 @@ test.describe('graph demo', () => {
 		expect(await scaleOf()).toBeGreaterThan(before)
 	})
 
-	test('every example is reachable as a variant chip, not just via a control', async ({
-		page
-	}) => {
+	test('every example is reachable as a variant chip, not just via a control', async ({ page }) => {
 		// The variants were declared in meta and surfaced nowhere: the layout renders variant
 		// chips only in its GENERIC demo branch, and graph has its own conversation component.
 		for (const label of ['ER diagram', 'Schema dependencies', 'Call tree', 'Treemap']) {
@@ -700,7 +701,8 @@ test.describe('graph demo', () => {
 		await openDiagram(page, 'neighbourhood')
 		await page.locator('[data-graph-node]').first().click()
 
-		const focused = () => page.locator('[data-node-state="selected"]').getAttribute('data-graph-node')
+		const focused = () =>
+			page.locator('[data-node-state="selected"]').getAttribute('data-graph-node')
 		const before = await focused()
 
 		await page.locator('[data-graph-node]:not([data-node-state="selected"])').first().click()
@@ -710,8 +712,7 @@ test.describe('graph demo', () => {
 	})
 
 	test('switching edge style changes the drawn path', async ({ page }) => {
-		const firstPath = () =>
-			page.locator('[data-graph-edge] path').first().getAttribute('d')
+		const firstPath = () => page.locator('[data-graph-edge] path').first().getAttribute('d')
 
 		// A toggle the ER diagram publishes on its own canvas, not a select in someone's
 		// drawer — which is what makes it absent from a diagram that draws no edges.

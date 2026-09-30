@@ -26,11 +26,9 @@ const q = (c: HTMLElement, sel: string) => [...c.querySelectorAll(sel)] as HTMLE
 describe('DependencyMatrix', () => {
 	it('draws a row header per node, providers first', () => {
 		const { container } = render(DependencyMatrix, { nodes: NODES, edges: EDGES })
-		expect(q(container, '[data-matrix-row]').map((r) => r.getAttribute('data-matrix-row'))).toEqual([
-			'core',
-			'app',
-			'ui'
-		])
+		expect(q(container, '[data-matrix-row]').map((r) => r.getAttribute('data-matrix-row'))).toEqual(
+			['core', 'app', 'ui']
+		)
 		expect(q(container, '[data-matrix-col]').length).toBe(3)
 	})
 
@@ -39,26 +37,29 @@ describe('DependencyMatrix', () => {
 		const cells = q(container, '[data-matrix-cell]')
 		expect(cells.length).toBe(4)
 		const above = q(container, '[data-matrix-cell][data-matrix-above]')
-		expect(above.map((c) => `${c.getAttribute('data-matrix-from')}>${c.getAttribute('data-matrix-to')}`)).toEqual([
-			'core>ui'
-		])
+		expect(
+			above.map((c) => `${c.getAttribute('data-matrix-from')}>${c.getAttribute('data-matrix-to')}`)
+		).toEqual(['core>ui'])
 	})
 
 	it('scales each cell by its edge count', () => {
 		const { container } = render(DependencyMatrix, { nodes: NODES, edges: EDGES })
-		const doubled = container.querySelector('[data-matrix-from="ui"][data-matrix-to="core"]') as HTMLElement
+		const doubled = container.querySelector(
+			'[data-matrix-from="ui"][data-matrix-to="core"]'
+		) as HTMLElement
 		expect(doubled.style.getPropertyValue('--cell-weight')).toBe('1')
 		expect(doubled.querySelector('title')?.textContent).toBe('ui → core (2)')
-		const single = container.querySelector('[data-matrix-from="ui"][data-matrix-to="app"]') as HTMLElement
+		const single = container.querySelector(
+			'[data-matrix-from="ui"][data-matrix-to="app"]'
+		) as HTMLElement
 		expect(single.style.getPropertyValue('--cell-weight')).toBe('0.5')
 	})
 
 	it('outlines each group on the diagonal', () => {
 		const { container } = render(DependencyMatrix, { nodes: NODES, edges: EDGES })
-		expect(q(container, '[data-matrix-block]').map((b) => b.getAttribute('data-matrix-block'))).toEqual([
-			'lib',
-			'web'
-		])
+		expect(
+			q(container, '[data-matrix-block]').map((b) => b.getAttribute('data-matrix-block'))
+		).toEqual(['lib', 'web'])
 	})
 
 	it('draws no blocks when grouping is off', () => {
@@ -81,10 +82,11 @@ describe('DependencyMatrix', () => {
 		expect(onselect).toHaveBeenCalledWith('app')
 		expect(row.getAttribute('data-matrix-state')).toBe('selected')
 		const lit = q(container, '[data-matrix-cell][data-matrix-state="highlight"]')
-		expect(lit.map((c) => `${c.getAttribute('data-matrix-from')}>${c.getAttribute('data-matrix-to')}`).sort()).toEqual([
-			'app>core',
-			'ui>app'
-		])
+		expect(
+			lit
+				.map((c) => `${c.getAttribute('data-matrix-from')}>${c.getAttribute('data-matrix-to')}`)
+				.sort()
+		).toEqual(['app>core', 'ui>app'])
 	})
 
 	it('selects from the keyboard, and a second press clears', async () => {
@@ -104,7 +106,9 @@ describe('DependencyMatrix', () => {
 		const { container } = render(DependencyMatrix, { state })
 		state.select('ui')
 		await tick()
-		expect(container.querySelector('[data-matrix-row="ui"]')?.getAttribute('data-matrix-state')).toBe('selected')
+		expect(
+			container.querySelector('[data-matrix-row="ui"]')?.getAttribute('data-matrix-state')
+		).toBe('selected')
 	})
 
 	it('sizes the drawing from the cell size', () => {

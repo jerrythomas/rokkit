@@ -1,6 +1,12 @@
 import { SvelteMap } from 'svelte/reactivity'
 import { inferFieldType, inferColorScaleType } from '../lib/plot/scales.js'
-import { distinct, assignColors, isLiteralColor, buildSequentialScale, buildDivergingScale } from '../lib/brewing/colors.js'
+import {
+	distinct,
+	assignColors,
+	isLiteralColor,
+	buildSequentialScale,
+	buildDivergingScale
+} from '../lib/brewing/colors.js'
 import { assignPatterns } from '../lib/brewing/patterns.js'
 import { assignSymbols } from '../lib/brewing/marks/points.js'
 

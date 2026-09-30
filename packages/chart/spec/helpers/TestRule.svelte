@@ -11,7 +11,10 @@
 		label = undefined,
 		dash = '4 4'
 	} = $props()
-	setContext('plot-state', untrack(() => state))
+	setContext(
+		'plot-state',
+		untrack(() => state)
+	)
 </script>
 
 <svg>

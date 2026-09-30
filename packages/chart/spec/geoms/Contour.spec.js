@@ -39,14 +39,18 @@ describe('Contour.svelte', () => {
 	})
 
 	it('numbers levels from the outermost (0) inward', () => {
-		const { container } = render(TestContour, { props: { state: state(), x: 'i', y: 'a', thresholds: 4 } })
+		const { container } = render(TestContour, {
+			props: { state: state(), x: 'i', y: 'a', thresholds: 4 }
+		})
 		const idx = levels(container).map((p) => Number(p.getAttribute('data-plot-contour-level')))
 		expect(idx[0]).toBe(0)
 		expect(idx).toEqual([...idx].sort((m, n) => m - n))
 	})
 
 	it('contours each group separately in its palette colour', () => {
-		const { container } = render(TestContour, { props: { state: state(), x: 'i', y: 'a', color: 'g' } })
+		const { container } = render(TestContour, {
+			props: { state: state(), x: 'i', y: 'a', color: 'g' }
+		})
 		const groups = new Set(levels(container).map((p) => p.getAttribute('data-plot-contour')))
 		expect(groups).toEqual(new Set(['core', 'ui']))
 		const core = levels(container).find((p) => p.getAttribute('data-plot-contour') === 'core')
@@ -65,14 +69,20 @@ describe('Contour.svelte', () => {
 	})
 
 	it('a wider bandwidth smooths into fewer separate rings', () => {
-		const narrow = render(TestContour, { props: { state: state(), x: 'i', y: 'a', bandwidth: 5, thresholds: 1 } })
-		const wide = render(TestContour, { props: { state: state(), x: 'i', y: 'a', bandwidth: 120, thresholds: 1 } })
+		const narrow = render(TestContour, {
+			props: { state: state(), x: 'i', y: 'a', bandwidth: 5, thresholds: 1 }
+		})
+		const wide = render(TestContour, {
+			props: { state: state(), x: 'i', y: 'a', bandwidth: 120, thresholds: 1 }
+		})
 		const rings = (c) => (levels(c)[0]?.getAttribute('d').match(/M/g) ?? []).length
 		expect(rings(narrow.container)).toBeGreaterThan(rings(wide.container))
 	})
 
 	it('applies alpha to the rings when stroked', () => {
-		const { container } = render(TestContour, { props: { state: state(), x: 'i', y: 'a', alpha: 0.4 } })
+		const { container } = render(TestContour, {
+			props: { state: state(), x: 'i', y: 'a', alpha: 0.4 }
+		})
 		expect(levels(container)[0].getAttribute('stroke-opacity')).toBe('0.4')
 	})
 

@@ -21,6 +21,12 @@ export function runningSpans(rows, field, totalField) {
 		const delta = isTotal ? 0 : Number(d[field]) || 0
 		const start = isTotal ? 0 : running
 		running += delta
-		return { lo: Math.min(start, running), hi: Math.max(start, running), total: running, isTotal, delta }
+		return {
+			lo: Math.min(start, running),
+			hi: Math.max(start, running),
+			total: running,
+			isTotal,
+			delta
+		}
 	})
 }

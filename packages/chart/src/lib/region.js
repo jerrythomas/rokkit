@@ -43,7 +43,9 @@ export function spanOf(scale, range) {
 		return [Math.min(...r), Math.max(...r)]
 	}
 	const band = isBand(scale) ? /** @type {() => number} */ (scale.bandwidth)() : 0
-	const ends = [endValue(scale, range[0], 'lo'), endValue(scale, range[1], 'hi')].map((v) => Number(scale(v)))
+	const ends = [endValue(scale, range[0], 'lo'), endValue(scale, range[1], 'hi')].map((v) =>
+		Number(scale(v))
+	)
 	return [Math.min(...ends), Math.max(...ends) + band]
 }
 

@@ -3,7 +3,10 @@
 	import Region from '../../src/geoms/Region.svelte'
 
 	let { state, ...rest } = $props()
-	setContext('plot-state', untrack(() => state))
+	setContext(
+		'plot-state',
+		untrack(() => state)
+	)
 </script>
 
 <svg>

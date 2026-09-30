@@ -7,7 +7,11 @@ const cities = [
 	{ country: 'US', name: 'NYC' }
 ]
 const lookups = {
-	city: { dependsOn: ["country"], source: cities, filter: (items, data) => items.filter((row) => row.country === data.country) },
+	city: {
+		dependsOn: ['country'],
+		source: cities,
+		filter: (items, data) => items.filter((row) => row.country === data.country)
+	},
 	currency: { dependsOn: ['region'], source: [], filter: () => true }
 }
 

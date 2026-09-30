@@ -86,7 +86,8 @@ export function waterfallDomain(rows, field, totalField) {
 const definedOf = (channels = {}) =>
 	Object.fromEntries(Object.entries(channels).filter(([, v]) => v !== undefined))
 
-const isStacked = (g) => g.options?.stack || g.options?.position === 'stack' || g.options?.position === 'fill'
+const isStacked = (g) =>
+	g.options?.stack || g.options?.position === 'stack' || g.options?.position === 'fill'
 
 /**
  * Geom types whose geometry decides the VALUE axis, asked in order; the first to return a

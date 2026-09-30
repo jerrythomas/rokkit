@@ -36,7 +36,11 @@ describe('groupRows', () => {
 describe('screenPoints', () => {
 	it('places each usable row and skips the rest', () => {
 		const plot = { xScale: lin, yScale: lin, place: (u, v) => ({ x: u, y: v }) }
-		const rows = [{ x: 1, y: 2 }, { x: null, y: 2 }, { x: 3, y: 4 }]
+		const rows = [
+			{ x: 1, y: 2 },
+			{ x: null, y: 2 },
+			{ x: 3, y: 4 }
+		]
 		expect(screenPoints(rows, plot, { x: 'x', y: 'y' })).toEqual([
 			[10, 20],
 			[30, 40]

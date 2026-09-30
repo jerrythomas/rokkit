@@ -31,7 +31,17 @@ export type { TreeNode } from './model/tree.js'
 export { readPath } from './model/path.js'
 export { createGraphPreset, defaultGraphPreset, resolveGroupStyles } from './preset.js'
 export { DEFAULT_ICONS } from './icons.js'
-export { cluster, flow, neighborhood, points, radial, structure, sunburst, world, layouts } from './layout/index.js'
+export {
+	cluster,
+	flow,
+	neighborhood,
+	points,
+	radial,
+	structure,
+	sunburst,
+	world,
+	layouts
+} from './layout/index.js'
 export { LAYOUT_OPTIONS, appliesTo } from './layout/options.js'
 export { buildMatrix } from './layout/matrix.js'
 export type { Matrix, MatrixCell, MatrixBlock, MatrixOptions } from './layout/matrix.js'

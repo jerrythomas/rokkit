@@ -71,7 +71,9 @@
    Structure / behaviour only. The focus-ring colour and any hover character
    are set per style (see each style's chart.css). */
 [data-plot-element] {
-  transition: filter 0.12s ease, opacity 0.15s ease;
+  transition:
+    filter 0.12s ease,
+    opacity 0.15s ease;
 }
 
 /* ── Data-change / flip animation (opt-in) ──────────────────────────────────
@@ -82,13 +84,22 @@
    cx/cy/r); path `d` and line endpoints can't, so those snap. */
 [data-plot-animate] [data-plot-element] {
   transition:
-    x 0.4s ease, y 0.4s ease, width 0.4s ease, height 0.4s ease,
-    cx 0.4s ease, cy 0.4s ease, r 0.4s ease,
-    transform 0.12s ease, filter 0.12s ease, opacity 0.15s ease;
+    x 0.4s ease,
+    y 0.4s ease,
+    width 0.4s ease,
+    height 0.4s ease,
+    cx 0.4s ease,
+    cy 0.4s ease,
+    r 0.4s ease,
+    transform 0.12s ease,
+    filter 0.12s ease,
+    opacity 0.15s ease;
 }
 @media (prefers-reduced-motion: reduce) {
   [data-plot-animate] [data-plot-element] {
-    transition: filter 0.12s ease, opacity 0.15s ease;
+    transition:
+      filter 0.12s ease,
+      opacity 0.15s ease;
   }
 }
 
@@ -122,7 +133,10 @@
 circle[data-plot-element='point'],
 [data-plot-element='jitter-point'],
 [data-plot-element='box-outlier'] {
-  transition: transform 0.12s ease, filter 0.12s ease, opacity 0.15s ease;
+  transition:
+    transform 0.12s ease,
+    filter 0.12s ease,
+    opacity 0.15s ease;
   transform-box: fill-box;
   transform-origin: center;
 }

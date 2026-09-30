@@ -84,7 +84,11 @@ export const CONFIG_FIELDS = Object.freeze([
  */
 export class PlotConfig {
 	/** @type {PlotConfigValues} */
-	#v = $state(/** @type {PlotConfigValues} */ (Object.fromEntries(CONFIG_FIELDS.map((f) => [f.key, f.fallback()]))))
+	#v = $state(
+		/** @type {PlotConfigValues} */ (
+			Object.fromEntries(CONFIG_FIELDS.map((f) => [f.key, f.fallback()]))
+		)
+	)
 
 	/** @param {Record<string, unknown>} [config] */
 	constructor(config = {}) {

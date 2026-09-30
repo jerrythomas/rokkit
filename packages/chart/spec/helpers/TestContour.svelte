@@ -3,7 +3,10 @@
 	import Contour from '../../src/geoms/Contour.svelte'
 
 	let { state, ...rest } = $props()
-	setContext('plot-state', untrack(() => state))
+	setContext(
+		'plot-state',
+		untrack(() => state)
+	)
 </script>
 
 <svg>

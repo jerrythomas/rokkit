@@ -12,7 +12,16 @@ describe('PlotConfig — the declarative keep/reset table', () => {
 	it('resets exactly the override fields', () => {
 		const reset = CONFIG_FIELDS.filter((f) => f.whenOmitted === 'reset').map((f) => f.key)
 		expect(reset.sort()).toEqual(
-			['axisOrigin', 'colorDomain', 'continuousCategory', 'margin', 'orientation', 'sort', 'xDomain', 'yDomain'].sort()
+			[
+				'axisOrigin',
+				'colorDomain',
+				'continuousCategory',
+				'margin',
+				'orientation',
+				'sort',
+				'xDomain',
+				'yDomain'
+			].sort()
 		)
 	})
 })
@@ -69,7 +78,9 @@ describe('PlotConfig — helper resolution', () => {
 		const fmt = () => 'F'
 		const tip = () => 'T'
 		const Custom = () => null
-		const c = new PlotConfig({ helpers: { format: { y: fmt }, tooltip: tip, geoms: { custom: Custom } } })
+		const c = new PlotConfig({
+			helpers: { format: { y: fmt }, tooltip: tip, geoms: { custom: Custom } }
+		})
 		expect(c.format('y')).toBe(fmt)
 		expect(c.tooltip()).toBe(tip)
 		expect(c.geomComponent('custom')).toBe(Custom)

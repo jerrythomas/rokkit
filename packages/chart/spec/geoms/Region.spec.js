@@ -23,7 +23,14 @@ const vertices = (d) =>
 describe('Region.svelte', () => {
 	it('fills a polygon given in data coordinates', () => {
 		const { container } = render(TestRegion, {
-			props: { state: unit(), points: [[0, 0], [0.5, 0], [0, 0.5]] }
+			props: {
+				state: unit(),
+				points: [
+					[0, 0],
+					[0.5, 0],
+					[0, 0.5]
+				]
+			}
 		})
 		const path = container.querySelector('[data-plot-element="region"]')
 		expect(path).toBeTruthy()
@@ -47,7 +54,9 @@ describe('Region.svelte', () => {
 
 	it('spans the whole axis when one range is omitted', () => {
 		const { container } = render(TestRegion, { props: { state: unit(), y: [0.8, 1] } })
-		const xs = vertices(container.querySelector('[data-plot-element="region"]').getAttribute('d')).map((p) => p[0])
+		const xs = vertices(
+			container.querySelector('[data-plot-element="region"]').getAttribute('d')
+		).map((p) => p[0])
 		expect(Math.min(...xs)).toBe(0)
 		expect(Math.max(...xs)).toBe(300)
 	})
@@ -56,14 +65,25 @@ describe('Region.svelte', () => {
 		// mock band x: a,b,c over [0,300] with padding 0.1
 		const state = createMockState()
 		const { container } = render(TestRegion, { props: { state, x: ['a', 'b'] } })
-		const xs = vertices(container.querySelector('[data-plot-element="region"]').getAttribute('d')).map((p) => p[0])
+		const xs = vertices(
+			container.querySelector('[data-plot-element="region"]').getAttribute('d')
+		).map((p) => p[0])
 		expect(Math.min(...xs)).toBeCloseTo(state.xScale('a'), 2)
 		expect(Math.max(...xs)).toBeCloseTo(state.xScale('b') + state.xScale.bandwidth(), 2)
 	})
 
 	it('names the region for theming and labels it at its centroid', () => {
 		const { container } = render(TestRegion, {
-			props: { state: unit(), name: 'pain', label: 'Zone of pain', points: [[0, 0], [0.6, 0], [0, 0.6]] }
+			props: {
+				state: unit(),
+				name: 'pain',
+				label: 'Zone of pain',
+				points: [
+					[0, 0],
+					[0.6, 0],
+					[0, 0.6]
+				]
+			}
 		})
 		const group = container.querySelector('[data-plot-geom="region"]')
 		expect(group.getAttribute('data-plot-region')).toBe('pain')
@@ -84,7 +104,16 @@ describe('Region.svelte', () => {
 	})
 
 	it('clips to the plot area so a region past the domain cannot spill', () => {
-		const { container } = render(TestRegion, { props: { state: unit(), points: [[0, 0], [2, 0], [0, 2]] } })
+		const { container } = render(TestRegion, {
+			props: {
+				state: unit(),
+				points: [
+					[0, 0],
+					[2, 0],
+					[0, 2]
+				]
+			}
+		})
 		const clip = container.querySelector('clipPath rect')
 		expect(clip).toBeTruthy()
 		expect([clip.getAttribute('width'), clip.getAttribute('height')]).toEqual(['300', '200'])
@@ -93,7 +122,9 @@ describe('Region.svelte', () => {
 	})
 
 	it('applies literal fill and alpha', () => {
-		const { container } = render(TestRegion, { props: { state: unit(), x: [0, 1], fill: '#f00', alpha: 0.3 } })
+		const { container } = render(TestRegion, {
+			props: { state: unit(), x: [0, 1], fill: '#f00', alpha: 0.3 }
+		})
 		const path = container.querySelector('[data-plot-element="region"]')
 		expect(path.getAttribute('fill')).toBe('#f00')
 		expect(path.getAttribute('fill-opacity')).toBe('0.3')
@@ -101,8 +132,19 @@ describe('Region.svelte', () => {
 
 	it('transposes under flip', () => {
 		const state = unit({ isFlipped: true, place: (u, v) => ({ x: v, y: u }) })
-		const { container } = render(TestRegion, { props: { state, points: [[0, 0], [0.5, 0], [0, 0.5]] } })
-		expect(vertices(container.querySelector('[data-plot-element="region"]').getAttribute('d'))).toEqual([
+		const { container } = render(TestRegion, {
+			props: {
+				state,
+				points: [
+					[0, 0],
+					[0.5, 0],
+					[0, 0.5]
+				]
+			}
+		})
+		expect(
+			vertices(container.querySelector('[data-plot-element="region"]').getAttribute('d'))
+		).toEqual([
 			[200, 0],
 			[200, 150],
 			[100, 0]
@@ -110,16 +152,26 @@ describe('Region.svelte', () => {
 	})
 
 	it('renders nothing without a shape or scales', () => {
-		expect(render(TestRegion, { props: { state: unit() } }).container.querySelector('[data-plot-geom="region"]')).toBeNull()
 		expect(
-			render(TestRegion, { props: { state: unit({ xScale: null }), x: [0, 1] } }).container.querySelector(
+			render(TestRegion, { props: { state: unit() } }).container.querySelector(
 				'[data-plot-geom="region"]'
 			)
 		).toBeNull()
 		expect(
-			render(TestRegion, { props: { state: unit(), points: [[0, 0], [1, 1]] } }).container.querySelector(
-				'[data-plot-geom="region"]'
-			)
+			render(TestRegion, {
+				props: { state: unit({ xScale: null }), x: [0, 1] }
+			}).container.querySelector('[data-plot-geom="region"]')
+		).toBeNull()
+		expect(
+			render(TestRegion, {
+				props: {
+					state: unit(),
+					points: [
+						[0, 0],
+						[1, 1]
+					]
+				}
+			}).container.querySelector('[data-plot-geom="region"]')
 		).toBeNull()
 	})
 })

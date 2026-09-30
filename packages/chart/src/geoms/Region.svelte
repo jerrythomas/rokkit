@@ -73,13 +73,7 @@
 {#if shape}
 	<PlotAreaClip id={clipId} />
 	<g data-plot-geom="region" data-plot-region={name} clip-path="url(#{clipId})">
-		<path
-			d={shape.d}
-			fill={fill}
-			fill-opacity={alpha}
-			stroke={stroke}
-			data-plot-element="region"
-		/>
+		<path d={shape.d} {fill} fill-opacity={alpha} {stroke} data-plot-element="region" />
 		{#if label}
 			<text
 				x={shape.at.x}

@@ -4,8 +4,14 @@ import { GeomRegistry } from '../../src/state/GeomRegistry.svelte.js'
 import { ChannelState } from '../../src/state/ChannelState.svelte.js'
 import { OrientationState } from '../../src/state/OrientationState.svelte.js'
 
-const cats = [{ c: 'a', v: 1 }, { c: 'b', v: 2 }]
-const nums = [{ n: 1, v: 1 }, { n: 2, v: 2 }]
+const cats = [
+	{ c: 'a', v: 1 },
+	{ c: 'b', v: 2 }
+]
+const nums = [
+	{ n: 1, v: 1 },
+	{ n: 2, v: 2 }
+]
 
 const make = (data, channels, { geoms = [], orientation } = {}) => {
 	const config = new PlotConfig({ data, channels, orientation })
@@ -46,6 +52,9 @@ describe('OrientationState', () => {
 
 	it('place() swaps screen axes only when flipped', () => {
 		expect(make(cats, { x: 'c', y: 'v' }).place(1, 2)).toEqual({ x: 1, y: 2 })
-		expect(make(cats, { x: 'c', y: 'v' }, { orientation: 'horizontal' }).place(1, 2)).toEqual({ x: 2, y: 1 })
+		expect(make(cats, { x: 'c', y: 'v' }, { orientation: 'horizontal' }).place(1, 2)).toEqual({
+			x: 2,
+			y: 1
+		})
 	})
 })

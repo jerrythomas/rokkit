@@ -31,9 +31,27 @@ const CASES = [
 	['labels', { y: 'Why' }, (s) => s.label('y'), 'keep'],
 	['helpers', { format: { y: () => 'F' } }, (s) => s.format('y')?.(1), 'keep'],
 	['preset', 'print', (s) => JSON.stringify(s.preset()), 'keep'],
-	['colorMidpoint', 12, (s) => s.colorScaleType, 'keep', { channels: { x: 'x', y: 'y', color: 'y' } }],
-	['colorScale', 'diverging', (s) => s.colorScaleType, 'keep', { channels: { x: 'x', y: 'y', color: 'y' } }],
-	['colorScheme', 'reds', (s) => s.continuousColorScale?.scale?.(10), 'keep', { channels: { x: 'x', y: 'y', color: 'y' } }],
+	[
+		'colorMidpoint',
+		12,
+		(s) => s.colorScaleType,
+		'keep',
+		{ channels: { x: 'x', y: 'y', color: 'y' } }
+	],
+	[
+		'colorScale',
+		'diverging',
+		(s) => s.colorScaleType,
+		'keep',
+		{ channels: { x: 'x', y: 'y', color: 'y' } }
+	],
+	[
+		'colorScheme',
+		'reds',
+		(s) => s.continuousColorScale?.scale?.(10),
+		'keep',
+		{ channels: { x: 'x', y: 'y', color: 'y' } }
+	],
 	['colorDomain', ['b'], (s) => [...s.colors.keys()].join(','), 'reset'],
 	['xDomain', [0, 100], (s) => s.xScale.domain().join(','), 'reset'],
 	['yDomain', [0, 100], (s) => s.yScale.domain().join(','), 'reset'],
@@ -66,25 +84,31 @@ describe('PlotState update() — keep or reset, per field', () => {
 		}
 	)
 
-	it.each(CASES)('%s: setting it changes what the chart shows', (field, value, observe, _rule, extra = {}) => {
-		const state = make(extra)
-		const before = observe(state)
-		state.update({ ...base, ...extra, [field]: value })
-		expect(observe(state), field).not.toEqual(before)
-	})
+	it.each(CASES)(
+		'%s: setting it changes what the chart shows',
+		(field, value, observe, _rule, extra = {}) => {
+			const state = make(extra)
+			const before = observe(state)
+			state.update({ ...base, ...extra, [field]: value })
+			expect(observe(state), field).not.toEqual(before)
+		}
+	)
 
-	it.each(CASES)('%s: omitted on the next update → %s', (field, value, observe, rule, extra = {}) => {
-		const { geoms: _g, ...configExtra } = extra
-		const state = make(extra)
-		const fresh = observe(state)
-		state.update({ ...base, ...configExtra, [field]: value })
-		const set = observe(state)
-		// The next update names nothing but the base config, so `field` is omitted.
-		state.update({ ...base, ...configExtra, [field]: undefined })
-		const { [field]: _omit, ...withoutField } = { ...base, ...configExtra }
-		state.update(withoutField)
-		expect(observe(state), field).toEqual(rule === 'keep' ? set : fresh)
-	})
+	it.each(CASES)(
+		'%s: omitted on the next update → %s',
+		(field, value, observe, rule, extra = {}) => {
+			const { geoms: _g, ...configExtra } = extra
+			const state = make(extra)
+			const fresh = observe(state)
+			state.update({ ...base, ...configExtra, [field]: value })
+			const set = observe(state)
+			// The next update names nothing but the base config, so `field` is omitted.
+			state.update({ ...base, ...configExtra, [field]: undefined })
+			const { [field]: _omit, ...withoutField } = { ...base, ...configExtra }
+			state.update(withoutField)
+			expect(observe(state), field).toEqual(rule === 'keep' ? set : fresh)
+		}
+	)
 })
 
 describe('PlotState — row identity the geoms rely on', () => {

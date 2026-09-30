@@ -12,7 +12,9 @@ import { groupRows, screenPoints } from '../grouping.js'
 export function multiPolygonPath(coordinates) {
 	const fmt = (/** @type {number} */ n) => Math.round(n * 100) / 100
 	return coordinates
-		.flatMap((polygon) => polygon.map((ring) => `M${ring.map(([x, y]) => `${fmt(x)},${fmt(y)}`).join('L')}Z`))
+		.flatMap((polygon) =>
+			polygon.map((ring) => `M${ring.map(([x, y]) => `${fmt(x)},${fmt(y)}`).join('L')}Z`)
+		)
 		.join('')
 }
 
@@ -43,7 +45,11 @@ export function buildContourMarks({ data, plot, channels, options = {}, alpha, t
 			.size([w, h])
 			.bandwidth(options.bandwidth ?? 20)
 			.thresholds(options.thresholds ?? 8)(pts)
-		const { fill, stroke } = resolveFillStroke(rows[0], { fill: channels.fill, color: channels.color }, plot.colors)
+		const { fill, stroke } = resolveFillStroke(
+			rows[0],
+			{ fill: channels.fill, color: channels.color },
+			plot.colors
+		)
 		density.forEach((level, i) => {
 			marks.push({
 				key: `contour-${String(key)}-${i}`,

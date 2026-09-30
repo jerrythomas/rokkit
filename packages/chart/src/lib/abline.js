@@ -19,7 +19,9 @@ export function clipAbline(slope, intercept, xDomain, yDomain) {
 	const at = (x) => slope * x + intercept
 
 	if (slope === 0) {
-		return intercept < y0 || intercept > y1 ? null : { x1: x0, y1: intercept, x2: x1, y2: intercept }
+		return intercept < y0 || intercept > y1
+			? null
+			: { x1: x0, y1: intercept, x2: x1, y2: intercept }
 	}
 
 	// Where the line crosses the lower and upper y bounds, ordered along x.

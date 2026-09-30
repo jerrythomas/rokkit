@@ -23,7 +23,14 @@ describe('ChannelState — effective channels', () => {
 		const { ch, geoms } = make({ x: 'q' })
 		geoms.register({ type: 'bar', channels: { x: 'ignored', y: 'v', color: 'p' } })
 		geoms.register({ type: 'line', channels: { symbol: 's' } })
-		expect(ch.effective).toEqual({ x: 'q', y: 'v', color: 'p', fill: undefined, pattern: undefined, symbol: undefined })
+		expect(ch.effective).toEqual({
+			x: 'q',
+			y: 'v',
+			color: 'p',
+			fill: undefined,
+			pattern: undefined,
+			symbol: undefined
+		})
 	})
 })
 

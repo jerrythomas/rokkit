@@ -9,7 +9,10 @@ const schema = {
 	properties: { name: { type: 'string', required: true }, age: { type: 'number', min: 18 } },
 	required: ['name']
 }
-const flat = { type: 'vertical', elements: [{ scope: '#/name', label: 'Name' }, { scope: '#/age' }] }
+const flat = {
+	type: 'vertical',
+	elements: [{ scope: '#/name', label: 'Name' }, { scope: '#/age' }]
+}
 const stepped = {
 	type: 'vertical',
 	elements: [
@@ -21,7 +24,10 @@ const make = ({ data = {}, layout = flat, visible = ['name', 'age'] } = {}) => {
 	const values = new FormValues(data)
 	const definition = new FormDefinition(values, schema, layout)
 	const steps = new FormSteps(definition)
-	return { values, v: new FormValidation({ values, definition, steps, visiblePaths: () => visible }) }
+	return {
+		values,
+		v: new FormValidation({ values, definition, steps, visiblePaths: () => visible })
+	}
 }
 
 describe('FormValidation — messages', () => {
@@ -42,7 +48,13 @@ describe('FormValidation — messages', () => {
 
 	it('orders messages error, warning, info, success, then anything else', () => {
 		const { v } = make()
-		v.map = { a: { state: 'success' }, b: { state: 'odd' }, c: { state: 'error' }, d: { state: 'info' }, e: null }
+		v.map = {
+			a: { state: 'success' },
+			b: { state: 'odd' },
+			c: { state: 'error' },
+			d: { state: 'info' },
+			e: null
+		}
 		expect(v.sorted.map((m) => m.path)).toEqual(['c', 'd', 'a', 'b'])
 	})
 })

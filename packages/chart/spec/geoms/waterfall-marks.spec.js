@@ -17,14 +17,23 @@ describe('buildWaterfallMarks — bars span what the axis was sized to', () => {
 			{ s: 'a', d: -6 },
 			{ s: 't', d: 0, total: true }
 		]
-		const [, total] = buildWaterfallMarks({ data, plot: plot(['a', 't']), channels: { x: 's', y: 'd' }, options: { totalField: 'total' } })
+		const [, total] = buildWaterfallMarks({
+			data,
+			plot: plot(['a', 't']),
+			channels: { x: 's', y: 'd' },
+			options: { totalField: 'total' }
+		})
 		// 0 → y 100, -6 → y 160
 		expect(span(total)).toEqual([100, 160])
 	})
 
 	it('a missing step value counts as 0 and does not poison the bars after it', () => {
 		const data = [{ s: 'a', d: 3 }, { s: 'b' }, { s: 'c', d: 2 }]
-		const marks = buildWaterfallMarks({ data, plot: plot(['a', 'b', 'c']), channels: { x: 's', y: 'd' } })
+		const marks = buildWaterfallMarks({
+			data,
+			plot: plot(['a', 'b', 'c']),
+			channels: { x: 's', y: 'd' }
+		})
 		for (const m of marks) expect(Number.isFinite(m.y), m.key).toBe(true)
 		// c runs from 3 to 5 → y 70 .. 50
 		expect(span(marks[2])).toEqual([50, 70])
@@ -35,7 +44,12 @@ describe('buildWaterfallMarks — bars span what the axis was sized to', () => {
 			{ s: 'a', d: 4 },
 			{ s: 't', d: 0, total: true }
 		]
-		const [, total] = buildWaterfallMarks({ data, plot: plot(['a', 't']), channels: { x: 's', y: 'd' }, options: { totalField: 'total' } })
+		const [, total] = buildWaterfallMarks({
+			data,
+			plot: plot(['a', 't']),
+			channels: { x: 's', y: 'd' },
+			options: { totalField: 'total' }
+		})
 		expect(span(total)).toEqual([60, 100])
 	})
 })

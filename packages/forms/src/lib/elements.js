@@ -82,7 +82,13 @@ function unscopedElement(layoutEl) {
 
 function groupElement(element, path, scope, ctx) {
 	const children = element.elements.map((child) => fieldElement(child, ctx, path))
-	const { key: _key, elements: _elements, override: _override, props: groupProps, ...topLevel } = element
+	const {
+		key: _key,
+		elements: _elements,
+		override: _override,
+		props: groupProps,
+		...topLevel
+	} = element
 	return {
 		scope,
 		type: 'group',
@@ -110,7 +116,13 @@ function inputElement(element, path, scope, ctx) {
 	const type = resolveInputType(props)
 	const finalProps = { ...props, type, message: ctx.message(path), dirty: ctx.dirty(path) }
 	ctx.applyLookup(path, finalProps)
-	return { scope, type, value: ctx.value(path), override: element.override || propsOverride || false, props: finalProps }
+	return {
+		scope,
+		type,
+		value: ctx.value(path),
+		override: element.override || propsOverride || false,
+		props: finalProps
+	}
 }
 
 /** A combined schema+layout element → FormElement. Null for one without a key. */
@@ -152,7 +164,13 @@ function plainElements(ctx) {
 		.filter((el) => el.scope)
 		.map(({ scope, label, override = false, ...layoutProps }) => {
 			const path = pathOf(scope)
-			const props = { label: label || path, ...layoutProps, message: ctx.message(path), dirty: ctx.dirty(path), type: 'text' }
+			const props = {
+				label: label || path,
+				...layoutProps,
+				message: ctx.message(path),
+				dirty: ctx.dirty(path),
+				type: 'text'
+			}
 			return { scope, type: 'text', value: ctx.value(path), override, props }
 		})
 }

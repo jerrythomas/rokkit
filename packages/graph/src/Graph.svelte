@@ -189,81 +189,84 @@
 		onpointercancel={endPan}
 		tabindex="-1"
 	>
-	<div
-		data-graph-world
-		data-graph-node-shape={graph.nodeShape}
-		data-graph-layout={graph.layoutName}
-		style="width: {graph.size.w}px; height: {graph.size.h}px; transform: translate({tx}px, {ty}px) scale({scale}); --graph-label-counter-scale: {(1 / scale).toFixed(3)};"
-	>
-		<!-- Column headings. Three columns get away without them — the focus is visibly
+		<div
+			data-graph-world
+			data-graph-node-shape={graph.nodeShape}
+			data-graph-layout={graph.layoutName}
+			style="width: {graph.size.w}px; height: {graph.size
+				.h}px; transform: translate({tx}px, {ty}px) scale({scale}); --graph-label-counter-scale: {(
+				1 / scale
+			).toFixed(3)};"
+		>
+			<!-- Column headings. Three columns get away without them — the focus is visibly
 		     central — but a depth-2 portrait is five columns and ambiguous without one.
 		     Position, width and wording all come from the layout; this only prints them. -->
-		{#each graph.columns as column (column.side + column.depth)}
-			<span
-				data-graph-column
-				data-column-side={column.side}
-				data-column-depth={column.depth}
-				style:left="{column.x}px"
-				style:width="{column.w}px">{column.label}</span
-			>
-		{/each}
+			{#each graph.columns as column (column.side + column.depth)}
+				<span
+					data-graph-column
+					data-column-side={column.side}
+					data-column-depth={column.depth}
+					style:left="{column.x}px"
+					style:width="{column.w}px">{column.label}</span
+				>
+			{/each}
 
-		<!-- A wedge cannot be a positioned <div> — an annulus sector has no box. It is drawn in
+			<!-- A wedge cannot be a positioned <div> — an annulus sector has no box. It is drawn in
 		     its own SVG UNDER the boxes, so a sunburst renders through the same cluster list as
 		     every other containment layout and nothing downstream learns a second vocabulary. -->
-		{#if graph.hasWedges}
-			<svg
-				data-graph-wedges
-				width={graph.size.w}
-				height={graph.size.h}
-				role="img"
-				aria-label={graph.label}
-				style="position: absolute; top: 0; left: 0;"
-			>
-				<title>{graph.label}</title>
-				{#each graph.clusters as cluster (graph.clusterKey(cluster))}
-					{@const shared = graph.boxAttrs(cluster)}
-					{@const caption = `${cluster.name} · ${cluster.caption ?? cluster.count}`}
-					<!-- Two branches so `role` is STATIC. A wedge that is a node is a button and says
+			{#if graph.hasWedges}
+				<svg
+					data-graph-wedges
+					width={graph.size.w}
+					height={graph.size.h}
+					role="img"
+					aria-label={graph.label}
+					style="position: absolute; top: 0; left: 0;"
+				>
+					<title>{graph.label}</title>
+					{#each graph.clusters as cluster (graph.clusterKey(cluster))}
+						{@const shared = graph.boxAttrs(cluster)}
+						{@const caption = `${cluster.name} · ${cluster.caption ?? cluster.count}`}
+						<!-- Two branches so `role` is STATIC. A wedge that is a node is a button and says
 					     so; a region is scenery. Written as one element with a conditional role, the
 					     compiler cannot tell which it is and neither can a screen reader. The shared
 					     attributes come from state, so the branches cannot drift apart. -->
-					{#if cluster.nodeId}
-						<path
-							data-graph-wedge
-							{...shared}
-							style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
-							d={graph.wedgePath(cluster)}
-							role="button"
-							tabindex={0}
-							aria-label={caption}
-							onclick={(event: Event) => {
-								event.stopPropagation()
-								graph.select(cluster.nodeId!)
-							}}
-							onkeydown={(event: KeyboardEvent) => {
-								if (event.key !== 'Enter' && event.key !== ' ') return
-								event.preventDefault()
-								event.stopPropagation()
-								graph.select(cluster.nodeId!)
-							}}><title>{caption}</title></path
-						>
-					{:else}
-						<path
-							data-graph-wedge
-							{...shared}
-							style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
-							d={graph.wedgePath(cluster)}><title>{caption}</title></path
-						>
-					{/if}
-				{/each}
-			</svg>
-		{/if}
+						{#if cluster.nodeId}
+							<path
+								data-graph-wedge
+								{...shared}
+								style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+								d={graph.wedgePath(cluster)}
+								role="button"
+								tabindex={0}
+								aria-label={caption}
+								onclick={(event: Event) => {
+									event.stopPropagation()
+									graph.select(cluster.nodeId!)
+								}}
+								onkeydown={(event: KeyboardEvent) => {
+									if (event.key !== 'Enter' && event.key !== ' ') return
+									event.preventDefault()
+									event.stopPropagation()
+									graph.select(cluster.nodeId!)
+								}}><title>{caption}</title></path
+							>
+						{:else}
+							<path
+								data-graph-wedge
+								{...shared}
+								style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+								d={graph.wedgePath(cluster)}><title>{caption}</title></path
+							>
+						{/if}
+					{/each}
+				</svg>
+			{/if}
 
-		{#each graph.boxes as cluster (graph.clusterKey(cluster))}
-			{@const shared = graph.boxAttrs(cluster)}
-			{@const caption = `${cluster.name} · ${cluster.caption ?? cluster.count}`}
-			<!-- One box shape at every depth. A containment layout nests boxes inside boxes, so a
+			{#each graph.boxes as cluster (graph.clusterKey(cluster))}
+				{@const shared = graph.boxAttrs(cluster)}
+				{@const caption = `${cluster.name} · ${cluster.caption ?? cluster.count}`}
+				<!-- One box shape at every depth. A containment layout nests boxes inside boxes, so a
 			     childless one is still a box — rendering it as a node CARD instead put two
 			     structures in one hierarchy and brought the card's furniture with it, down to a
 			     row count that is `0` for anything without rows.
@@ -272,149 +275,145 @@
 			     focusable, so it is a real <button> and gets Enter/Space, focus order and the right
 			     announcement for free. A region is scenery and is a <div> that says so. The shared
 			     attributes come from state, so the two cannot drift. -->
-			{#if cluster.nodeId}
-				<button
-					type="button"
-					data-graph-cluster
-					{...shared}
-					style:left="{cluster.x}px"
-					style:top="{cluster.y}px"
-					style:width="{cluster.w}px"
-					style:height="{cluster.h}px"
-					style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
-					onclick={(event) => {
-						event.stopPropagation()
-						graph.select(cluster.nodeId!)
-					}}
-				>
-					<span data-graph-cluster-label>{caption}</span>
-				</button>
-			{:else}
-				<div
-					data-graph-cluster
-					{...shared}
-					style:left="{cluster.x}px"
-					style:top="{cluster.y}px"
-					style:width="{cluster.w}px"
-					style:height="{cluster.h}px"
-					style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
-				>
-					<span data-graph-cluster-label>{caption}</span>
-				</div>
-			{/if}
-		{/each}
+				{#if cluster.nodeId}
+					<button
+						type="button"
+						data-graph-cluster
+						{...shared}
+						style:left="{cluster.x}px"
+						style:top="{cluster.y}px"
+						style:width="{cluster.w}px"
+						style:height="{cluster.h}px"
+						style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+						onclick={(event) => {
+							event.stopPropagation()
+							graph.select(cluster.nodeId!)
+						}}
+					>
+						<span data-graph-cluster-label>{caption}</span>
+					</button>
+				{:else}
+					<div
+						data-graph-cluster
+						{...shared}
+						style:left="{cluster.x}px"
+						style:top="{cluster.y}px"
+						style:width="{cluster.w}px"
+						style:height="{cluster.h}px"
+						style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+					>
+						<span data-graph-cluster-label>{caption}</span>
+					</div>
+				{/if}
+			{/each}
 
-		<svg
-			width={graph.size.w}
-			height={graph.size.h}
-			role="img"
-			aria-label={graph.label}
-			style="position: absolute; top: 0; left: 0; pointer-events: none;"
-		>
-			<title>{graph.label}</title>
-			{#each graph.routedEdges as edge (edge.id)}
-				<g
-					data-graph-edge
-					data-edge-kind={edge.kind}
-					data-edge-relation={edge.relation}
-					data-edge-from={edge.fromKey}
-					data-edge-to={edge.toKey}
-					data-edge-state={graph.edgeState(edge)}
-					data-edge-overlay={edge.overlay ? '' : undefined}
-					style:--edge-weight={graph.edgeWeight(edge)}
-				>
-					<path d={graph.edgePath(edge)} />
-					<circle data-graph-edge-dot="from" cx={edge.x1} cy={edge.y1} r="3.2" />
-					{#if arrows}
-						<!-- An edge HAS a direction — source to target — and two identical dots threw
+			<svg
+				width={graph.size.w}
+				height={graph.size.h}
+				role="img"
+				aria-label={graph.label}
+				style="position: absolute; top: 0; left: 0; pointer-events: none;"
+			>
+				<title>{graph.label}</title>
+				{#each graph.routedEdges as edge (edge.id)}
+					<g
+						data-graph-edge
+						data-edge-kind={edge.kind}
+						data-edge-relation={edge.relation}
+						data-edge-from={edge.fromKey}
+						data-edge-to={edge.toKey}
+						data-edge-state={graph.edgeState(edge)}
+						data-edge-overlay={edge.overlay ? '' : undefined}
+						style:--edge-weight={graph.edgeWeight(edge)}
+					>
+						<path d={graph.edgePath(edge)} />
+						<circle data-graph-edge-dot="from" cx={edge.x1} cy={edge.y1} r="3.2" />
+						{#if arrows}
+							<!-- An edge HAS a direction — source to target — and two identical dots threw
 						     that away. The tangent of both path shapes is horizontal at the endpoint,
 						     so the heading is just the side the curve arrives from: -s2. No angle
 						     maths, and it stays correct for a self-loop. -->
-						{@const d = -edge.s2}
-						<polygon
-							data-graph-edge-arrow
-							points="{edge.x2},{edge.y2} {edge.x2 - d * 9},{edge.y2 - 4.5} {edge.x2 -
-								d * 9},{edge.y2 + 4.5}"
-						/>
-					{:else}
-						<circle data-graph-edge-dot="to" cx={edge.x2} cy={edge.y2} r="3.2" />
-					{/if}
-				</g>
-			{/each}
-		</svg>
+							{@const d = -edge.s2}
+							<polygon
+								data-graph-edge-arrow
+								points="{edge.x2},{edge.y2} {edge.x2 - d * 9},{edge.y2 - 4.5} {edge.x2 -
+									d * 9},{edge.y2 + 4.5}"
+							/>
+						{:else}
+							<circle data-graph-edge-dot="to" cx={edge.x2} cy={edge.y2} r="3.2" />
+						{/if}
+					</g>
+				{/each}
+			</svg>
 
-		{#each Object.entries(graph.cards) as [key, card] (key)}
-			<button
-				type="button"
-				data-graph-node={key}
-				data-node-kind={card.node.kind}
-				data-node-group={card.node.group}
-				data-node-state={graph.nodeState(key)}
-				data-label-side={card.labelSide}
-				style:--label-angle={card.labelAngle === undefined
-					? undefined
-					: `${card.labelAngle}deg`}
-				data-node-headonly={card.vis.length === 0 && card.more <= 0 ? '' : undefined}
-				style:left="{card.x}px"
-				style:top="{card.y}px"
-				style:width="{card.w}px"
-				style:height="{card.h}px"
-				style={graph.groupStyleAttr(card.node.group)}
-				onclick={(event) => {
-					event.stopPropagation()
-					graph.select(key)
-				}}
-			>
-				<span data-graph-node-head>
-					<span data-graph-node-icon class={icons[card.node.kind ?? ''] ?? icons.fallback}></span>
-					<span data-graph-node-title>{card.node.label}</span>
-					{#if card.node.kind}
-						<!-- The glyph alone is a guess: layers vs eye vs bolt does not tell anyone what a
+			{#each Object.entries(graph.cards) as [key, card] (key)}
+				<button
+					type="button"
+					data-graph-node={key}
+					data-node-kind={card.node.kind}
+					data-node-group={card.node.group}
+					data-node-state={graph.nodeState(key)}
+					data-label-side={card.labelSide}
+					style:--label-angle={card.labelAngle === undefined ? undefined : `${card.labelAngle}deg`}
+					data-node-headonly={card.vis.length === 0 && card.more <= 0 ? '' : undefined}
+					style:left="{card.x}px"
+					style:top="{card.y}px"
+					style:width="{card.w}px"
+					style:height="{card.h}px"
+					style={graph.groupStyleAttr(card.node.group)}
+					onclick={(event) => {
+						event.stopPropagation()
+						graph.select(key)
+					}}
+				>
+					<span data-graph-node-head>
+						<span data-graph-node-icon class={icons[card.node.kind ?? ''] ?? icons.fallback}></span>
+						<span data-graph-node-title>{card.node.label}</span>
+						{#if card.node.kind}
+							<!-- The glyph alone is a guess: layers vs eye vs bolt does not tell anyone what a
 						     materialized view is. Icon for the glance, tag for the answer. Underscores
 						     are the WIRE format (dbd sends `materialized_view`), not something to
 						     read. -->
-						<span data-graph-node-kind>{card.node.kind.replace(/_/g, ' ')}</span>
-					{/if}
-					<span data-graph-node-count>{card.node.rows.length}</span>
-				</span>
-				{#each card.vis as row (row.name)}
-					<span data-graph-row data-graph-row-key={row.badges.length > 0 ? '' : undefined}>
-						{#if row.badges.length > 0}
-							<span data-row-badge={row.badges[0]} class={icons[row.badges[0]]}></span>
-						{:else}
-							<span data-row-badge-empty></span>
+							<span data-graph-node-kind>{card.node.kind.replace(/_/g, ' ')}</span>
 						{/if}
-						<span data-graph-row-name>{row.name}</span>
-						<span data-graph-row-type>{row.type}</span>
+						<span data-graph-node-count>{card.node.rows.length}</span>
 					</span>
-				{/each}
-				{#if graph.moreLabel(key)}
-					<!-- A real control. "+3 more" that does nothing is a statement dressed as an
+					{#each card.vis as row (row.name)}
+						<span data-graph-row data-graph-row-key={row.badges.length > 0 ? '' : undefined}>
+							{#if row.badges.length > 0}
+								<span data-row-badge={row.badges[0]} class={icons[row.badges[0]]}></span>
+							{:else}
+								<span data-row-badge-empty></span>
+							{/if}
+							<span data-graph-row-name>{row.name}</span>
+							<span data-graph-row-type>{row.type}</span>
+						</span>
+					{/each}
+					{#if graph.moreLabel(key)}
+						<!-- A real control. "+3 more" that does nothing is a statement dressed as an
 					     affordance; this expands just this card. -->
-					<span
-						role="button"
-						tabindex="0"
-						data-graph-more
-						data-graph-more-empty={card.vis.length === 0 && !graph.isExpanded(key)
-							? ''
-							: undefined}
-						data-expanded={graph.isExpanded(key) ? '' : undefined}
-						onclick={(event) => {
-							event.stopPropagation()
-							graph.toggleExpanded(key)
-						}}
-						onkeydown={(event) => {
-							if (event.key !== 'Enter' && event.key !== ' ') return
-							event.preventDefault()
-							event.stopPropagation()
-							graph.toggleExpanded(key)
-						}}
-					>{graph.moreLabel(key)}</span
-					>
-				{/if}
-			</button>
-		{/each}
+						<span
+							role="button"
+							tabindex="0"
+							data-graph-more
+							data-graph-more-empty={card.vis.length === 0 && !graph.isExpanded(key)
+								? ''
+								: undefined}
+							data-expanded={graph.isExpanded(key) ? '' : undefined}
+							onclick={(event) => {
+								event.stopPropagation()
+								graph.toggleExpanded(key)
+							}}
+							onkeydown={(event) => {
+								if (event.key !== 'Enter' && event.key !== ' ') return
+								event.preventDefault()
+								event.stopPropagation()
+								graph.toggleExpanded(key)
+							}}>{graph.moreLabel(key)}</span
+						>
+					{/if}
+				</button>
+			{/each}
 		</div>
 	</div>
-
 </div>

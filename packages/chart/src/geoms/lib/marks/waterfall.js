@@ -6,7 +6,14 @@ import { runningSpans } from '../../../lib/plot/running.js'
  * options), not the shared palette. Adds fixed `alpha` and carries connector anchors.
  * @param {{ data: any[], plot: any, channels: any, options?: any, alpha?: number, type?: string }} ctx
  */
-export function buildWaterfallMarks({ data, plot, channels, options = {}, alpha, type = 'waterfall' }) {
+export function buildWaterfallMarks({
+	data,
+	plot,
+	channels,
+	options = {},
+	alpha,
+	type = 'waterfall'
+}) {
 	const { xScale, yScale } = plot
 	if (!data?.length || !xScale || !yScale) return []
 

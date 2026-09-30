@@ -56,7 +56,12 @@ export class ScaleState {
 	#xDomain = $derived(
 		this.#config.xDomain ??
 			(this.#bandX
-				? sortedBandDomain(this.#datasets, this.#channels.effective.x, this.#channels.effective.y, this.#config.sort)
+				? sortedBandDomain(
+						this.#datasets,
+						this.#channels.effective.x,
+						this.#channels.effective.y,
+						this.#config.sort
+					)
 				: null) ??
 			undefined
 	)

@@ -4,7 +4,10 @@ import { FormDefinition } from '../../../src/lib/state/FormDefinition.svelte.js'
 
 const schema = {
 	type: 'object',
-	properties: { email: { type: 'string' }, group: { type: 'object', properties: { n: { type: 'number' } } } }
+	properties: {
+		email: { type: 'string' },
+		group: { type: 'object', properties: { n: { type: 'number' } } }
+	}
 }
 const scopes = (d) => d.layout.elements.map((e) => e.scope)
 
@@ -33,13 +36,18 @@ describe('FormDefinition', () => {
 		expect(d.fieldSchema('missing')).toBeNull()
 		// A nested path descends into the object's `properties`, as JSON Schema nests them.
 		expect(d.fieldSchema('group/n')).toEqual({ type: 'number' })
-		expect(new FormDefinition(new FormValues({}), { type: 'object' }, null).fieldSchema('x')).toBeNull()
+		expect(
+			new FormDefinition(new FormValues({}), { type: 'object' }, null).fieldSchema('x')
+		).toBeNull()
 	})
 
 	it('labels a field from its layout element — label, then title, then the path', () => {
 		const layout = {
 			type: 'vertical',
-			elements: [{ scope: '#/email', label: 'Email' }, { scope: '#/group', title: 'Group' }]
+			elements: [
+				{ scope: '#/email', label: 'Email' },
+				{ scope: '#/group', title: 'Group' }
+			]
 		}
 		const d = new FormDefinition(new FormValues({}), schema, layout)
 		expect(d.fieldLabel('email')).toBe('Email')
@@ -48,7 +56,10 @@ describe('FormDefinition', () => {
 	})
 
 	it('combines schema and the scoped layout elements', () => {
-		const layout = { type: 'vertical', elements: [{ type: 'separator' }, { scope: '#/email', label: 'E' }] }
+		const layout = {
+			type: 'vertical',
+			elements: [{ type: 'separator' }, { scope: '#/email', label: 'E' }]
+		}
 		const d = new FormDefinition(new FormValues({}), schema, layout)
 		expect(d.combined.elements.map((e) => e.key)).toEqual(['email'])
 	})

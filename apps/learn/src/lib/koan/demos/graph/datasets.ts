@@ -41,7 +41,8 @@ const ecommerceTables = [
 		schema: 'public',
 		name: 'users',
 		kind: 'table',
-		noteMd: 'Everyone who can sign in.\n\n- `email` is the login handle\n- soft-deleted, never purged',
+		noteMd:
+			'Everyone who can sign in.\n\n- `email` is the login handle\n- soft-deleted, never purged',
 		indexes: [{ def: 'btree(email)', unique: true, name: 'users_email_key' }],
 		columns: [
 			{ name: 'id', type: 'uuid', pk: true, nn: true, note: 'Primary key' },
@@ -453,7 +454,13 @@ const componentImports = architecture.imports.map((e) => ({
 }))
 const hiddenCoupling = architecture.cochange
 	.filter((e) => !e.imported)
-	.map((e) => ({ source: e.source, target: e.target, weight: e.count, overlay: true, relation: 'co-change' }))
+	.map((e) => ({
+		source: e.source,
+		target: e.target,
+		weight: e.count,
+		overlay: true,
+		relation: 'co-change'
+	}))
 
 export const componentFields: GraphFields = {
 	id: 'id',

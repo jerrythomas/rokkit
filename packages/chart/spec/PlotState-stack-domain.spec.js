@@ -27,7 +27,11 @@ describe('stacked bar domain follows the builder’s stacking rule', () => {
 			{ q: 'Q1', p: 'B', c: 'x', v: 4 }
 		]
 		const state = new PlotState({ data, channels: { x: 'q', y: 'v' } })
-		state.registerGeom({ type: 'bar', channels: { group: 'p', fill: 'c' }, options: { position: 'stack' } })
+		state.registerGeom({
+			type: 'bar',
+			channels: { group: 'p', fill: 'c' },
+			options: { position: 'stack' }
+		})
 		expect(top(state)).toBeGreaterThanOrEqual(7)
 	})
 })

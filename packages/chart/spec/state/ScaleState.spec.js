@@ -13,14 +13,27 @@ const rows = [
 	{ q: 'Q2', p: 'A', v: 2 }
 ]
 const build = (config, geoms = []) => {
-	const c = new PlotConfig({ data: rows, width: 330, height: 260, margin: { top: 0, right: 0, bottom: 0, left: 0 }, ...config })
+	const c = new PlotConfig({
+		data: rows,
+		width: 330,
+		height: 260,
+		margin: { top: 0, right: 0, bottom: 0, left: 0 },
+		...config
+	})
 	const registry = new GeomRegistry(c)
 	for (const g of geoms) registry.register({ channels: {}, ...g })
 	const channels = new ChannelState(c, registry)
 	const orientation = new OrientationState(c, channels, registry)
 	const interaction = new InteractionState(c)
 	return {
-		scales: new ScaleState({ config: c, geoms: registry, channels, orientation, frame: new PlotFrame(c), interaction }),
+		scales: new ScaleState({
+			config: c,
+			geoms: registry,
+			channels,
+			orientation,
+			frame: new PlotFrame(c),
+			interaction
+		}),
 		interaction
 	}
 }
@@ -36,7 +49,9 @@ describe('ScaleState', () => {
 	})
 
 	it('sizes y to the stacked column total', () => {
-		const { scales } = build({ channels: { x: 'q', y: 'v', fill: 'p' } }, [{ type: 'bar', options: { position: 'stack' } }])
+		const { scales } = build({ channels: { x: 'q', y: 'v', fill: 'p' } }, [
+			{ type: 'bar', options: { position: 'stack' } }
+		])
 		expect(scales.y.domain()[1]).toBeGreaterThanOrEqual(7)
 	})
 
@@ -56,10 +71,16 @@ describe('ScaleState', () => {
 	})
 
 	it('rescales a continuous axis through the zoom transform', () => {
-		const data = [{ a: 0, b: 0 }, { a: 10, b: 10 }]
+		const data = [
+			{ a: 0, b: 0 },
+			{ a: 10, b: 10 }
+		]
 		const { scales, interaction } = build({ data, channels: { x: 'a', y: 'b' } })
 		const before = scales.x.domain()
-		interaction.applyZoom({ rescaleX: (s) => s.copy().domain([2, 4]), rescaleY: (s) => s.copy().domain([1, 3]) })
+		interaction.applyZoom({
+			rescaleX: (s) => s.copy().domain([2, 4]),
+			rescaleY: (s) => s.copy().domain([1, 3])
+		})
 		expect(scales.x.domain()).toEqual([2, 4])
 		expect(scales.y.domain()).toEqual([1, 3])
 		interaction.resetZoom()

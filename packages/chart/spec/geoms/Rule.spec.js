@@ -37,7 +37,9 @@ describe('Rule.svelte', () => {
 	})
 
 	it('renders a label at the line end when provided', () => {
-		const { container } = render(TestRule, { props: { state: createMockState(), y: 50, label: 'target' } })
+		const { container } = render(TestRule, {
+			props: { state: createMockState(), y: 50, label: 'target' }
+		})
 		expect(container.querySelector('[data-plot-element="rule-label"]')?.textContent).toBe('target')
 	})
 
@@ -89,7 +91,9 @@ describe('Rule.svelte', () => {
 		})
 
 		it('labels a sloped line at its midpoint, rotated along it — its end is a corner of the plot', () => {
-			const { container } = render(TestRule, { props: { state: unit(), slope: -1, intercept: 1, label: 'main sequence' } })
+			const { container } = render(TestRule, {
+				props: { state: unit(), slope: -1, intercept: 1, label: 'main sequence' }
+			})
 			const text = container.querySelector('[data-plot-element="rule-label"]')
 			// (0,0)→(300,200): midpoint (150,100), angle atan2(200,300) ≈ 33.69°
 			expect(Number(text.getAttribute('x'))).toBeCloseTo(150, 3)

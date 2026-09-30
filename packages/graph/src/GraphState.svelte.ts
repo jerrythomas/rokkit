@@ -246,7 +246,9 @@ export class GraphState {
 	#overlayRouted = $derived(buildEdges(this.#model.overlays, this.#result.cards))
 
 	#routed = $derived(
-		this.#overlayRouted.length > 0 ? [...this.#result.edges, ...this.#overlayRouted] : this.#result.edges
+		this.#overlayRouted.length > 0
+			? [...this.#result.edges, ...this.#overlayRouted]
+			: this.#result.edges
 	)
 
 	/** Heaviest weight across every edge that carries one — the 1 that `edgeWeight` scales to. */
@@ -256,9 +258,7 @@ export class GraphState {
 
 	// Duplicates are left in on purpose: `resolveGroupStyles` de-duplicates and sorts, because
 	// that is where ramp assignment lives. A Set here would be a second, redundant de-dup.
-	#groups = $derived(
-		this.#model.nodes.map((n) => n.group).filter((g): g is string => Boolean(g))
-	)
+	#groups = $derived(this.#model.nodes.map((n) => n.group).filter((g): g is string => Boolean(g)))
 
 	#groupStyles = $derived(resolveGroupStyles(this.#groups, this.#mode, this.#preset))
 
