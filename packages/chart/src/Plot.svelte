@@ -1,31 +1,16 @@
 <script lang="ts">
 	import { getContext } from 'svelte'
-	import type { Component, Snippet } from 'svelte'
+	import type { Snippet } from 'svelte'
 	import { defaultPreset } from './lib/preset.js'
 	import type { PlotSpec, PlotHelpers } from './lib/plot/types.js'
-	import { resolvePlotConfig, resolveChrome, tableColumns, specGeomProps } from './lib/plot/spec.js'
+	import { resolvePlotConfig, resolveChrome, tableColumns } from './lib/plot/spec.js'
 	import PlotSurface from './PlotSurface.svelte'
 	import Axis from './Plot/Axis.svelte'
 	import Grid from './Plot/Grid.svelte'
 	import Legend from './Plot/Legend.svelte'
 	import Tooltip from './Plot/Tooltip.svelte'
-	import Bar from './geoms/Bar.svelte'
-	import Line from './geoms/Line.svelte'
-	import Area from './geoms/Area.svelte'
-	import Point from './geoms/Point.svelte'
-	import Arc from './geoms/Arc.svelte'
-	import Box from './geoms/Box.svelte'
-	import Violin from './geoms/Violin.svelte'
-	import Heatmap from './geoms/Heatmap.svelte'
-	import Candlestick from './geoms/Candlestick.svelte'
-	import Waterfall from './geoms/Waterfall.svelte'
-	import Hexbin from './geoms/Hexbin.svelte'
-	import Ribbon from './geoms/Ribbon.svelte'
-	import Radar from './geoms/Radar.svelte'
-	import Rule from './geoms/Rule.svelte'
-	import Region from './geoms/Region.svelte'
-	import Hull from './geoms/Hull.svelte'
-	import Contour from './geoms/Contour.svelte'
+	import SpecGeoms from './Plot/SpecGeoms.svelte'
+	import DataTable from './Plot/DataTable.svelte'
 	import Highlight from './geoms/Highlight.svelte'
 	import Trend from './geoms/Trend.svelte'
 
@@ -155,44 +140,6 @@
 			chartPreset
 		)
 	}
-
-	// Geoms from spec (spec-driven API)
-	const specGeoms = $derived(spec?.geoms ?? [])
-
-	// Geom component resolver for spec-driven mode. Typed as a lookup table, not the union of
-	// its members: a spec names geoms by string at runtime, exactly like `helpers.geoms`, and the
-	// union of every geom's Props has no single shape a generic call site can satisfy.
-	// `any` is the honest type for a heterogeneous table resolved by name — the same one the
-	// public `PlotHelpers.geoms` already declares in lib/plot/types.js.
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const GEOM_COMPONENTS: Record<string, Component<any>> = {
-		bar: Bar,
-		line: Line,
-		area: Area,
-		point: Point,
-		arc: Arc,
-		box: Box,
-		violin: Violin,
-		heatmap: Heatmap,
-		candlestick: Candlestick,
-		waterfall: Waterfall,
-		hexbin: Hexbin,
-		ribbon: Ribbon,
-		// Radar reads the generic x/y/color this path passes via its own aliases, and takes
-		// its axis order from `options.axes` — see Radar.svelte's Props.
-		radar: Radar,
-		hull: Hull,
-		contour: Contour
-	}
-
-	// Plane annotations read no data, so they take ONLY their own `props` — never the spec's
-	// field channels: a Region's `x`/`y` are ranges, and handing it the field name 'instability'
-	// would be a range of one string.
-	const ANNOTATIONS = { rule: Rule, region: Region }
-
-	function resolveGeomComponent(type: string) {
-		return helpers?.geoms?.[type] ?? GEOM_COMPONENTS[type]
-	}
 </script>
 
 <div class="plot-root">
@@ -218,17 +165,8 @@
 		<!-- Declarative children (geom components) -->
 		{@render children?.()}
 
-		<!-- Spec-driven geoms. Keyed by position, not type: two regions in one spec are normal, and
-		     a type key would be a duplicate that aborts the whole render. -->
-		{#each specGeoms as geomSpec, i (`${geomSpec.type}-${i}`)}
-			{@const Annotation = ANNOTATIONS[geomSpec.type as keyof typeof ANNOTATIONS]}
-			{@const GeomComponent = resolveGeomComponent(geomSpec.type)}
-			{#if Annotation && !helpers?.geoms?.[geomSpec.type]}
-				<Annotation {...geomSpec.props ?? {}} />
-			{:else if GeomComponent}
-				<GeomComponent {...specGeomProps(geomSpec, spec)} />
-			{/if}
-		{/each}
+		<!-- Spec-driven geoms -->
+		<SpecGeoms {spec} {helpers} />
 
 		<!-- Axes -->
 		{#if axes}
@@ -266,29 +204,7 @@
 				<Tooltip {tooltip} />
 			{/if}
 
-			{#if tableData.length > 0 && columns.length > 0}
-				<table class="plot-sr-table" aria-label={chrome.title || 'Chart data'}>
-					{#if chrome.title}
-						<caption>{chrome.title}</caption>
-					{/if}
-					<thead>
-						<tr>
-							{#each columns as col (col)}
-								<th scope="col">{col}</th>
-							{/each}
-						</tr>
-					</thead>
-					<tbody>
-						{#each tableData as row, i (i)}
-							<tr>
-								{#each columns as col (col)}
-									<td>{row[col] ?? ''}</td>
-								{/each}
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			{/if}
+			<DataTable rows={tableData} {columns} title={chrome.title} />
 		{/snippet}
 	</PlotSurface>
 </div>
@@ -305,18 +221,5 @@
 		font-weight: 600;
 		text-align: center;
 		margin-bottom: 4px;
-	}
-
-	/* Visually hidden — in DOM for screen readers, not visible */
-	.plot-sr-table {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
 	}
 </style>

@@ -5,6 +5,7 @@ import Plot from '../src/Plot.svelte'
 import AreaChart from '../src/charts/AreaChart.svelte'
 import LineChart from '../src/charts/LineChart.svelte'
 import mpg from './fixtures/mpg.json'
+import MarkerGeom from './fixtures/MarkerGeom.svelte'
 
 // Minimal render test — confirms Plot creates SVG and sets context
 describe('Plot.svelte', () => {
@@ -324,5 +325,52 @@ describe('wrapper forwarding: grid / highlight / trend', () => {
 		})
 		expect(container.querySelectorAll('[data-plot-trend]')).toHaveLength(2)
 		expect(container.querySelectorAll('[data-plot-highlight]')).toHaveLength(1)
+	})
+})
+
+describe('spec geoms — helper overrides and unknown types', () => {
+	const data = [
+		{ k: 'a', v: 1 },
+		{ k: 'b', v: 2 }
+	]
+
+	it('renders a helper geom in place of a built-in, with the spec channels and options', () => {
+		const { container } = render(Plot, {
+			props: {
+				spec: { data, x: 'k', y: 'v', stack: true, geoms: [{ type: 'bar', options: { gap: 1 } }] },
+				helpers: { geoms: { bar: MarkerGeom } },
+				width: 300,
+				height: 200
+			}
+		})
+		const marker = container.querySelector('[data-marker]')
+		expect(marker?.getAttribute('data-x')).toBe('k')
+		expect(marker?.getAttribute('data-y')).toBe('v')
+		expect(JSON.parse(marker?.getAttribute('data-options') ?? 'null')).toEqual({ stack: true, gap: 1 })
+		expect(container.querySelector('[data-plot-geom="bar"]')).toBeNull()
+	})
+
+	it('lets a helper take an annotation name — and hands it channels, not only props', () => {
+		const { container } = render(Plot, {
+			props: {
+				spec: { data, x: 'k', y: 'v', geoms: [{ type: 'region', props: { tag: 'r' } }] },
+				helpers: { geoms: { region: MarkerGeom } },
+				width: 300,
+				height: 200
+			}
+		})
+		const marker = container.querySelector('[data-marker="r"]')
+		expect(marker?.getAttribute('data-x')).toBe('k')
+	})
+
+	it('skips an unknown geom type and still renders the rest', () => {
+		const { container } = render(Plot, {
+			props: {
+				spec: { data, x: 'k', y: 'v', geoms: [{ type: 'nope' }, { type: 'point' }] },
+				width: 300,
+				height: 200
+			}
+		})
+		expect(container.querySelectorAll('[data-plot-geom="point"]').length).toBeGreaterThan(0)
 	})
 })
