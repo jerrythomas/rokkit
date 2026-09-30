@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { evaluateCondition } from './conditions.js'
+import { evaluateCondition } from '../../src/lib/conditions.js'
 
 describe('evaluateCondition', () => {
 	it('returns true when condition is null', () => {
