@@ -1,4 +1,4 @@
-import { SvelteMap, SvelteSet } from 'svelte/reactivity'
+import { SvelteMap } from 'svelte/reactivity'
 import {
 	inferFieldType,
 	buildUnifiedXScale,
@@ -9,15 +9,13 @@ import { PlotConfig } from './state/PlotConfig.svelte.js'
 import { PlotFrame } from './state/PlotFrame.svelte.js'
 import { ChannelState } from './state/ChannelState.svelte.js'
 import { OrientationState } from './state/OrientationState.svelte.js'
+import { InteractionState } from './state/InteractionState.svelte.js'
 import { GeomRegistry } from './state/GeomRegistry.svelte.js'
 import { distinct, assignColors, isLiteralColor, buildSequentialScale, buildDivergingScale } from './lib/brewing/colors.js'
 import { assignPatterns } from './lib/brewing/patterns.js'
 import { assignSymbols } from './lib/brewing/marks/points.js'
 
 export class PlotState {
-	#hovered = $state(null)
-	#selected = $state(new SvelteSet())
-	#zoomTransform = $state(null)
 
 	// Category order sorted by aggregated value (sum of the value channel per category).
 	// Drives "sort bars by size" for the band axis + its ticks. Returns null when not sorting.
@@ -101,8 +99,8 @@ export class PlotState {
 			// don't nice() it back to whole numbers.
 			nice: !this.config.continuousCategory
 		})
-		return this.#zoomTransform && typeof base?.bandwidth !== 'function'
-			? this.#zoomTransform.rescaleX(base)
+		return this.interactionState.zoom && typeof base?.bandwidth !== 'function'
+			? this.interactionState.zoom.rescaleX(base)
 			: base
 	})
 
@@ -205,7 +203,7 @@ export class PlotState {
 		// Flip: the value (y) axis runs along the horizontal screen → range over width.
 		const range = this.orientationState.flipped ? [0, this.frame.innerWidth] : undefined
 		const base = buildUnifiedYScale(datasets, field, this.frame.innerHeight, { domain: yDomain, includeZero, range })
-		return this.#zoomTransform ? this.#zoomTransform.rescaleY(base) : base
+		return this.interactionState.zoom ? this.interactionState.zoom.rescaleY(base) : base
 	})
 
 	// Colors: Map<colorKey, { fill, stroke }> for all distinct color field values.
@@ -306,6 +304,8 @@ export class PlotState {
 	channelState
 	/** Which way the chart reads; `place()` maps channel space to screen. */
 	orientationState
+	/** Hover, selection, zoom. */
+	interactionState
 
 	constructor(config = {}) {
 		this.config = new PlotConfig(config)
@@ -313,7 +313,7 @@ export class PlotState {
 		this.frame = new PlotFrame(this.config)
 		this.channelState = new ChannelState(this.config, this.geoms)
 		this.orientationState = new OrientationState(this.config, this.channelState, this.geoms)
-		if (config.selected) this.#selected = new SvelteSet(config.selected)
+		this.interactionState = new InteractionState(this.config, config.selected)
 	}
 
 	update(config) {
@@ -408,42 +408,36 @@ export class PlotState {
 		return this.config.chartPreset
 	}
 	get hovered() {
-		return this.#hovered
+		return this.interactionState.hovered
 	}
 	get interactive() {
-		return Boolean(this.config.onselect) || this.config.selectable
+		return this.interactionState.interactive
 	}
 	get selectedRows() {
-		return [...this.#selected]
+		return this.interactionState.selectedRows
 	}
-
 	setHovered(data) {
-		this.#hovered = data
+		this.interactionState.setHovered(data)
 	}
 	clearHovered() {
-		this.#hovered = null
+		this.interactionState.clearHovered()
 	}
 	isSelected(row) {
-		return this.#selected.has(row)
+		return this.interactionState.isSelected(row)
 	}
 	setSelected(rows) {
-		this.#selected = new SvelteSet(rows ?? [])
+		this.interactionState.setSelected(rows)
 	}
 	clearSelected() {
-		this.#selected = new SvelteSet()
+		this.interactionState.clearSelected()
 	}
 	handleSelect(detail) {
-		this.config.onselect?.(detail)
-		if (this.config.selectable && detail?.datum !== undefined) {
-			if (this.#selected.has(detail.datum)) this.#selected.delete(detail.datum)
-			else this.#selected.add(detail.datum)
-		}
+		this.interactionState.handleSelect(detail)
 	}
-
 	applyZoom(transform) {
-		this.#zoomTransform = transform
+		this.interactionState.applyZoom(transform)
 	}
 	resetZoom() {
-		this.#zoomTransform = null
+		this.interactionState.resetZoom()
 	}
 }
