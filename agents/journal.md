@@ -10114,3 +10114,53 @@ the confirm aborts silently, exit 0, nothing bumped); and a 404 minutes after a 
 registry propagation, not failure — 5 of 15 packages took 2–5 minutes to appear.
 
 Noticed, not fixed: `@rokkit/forms` ships `*.spec.js` files and fixtures inside `dist/lib`.
+
+---
+
+## 2026-09-30 (7) — Navigator decomposition
+
+The user asked for it after v1.8.0. `actions/src/navigator.js` was the next hotspot: 418
+lines, 70 decision points, behind every list-like component. Four slices, each written test
+first:
+
+- DOM predicates → `navigator/dom.js` (`9449887f`).
+- `Typeahead` owns the buffer and its timer (`79a38106`).
+- `focusItem` / `scrollWithin` → `navigator/focus.js` (`657db32f`).
+- The keys and clicks the Navigator claims, `focusLeft` and `entryItem` became pure
+  (`navigator/intent.js`), so each handler decides, then acts (`fb46dafb`).
+
+`navigator.js` is now 187 lines and complexity 18, with every part at 100% coverage. The public
+API and the 51-test characterisation spec are unchanged.
+
+Differential: the pre-slice-1 class (`33795390`) and the new one replayed 30,318 scenarios:
+
+- every key × modifier on every target;
+- every layout option on an item and a link;
+- clicks, focusin/out (including after destroy), wheel;
+- typeahead timing.
+
+Each scenario compared wrapper calls, `preventDefault`, `stopPropagation`, `activeElement`,
+`scrollTop` and `focusedKey`. All were identical. Five planted bugs were each caught (8–593
+differing scenarios).
+
+Harness lessons:
+
+- Fake timers also fake `Date.now` and `hrtime`, so time it from the shell.
+- A loop that awaits only microtasks never lets vitest's test timeout fire.
+- A killed vitest leaves its worker orphaned. One ran 21 CPU-minutes and competed with the
+  rerun, so shard the grid instead.
+
+Found on the way:
+
+- **`bun run test:browser` had been broken since the vitest 4 upgrade.** `browser.provider`
+  now takes a factory, and the script isn't in CI. It now uses `@vitest/browser-playwright`
+  (`6ec4971b`), and all 34 tests pass, including Select's close-on-commit, which guards the
+  deferred blur.
+- `04-actions.md` claimed the Navigator calls `scrollIntoView({ block: 'nearest' })` and that
+  `containScroll` contains it. In fact, focus scrolling always sets the root's own `scrollTop`,
+  and `containScroll` only stops wheel events bubbling. Both are corrected, and the doc gains a
+  Navigator Internals section.
+
+Gates: `test:ci` passes 7824 tests, `test:browser` 34 and learn e2e 129. Lint is 0/0, types
+are clean and coverage exits 0. `architecture.json` / `codebase.json` are regenerated:
+`actions/navigator` is the 46th component, and the Navigator has left the hotspot list.

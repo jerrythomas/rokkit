@@ -50,6 +50,15 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 
 #### Components
 
+- [x] **Hotspot decompositions** — 2026-09-30. The architecture recipes' top three hotspots were
+  taken apart behind unchanged public APIs, each proved by an old-vs-new differential:
+  - `PlotState` (complexity 157 → 2) is nine job classes;
+  - `FormBuilder` (175 → 5) is five;
+  - `Navigator` (70 → 18) is wiring over `navigator/{dom,intent,focus,typeahead}.js`, checked
+    against 30,318 replayed event scenarios.
+
+  Plans are in `docs/plans/2026-09-30-*-decomposition.md`. See journal 2026-09-30 (3), (4) and (7).
+
 - [x] **Architecture-analysis primitives** — Shipped 2026-09-30 (plan:
   `docs/plans/2026-09-30-architecture-analysis-primitives.md`). `@rokkit/chart`: `Rule`
   `slope`/`intercept` (clipped abline, midpoint label), `Plot.Region` (bands with open ends,

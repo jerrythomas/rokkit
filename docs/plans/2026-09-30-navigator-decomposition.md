@@ -1,6 +1,7 @@
 # Navigator decomposition
 
-**Status:** IMPLEMENT (2026-09-30 — user: "then take up navigator", after v1.8.0)
+**Status:** DONE (2026-09-30) — `9449887f`, `79a38106`, `657db32f`, `fb46dafb`. See journal 2026-09-30 (7).
+The user asked for it: "then take up navigator", after v1.8.0.
 **Package:** `@rokkit/actions`
 
 ## Why
@@ -18,7 +19,8 @@ becomes event wiring over three focused parts:
 |---|---|
 | `navigator/dom.js` (pure) | `pathOf`, `clickAction`, `isNestedInteractive`, `isDisabledItem`, the interactive selector |
 | `navigator/typeahead.js` | `Typeahead`: the buffer, its reset timer, the printable-key rule, the match |
-| `navigator/focus.js` (pure) | focus the wrapper's item without scrolling ancestors; scroll it into view within the root |
+| `navigator/focus.js` (pure) | focus the wrapper's item without scrolling ancestors; scroll it into view within the root; the entry item |
+| `navigator/intent.js` (pure) | added in slice 4: which keys / clicks the Navigator claims, and when focus has left the root |
 
 ## Slices (one commit each, test first)
 
