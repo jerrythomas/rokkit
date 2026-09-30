@@ -1,10 +1,9 @@
 import { SvelteMap, SvelteSet } from 'svelte/reactivity'
-import { deriveSchemaFromValue } from './schema.js'
-import { deriveLayoutFromValue, deriveLayoutFromSchema } from './layout.js'
 import { getSchemaWithLayout } from './fields.js'
 import { createLookupManager } from './lookup.svelte.js'
 import { evaluateCondition } from './conditions.js'
 import { FormValues } from './state/FormValues.svelte.js'
+import { FormDefinition } from './state/FormDefinition.svelte.js'
 import {
 	validateField as validateFieldValue,
 	validateAll as validateAllFields
@@ -39,11 +38,8 @@ export class FormBuilder {
 	/** The form's data and its dirty baseline. */
 	values
 
-	/** @type {Object} */
-	#schema = $state({})
-
-	/** @type {Object} */
-	#layout = $state({})
+	/** Schema and layout, and how each derives from the other. */
+	definition
 
 	/** @type {Object} */
 	#validation = $state({})
@@ -65,9 +61,7 @@ export class FormBuilder {
 
 	/** Combined schema+layout (scoped elements only) */
 	get combined() {
-		const scopedElements = (this.#layout?.elements ?? []).filter((el) => el.scope)
-		const scopedLayout = { ...this.#layout, elements: scopedElements }
-		return getSchemaWithLayout(this.#schema, scopedLayout)
+		return this.definition.combined
 	}
 	/**
 	 * Get the current data
@@ -85,61 +79,20 @@ export class FormBuilder {
 		this.values.data = value
 	}
 
-	/**
-	 * Get the current schema
-	 * @returns {Object} Current schema object
-	 */
+	/** The form's schema. Setting it may re-derive the layout — see FormDefinition. */
 	get schema() {
-		return this.#schema
+		return this.definition.schema
 	}
-
-	/**
-	 * Set the schema
-	 * @param {Object} value - New schema object
-	 *
-	 * When the caller explicitly provides a schema, that schema is the source
-	 * of truth for which fields exist — the layout may have been derived
-	 * earlier from empty/partial data and would silently hide those fields.
-	 * Re-derive the layout from the new schema so the two stay consistent,
-	 * unless the caller has already installed an explicit non-empty layout.
-	 */
 	set schema(value) {
-		this.#schema = value ?? deriveSchemaFromValue(this.values.data)
-		const layout = this.#layout
-		const hasExplicitLayout = layout && Array.isArray(layout.elements) && layout.elements.length > 0
-		if (!hasExplicitLayout) {
-			this.#layout = deriveLayoutFromSchema(this.#schema)
-		}
+		this.definition.schema = value
 	}
 
-	/**
-	 * Get the current layout
-	 * @returns {Object} Current layout object
-	 */
+	/** The form's layout. A null layout derives from the schema, else the data. */
 	get layout() {
-		return this.#layout
+		return this.definition.layout
 	}
-
-	/**
-	 * Set the layout
-	 * @param {Object} value - New layout object
-	 */
 	set layout(value) {
-		if (value) {
-			this.#layout = value
-			return
-		}
-		// No explicit layout — prefer schema-derived over data-derived so
-		// declared fields render even when initial data is `{}` (a common
-		// pattern for LLM-generated forms and reset forms).
-		const schema = this.#schema
-		const hasSchemaProperties =
-			schema && typeof schema === 'object' && schema.properties &&
-			typeof schema.properties === 'object' &&
-			Object.keys(schema.properties).length > 0
-		this.#layout = hasSchemaProperties
-			? deriveLayoutFromSchema(schema)
-			: deriveLayoutFromValue(this.values.data)
+		this.definition.layout = value
 	}
 
 	/**
@@ -178,8 +131,7 @@ export class FormBuilder {
 	 */
 	constructor(data = {}, schema = null, layout = null, lookups = {}) {
 		this.values = new FormValues(data)
-		this.schema = schema
-		this.layout = layout
+		this.definition = new FormDefinition(this.values, schema, layout)
 		this.#initLookups(lookups)
 	}
 
@@ -358,8 +310,8 @@ export class FormBuilder {
 		const scopedElements = layoutElements.filter(
 			(el) => el.scope && !el.type?.startsWith('display-')
 		)
-		const scopedLayout = { ...this.#layout, elements: scopedElements }
-		const combined = getSchemaWithLayout(this.#schema, scopedLayout)
+		const scopedLayout = { ...this.definition.layout, elements: scopedElements }
+		const combined = getSchemaWithLayout(this.definition.schema, scopedLayout)
 
 		const combinedMap = new SvelteMap()
 		for (const el of combined.elements ?? []) {
@@ -415,8 +367,8 @@ export class FormBuilder {
 	#buildBasicElements() {
 		const elements = []
 
-		if (this.#layout.elements) {
-			for (const layoutElement of this.#layout.elements) {
+		if (this.definition.layout.elements) {
+			for (const layoutElement of this.definition.layout.elements) {
 				const formElement = this.#buildBasicElement(layoutElement)
 				if (formElement) {
 					elements.push(formElement)
@@ -648,11 +600,11 @@ export class FormBuilder {
 	 * @returns {import('./validation.js').ValidationMessage|null} Validation result
 	 */
 	validateField(fieldPath) {
-		const fieldSchema = this.#getFieldSchema(fieldPath)
+		const fieldSchema = this.definition.fieldSchema(fieldPath)
 		if (!fieldSchema) return null
 
 		const value = this.getValue(fieldPath)
-		const label = this.#getFieldLabel(fieldPath)
+		const label = this.definition.fieldLabel(fieldPath)
 		const result = validateFieldValue(value, fieldSchema, label)
 
 		this.setFieldValidation(fieldPath, result)
@@ -667,15 +619,15 @@ export class FormBuilder {
 		if (this.isMultiStep) {
 			// Flatten all step elements into a synthetic layout for full validation
 			const allElements = []
-			for (const step of this.#layout?.elements ?? []) {
+			for (const step of this.definition.layout?.elements ?? []) {
 				if (step.type === 'step') allElements.push(...(step.elements ?? []))
 			}
-			const flatLayout = { ...this.#layout, elements: allElements }
-			const results = validateAllFields(this.values.data, this.#schema, flatLayout)
+			const flatLayout = { ...this.definition.layout, elements: allElements }
+			const results = validateAllFields(this.values.data, this.definition.schema, flatLayout)
 			this.#validation = results
 			return results
 		}
-		const results = validateAllFields(this.values.data, this.#schema, this.#layout)
+		const results = validateAllFields(this.values.data, this.definition.schema, this.definition.layout)
 		const visiblePaths = new SvelteSet(
 			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
 		)
@@ -765,45 +717,6 @@ export class FormBuilder {
 	}
 
 	/**
-	 * Walk schema properties following the key path
-	 * @private
-	 */
-	#walkSchemaPath(keys) {
-		let current = this.#schema.properties
-		for (const key of keys) {
-			if (current && current[key]) {
-				current = current[key]
-			} else {
-				return null
-			}
-		}
-		return current
-	}
-
-	/**
-	 * Get schema definition for a field path
-	 * @private
-	 * @param {string} fieldPath - Field path
-	 * @returns {Object|null} Field schema
-	 */
-	#getFieldSchema(fieldPath) {
-		if (!this.#schema?.properties) return null
-		return this.#walkSchemaPath(fieldPath.split('/'))
-	}
-
-	/**
-	 * Get label for a field from layout
-	 * @private
-	 * @param {string} fieldPath - Field path
-	 * @returns {string} Field label
-	 */
-	#getFieldLabel(fieldPath) {
-		const scope = `#/${fieldPath}`
-		const layoutEl = this.#layout?.elements?.find((el) => el.scope === scope)
-		return layoutElLabel(layoutEl, fieldPath)
-	}
-
-	/**
 	 * Reset form data to initial snapshot and clear validation
 	 */
 	reset() {
@@ -815,12 +728,12 @@ export class FormBuilder {
 
 	/** True when the layout contains step elements */
 	get isMultiStep() {
-		return (this.#layout?.elements ?? []).some((el) => el.type === 'step')
+		return (this.definition.layout?.elements ?? []).some((el) => el.type === 'step')
 	}
 
 	/** Number of step elements in the layout */
 	get totalSteps() {
-		return (this.#layout?.elements ?? []).filter((el) => el.type === 'step').length
+		return (this.definition.layout?.elements ?? []).filter((el) => el.type === 'step').length
 	}
 
 	/** Zero-based index of the active step */
@@ -877,10 +790,10 @@ export class FormBuilder {
 	 * @returns {boolean} true if no errors
 	 */
 	validateStep(index) {
-		const stepEl = (this.#layout?.elements ?? [])[index]
+		const stepEl = (this.definition.layout?.elements ?? [])[index]
 		if (!stepEl || stepEl.type !== 'step') return true
-		const stepLayout = { ...this.#layout, elements: stepEl.elements ?? [] }
-		const results = validateAllFields(this.values.data, this.#schema, stepLayout)
+		const stepLayout = { ...this.definition.layout, elements: stepEl.elements ?? [] }
+		const results = validateAllFields(this.values.data, this.definition.schema, stepLayout)
 		this.#applyStepValidation(results, stepEl.elements)
 		return isAllValid(results)
 	}
@@ -919,7 +832,7 @@ export class FormBuilder {
 	/* v8 ignore next 9 — defined for future use; not yet called by any public method */
 	#getAllStepPaths() {
 		const paths = new SvelteSet()
-		for (const step of this.#layout?.elements ?? []) {
+		for (const step of this.definition.layout?.elements ?? []) {
 			if (step.type === 'step') {
 				for (const path of this.#collectStepPaths(step.elements)) paths.add(path)
 			}
@@ -933,7 +846,7 @@ export class FormBuilder {
 	 * @returns {Object[]}
 	 */
 	#getActiveElements() {
-		const elements = this.#layout?.elements ?? []
+		const elements = this.definition.layout?.elements ?? []
 		if (!elements.some((el) => el.type === 'step')) return elements
 		return elements[this.#currentStep]?.elements ?? []
 	}
@@ -947,15 +860,6 @@ export class FormBuilder {
  */
 function isAllValid(results) {
 	return Object.values(results).every((msg) => msg?.state !== 'error')
-}
-
-/**
- * Return the display label for a layout element, falling back to fieldPath
- * @private
- */
-function layoutElLabel(layoutEl, fieldPath) {
-	if (layoutEl?.label) return layoutEl.label
-	return layoutEl?.title ?? fieldPath
 }
 
 /**
