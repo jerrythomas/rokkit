@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/chart",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "type": "module",
   "description": "Data-driven chart components",
   "repository": {
