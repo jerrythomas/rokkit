@@ -6,7 +6,9 @@ import {
 	buildUnifiedYScale,
 	inferColorScaleType
 } from './lib/plot/scales.js'
-import { PlotConfig, DEFAULT_MARGIN } from './state/PlotConfig.svelte.js'
+import { PlotConfig } from './state/PlotConfig.svelte.js'
+import { PlotFrame } from './state/PlotFrame.svelte.js'
+import { ChannelState } from './state/ChannelState.svelte.js'
 import { GeomRegistry } from './state/GeomRegistry.svelte.js'
 import { distinct, assignColors, isLiteralColor, buildSequentialScale, buildDivergingScale } from './lib/brewing/colors.js'
 import { assignPatterns } from './lib/brewing/patterns.js'
@@ -20,59 +22,6 @@ export class PlotState {
 	#selected = $state(new SvelteSet())
 	#zoomTransform = $state(null)
 
-	#effectiveMargin = $derived(this.config.margin ?? DEFAULT_MARGIN)
-	#innerWidth = $derived(this.config.width - this.#effectiveMargin.left - this.#effectiveMargin.right)
-	#innerHeight = $derived(this.config.height - this.#effectiveMargin.top - this.#effectiveMargin.bottom)
-
-	// Effective channels: prefer top-level channels PER FIELD, falling back to the
-	// first geom's channels. Merged per-field (not all-or-nothing) so a composable
-	// <Plot.Root x y> that omits `color` still picks up a geom's color channel
-	// (e.g. <Plot.Box color=x>) — otherwise `colors` has no per-category entries and
-	// every mark falls back to gray.
-	#mergeGeomChannels(tc, geom) {
-		return {
-			x: tc.x ?? geom.channels?.x,
-			y: tc.y ?? geom.channels?.y,
-			color: tc.color ?? geom.channels?.color,
-			fill: tc.fill ?? geom.channels?.fill,
-			pattern: tc.pattern ?? geom.channels?.pattern,
-			symbol: tc.symbol ?? geom.channels?.symbol
-		}
-	}
-
-	// Field names feeding the shared categorical color scale: the `color` AND `fill` channels,
-	// from the top-level channels and EVERY geom (union, de-duped, order-preserving). Literal
-	// CSS colors are excluded. One palette/legend spans both aesthetics — the "shared scale"
-	// model (see docs/backlog/2026-08-17-chart-aesthetics-unification.md §2).
-	#sharedColorValues() {
-		const fields = []
-		const addField = (f) => {
-			if (f && !isLiteralColor(f) && !fields.includes(f)) fields.push(f)
-		}
-		addField(this.config.channels.color)
-		addField(this.config.channels.fill)
-		for (const g of this.geoms.list) {
-			addField(g.channels?.color)
-			addField(g.channels?.fill)
-		}
-		// `includes` dedup rather than a Set, matching `addField` above. These are
-		// category values feeding one palette/legend — a domain of dozens, not
-		// rows — so the linear scan costs nothing and the function stays free of
-		// a collection the reactivity linter has to be told to ignore.
-		const values = []
-		for (const f of fields) {
-			for (const v of distinct(this.config.data, f)) if (!values.includes(v)) values.push(v)
-		}
-		return values
-	}
-
-	#effectiveChannels = $derived.by(() => {
-		const tc = this.config.channels
-		const firstGeom = this.geoms.first
-		if (!firstGeom) return tc
-		return this.#mergeGeomChannels(tc, firstGeom)
-	})
-
 	#resolveXType(rawXType, yType) {
 		const hasBandGeom = this.geoms.list.some((g) => CATEGORICAL_X.has(g.type))
 		return hasBandGeom && rawXType === 'continuous' && yType === 'continuous' ? 'band' : rawXType
@@ -82,8 +31,8 @@ export class PlotState {
 	// Drives "sort bars by size" for the band axis + its ticks. Returns null when not sorting.
 	#sortedBandDomain(datasets) {
 		if (!this.config.sort) return null
-		const xf = this.#effectiveChannels.x
-		const yf = this.#effectiveChannels.y
+		const xf = this.channelState.effective.x
+		const yf = this.channelState.effective.y
 		if (!xf || !yf) return null
 		// Keyed accumulator, function-local and discarded before returning — a
 		// SvelteMap would register a reactive signal per category on every
@@ -104,8 +53,8 @@ export class PlotState {
 
 	orientation = $derived.by(() => {
 		if (this.config.orientation) return this.config.orientation
-		const xField = this.#effectiveChannels.x
-		const yField = this.#effectiveChannels.y
+		const xField = this.channelState.effective.x
+		const yField = this.channelState.effective.y
 		if (!xField || !yField) return 'none'
 		const rawXType = inferFieldType(this.config.data, xField)
 		const yType = inferFieldType(this.config.data, yField)
@@ -118,8 +67,8 @@ export class PlotState {
 	// Only such charts flip; a plain scatter (both continuous, no banding geom) is false → the
 	// orientation is a no-op for the scales.
 	#bandIsX = $derived.by(() => {
-		const x = this.#effectiveChannels.x
-		const y = this.#effectiveChannels.y
+		const x = this.channelState.effective.x
+		const y = this.channelState.effective.y
 		if (!x || !y) return false
 		// Resolved type: a bar/box/violin/jitter geom bands a numeric x (e.g. year, week),
 		// so those NUMERIC categories are flippable too — not just string categories.
@@ -132,7 +81,7 @@ export class PlotState {
 	#flipped = $derived(this.orientation === 'horizontal' && this.#bandIsX)
 
 	colorScaleType = $derived.by(() => {
-		const field = this.#effectiveChannels.color
+		const field = this.channelState.effective.color
 		if (!field) return 'categorical'
 		return inferColorScaleType(this.config.data, field, {
 			colorScale: this.config.colorScale,
@@ -142,7 +91,7 @@ export class PlotState {
 
 	// Continuous color scale (sequential or diverging) — null for categorical.
 	continuousColorScale = $derived.by(() => {
-		const field = this.#effectiveChannels.color
+		const field = this.channelState.effective.color
 		if (!field || this.colorScaleType === 'categorical') return null
 		const opts = {
 			colorScheme: this.config.colorScheme,
@@ -156,7 +105,7 @@ export class PlotState {
 	})
 
 	xScale = $derived.by(() => {
-		const field = this.#effectiveChannels.x
+		const field = this.channelState.effective.x
 		if (!field) return null
 		const datasets =
 			this.geoms.list.length > 0 ? this.geoms.list.map((g) => this.geomData(g.id)) : [this.config.data]
@@ -172,11 +121,11 @@ export class PlotState {
 			!this.config.continuousCategory &&
 			(this.orientation !== 'horizontal' || this.#flipped)
 		// Flip: the category (x) axis stands up on the vertical screen → range over height.
-		const range = this.#flipped ? [this.#innerHeight, 0] : undefined
+		const range = this.#flipped ? [this.frame.innerHeight, 0] : undefined
 		// Sort the band domain by aggregated value when requested (bars by size); an explicit
 		// xDomain override wins.
 		const domain = this.config.xDomain ?? (bandX ? this.#sortedBandDomain(datasets) : null) ?? undefined
-		const base = buildUnifiedXScale(datasets, field, this.#innerWidth, {
+		const base = buildUnifiedXScale(datasets, field, this.frame.innerWidth, {
 			domain,
 			includeZero,
 			band: bandX,
@@ -210,19 +159,19 @@ export class PlotState {
 		if (!stackGeom) return null
 		// position='fill' normalizes each column to 100% → the value domain is [0,1].
 		if (stackGeom.options?.position === 'fill') return [0, 1]
-		const xField = this.#effectiveChannels.x
+		const xField = this.channelState.effective.x
 		const stackData = this.geomData(stackGeom.id)
 		if (!xField || stackData.length === 0) return null
 		// Mirror buildStackedBars/subBandFields: stack dimension is the first
 		// non-x field among [color, pattern]. Summing all raw rows (stat=identity)
 		// would overcount when multiple rows share the same (x, stack) key.
-		const colorField = isLiteralColor(this.#effectiveChannels.color)
+		const colorField = isLiteralColor(this.channelState.effective.color)
 			? null
-			: this.#effectiveChannels.color
-		const fillField = isLiteralColor(this.#effectiveChannels.fill)
+			: this.channelState.effective.color
+		const fillField = isLiteralColor(this.channelState.effective.fill)
 			? null
-			: this.#effectiveChannels.fill
-		const patternField = this.#effectiveChannels.pattern
+			: this.channelState.effective.fill
+		const patternField = this.channelState.effective.pattern
 		// Mirror buildStackedBars/subBandFields (group=fill first, then color, then pattern).
 		const stackField =
 			[fillField, colorField, patternField].find((f) => f && f !== xField) ?? (fillField ?? colorField)
@@ -274,7 +223,7 @@ export class PlotState {
 	}
 
 	yScale = $derived.by(() => {
-		const field = this.#effectiveChannels.y
+		const field = this.channelState.effective.y
 		if (!field) return null
 		const datasets =
 			this.geoms.list.length > 0 ? this.geoms.list.map((g) => this.geomData(g.id)) : [this.config.data]
@@ -287,8 +236,8 @@ export class PlotState {
 			this.#resolveStackDomain(field) ??
 			this.#resolveWaterfallDomain(field)
 		// Flip: the value (y) axis runs along the horizontal screen → range over width.
-		const range = this.#flipped ? [0, this.#innerWidth] : undefined
-		const base = buildUnifiedYScale(datasets, field, this.#innerHeight, { domain: yDomain, includeZero, range })
+		const range = this.#flipped ? [0, this.frame.innerWidth] : undefined
+		const base = buildUnifiedYScale(datasets, field, this.frame.innerHeight, { domain: yDomain, includeZero, range })
 		return this.#zoomTransform ? this.#zoomTransform.rescaleY(base) : base
 	})
 
@@ -298,14 +247,14 @@ export class PlotState {
 	// If a colorDomain is provided (e.g. from FacetPlot for cross-panel consistency),
 	// use it instead of deriving distinct values from the local panel data.
 	colors = $derived.by(() => {
-		const field = this.#effectiveChannels.color
+		const field = this.channelState.effective.color
 		if (isLiteralColor(field)) {
 			/** @type {Map<unknown, { fill: string, stroke: string }>} */
 			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			const literal = new Map([[null, { fill: field, stroke: field }]])
 			return literal
 		}
-		const values = this.config.colorDomain ?? this.#sharedColorValues()
+		const values = this.config.colorDomain ?? this.channelState.colorValues
 		// No color channel but data exists → use first preset color for single-series rendering.
 		// This prevents geoms from falling back to gray (#888) on charts with no fill channel.
 		if (values.length === 0 && this.config.data.length > 0) return assignColors([null], this.config.mode, this.config.chartPreset)
@@ -315,7 +264,7 @@ export class PlotState {
 	// Patterns: Map<patternKey, patternName> — only populated when a pattern channel is set
 	// and the pattern field is categorical (continuous fields can't be discretely patterned).
 	patterns = $derived.by(() => {
-		const pf = this.#effectiveChannels.pattern
+		const pf = this.channelState.effective.pattern
 		if (!pf) return new SvelteMap()
 		if (inferFieldType(this.config.data, pf) === 'continuous') return new SvelteMap()
 		return assignPatterns(distinct(this.config.data, pf))
@@ -323,22 +272,25 @@ export class PlotState {
 
 	// Symbols: Map<symbolKey, shapeName> — only populated when a symbol channel is set.
 	symbols = $derived.by(() => {
-		const sf = this.#effectiveChannels.symbol
+		const sf = this.channelState.effective.symbol
 		if (!sf) return new SvelteMap()
 		return assignSymbols(distinct(this.config.data, sf), this.config.chartPreset)
 	})
 
 	// Expose effective channel fields for consumers (e.g. Legend).
 	// Returns null for literal CSS colors since they don't map to a data field.
-	colorField = $derived(
-		isLiteralColor(this.#effectiveChannels.color) ? null : this.#effectiveChannels.color
-	)
-	// Fill field (interior aesthetic), parallel to colorField. Null for a literal CSS color.
-	fillField = $derived(
-		isLiteralColor(this.#effectiveChannels.fill) ? null : this.#effectiveChannels.fill
-	)
-	patternField = $derived(this.#effectiveChannels.pattern)
-	symbolField = $derived(this.#effectiveChannels.symbol)
+	get colorField() {
+		return this.channelState.colorField
+	}
+	get fillField() {
+		return this.channelState.fillField
+	}
+	get patternField() {
+		return this.channelState.patternField
+	}
+	get symbolField() {
+		return this.channelState.symbolField
+	}
 
 	// Set of geom types currently registered (used by Legend to pick swatch style)
 	get geomTypes() {
@@ -346,7 +298,7 @@ export class PlotState {
 	}
 
 	xAxisY = $derived.by(() => {
-		if (!this.yScale || typeof this.yScale !== 'function') return this.#innerHeight
+		if (!this.yScale || typeof this.yScale !== 'function') return this.frame.innerHeight
 		const crossVal = this.config.axisOrigin[1]
 		if (crossVal !== undefined) return this.yScale(crossVal)
 		const domain = this.yScale.domain?.()
@@ -354,7 +306,7 @@ export class PlotState {
 		   above) or a d3 scale from buildUnifiedYScale, whose every return path is a
 		   scaleLinear or scaleBand — both always expose domain() returning an array.
 		   `ignore next` does not fire on a single-line `if (...) return`. */
-		if (!domain) return this.#innerHeight
+		if (!domain) return this.frame.innerHeight
 		/* v8 ignore stop */
 		// Auto quadrant: place x-axis at y=0 when domain spans zero (no offset)
 		if (domain[0] <= 0 && domain[domain.length - 1] >= 0) return this.yScale(0)
@@ -381,10 +333,16 @@ export class PlotState {
 
 	/** The mounted geoms and the rows each draws. */
 	geoms
+	/** The drawing area — size less margin. */
+	frame
+	/** Which field feeds each aesthetic. (`channels` is the caller's raw map.) */
+	channelState
 
 	constructor(config = {}) {
 		this.config = new PlotConfig(config)
 		this.geoms = new GeomRegistry(this.config, 'geom')
+		this.frame = new PlotFrame(this.config)
+		this.channelState = new ChannelState(this.config, this.geoms)
 		if (config.selected) this.#selected = new SvelteSet(config.selected)
 	}
 
@@ -465,13 +423,13 @@ export class PlotState {
 		return this.#bandIsX ? this.yScale : this.xScale
 	}
 	get margin() {
-		return this.#effectiveMargin
+		return this.frame.margin
 	}
 	get innerWidth() {
-		return this.#innerWidth
+		return this.frame.innerWidth
 	}
 	get innerHeight() {
-		return this.#innerHeight
+		return this.frame.innerHeight
 	}
 	get mode() {
 		return this.config.mode
