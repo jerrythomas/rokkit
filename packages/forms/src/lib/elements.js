@@ -11,6 +11,25 @@
  * @property {(path: string) => boolean} dirty
  * @property {(path: string, props: Object) => void} applyLookup - fold lookup state into props
  */
+/**
+ * @typedef {Object} FormElement
+ * @property {string} scope - JSON Pointer path (e.g., '#/email', '#/user/name')
+ * @property {string} type - Input type (text, number, range, checkbox, select, etc.)
+ * @property {any} value - Current value from data
+ * @property {boolean} override - Whether to use custom child snippet (from layout)
+ * @property {Object} props - Merged properties from schema + layout + validation
+ * @property {string} [props.label] - Display label (from layout)
+ * @property {string} [props.description] - Help text (from layout)
+ * @property {string} [props.placeholder] - Placeholder text (from layout)
+ * @property {boolean} [props.required] - Required flag (from schema)
+ * @property {number} [props.min] - Minimum value (from schema)
+ * @property {number} [props.max] - Maximum value (from schema)
+ * @property {Object} [props.message] - Validation message object
+ * @property {string} [props.message.state] - Message state: 'error', 'warning', 'info', 'success'
+ * @property {string} [props.message.text] - Message text content
+ * @property {boolean} [props.dirty] - Whether field value differs from initial
+ */
+
 import { getSchemaWithLayout } from './fields.js'
 import { evaluateCondition } from './conditions.js'
 
