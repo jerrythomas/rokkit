@@ -5,13 +5,15 @@ const meta: DemoMeta = {
 	id: 'graph',
 	title: 'Graph',
 	description:
-		'Node-link diagram explorer — ER diagrams, schema entity tables and call graphs from the same component. Pluggable layouts (cluster, flow, neighborhood, points, world), density, arrange, edge style and a colour|pattern channel, all driven by field-mapped data rather than a fixed schema type.',
+		'Node-link diagram explorer — ER diagrams, schema entity tables, call graphs, a dependency structure matrix and co-change overlays from the same data contract. Pluggable layouts (cluster, flow, neighborhood, points, radial, structure, sunburst, world), density, arrange, edge style and a colour|pattern channel, all driven by field-mapped data rather than a fixed schema type.',
 	keywords: [
 		'graph', 'graphs', 'diagram', 'diagrams', 'er-diagram', 'erd',
 		'schema', 'entity', 'entities', 'relationship', 'relationships',
 		'nodes', 'edges', 'node-link', 'network', 'topology',
 		'call-graph', 'dependency', 'dependencies', 'lineage', 'force-directed',
-		'database', 'table', 'tables', 'foreign-key'
+		'database', 'table', 'tables', 'foreign-key',
+		'dsm', 'dependency-matrix', 'dependency-structure-matrix', 'matrix', 'cycles',
+		'co-change', 'coupling', 'hidden-coupling', 'overlay', 'architecture'
 	],
 	category: 'data',
 	icon: '網',
@@ -22,7 +24,7 @@ const meta: DemoMeta = {
 			'Mount the interactive graph explorer on the canvas — a node-link diagram with pluggable layouts. Pass `dataset` to open a specific one.',
 		parameters: {
 			dataset:
-				'optional dataset: ecommerce | schema-deps | service-calls | codebase (defaults to ecommerce)'
+				'optional dataset: ecommerce | schema-deps | service-calls | codebase | components | cochange (defaults to ecommerce)'
 		}
 	},
 	inline: { capable: true },
@@ -53,13 +55,15 @@ const meta: DemoMeta = {
 		{ id: 'call-graph', label: 'Call tree', mode: 'dynamic', props: { diagram: 'calls' } },
 		{ id: 'structure', label: 'Structure', mode: 'dynamic', props: { diagram: 'structure' } },
 		{ id: 'treemap', label: 'Treemap', mode: 'dynamic', props: { diagram: 'treemap' } },
-		{ id: 'sunburst', label: 'Sunburst', mode: 'dynamic', props: { diagram: 'sunburst' } }
+		{ id: 'sunburst', label: 'Sunburst', mode: 'dynamic', props: { diagram: 'sunburst' } },
+		{ id: 'matrix', label: 'Dependency matrix', mode: 'dynamic', props: { diagram: 'matrix' } },
+		{ id: 'coupling', label: 'Hidden coupling', mode: 'dynamic', props: { diagram: 'coupling' } }
 	],
 	api: {
 		props: [
 			{ name: 'nodes', type: 'unknown[]', default: '[]', desc: 'Any row shape — mapped by `fields`, never required to match a schema type' },
 			{ name: 'edges', type: 'unknown[]', default: '[]', desc: 'Any edge shape — endpoints resolved through `fields.source` / `fields.target`' },
-			{ name: 'fields', type: 'GraphFields', default: '{}', desc: 'Dotted-path map from your shape to the canonical model. Omitted keys fall back to the same-named key' },
+			{ name: 'fields', type: 'GraphFields', default: '{}', desc: 'Dotted-path map from your shape to the canonical model. Omitted keys fall back to the same-named key. `overlay` marks an edge drawn over the layout but never shaping it; `edgeWeight` reads its strength' },
 			{ name: 'state', type: 'GraphState', desc: 'Share one state across Graph / EntityView / EntitiesView. Must keep stable identity — drive it with its methods, do not swap instances' },
 			{ name: 'layout', type: "'cluster' | 'flow' | 'neighborhood' | 'points' | 'world' | LayoutFn", default: "'cluster'", desc: 'A built-in by name, or your own pure (model, options) => LayoutResult. `flow` ranks by reference direction so every link leaves right and enters left' },
 			{ name: 'density', type: "'names' | 'keys' | 'full'", default: "'keys'", desc: 'How much of each node’s row list a card shows' },

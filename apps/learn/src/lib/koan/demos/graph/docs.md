@@ -38,14 +38,62 @@ type LayoutFn = (model: GraphModel, options: LayoutOptions) => LayoutResult
 ```
 
 DOM-free, synchronous, deterministic — card heights come from row counts, nothing is measured.
-Two ship today:
+Eight ship today:
 
+- **`flow`** (the default) — columns ranked by reference direction, so every edge leaves a
+  card's right edge and enters the next one's left.
 - **`cluster`** — groups become clusters, clusters are ordered to reduce edge crossings, and
   each cluster's nodes are masonry-packed then flowed into wrapping rows.
 - **`neighborhood`** — the focused node centred, nodes that reference it stacked left, nodes it
   references stacked right.
+- **`points`** — dense graphs: nodes as small rects sized by degree or a measure.
+- **`radial`**, **`structure`**, **`world`**, **`sunburst`** — trees and containment: a radial
+  tidy tree, a dendrogram with bundled edges, a treemap, and the treemap asked radially.
 
 Pass `layout` a name or your own function. Nothing about the canvas is layout-specific.
+
+## Overlay edges — drawn over the picture, never shaping it
+
+Some edges are exactly what a reader wants to see and exactly what must not move the layout:
+files that change in the same commit with no import between them, a layering rule that was
+broken, a suggested dependency. Let a co-change edge into `flow`'s ranking and it pulls the
+pair side by side — hiding the coupling it exists to expose.
+
+Flag them and they are routed **after** the layout has run:
+
+```js
+const edges = [
+  ...imports,
+  { source: 'ui/components', target: 'ui/types', overlay: true, relation: 'co-change', weight: 20 }
+]
+```
+
+An overlay never enters `model.edges`, neighbours, relationships or reference counts; it lives
+in `model.overlays` (and `state.overlayEdges`). It renders with `data-edge-overlay` — dotted in
+every style — and `weight`, normalised by `state.edgeWeight(edge)` to 0..1 of the heaviest,
+arrives as `--edge-weight` and thickens the stroke. Map either from your own shape with
+`fields.overlay` / `fields.edgeWeight`.
+
+## The dependency matrix
+
+`DependencyMatrix` draws the same model as a DSM: every node is a row and a column, and a cell
+means *the row depends on the column*. Providers come first — `flow`'s ranking, reversed — so a
+layered codebase is lower-triangular and **a mark above the diagonal is a dependency against
+the grain**: a cycle, or a layer reaching up. With `groupBy`, each group is contiguous and
+outlined on the diagonal, so a cross-module violation is a mark outside its block.
+
+```svelte
+<DependencyMatrix {nodes} {edges} groupBy="group" cell={14} />
+```
+
+Parallel edges fold into one cell; a weighted edge counts as its weight, so an import list
+already aggregated to components is read as-is. Row headers are buttons that select through
+`GraphState`, so a shared `state` keeps a node-link view beside it in step. `buildMatrix(model)`
+is exported for anyone drawing their own.
+
+The **Dependency matrix** and **Hidden coupling** examples here read rokkit itself, one level
+up from files: 40 components, their imports, and the pairs that change together in git history
+without an import between them.
 
 ## Three views, one state
 
@@ -128,6 +176,8 @@ reach for first:
 | `data-edge-kind`   | `reference` `dependency` (dashed)                 |
 | `data-edge-relation` | the producer's own verb — dbd emits `reads` `writes` `calls` `member`. Absent on a foreign key |
 | `data-edge-state`  | `highlight` `dim`                                 |
+| `data-edge-overlay` | present on an overlay edge (co-change, a broken rule) |
+| `data-matrix-above` | a matrix cell against the grain — above the diagonal |
 | `data-row-badge`   | `pk` `fk` `uq` `nn`                               |
 
 ## Using it with dbd

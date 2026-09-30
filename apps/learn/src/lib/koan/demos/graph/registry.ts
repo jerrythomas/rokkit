@@ -2,7 +2,9 @@ import type { Component } from 'svelte'
 import {
 	CallTree,
 	DependencyDiagram,
+	DependencyMatrix,
 	ErDiagram,
+	Graph,
 	Neighborhood,
 	StructureDiagram,
 	Sunburst,
@@ -33,6 +35,8 @@ export type DiagramId =
 	| 'treemap'
 	| 'sunburst'
 	| 'neighborhood'
+	| 'matrix'
+	| 'coupling'
 
 /** What question the diagram answers. Groups the picker, nothing more. */
 export type DiagramGroup = 'Schema' | 'Code'
@@ -59,6 +63,11 @@ export type DiagramConfig = {
 	props?: Record<string, unknown>
 	/** Which of the demo's own extras make sense here. */
 	views?: boolean
+	/**
+	 * What the diagram draws on. `graph` (the default) is the node-link canvas, where `layout`
+	 * applies; `matrix` is the dependency structure matrix, which has no layout at all.
+	 */
+	canvas?: 'graph' | 'matrix'
 }
 
 export const registry: Record<DiagramId, DiagramConfig> = {
@@ -143,6 +152,34 @@ export const registry: Record<DiagramId, DiagramConfig> = {
 		blurb:
 			'The same containment as wedges. Angle carries the measure and radius carries the depth, so how deep the tree goes reads at a glance.',
 		props: { sizeBy: 'declarations', levels: 2, focusPath: ['rokkit'] }
+	},
+	matrix: {
+		id: 'matrix',
+		// Not a Graph layout — the matrix orders its own rows. `flow` is what the shared state
+		// runs for the entity views; the matrix itself reads only the model.
+		layout: 'flow',
+		canvas: 'matrix',
+		label: 'Dependency matrix',
+		group: 'Code',
+		component: DependencyMatrix as Component<Record<string, unknown>>,
+		dataset: 'components',
+		blurb:
+			'Every component a row and a column; a cell where the row depends on the column. Providers come first, so a layered codebase is lower-triangular — a red cell above the diagonal is a cycle or a layer reaching up.',
+		props: { groupBy: 'group', cell: 14 }
+	},
+	coupling: {
+		id: 'coupling',
+		// `points`, not `flow`: flow spreads 40 components over ten card columns, and fitting
+		// that to the canvas shrinks every card — and every overlay between them — to a speck.
+		// Packed by package, the dotted co-change edges visibly cross package lines.
+		layout: 'points',
+		label: 'Hidden coupling',
+		group: 'Code',
+		component: Graph as Component<Record<string, unknown>>,
+		dataset: 'cochange',
+		blurb:
+			'Components packed by package, sized by lines of code, with their imports — and, dotted over them, the pairs that change in the same commit but share no import, thicker the more often. The layout never sees those, so they cross it: that is the coupling the import graph hides.',
+		props: { layout: 'points', sizeBy: 'weight' }
 	}
 }
 

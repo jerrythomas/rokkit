@@ -19,9 +19,16 @@
 
 import { toGraphInput } from '@rokkit/graph/schema'
 import codebase from './codebase.json'
+import architecture from '../chart/architecture.json'
 import type { GraphFields } from '@rokkit/graph'
 
-export type DatasetId = 'ecommerce' | 'schema-deps' | 'service-calls' | 'codebase'
+export type DatasetId =
+	| 'ecommerce'
+	| 'schema-deps'
+	| 'service-calls'
+	| 'codebase'
+	| 'components'
+	| 'cochange'
 
 /* ─── 1. dbd v2-shaped ───────────────────────────────────────────────────────
    `tables` holds tables (plus the two enums — dbd flags an enum COLUMN via `Column.en`
@@ -421,6 +428,43 @@ export const codebaseFields: GraphFields = {
 	relation: 'kind'
 }
 
+/* ─── 4. this repository, one level up ──────────────────────────────────────
+   The same code at COMPONENT grain — a top-level folder under a package's `src/` — measured
+   by `scripts/build-architecture-metrics.mjs`, which the chart demo's Architecture recipes
+   also read. 40 components rather than 470 files is what keeps a dependency matrix readable:
+   every node is a row AND a column, so the drawing grows with the square.
+
+   `cochange` adds the pairs that change in the same commit, mined from git history. The ones
+   with no import between them are hidden coupling, and they arrive as OVERLAY edges: drawn,
+   weighted by how often they co-changed, and never allowed to re-rank the layout — which
+   would put them side by side and hide the coupling the overlay is there to show. */
+
+const componentNodes = architecture.components.map((c) => ({
+	id: c.component,
+	label: c.component,
+	group: c.package,
+	kind: 'module',
+	weight: c.loc
+}))
+const componentImports = architecture.imports.map((e) => ({
+	source: e.source,
+	target: e.target,
+	weight: e.count
+}))
+const hiddenCoupling = architecture.cochange
+	.filter((e) => !e.imported)
+	.map((e) => ({ source: e.source, target: e.target, weight: e.count, overlay: true, relation: 'co-change' }))
+
+export const componentFields: GraphFields = {
+	id: 'id',
+	label: 'label',
+	group: 'group',
+	kind: 'kind',
+	source: 'source',
+	target: 'target',
+	defaultEdgeKind: 'dependency'
+}
+
 export const datasets = {
 	ecommerce: {
 		id: 'ecommerce' as const,
@@ -449,5 +493,19 @@ export const datasets = {
 		nodes: codebase.nodes as unknown[],
 		edges: codebase.edges as unknown[],
 		fields: codebaseFields
+	},
+	components: {
+		id: 'components' as const,
+		label: 'This codebase, by component',
+		nodes: componentNodes as unknown[],
+		edges: componentImports as unknown[],
+		fields: componentFields
+	},
+	cochange: {
+		id: 'cochange' as const,
+		label: 'This codebase — imports and hidden co-change',
+		nodes: componentNodes as unknown[],
+		edges: [...componentImports, ...hiddenCoupling] as unknown[],
+		fields: componentFields
 	}
 }

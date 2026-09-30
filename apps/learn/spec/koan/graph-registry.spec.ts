@@ -11,8 +11,11 @@ import { render } from '@testing-library/svelte'
 import { datasets } from '../../src/lib/koan/demos/graph/datasets'
 import { diagrams } from '../../src/lib/koan/demos/graph/registry'
 
+/** Diagrams drawn on the node-link canvas — the matrix is not one, and has no layout. */
+const onCanvas = diagrams.filter((d) => d.canvas !== 'matrix')
+
 describe('graph demo registry', () => {
-	it.each(diagrams.map((d) => [d.id, d] as const))(
+	it.each(onCanvas.map((d) => [d.id, d] as const))(
 		'%s draws with the layout the registry claims',
 		(_id, config) => {
 			const data = datasets[config.dataset]
@@ -45,7 +48,8 @@ describe('graph demo registry', () => {
 			const drawn =
 				container.querySelectorAll('[data-graph-node]').length +
 				container.querySelectorAll('[data-graph-cluster]').length +
-				container.querySelectorAll('[data-graph-wedge]').length
+				container.querySelectorAll('[data-graph-wedge]').length +
+				container.querySelectorAll('[data-matrix-cell]').length
 
 			expect(drawn).toBeGreaterThan(0)
 		}
@@ -60,6 +64,25 @@ describe('graph demo registry', () => {
 			)
 			expect(Boolean(config.views), `${config.id}`).toBe(hasRows)
 		}
+	})
+
+	it('offers a dependency matrix over the codebase components', () => {
+		const matrix = diagrams.find((d) => d.canvas === 'matrix')
+		expect(matrix?.dataset).toBe('components')
+	})
+
+	it('overlays co-change edges on hidden coupling without letting them shape the layout', () => {
+		const coupling = diagrams.find((d) => d.id === 'coupling')!
+		const data = datasets[coupling.dataset]
+		const overlays = (data.edges as Record<string, unknown>[]).filter((e) => e.overlay)
+		expect(overlays.length).toBeGreaterThan(0)
+		const { container } = render(coupling.component, {
+			nodes: data.nodes,
+			edges: data.edges,
+			fields: data.fields,
+			...coupling.props
+		})
+		expect(container.querySelectorAll('[data-graph-edge][data-edge-overlay]').length).toBe(overlays.length)
 	})
 
 	it('pairs every diagram with a dataset that exists', () => {
