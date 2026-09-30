@@ -304,3 +304,31 @@ describe('graph theme CSS', () => {
 		expect(read('base/graph.css')).not.toContain('radial-gradient')
 	})
 })
+
+describe('graph theme CSS — drilling (#165)', () => {
+	it('lets a drillable container take the pointer, like a leaf does', () => {
+		const rules = rulesFor('base/graph.css', '[data-graph-drillable]')
+		expect(rules.some((r) => /pointer-events:\s*auto/.test(r))).toBe(true)
+		expect(rules.some((r) => /cursor:\s*pointer/.test(r))).toBe(true)
+	})
+
+	it('lays out the drill bar in base without colouring it — base is headless', () => {
+		const rules = rulesFor('base/graph.css', '[data-graph-drill')
+		expect(rules.length).toBeGreaterThan(0)
+		for (const rule of rules) expect(rule, rule).not.toMatch(/(^|[\s;{])(color|background(-color)?|border-color)\s*:/)
+	})
+
+	it('marks a pending canvas in base', () => {
+		expect(rulesFor('base/graph.css', '[data-graph-pending]').length).toBeGreaterThan(0)
+	})
+
+	it.each(STYLES)('%s colours the drill bar and its error', (style) => {
+		const bar = rulesFor(`${style}/graph.css`, '[data-graph-drill]')
+		expect(bar.some((r) => /background-color:/.test(r)), style).toBe(true)
+		// The error is marked in the error colour as a FILL and border — never as text, which the
+		// brand-foreground guard above forbids (a status 500 fails AA as text).
+		const error = rulesFor(`${style}/graph.css`, '[data-graph-drill-error]')
+		expect(error.some((r) => /background-color:\s*var\(--error-soft\)/.test(r)), style).toBe(true)
+		expect(error.some((r) => /border[a-z-]*:[^;]*var\(--error\)/.test(r)), style).toBe(true)
+	})
+})

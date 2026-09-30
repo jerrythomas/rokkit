@@ -477,3 +477,32 @@
 [data-style='frosted'] [data-matrix-block] {
   stroke: var(--ink-soft);
 }
+
+/* ─── drilling (#165) — the drill bar reads like the control strip it sits in ─── */
+[data-style='frosted'] [data-graph-drill] {
+  background-color: var(--paper-mute);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--ink-mute);
+}
+
+[data-style='frosted'] [data-graph-drill] button {
+  background-color: transparent;
+  color: var(--ink);
+}
+
+[data-style='frosted'] [data-graph-drill-open] {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+[data-style='frosted'] [data-graph-drill-crumb][aria-current] {
+  color: var(--ink);
+}
+
+/* A status 500 fails AA as text (~2.4:1 on paper), so the error is carried by a soft fill and
+   a border in the error colour; the words stay ink. */
+[data-style='frosted'] [data-graph-drill-error] {
+  padding: 0 0.4rem;
+  border-inline-start: 3px solid var(--error);
+  background-color: var(--error-soft);
+  color: var(--ink);
+}

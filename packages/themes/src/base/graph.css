@@ -796,6 +796,85 @@
   cursor: pointer;
 }
 
+/* ─── drilling (issue 165) ─────────────────────────────────────────────────── */
+
+/* A container that can be opened takes the pointer the way a leaf does — clusters are
+   pointer-transparent by default because a plain region is scenery; this one is a button. */
+[data-graph-layout='world'] [data-graph-cluster][data-graph-drillable] {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+[data-graph-wedge][data-graph-drillable] {
+  cursor: pointer;
+}
+
+/* The trail back, the loading note, the failure, and "Open" for the selected box — one strip
+   in the control overlay. Structure only: each style colours it. */
+[data-graph-drill] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+[data-graph-drill-trail] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-graph-drill-trail] li + li::before {
+  content: '›';
+  margin-inline-end: 0.25rem;
+  opacity: 0.6;
+}
+
+[data-graph-drill] button {
+  appearance: none;
+  padding: 0 0.2rem;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+[data-graph-drill] button[data-graph-drill-crumb] {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+[data-graph-drill-crumb][aria-current] {
+  font-weight: 600;
+}
+
+[data-graph-drill-open] {
+  padding: 0 0.4rem;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.25rem;
+}
+
+/* A level on its way: the old one stays visible but reads as stale, so an empty canvas is
+   never what a pending load looks like. */
+[data-graph-paper][data-graph-pending] {
+  cursor: progress;
+}
+
+[data-graph-paper][data-graph-pending] [data-graph-world] {
+  opacity: 0.55;
+  transition: opacity 120ms ease;
+}
+
 /* ─── legend ────────────────────────────────────────────────────────────── */
 
 [data-graph-legend] {
