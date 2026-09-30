@@ -107,14 +107,8 @@ export class PlotConfig {
 	get channels() {
 		return this.#v.channels
 	}
-	get labels() {
-		return this.#v.labels
-	}
 	get helpers() {
 		return this.#v.helpers
-	}
-	get presetName() {
-		return this.#v.preset
 	}
 	get colorMidpoint() {
 		return this.#v.colorMidpoint
