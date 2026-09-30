@@ -1,30 +1,19 @@
 # CHECKPOINT
 
-**Slice: FormBuilder decomposition — DONE** (`7609ccce..HEAD` on `develop`).
-Plan: `docs/plans/2026-09-30-formbuilder-decomposition.md`. Previous slices (architecture
-primitives, PlotState decomposition) pushed as `ade409b3..af811b8b`, CI green.
+**Released v1.8.0** (`695abf8c`, tag `v1.8.0`): architecture-analysis primitives, PlotState and
+FormBuilder decompositions, forms validating every field, `#/` field paths. 15 packages on npm,
+shipped artifact verified from npm, `main` fast-forwarded, CI green everywhere.
 
-**Done — every increment of the plan:**
+**Next slice: `actions/src/navigator.js` decomposition** — the next hotspot (cx 70, 418 lines),
+the keyboard navigator behind every list-like component. Same approach as PlotState/FormBuilder:
+characterise first, job classes composed behind the unchanged public API, differential at the
+end, re-measure.
 
-1. Characterised schema ⇄ layout derivation (7 cases).
-2. `FormValues` + pure `lib/values.js`.  3. `FormDefinition`.  4. `FormLookups`.
-5. `FormSteps`.  6. `FormValidation` (visible paths injected — breaks the elements cycle).
-7. Pure `lib/elements.js` (`buildElements`, `resolveInputType`).
-8. `FormBuilder` is the composition root (247 lines, cx 5); differential over 588 cases
-   identical; re-measured; design doc 03 + llms forms updated; journal, memory.
-
-**Gates (2026-09-30):** `bun run coverage` 7777 / 492 files, all thresholds; lint 0/0;
-check:svelte 0/0; e2e 129/129.
-
-**Next command:** `git push origin develop`, then the next hotspot — `actions/src/navigator.js`
-(cx 70) or `unocss/src/preset.ts` (cx 74).
+**Next command:** read `packages/actions/src/navigator.js` and its specs; write the plan doc.
 
 **Open questions:**
 
-- Fixed (`1a08549c`): nested JSON Schema fields are found (`schemaAt`, one walk for both callers,
-  flat form still read). Still open, a decision: `validate()` does not visit a group's children,
-  so nested required fields never error on submit. Enabling it surfaces new errors on existing
-  forms — recommend enabling, behind a changelog note.
-- Hotspot corner still holds 9 files; `ui/components/Select.svelte` newly crossed the churn line.
+- `@rokkit/forms` ships `*.spec.js` + fixtures in `dist/lib` — packaging hygiene, not yet fixed.
+- Object-level JSON Schema `required: [...]` is not honoured — only field-level `required: true`.
 
 **Known broken:** nothing. `sensei:checkpoint` unavailable — the sensei MCP server is disconnected.
