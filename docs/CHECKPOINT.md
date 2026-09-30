@@ -12,9 +12,9 @@
 
 Also landed: `6ec4971b` fixes `bun run test:browser`, which vitest 4 broke; it now passes 34 tests.
 
-**Remaining:** push `develop` and confirm CI is green.
+**Pushed:** `develop` is at `982abc5c`, and CI's Check and Coverage runs are green. Nothing remains in this slice.
 
-**Next command:** `git push origin develop`, then `gh run list --branch develop --limit 3`.
+**Next command:** none queued. Pick the next item from the open questions below.
 
 **Open questions:**
 
