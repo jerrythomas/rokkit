@@ -60,3 +60,18 @@ describe('structure bands', () => {
 		expect(bands.every((c) => c.leaf === false)).toBe(true)
 	})
 })
+
+describe.each(['world', 'sunburst', 'structure'])('%s boxes name the node they are', (layout) => {
+	it('carries the declared id of a container that is a real node, and none for a synthesised one', () => {
+		const clusters = state(layout, { levels: 4 }).clusters
+		expect(clusters.find((c) => c.path?.join('/') === 'dbd/core/lexer')?.declared).toBe('mod_42')
+		expect(clusters.find((c) => c.path?.join('/') === 'dbd/core')?.declared).toBeUndefined()
+	})
+})
+
+describe.each(['world', 'sunburst'])('%s leaf boxes name their node too', (layout) => {
+	it('is the leaf node id', () => {
+		const parse = state(layout, { levels: 4 }).clusters.find((c) => c.path?.join('/') === 'dbd/core/lexer/parse')
+		expect(parse?.declared).toBe('a')
+	})
+})

@@ -25,8 +25,10 @@ import type { EntityRow } from './model/entities.js'
 import { contentExtent } from './layout/extent.js'
 import { GraphConfig } from './state/GraphConfig.svelte.js'
 import { GraphSelection } from './state/GraphSelection.svelte.js'
+import { GraphDrill } from './state/GraphDrill.svelte.js'
+import type { Breadcrumb } from './state/GraphDrill.svelte.js'
 
-export type { Relationship, EntityRow }
+export type { Relationship, EntityRow, Breadcrumb }
 
 export type GraphStateConfig = {
 	nodes?: unknown[]
@@ -73,6 +75,20 @@ export type GraphStateConfig = {
 	mode?: 'light' | 'dark'
 	label?: string
 	onselect?: (id: string | null) => void
+	/**
+	 * The reader drilled INTO a box: `path` is the new `focusPath`, `node` the declared node at
+	 * it (null for a container nothing declared). Return a promise to show a pending state
+	 * until the level's data arrives; a rejection restores the previous level. Distinct from
+	 * `onselect` — drilling changes scope, it does not select.
+	 */
+	ondrill?: (path: string[], node: GraphNode | null) => void | Promise<void>
+	/** The reader drilled OUT; `path` is the new, shorter `focusPath`. Same promise contract. */
+	ondrillup?: (path: string[]) => void | Promise<void>
+	/**
+	 * Every internal change of `focusPath` — drill in, out, or a rollback after a failed load.
+	 * For a component that owns a bindable `focusPath` prop, so its next `update()` agrees.
+	 */
+	onfocuspath?: (path: string[]) => void
 }
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
@@ -107,6 +123,13 @@ function unique(values: (string | undefined)[]): string[] {
 export class GraphState {
 	/** Every input — see `CONFIG_FIELDS` for what each omitted key falls back to. */
 	readonly config = new GraphConfig()
+	/** Which subtree is the canvas, and the host events for moving it (#165). */
+	readonly drill: GraphDrill = new GraphDrill({
+		config: this.config,
+		model: () => this.#model,
+		layoutName: () => this.layoutName
+	})
+
 	/** What the reader picked and opened. */
 	readonly selection: GraphSelection = new GraphSelection({
 		model: () => this.#model,
@@ -219,6 +242,33 @@ export class GraphState {
 
 	isExpanded(id: string): boolean {
 		return this.selection.isExpanded(id)
+	}
+
+	// ─── drilling (#165) — see GraphDrill ───────────────────────────────────────
+	get drillPath(): string[] {
+		return this.drill.path
+	}
+	get breadcrumbs(): Breadcrumb[] {
+		return this.drill.breadcrumbs
+	}
+	/** A drill's handler returned a promise that has not settled. */
+	get pending(): boolean {
+		return this.drill.pending
+	}
+	get drillError(): unknown {
+		return this.drill.error
+	}
+	canDrill(box: Cluster): boolean {
+		return this.drill.canDrill(box)
+	}
+	drillInto(box: Cluster): boolean {
+		return this.drill.drillInto(box)
+	}
+	drillOut(levels = 1): boolean {
+		return this.drill.drillOut(levels)
+	}
+	drillTo(path: string[]): boolean {
+		return this.drill.drillTo(path)
 	}
 
 	/**

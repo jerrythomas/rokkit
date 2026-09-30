@@ -109,6 +109,14 @@ export type Cluster = {
 	path?: string[]
 	/** Whether nothing lies below this box in the data — so only a host loader can go deeper. */
 	leaf?: boolean
+	/**
+	 * The id of the node this box IS, when one is declared — a leaf OR a container.
+	 *
+	 * `nodeId` is set only on leaves, because only a leaf is selectable; a container that is
+	 * also a real node (a module that holds files) needs its identity for drilling, which is
+	 * not selection. Undefined on a container nothing declared.
+	 */
+	declared?: string
 }
 
 /**

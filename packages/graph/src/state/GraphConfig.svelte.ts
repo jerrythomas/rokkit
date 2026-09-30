@@ -28,6 +28,9 @@ export type GraphConfigValues = {
 	mode: 'light' | 'dark'
 	label: string | undefined
 	onselect: ((id: string | null) => void) | undefined
+	ondrill: GraphStateConfig['ondrill']
+	ondrillup: GraphStateConfig['ondrillup']
+	onfocuspath: GraphStateConfig['onfocuspath']
 }
 
 type Key = keyof GraphConfigValues
@@ -92,7 +95,10 @@ export const CONFIG_FIELDS: readonly Field[] = Object.freeze([
 	{ key: 'preset', fallback: () => defaultGraphPreset },
 	{ key: 'mode', fallback: () => 'light' },
 	{ key: 'label', raw: true },
-	{ key: 'onselect', raw: true }
+	{ key: 'onselect', raw: true },
+	{ key: 'ondrill', raw: true },
+	{ key: 'ondrillup', raw: true },
+	{ key: 'onfocuspath', raw: true }
 ])
 
 function resolve(config: GraphStateConfig): GraphConfigValues {
@@ -144,6 +150,11 @@ export class GraphConfig {
 	 */
 	setDensity(density: Density): void {
 		this.#v.density = density
+	}
+
+	/** Move the drill path from inside the state — drilling. See `GraphDrill`. */
+	setFocusPath(path: string[]): void {
+		this.#v.focusPath = path
 	}
 
 	/** Change the grouping axes from inside the component — same reason as `setDensity`. */
@@ -220,5 +231,14 @@ export class GraphConfig {
 	}
 	get onselect() {
 		return this.#v.onselect
+	}
+	get ondrill() {
+		return this.#v.ondrill
+	}
+	get ondrillup() {
+		return this.#v.ondrillup
+	}
+	get onfocuspath() {
+		return this.#v.onfocuspath
 	}
 }

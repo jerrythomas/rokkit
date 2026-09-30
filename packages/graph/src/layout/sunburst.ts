@@ -98,6 +98,7 @@ function wedgeOf(entry: Placed, groupIndex: number, ring: number): Cluster {
 		kind: leaf?.kind,
 		path: entry.tree.path,
 		leaf: entry.tree.children.length === 0,
+		declared: entry.tree.node?.id,
 		list: entry.tree.children.map((c) => c.node).filter((n) => n !== undefined),
 		count: entry.tree.children.length,
 		groupIndex,
