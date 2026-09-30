@@ -75,9 +75,11 @@ export function findAttributeByPath(scope, schema) {
 
 	const pathArray = scope.split('/').slice(1)
 	let schemaPointer = schema
+	let parent = null
 	let currentKey = ''
 
 	pathArray.forEach((key) => {
+		parent = schemaPointer
 		schemaPointer = schemaPointer.properties[key]
 		currentKey = key
 	})
@@ -86,8 +88,19 @@ export function findAttributeByPath(scope, schema) {
 
 	return {
 		key: currentKey,
-		props: { ...schemaPointer }
+		props: requiredProps(schemaPointer, parent, currentKey)
 	}
+}
+
+/**
+ * A field's props with `required` as the input reads it: true when the field says so or its
+ * parent's JSON Schema `required` list names it. An object's own list is its children's rule —
+ * dropped here so it never reaches an input as a truthy `required`.
+ */
+function requiredProps(fieldSchema, parent, key) {
+	const { required, ...props } = fieldSchema
+	const listed = Array.isArray(parent?.required) && parent.required.includes(key)
+	return required === true || listed ? { ...props, required: true } : props
 }
 
 /**

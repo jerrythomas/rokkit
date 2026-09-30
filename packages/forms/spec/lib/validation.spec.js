@@ -393,3 +393,53 @@ describe('validateAll — every field, not just the top level', () => {
 		).toEqual({})
 	})
 })
+
+describe('validateAll — JSON Schema object-level required', () => {
+	const schema = {
+		type: 'object',
+		required: ['name'],
+		properties: {
+			name: { type: 'string' },
+			addr: {
+				type: 'object',
+				required: ['city'],
+				properties: { city: { type: 'string' }, zip: { type: 'string' } }
+			}
+		}
+	}
+	const layout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/name', label: 'Name' },
+			{
+				scope: '#/addr',
+				label: 'Address',
+				elements: [
+					{ scope: '#/addr/city', label: 'City' },
+					{ scope: '#/addr/zip', label: 'Zip' }
+				]
+			}
+		]
+	}
+
+	it('errors on a missing field its parent lists, at any depth', () => {
+		const results = validateAll({}, schema, layout)
+		expect(results.name).toMatchObject({ state: 'error', text: 'Name is required' })
+		expect(results['addr/city']).toMatchObject({ state: 'error', text: 'City is required' })
+		expect(results['addr/zip']).toBeUndefined()
+	})
+
+	it('does not make an object required because it lists required children', () => {
+		expect(validateAll({}, schema, layout).addr).toBeUndefined()
+	})
+
+	it('reports nothing once the listed fields are filled', () => {
+		expect(validateAll({ name: 'A', addr: { city: 'Pune' } }, schema, layout)).toEqual({})
+	})
+})
+
+describe('validateField — required must be true, not merely truthy', () => {
+	it('treats an object schema’s required list as its children’s rule, not its own', () => {
+		expect(validateField(undefined, { type: 'object', required: ['city'] }, 'Address')).toBeNull()
+	})
+})

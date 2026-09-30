@@ -158,3 +158,41 @@ describe('schemaAt — a field’s schema by slash path', () => {
 		expect(schemaAt(null, 'x')).toBeNull()
 	})
 })
+
+describe('requiredAt — JSON Schema object-level required', () => {
+	const schema = {
+		type: 'object',
+		required: ['name'],
+		properties: {
+			name: { type: 'string' },
+			nick: { type: 'string' },
+			legacy: { type: 'string', required: true },
+			addr: {
+				type: 'object',
+				required: ['city'],
+				properties: { city: { type: 'string' }, zip: { type: 'string' } }
+			}
+		}
+	}
+
+	it('is true for a key the parent lists in required, at any depth', async () => {
+		const { requiredAt } = await import('../../src/lib/schema.js')
+		expect(requiredAt(schema, 'name')).toBe(true)
+		expect(requiredAt(schema, 'addr/city')).toBe(true)
+	})
+	it('keeps the field-level required: true form', async () => {
+		const { requiredAt } = await import('../../src/lib/schema.js')
+		expect(requiredAt(schema, 'legacy')).toBe(true)
+	})
+	it('is false for an unlisted field — and for an object whose own required lists its children', async () => {
+		const { requiredAt } = await import('../../src/lib/schema.js')
+		expect(requiredAt(schema, 'nick')).toBe(false)
+		expect(requiredAt(schema, 'addr/zip')).toBe(false)
+		expect(requiredAt(schema, 'addr')).toBe(false)
+	})
+	it('is false for an unknown path or no schema', async () => {
+		const { requiredAt } = await import('../../src/lib/schema.js')
+		expect(requiredAt(schema, 'nope/deeper')).toBe(false)
+		expect(requiredAt(null, 'name')).toBe(false)
+	})
+})

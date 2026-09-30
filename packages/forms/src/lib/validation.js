@@ -1,4 +1,4 @@
-import { schemaAt } from './schema.js'
+import { schemaAt, requiredAt } from './schema.js'
 
 /**
  * Validation utility for FormBuilder
@@ -223,7 +223,8 @@ function validateByType(value, fieldSchema, fieldLabel) {
  * @returns {ValidationMessage|null|'skip'}
  */
 function checkPresence(value, fieldSchema, fieldLabel) {
-	if (fieldSchema.required && isEmpty(value)) return errorMsg(`${fieldLabel} is required`)
+	// `=== true`: an object schema's `required` is an ARRAY naming its children, not a flag.
+	if (fieldSchema.required === true && isEmpty(value)) return errorMsg(`${fieldLabel} is required`)
 	if (isEmpty(value)) return 'skip'
 	return null
 }
@@ -244,6 +245,16 @@ export function validateField(value, fieldSchema, fieldLabel = 'Field') {
 }
 
 /**
+ * The field's schema with `required` decided by its path — the parent's JSON Schema `required`
+ * list counts, not only the field's own flag. Null for a path the schema does not know.
+ * @private
+ */
+function effectiveSchema(schema, path) {
+	const fieldSchema = schemaAt(schema, path)
+	return fieldSchema && { ...fieldSchema, required: requiredAt(schema, path) }
+}
+
+/**
  * Validate one element from the layout
  * @private
  */
@@ -253,11 +264,10 @@ function validateElement(element, data, schema, results) {
 	if (!element.scope) return
 
 	const fieldPath = element.scope.replace(/^#\//, '')
-	const fieldSchema = schemaAt(schema, fieldPath)
 	const fieldLabel = element.label || element.title || fieldPath
 	const value = getValueByPath(data, fieldPath)
 
-	const result = validateField(value, fieldSchema, fieldLabel)
+	const result = validateField(value, effectiveSchema(schema, fieldPath), fieldLabel)
 	if (result) {
 		results[fieldPath] = result
 	}

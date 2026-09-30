@@ -56,3 +56,22 @@ export function schemaAt(schema, path) {
 	for (const key of path.split('/').slice(1)) current = childSchema(current, key)
 	return isSchemaObject(current) ? current : null
 }
+
+/**
+ * Whether the field at a slash path must have a value.
+ *
+ * JSON Schema states it on the PARENT object — `{ type: 'object', required: ['city'], … }` — at
+ * any depth. The field-level `required: true` form is also honoured. An object's own `required`
+ * array is its children's rule, never a claim that the object itself is required.
+ *
+ * @param {Object | null | undefined} schema
+ * @param {string} path
+ * @returns {boolean}
+ */
+export function requiredAt(schema, path) {
+	if (schemaAt(schema, path)?.required === true) return true
+	const keys = path.split('/')
+	const key = keys.pop()
+	const parent = keys.length > 0 ? schemaAt(schema, keys.join('/')) : schema
+	return Array.isArray(parent?.required) && parent.required.includes(key)
+}

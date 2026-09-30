@@ -50,6 +50,29 @@ describe('FormRenderer — group rendering', () => {
 		expect(group.getAttribute('data-scope')).toBe('#/address')
 	})
 
+	it('marks the inputs a JSON Schema required list names — and only those', () => {
+		const schema = {
+			type: 'object',
+			required: ['name'],
+			properties: {
+				name: { type: 'string' },
+				address: {
+					type: 'object',
+					required: ['city'],
+					properties: { street: { type: 'string' }, city: { type: 'string' } }
+				}
+			}
+		}
+		const props = $state({ data: { address: {} }, schema, layout: addressLayout })
+		const { container } = render(FormRenderer, { props })
+
+		const [name, street, city] = container.querySelectorAll('input')
+		expect(name.required).toBe(true)
+		expect(street.required).toBe(false)
+		expect(city.required).toBe(true)
+		expect(container.querySelector('[data-form-group]').hasAttribute('required')).toBe(false)
+	})
+
 	it('should render group label as legend', () => {
 		const props = $state({
 			data: { name: 'Alice', address: { street: '123 Main', city: 'Springfield' } },

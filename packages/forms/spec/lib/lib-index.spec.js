@@ -22,6 +22,8 @@ describe('forms lib barrel (src/lib/index.js)', () => {
 		expect(libExports.deriveSchemaFromValue).toBeDefined()
 		expect(libExports.deriveLayoutFromValue).toBeDefined()
 		expect(libExports.getSchemaWithLayout).toBeDefined()
+		expect(libExports.schemaAt).toBeDefined()
+		expect(libExports.requiredAt).toBeDefined()
 	})
 
 	it('exports FormRenderer and Input components', () => {

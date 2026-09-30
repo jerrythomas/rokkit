@@ -248,3 +248,23 @@ describe('fields', () => {
 		})
 	})
 })
+
+describe('findAttributeByPath — object-level required', () => {
+	const schema = {
+		type: 'object',
+		required: ['name'],
+		properties: {
+			name: { type: 'string' },
+			nick: { type: 'string' },
+			addr: { type: 'object', required: ['city'], properties: { city: { type: 'string' } } }
+		}
+	}
+	it('marks a field its parent lists as required', () => {
+		expect(findAttributeByPath('#/name', schema).props.required).toBe(true)
+		expect(findAttributeByPath('#/addr/city', schema).props.required).toBe(true)
+	})
+	it('leaves an unlisted field alone, and does not pass an object its children’s list', () => {
+		expect(findAttributeByPath('#/nick', schema).props).not.toHaveProperty('required')
+		expect(findAttributeByPath('#/addr', schema).props).not.toHaveProperty('required')
+	})
+})
