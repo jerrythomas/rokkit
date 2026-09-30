@@ -58,3 +58,14 @@ describe('FormBuilder — schema ⇄ layout derivation', () => {
 		expect(scopes(dataOnly)).toEqual(['#/z'])
 	})
 })
+
+describe('FormBuilder — validating a nested field', () => {
+	it('validateField finds a nested JSON Schema field and validates it', () => {
+		const nested = {
+			type: 'object',
+			properties: { addr: { type: 'object', properties: { city: { type: 'string', required: true } } } }
+		}
+		const b = new FormBuilder({ addr: {} }, nested)
+		expect(b.validateField('addr/city')?.state).toBe('error')
+	})
+})

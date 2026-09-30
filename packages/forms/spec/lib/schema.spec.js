@@ -118,3 +118,40 @@ describe('schema', () => {
 		})
 	})
 })
+
+describe('schemaAt — a field’s schema by slash path', () => {
+	const jsonSchema = {
+		type: 'object',
+		properties: {
+			name: { type: 'string' },
+			addr: { type: 'object', properties: { city: { type: 'string', required: true } } }
+		}
+	}
+	it('finds top-level fields', async () => {
+		const { schemaAt } = await import('../../src/lib/schema.js')
+		expect(schemaAt(jsonSchema, 'name')).toEqual({ type: 'string' })
+	})
+	it('descends into a nested object’s properties, as JSON Schema nests them', async () => {
+		const { schemaAt } = await import('../../src/lib/schema.js')
+		expect(schemaAt(jsonSchema, 'addr/city')).toEqual({ type: 'string', required: true })
+	})
+	it('still reads the flat form, where a nested field sits directly on its parent', async () => {
+		const { schemaAt } = await import('../../src/lib/schema.js')
+		const flat = { type: 'object', properties: { a: { b: { type: 'string' } } } }
+		expect(schemaAt(flat, 'a/b')).toEqual({ type: 'string' })
+	})
+	it('prefers properties over a same-named schema keyword', async () => {
+		// A nested field called `type` must not resolve to the parent's `type: 'object'`.
+		const { schemaAt } = await import('../../src/lib/schema.js')
+		const s = { type: 'object', properties: { o: { type: 'object', properties: { type: { type: 'number' } } } } }
+		expect(schemaAt(s, 'o/type')).toEqual({ type: 'number' })
+	})
+	it('is null for a missing field or a schema without properties', async () => {
+		const { schemaAt } = await import('../../src/lib/schema.js')
+		expect(schemaAt(jsonSchema, 'addr/zip')).toBeNull()
+		expect(schemaAt(jsonSchema, 'nope')).toBeNull()
+		expect(schemaAt(jsonSchema, 'nope/deeper/still')).toBeNull()
+		expect(schemaAt({ type: 'object' }, 'x')).toBeNull()
+		expect(schemaAt(null, 'x')).toBeNull()
+	})
+})

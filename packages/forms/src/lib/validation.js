@@ -1,3 +1,5 @@
+import { schemaAt } from './schema.js'
+
 /**
  * Validation utility for FormBuilder
  * Provides field validation functions that return message objects
@@ -175,33 +177,6 @@ export const patterns = {
 }
 
 /**
- * Get field schema by path
- * @private
- * @param {string} fieldPath - Field path
- * @param {Object} schema - Schema object
- * @returns {Object|null} Field schema
- */
-function getFieldSchema(fieldPath, schema) {
-	/* v8 ignore start -- unreachable: the only caller is validateElement, reached
-	   from validateAll, which already returns early on !schema.properties. */
-	if (!schema.properties) return null
-	/* v8 ignore stop */
-
-	const keys = fieldPath.split('/')
-	let current = schema.properties
-
-	for (const key of keys) {
-		if (current && current[key]) {
-			current = current[key]
-		} else {
-			return null
-		}
-	}
-
-	return current
-}
-
-/**
  * Get value by path from data object
  * @private
  * @param {Object} data - Data object
@@ -276,7 +251,7 @@ function validateElement(element, data, schema, results) {
 	if (!element.scope) return
 
 	const fieldPath = element.scope.replace(/^#\//, '')
-	const fieldSchema = getFieldSchema(fieldPath, schema)
+	const fieldSchema = schemaAt(schema, fieldPath)
 	const fieldLabel = element.label || element.title || fieldPath
 	const value = getValueByPath(data, fieldPath)
 

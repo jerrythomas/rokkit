@@ -31,9 +31,8 @@ describe('FormDefinition', () => {
 		const d = new FormDefinition(new FormValues({}), schema, null)
 		expect(d.fieldSchema('email')).toEqual({ type: 'string' })
 		expect(d.fieldSchema('missing')).toBeNull()
-		// Characterised, not endorsed: the walk does not descend into a nested object's
-		// `properties`, so a nested path finds nothing — as FormBuilder always has.
-		expect(d.fieldSchema('group/n')).toBeNull()
+		// A nested path descends into the object's `properties`, as JSON Schema nests them.
+		expect(d.fieldSchema('group/n')).toEqual({ type: 'number' })
 		expect(new FormDefinition(new FormValues({}), { type: 'object' }, null).fieldSchema('x')).toBeNull()
 	})
 

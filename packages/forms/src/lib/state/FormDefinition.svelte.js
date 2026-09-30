@@ -1,4 +1,4 @@
-import { deriveSchemaFromValue } from '../schema.js'
+import { deriveSchemaFromValue, schemaAt } from '../schema.js'
 import { deriveLayoutFromValue, deriveLayoutFromSchema } from '../layout.js'
 import { getSchemaWithLayout } from '../fields.js'
 
@@ -63,15 +63,9 @@ export class FormDefinition {
 		return getSchemaWithLayout(this.#schema, { ...this.#layout, elements })
 	}
 
-	/** The schema of one field by slash path, or null. */
+	/** The schema of one field by slash path, or null — see `schemaAt`. */
 	fieldSchema(path) {
-		let current = this.#schema?.properties
-		if (!current) return null
-		for (const key of path.split('/')) {
-			if (!current?.[key]) return null
-			current = current[key]
-		}
-		return current
+		return schemaAt(this.#schema, path)
 	}
 
 	/** A field's display label: its layout element's label, then title, then the path itself. */
