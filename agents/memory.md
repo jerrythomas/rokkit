@@ -156,8 +156,11 @@ Extracted from dbd's ER viewer (#159), rebuilt data-first. Design: `docs/design/
   FormLookups); `elements` is the pure `buildElements` (`lib/elements.js`). Add behaviour to the
   owning job. The schema/layout setters carry derivation rules (`FormDefinition`) — pinned by
   `builder-definition.spec`.
-- Known latent bug: `FormDefinition.fieldSchema` does not descend into nested `properties`, so
-  `validateField` on a nested path validates nothing.
+- `schemaAt(schema, path)` (schema.js) is the ONE field-schema walk: `properties` first (JSON
+  Schema nesting), then the flat `properties.a.b` form an existing spec relies on. Fixed
+  2026-09-30 (`1a08549c`); two copies of the walk had the same flaw.
+- Open: `validateAll` visits only top-level layout elements — a group's children are not
+  validated by `validate()`. Enabling it would surface new errors on existing forms (a decision).
 
 ## @rokkit/chart — PlotState is a composition
 

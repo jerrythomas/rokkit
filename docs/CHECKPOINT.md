@@ -21,8 +21,10 @@ check:svelte 0/0; e2e 129/129.
 
 **Open questions:**
 
-- Latent bug, characterised not fixed: `validateField('group/n')` finds no schema (the walk does
-  not descend into nested `properties`). Recommend a red-first fix as its own commit.
+- Fixed (`1a08549c`): nested JSON Schema fields are found (`schemaAt`, one walk for both callers,
+  flat form still read). Still open, a decision: `validate()` does not visit a group's children,
+  so nested required fields never error on submit. Enabling it surfaces new errors on existing
+  forms — recommend enabling, behind a changelog note.
 - Hotspot corner still holds 9 files; `ui/components/Select.svelte` newly crossed the churn line.
 
 **Known broken:** nothing. `sensei:checkpoint` unavailable — the sensei MCP server is disconnected.
