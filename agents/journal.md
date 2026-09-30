@@ -10001,3 +10001,45 @@ padding). Offset moved into `top`, border-box, zero-height exemption in the spil
 Lesson: a derived dataset needs a sanity check against a fact you already know (63 components
 use `ui/types`) before any finding from it is reported. Gates: 7577 unit / 469 files, all
 thresholds; lint 0/0; e2e 129/129.
+
+---
+
+## 2026-09-30 (3) — PlotState decomposed into job classes
+
+Plan: `docs/plans/2026-09-30-plotstate-decomposition.md` (done). Agreed design: option A —
+`Plot.svelte` keeps using ONE composed `PlotState`; the job classes are composed inside it.
+Commits `7d2ae2a3..99c90217`.
+
+`PlotState` now derives nothing. It builds nine classes from `src/state/` in dependency order —
+`PlotConfig → GeomRegistry → PlotFrame → ChannelState → OrientationState → InteractionState →
+ScaleState → AestheticState → AxisState` — and keeps the consumer contract as delegations, so no
+geom, axis, legend, tooltip, Spark, FacetPlot or AnimatedPlot changed. Measured with the repo's
+own metrics script: complexity 157 → 2, 614 → 241 lines, out of the hotspot corner. The most
+complex piece left is the pure `lib/plot/domains.js` (27, under the p95 of 47).
+
+- **`update()`'s contract made explicit.** It kept some omitted fields and reset others, with
+  nothing saying which. A 70-case characterisation spec pinned all 23 fields first; `CONFIG_FIELDS`
+  now states it.
+- **One `GeomRegistry` for PlotState and SparkState** — the "same bug, same fix, both classes"
+  duplication is gone.
+- **Two builder/domain disagreements fixed** once each rule lived in one place: the stacked
+  domain ignored the bar's `group` channel and stacked by `x` when the builder drew plain bars
+  (axis 2 under a bar of 10); the waterfall builder drew a negative total as a 1px sliver and let
+  one missing value NaN every later bar.
+
+**My regression, caught by e2e.** Extracting `AxisState` I "simplified" `offset ? base + offset :
+base` to `base + offset`. For an empty-domain scale (the bar race's first frame) base is
+`undefined`, and `undefined + 0` is NaN → `translate(NaN, 0)`. 2001 unit tests passed; only the
+`/guides/charts` smoke test saw it. Fixed with a red-first regression test. Then, because one
+behavioural difference had slipped past every spec, a scratch differential ran the old and new
+class over 1,937 configurations: identical except the intended stacked-domain fix (the harness was
+proven non-vacuous by the 7 cases it flagged).
+
+**Process slips, all mine:** committed slice 2 with svelte-check red (a `;` instead of `&&`) —
+amended once green, and every later slice went through a fail-fast gate script; two commit
+messages stated line counts I had not measured — amended with measured ones; a `git stash
+push` with a bad path followed by `; git stash pop` half-applied an OLD stash (5 conflicted cli/
+themes files). No uncommitted work of the user's was involved; the five files were restored to
+HEAD and every stash entry is intact.
+
+Gates: `bun run coverage` 7727 / 484 files, all thresholds; lint 0/0; check:svelte 0/0; e2e 129/129.

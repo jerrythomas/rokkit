@@ -1,7 +1,7 @@
 # PlotState decomposition
 
-**Status:** IMPLEMENT (agreed 2026-09-30 — option A: `Plot.svelte` keeps using one composed
-`PlotState`)
+**Status:** DONE (2026-09-30) — option A: `Plot.svelte` keeps using one composed `PlotState`.
+See journal 2026-09-30 (3).
 **Package:** `@rokkit/chart`
 
 ## Why

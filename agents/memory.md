@@ -150,6 +150,20 @@ Extracted from dbd's ER viewer (#159), rebuilt data-first. Design: `docs/design/
   step sized by the largest dot; a circular cluster discards 21% of its bounding box), which
   presented as a zoom bug. Rounded rects shelf-packed fixed both.
 
+## @rokkit/chart — PlotState is a composition
+
+- `PlotState` derives nothing: nine job classes in `src/state/` (config → geoms → frame →
+  channels → orientation → interaction → scales → aesthetics → axes), composed in its
+  constructor, contract kept as delegations. Add behaviour to the job that owns it, never to
+  `PlotState`. `CONFIG_FIELDS` is the keep/reset contract of `update()`.
+- Geometry-driven domains are pure resolvers (`lib/plot/domains.js`) that must share their rule
+  with the builder (`stacking.js`, `running.js`) — two copies of a rule is how the axis ended
+  below the tallest bar.
+- **"Simplifying" `x ? a + x : a` to `a + x` is not safe** when `a` can be undefined (an empty
+  d3 domain returns undefined; `undefined + 0` is NaN). Found only by e2e.
+- For a refactor claimed "pure", a differential against the old class (git show into a scratch
+  file, compare every getter over a config grid) finds what specs miss. Prove the harness can fail.
+
 ## @rokkit/chart — plane annotations
 
 - **An annotation reads no data and never moves the scales.** `Region` registers no geom; when

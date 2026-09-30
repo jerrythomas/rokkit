@@ -1,37 +1,32 @@
 # CHECKPOINT
 
-**Slice: architecture-analysis primitives — DONE** (`7cb774e7..0c60e7be`, 24 commits on
-`develop`, not pushed). Follow-ups `5a811b5d` hover drift, `1e04dda0` generators missed 30% of
-imports (figures corrected), `0c60e7be` treemap label. Plan: `docs/plans/2026-09-30-architecture-analysis-primitives.md`.
+**Slice: PlotState decomposition — DONE** (`7d2ae2a3..HEAD` on `develop`, not pushed).
+Plan: `docs/plans/2026-09-30-plotstate-decomposition.md`. Previous slice (architecture-analysis
+primitives + follow-ups, `7cb774e7..cc6c5f7b`) also unpushed.
 
 **Done — every increment of the agreed plan:**
 
-1. `@rokkit/chart` `Rule` `slope`/`intercept` — clipped abline, midpoint label along the line.
-2. `Plot.Region` — bands (`null` open ends) and polygons in data coordinates, clipped.
-3. `Plot.Hull` — padded convex hull per `fill`/`color` group.
-4. `Plot.Contour` — d3-contour density rings / filled bands, clipped. (+ `PlotChart`
-   `xDomain`/`yDomain`, spec path renders all four via `GeomSpec.props`.)
-5. `@rokkit/graph` overlay edges (`model.overlays`, `--edge-weight`) themed in all five styles.
-6. `DependencyMatrix` + `buildMatrix`, themed in all five styles.
-7. learn: `build-architecture-metrics.mjs` (real rokkit metrics), chart explorer Region/Hull/
-   Contour demos + Architecture group (main sequence, hotspots, complexity × coverage, fan-in ×
-   fan-out, god modules), graph demo dependency matrix + hidden coupling, `architecture.e2e.ts`.
-8. Docs: guides (site + llms), llms package/component refs, charts-rokkit SKILL.md, chart
-   reviewer agent, READMEs, design 20/23, features/07, inventory, priority, journal, memory.
+1. Characterisation spec for `update()` keep/reset (23 fields) + row identity.
+2. `PlotConfig` + declarative `CONFIG_FIELDS`.
+3. `GeomRegistry`, shared by `PlotState` and `SparkState`.
+4. `PlotFrame` + `ChannelState`.  5. `OrientationState`.  6. `InteractionState`.
+7. `ScaleState` + pure `lib/plot/domains.js`; rules shared via `stacking.js` / `running.js`
+   (fixed: stacked domain ignored `group` / stacked by x; waterfall negative total + NaN).
+8. `AestheticState` + `AxisState`; `PlotState` is a pure composition root (241 lines, cx 2).
+9. Re-measured (out of the hotspot corner); design doc 20, llms chart.txt, charts skill, journal.
 
-**Gates (2026-09-30):** `bun run coverage` 7577 tests / 469 files, all thresholds met; lint 0/0;
-check:svelte 0/0 (7 projects); check:types clean; e2e 129/129 on a fresh build.
+**Gates (2026-09-30):** `bun run coverage` 7727 / 484 files, all thresholds; lint 0/0;
+check:svelte 0/0; e2e 129/129. Differential old-vs-new over 1,937 configs: identical except the
+intended stacked-domain fix.
 
-**Next command:** `git push origin develop` — once the user has reviewed the slice.
+**Next command:** `git push origin develop` — once reviewed.
 
 **Open questions:**
 
-- Hidden-coupling view: at fit zoom the dotted overlays are close to the dashed dependency
-  edges; zooming separates them. A stronger overlay treatment (colour) would need a contrast
-  check against the interaction gate.
-- Import regex counts `import type` as a dependency (Martin would); runtime-only coupling differs.
-- Metrics are regex-derived (demo-grade, stated in the script). Real use wants an AST/indexer
-  source — sensei's code graph is the obvious feed.
-- Martin's A for TS counts exported types/interfaces/abstract classes/@typedef over exports.
+- Job members `channelState` / `orientationState` / `interactionState` are suffixed because
+  `channels` / `orientation` are contract getters; option B (consumers read jobs from context)
+  would let the names align.
+- Degenerate case changed: channels naming fields absent from the data + a stack whose fill is x
+  now yields an empty band y scale where it used to be linear [0, 0]. Garbage in either way.
 
-**Known broken:** nothing. `sensei:checkpoint` not run — the daemon is not running this session.
+**Known broken:** nothing. `sensei:checkpoint` unavailable — the sensei MCP server is disconnected.
