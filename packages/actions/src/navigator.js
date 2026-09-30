@@ -5,7 +5,7 @@
  * Designed as a plain class so it works as a Svelte action or standalone.
  *
  * Responsibilities:
- *   - keydown   → keymap lookup → wrapper action (+ scrollIntoView)
+ *   - keydown   → keymap lookup → wrapper action (+ focus and in-root scroll)
  *   - click     → click action lookup → wrapper action
  *   - focusin   → find nearest data-path → wrapper.moveTo(path)
  *                 if no data-path found (tabbed into container) → redirect to focusedKey
@@ -27,6 +27,7 @@
 import { buildKeymap, resolveAction } from './keymap.js'
 import { pathOf, clickAction, isNestedInteractive, isDisabledItem } from './navigator/dom.js'
 import { Typeahead } from './navigator/typeahead.js'
+import { focusItem } from './navigator/focus.js'
 
 // ─── Navigator ────────────────────────────────────────────────────────────────
 
@@ -99,7 +100,7 @@ export class Navigator {
 		const path = pathOf(document.activeElement, this.#root)
 		this.#dispatch(action, path)
 
-		// Scroll focused item into view after keyboard navigation
+		// Focus the new item and scroll it into view after keyboard navigation
 		this.#syncFocus()
 	}
 
@@ -198,37 +199,11 @@ export class Navigator {
 		this.#wrapper[action]?.(path)
 	}
 
-	// ─── Focus + scroll ──────────────────────────────────────────────────────
+	// ─── Focus ──────────────────────────────────────────────────────────────
 
+	/** Move DOM focus to the wrapper's item and scroll it into view within the root only. */
 	#syncFocus() {
-		const key = this.#wrapper.focusedKey
-		if (!key) return
-		const el = /** @type {HTMLElement|null} */ (this.#root.querySelector(`[data-path="${key}"]`))
-		if (!el) return
-		// preventScroll stops the browser from cascading the focus call
-		// up the ancestor chain and scrolling outer containers.
-		if (el !== document.activeElement) el.focus({ preventScroll: true })
-		this.#scrollItemIntoView(el)
-	}
-
-	/**
-	 * Scroll `el` into view *within `this.#root`* only — never walk ancestors.
-	 * This prevents page-jumping when the navigator's root is itself inside
-	 * a scrollable container (e.g. a Select dropdown inside a scrollable
-	 * canvas-body).
-	 * @param {HTMLElement} el
-	 */
-	#scrollItemIntoView(el) {
-		const root = this.#root
-		const itemTop = el.offsetTop
-		const itemBottom = itemTop + el.offsetHeight
-		const visibleTop = root.scrollTop
-		const visibleBottom = visibleTop + root.clientHeight
-		if (itemTop < visibleTop) {
-			root.scrollTop = itemTop
-		} else if (itemBottom > visibleBottom) {
-			root.scrollTop = itemBottom - root.clientHeight
-		}
+		focusItem(this.#root, this.#wrapper.focusedKey)
 	}
 
 	// ─── Typeahead ───────────────────────────────────────────────────────────
