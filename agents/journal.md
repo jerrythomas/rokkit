@@ -10072,3 +10072,23 @@ throws and the whole layout falls back to plain inputs, as it always did; the lo
 receives the whole source array.
 
 Gates: `bun run coverage` 7777 / 492 files, all thresholds; lint 0/0; check:svelte 0/0; e2e 129/129.
+
+---
+
+## 2026-09-30 (5) — forms validates every field; release prep
+
+User decision: `validate()` must cover every field, not just the top level. `validateAll` now
+recurses into a group's children at any depth, and FormBuilder's visible-paths set walks groups
+so nested messages survive `validate()`/`clearHidden()` and reach the nested element
+(`25985e94`). Behaviour change for existing forms — nested required fields that were silently
+skipped now error. Earlier the same day: nested JSON Schema fields are found at all (`schemaAt`,
+`1a08549c`). Also fixed: the forms README example called a nonexistent `form.validateAll()`,
+used `'#/'` paths, and called the `isDirty` getter.
+
+Release prep for a minor (user-requested): no CHANGELOG file — changelogithub generates the
+GitHub release from conventional commits on the tag push. No format check exists in `bun run
+check`; prettier `--check` on the 80 files this release touched failed, so those 80 (only) were
+formatted (`style:` commit) and every gate re-run. One coverage run failed on a 5s import timeout
+in `graph/spec/icons-subpath.spec.ts` — load average 58 from the sensei daemon's postgres; it
+passed alone (1.2s) and on re-run (7789 green). v1.7.0 was never merged to `main`; `main` is an
+ancestor of `develop`, so the release fast-forwards it.
