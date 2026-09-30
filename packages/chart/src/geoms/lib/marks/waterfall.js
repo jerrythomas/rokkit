@@ -1,4 +1,5 @@
 import { resolveAlpha } from '../aesthetics.js'
+import { runningSpans } from '../../../lib/plot/running.js'
 
 /**
  * Build renderable waterfall bars. Bar color is semantic (positive/negative/total from
@@ -16,28 +17,15 @@ export function buildWaterfallMarks({ data, plot, channels, options = {}, alpha,
 	const a = resolveAlpha(alpha, type, plot.chartPreset)
 
 	const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 10
-	let cumulative = 0
+	const spans = runningSpans(data, channels.y ?? '', totalField)
 
 	return data.map((d, i) => {
 		const xVal = d[channels.x ?? '']
-		const yVal = Number(d[channels.y ?? ''])
-		const isTotal = totalField ? Boolean(d[totalField]) : false
+		const { lo, hi, total, isTotal, delta } = spans[i]
 		const xPos = xScale(xVal) ?? 0
-		let barTop
-		let barBottom
-		let fill
-
-		if (isTotal) {
-			barTop = yScale(Math.max(0, cumulative)) ?? 0
-			barBottom = yScale(0) ?? 0
-			fill = totalColor
-		} else {
-			const start = cumulative
-			cumulative += yVal
-			barTop = yScale(Math.max(start, cumulative)) ?? 0
-			barBottom = yScale(Math.min(start, cumulative)) ?? 0
-			fill = yVal >= 0 ? positiveColor : negativeColor
-		}
+		const barTop = yScale(hi) ?? 0
+		const barBottom = yScale(lo) ?? 0
+		const fill = isTotal ? totalColor : delta >= 0 ? positiveColor : negativeColor
 
 		const c1 = plot.place(xPos, barTop)
 		const c2 = plot.place(xPos + bw, barBottom)
@@ -51,7 +39,7 @@ export function buildWaterfallMarks({ data, plot, channels, options = {}, alpha,
 			alpha: a,
 			bandStart: xPos,
 			bandEnd: xPos + bw,
-			cumY: yScale(cumulative) ?? 0,
+			cumY: yScale(total) ?? 0,
 			data: d
 		}
 	})

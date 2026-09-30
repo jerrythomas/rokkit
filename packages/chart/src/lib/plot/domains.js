@@ -8,6 +8,7 @@
  * scale code.
  */
 import { stackFieldOf } from './stacking.js'
+import { runningSpans } from './running.js'
 
 const valid = (v) => v !== null && v !== undefined && !isNaN(v)
 
@@ -77,17 +78,8 @@ export function stackDomain(rows, channels, position) {
  */
 export function waterfallDomain(rows, field, totalField) {
 	if (rows.length === 0) return null
-	let cumulative = 0
-	let min = 0
-	let max = 0
-	for (const d of rows) {
-		const isTotal = Boolean(totalField && d[totalField])
-		const start = isTotal ? 0 : cumulative
-		if (!isTotal) cumulative += Number(d[field]) || 0
-		min = Math.min(min, start, cumulative)
-		max = Math.max(max, start, cumulative)
-	}
-	return [min, max]
+	const spans = runningSpans(rows, field, totalField)
+	return [Math.min(0, ...spans.map((s) => s.lo)), Math.max(0, ...spans.map((s) => s.hi))]
 }
 
 /** A geom's channels without the keys it left undefined (to inherit). */
