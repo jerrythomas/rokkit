@@ -102,6 +102,49 @@ describe('Plot.svelte', () => {
 		expect(Math.min(...ticks('x'))).toBe(0)
 	})
 
+	// Markdown ```plot blocks and @rokkit/blocks render through the spec path, so the plane
+	// annotations must be reachable from a spec — including two of the same type, which a
+	// type-keyed each would reject as a duplicate key and abort the whole render.
+	it('renders Rule, Region, Hull and Contour from a spec, with per-geom props', () => {
+		const data = [
+			{ i: 0.1, a: 0.1, pkg: 'core' },
+			{ i: 0.2, a: 0.05, pkg: 'core' },
+			{ i: 0.15, a: 0.3, pkg: 'core' },
+			{ i: 0.8, a: 0.9, pkg: 'ui' },
+			{ i: 0.9, a: 0.7, pkg: 'ui' },
+			{ i: 0.7, a: 0.8, pkg: 'ui' }
+		]
+		const spec = {
+			data,
+			x: 'i',
+			y: 'a',
+			color: 'pkg',
+			xDomain: [0, 1],
+			yDomain: [0, 1],
+			geoms: [
+				{ type: 'region', props: { name: 'pain', points: [[0, 0], [0.5, 0], [0, 0.5]], label: 'Zone of pain' } },
+				{ type: 'region', props: { name: 'uselessness', points: [[1, 1], [0.5, 1], [1, 0.5]] } },
+				{ type: 'hull', props: { padding: 6, label: true } },
+				{ type: 'contour', props: { bandwidth: 30 } },
+				{ type: 'rule', props: { slope: -1, intercept: 1, label: 'main sequence' } },
+				{ type: 'point' }
+			]
+		}
+		const { container } = render(Plot, { props: { spec, width: 400, height: 300 } })
+		expect([...container.querySelectorAll('[data-plot-region]')].map((r) => r.getAttribute('data-plot-region'))).toEqual([
+			'pain',
+			'uselessness'
+		])
+		expect(container.querySelector('[data-plot-region="pain"] [data-plot-element="region-label"]')?.textContent).toBe(
+			'Zone of pain'
+		)
+		expect(container.querySelectorAll('[data-plot-element="hull"]').length).toBe(2)
+		expect(container.querySelector('[data-plot-element="hull"]')?.getAttribute('stroke-width')).toBe('12')
+		expect(container.querySelector('[data-plot-geom="contour"]')).toBeTruthy()
+		expect(container.querySelector('[data-plot-rule="slope"]')).toBeTruthy()
+		expect(container.querySelectorAll('[data-plot-element="point"]').length).toBe(6)
+	})
+
 	// Regression: when a channel repeats (x === color), the accessible data table's keyed
 	// each must not emit a duplicate key (Svelte throws each_key_duplicate). Columns dedupe.
 	it('dedupes screen-reader table columns when x === color', () => {

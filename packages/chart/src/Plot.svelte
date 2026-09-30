@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte'
-	import type { Snippet } from 'svelte'
+	import type { Component, Snippet } from 'svelte'
 	import { defaultPreset } from './lib/preset.js'
 	import type { PlotSpec, PlotHelpers } from './lib/plot/types.js'
 	import PlotSurface from './PlotSurface.svelte'
@@ -21,6 +21,10 @@
 	import Hexbin from './geoms/Hexbin.svelte'
 	import Ribbon from './geoms/Ribbon.svelte'
 	import Radar from './geoms/Radar.svelte'
+	import Rule from './geoms/Rule.svelte'
+	import Region from './geoms/Region.svelte'
+	import Hull from './geoms/Hull.svelte'
+	import Contour from './geoms/Contour.svelte'
 	import Highlight from './geoms/Highlight.svelte'
 	import Trend from './geoms/Trend.svelte'
 
@@ -175,8 +179,13 @@
 	const overlayX = $derived(spec?.x ?? x)
 	const overlayY = $derived(spec?.y ?? y)
 
-	// Geom component resolver for spec-driven mode
-	const GEOM_COMPONENTS = {
+	// Geom component resolver for spec-driven mode. Typed as a lookup table, not the union of
+	// its members: a spec names geoms by string at runtime, exactly like `helpers.geoms`, and the
+	// union of every geom's Props has no single shape a generic call site can satisfy.
+	// `any` is the honest type for a heterogeneous table resolved by name — the same one the
+	// public `PlotHelpers.geoms` already declares in lib/plot/types.js.
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const GEOM_COMPONENTS: Record<string, Component<any>> = {
 		bar: Bar,
 		line: Line,
 		area: Area,
@@ -191,11 +200,18 @@
 		ribbon: Ribbon,
 		// Radar reads the generic x/y/color this path passes via its own aliases, and takes
 		// its axis order from `options.axes` — see Radar.svelte's Props.
-		radar: Radar
+		radar: Radar,
+		hull: Hull,
+		contour: Contour
 	}
 
+	// Plane annotations read no data, so they take ONLY their own `props` — never the spec's
+	// field channels: a Region's `x`/`y` are ranges, and handing it the field name 'instability'
+	// would be a range of one string.
+	const ANNOTATIONS = { rule: Rule, region: Region }
+
 	function resolveGeomComponent(type: string) {
-		return helpers?.geoms?.[type] ?? GEOM_COMPONENTS[type as keyof typeof GEOM_COMPONENTS]
+		return helpers?.geoms?.[type] ?? GEOM_COMPONENTS[type]
 	}
 </script>
 
@@ -222,10 +238,14 @@
 		<!-- Declarative children (geom components) -->
 		{@render children?.()}
 
-		<!-- Spec-driven geoms -->
-		{#each specGeoms as geomSpec (geomSpec.type)}
+		<!-- Spec-driven geoms. Keyed by position, not type: two regions in one spec are normal, and
+		     a type key would be a duplicate that aborts the whole render. -->
+		{#each specGeoms as geomSpec, i (`${geomSpec.type}-${i}`)}
+			{@const Annotation = ANNOTATIONS[geomSpec.type as keyof typeof ANNOTATIONS]}
 			{@const GeomComponent = resolveGeomComponent(geomSpec.type)}
-			{#if GeomComponent}
+			{#if Annotation && !helpers?.geoms?.[geomSpec.type]}
+				<Annotation {...geomSpec.props ?? {}} />
+			{:else if GeomComponent}
 				<GeomComponent
 					x={geomSpec.x ?? spec?.x}
 					y={geomSpec.y ?? spec?.y}
@@ -240,6 +260,7 @@
 						...(spec?.orientation !== undefined ? { orientation: spec.orientation } : {}),
 						...(geomSpec.options ?? {})
 					}}
+					{...geomSpec.props ?? {}}
 				/>
 			{/if}
 		{/each}

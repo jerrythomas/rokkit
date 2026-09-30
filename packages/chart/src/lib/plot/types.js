@@ -3,7 +3,7 @@
 
 /**
  * @typedef {Object} GeomSpec
- * @property {string} type - Geom type: 'bar'|'line'|'area'|'point'|'box'|'violin'|'arc' or custom
+ * @property {string} type - Geom type: 'bar'|'line'|'area'|'point'|'box'|'violin'|'arc'|'hull'|'contour'|'rule'|'region' or custom
  * @property {string} [x]
  * @property {string} [y]
  * @property {string} [color]
@@ -14,6 +14,10 @@
  * @property {string} [stat] - Built-in or helpers.stats key
  * @property {boolean | string} [label]
  * @property {Record<string, unknown>} [options]
+ * @property {Record<string, unknown>} [props] - Geom-specific props spread onto the component
+ *   (`Region`'s `points`/`label`, `Rule`'s `slope`, `Hull`'s `padding`). For the annotation
+ *   geoms (`rule`, `region`) these are the ONLY props: they read no data, and a Region's `x`/`y`
+ *   are ranges, so inheriting the spec's field names would be wrong.
  */
 
 /**
