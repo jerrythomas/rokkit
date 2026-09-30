@@ -1,7 +1,7 @@
 import { SvelteSet } from 'svelte/reactivity'
 import { normalizeGraph } from './model/normalize.js'
 import { layouts } from './layout/index.js'
-import { edgePath } from './layout/edges.js'
+import { buildEdges, edgePath } from './layout/edges.js'
 import { nodeShapeOf } from './layout/options.js'
 import { arcPath } from './layout/arc.js'
 import { defaultGraphPreset, resolveGroupStyles } from './preset.js'
@@ -236,6 +236,22 @@ export class GraphState {
 			focus: this.#focus ?? this.#value,
 			expanded: this.#expanded
 		})
+	)
+
+	/**
+	 * Overlay edges routed over the finished layout. The layout never saw them — that is the
+	 * point — so they are routed here, against whatever cards it placed. A layout with no cards
+	 * (the treemap, the sunburst) simply has nothing to route them between.
+	 */
+	#overlayRouted = $derived(buildEdges(this.#model.overlays, this.#result.cards))
+
+	#routed = $derived(
+		this.#overlayRouted.length > 0 ? [...this.#result.edges, ...this.#overlayRouted] : this.#result.edges
+	)
+
+	/** Heaviest weight across every edge that carries one — the 1 that `edgeWeight` scales to. */
+	#maxEdgeWeight = $derived(
+		Math.max(0, ...[...this.#model.edges, ...this.#model.overlays].map((e) => e.weight ?? 0))
 	)
 
 	// Duplicates are left in on purpose: `resolveGroupStyles` de-duplicates and sorts, because
@@ -518,8 +534,21 @@ export class GraphState {
 	get cards(): Cards {
 		return this.#result.cards
 	}
+	/** Structural edges as the layout routed them, then any overlay edges on top. */
 	get routedEdges(): RoutedEdge[] {
-		return this.#result.edges
+		return this.#routed
+	}
+	/** Every overlay edge in the model, placed or not. */
+	get overlayEdges(): GraphEdge[] {
+		return this.#model.overlays
+	}
+	/**
+	 * An edge's weight as 0..1 of the heaviest weighted edge, for stroke width — or undefined
+	 * for an edge with no weight, which draws at the theme's normal width.
+	 */
+	edgeWeight(edge: RoutedEdge): number | undefined {
+		if (edge.weight === undefined || this.#maxEdgeWeight <= 0) return undefined
+		return edge.weight / this.#maxEdgeWeight
 	}
 	get size(): Size {
 		return this.#result.size

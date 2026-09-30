@@ -280,8 +280,21 @@ function buildEdge(
 		relation,
 		cardinality: str(pick(source, fields.cardinality, 'cardinality')),
 		action: str(pick(source, fields.action, 'action')),
-		unplaced
+		unplaced,
+		...edgeExtras(source, fields)
 	}
+}
+
+/**
+ * `overlay` and `weight`, added only when present so every edge a v1 consumer already has
+ * stays key-for-key identical — `toEqual` on an edge is a contract downstream specs rely on.
+ */
+function edgeExtras(source: unknown, fields: GraphFields): Pick<GraphEdge, 'overlay' | 'weight'> {
+	const extras: Pick<GraphEdge, 'overlay' | 'weight'> = {}
+	if (pick(source, fields.overlay, 'overlay')) extras.overlay = true
+	const weight = num(pick(source, fields.edgeWeight, 'weight'))
+	if (weight !== undefined) extras.weight = weight
+	return extras
 }
 
 /**
@@ -345,7 +358,9 @@ export function normalizeGraph(
 		.map((source) => buildEdge(source, fields, byId, seen))
 		.filter((edge): edge is GraphEdge => edge !== null)
 
-	markForeignKeys(byId, resolved)
+	const structural = resolved.filter((edge) => !edge.overlay)
+	const overlays = resolved.filter((edge) => edge.overlay)
+	markForeignKeys(byId, structural)
 
-	return { nodes: built, edges: resolved, byId, neighbors: buildNeighbors(resolved) }
+	return { nodes: built, edges: structural, overlays, byId, neighbors: buildNeighbors(structural) }
 }

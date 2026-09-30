@@ -259,6 +259,17 @@ describe('graph theme CSS', () => {
 		expect(read('rokkit/graph.css')).toContain("[data-edge-kind='dependency']")
 	})
 
+	it.each(STYLES)('%s themes overlay edges apart from structural ones', (style) => {
+		// A co-change edge drawn exactly like an import is a claim the picture cannot back up.
+		const rules = rulesFor(`${style}/graph.css`, '[data-edge-overlay]')
+		expect(rules.length, style).toBeGreaterThan(0)
+		expect(rules.join('}'), style).toMatch(/stroke-dasharray/)
+	})
+
+	it('sizes a weighted edge from --edge-weight in base, with a zero fallback', () => {
+		expect(declarations('base/graph.css')).toMatch(/stroke-width:\s*calc\([^;]*var\(--edge-weight,\s*0\)/)
+	})
+
 	it('falls back to a named token whenever a group custom property is absent', () => {
 		// resolveGroupStyles only sets --group-* for nodes that HAVE a group. An ungrouped
 		// graph would otherwise paint with an empty value and render invisible cards.

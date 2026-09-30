@@ -35,6 +35,7 @@ function selfLoop(
 		toKey: edge.target,
 		kind: edge.kind,
 		relation: edge.relation,
+		...carried(edge),
 		self: true,
 		x1: card.x + card.w,
 		y1,
@@ -43,6 +44,14 @@ function selfLoop(
 		s1: 1,
 		s2: 1
 	}
+}
+
+/** Overlay flag and weight, copied only when set so existing routed edges stay key-identical. */
+function carried(edge: GraphEdge): Pick<RoutedEdge, 'overlay' | 'weight'> {
+	const out: Pick<RoutedEdge, 'overlay' | 'weight'> = {}
+	if (edge.overlay) out.overlay = true
+	if (edge.weight !== undefined) out.weight = edge.weight
+	return out
 }
 
 /** Which side of each card the connector leaves from. 1 = right, -1 = left. */
@@ -72,6 +81,7 @@ function buildEdge(edge: GraphEdge, i: number, cards: Cards): RoutedEdge | null 
 		toKey: edge.target,
 		kind: edge.kind,
 		relation: edge.relation,
+		...carried(edge),
 		self: false,
 		x1: s1 === 1 ? a.x + a.w : a.x,
 		y1,

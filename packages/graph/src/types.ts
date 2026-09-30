@@ -98,11 +98,27 @@ export type GraphEdge = {
 	 * edge is kept and marked, and it is the renderer's job to dim it.
 	 */
 	unplaced?: 'source' | 'target' | 'both'
+	/**
+	 * Drawn over the picture but never allowed to shape it — a co-change pair, a layering
+	 * rule broken, a suggested dependency.
+	 *
+	 * Such an edge is exactly what the reader wants to see and exactly what must not re-rank a
+	 * layered layout or pull a cluster ordering: files that change together with no import
+	 * between them would otherwise be drawn next to each other, hiding the very coupling the
+	 * overlay exists to expose. So they never enter `GraphModel.edges`; they live in
+	 * `GraphModel.overlays` and are routed after the layout has run.
+	 */
+	overlay?: boolean
+	/** A strength this edge carries — co-change count, call frequency. Drives stroke width. */
+	weight?: number
 }
 
 export type GraphModel = {
 	nodes: GraphNode[]
+	/** Structural edges — the ones layouts, neighbours and relationships see. */
 	edges: GraphEdge[]
+	/** Overlay edges (`GraphEdge.overlay`) — routed after layout, never shaping it. */
+	overlays: GraphEdge[]
 	byId: Map<string, GraphNode>
 	/** Undirected adjacency, self-edges excluded. */
 	neighbors: Map<string, Set<string>>
@@ -214,6 +230,10 @@ export type GraphFields = {
 	defaultEdgeKind?: EdgeKind
 	/** Path to the consumer's own relationship word — see `GraphEdge.relation`. */
 	relation?: string
+	/** Path to a truthy flag marking an overlay edge — see `GraphEdge.overlay`. */
+	overlay?: string
+	/** Path to an edge's strength — see `GraphEdge.weight`. */
+	edgeWeight?: string
 	cardinality?: string
 	action?: string
 }

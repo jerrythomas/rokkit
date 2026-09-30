@@ -320,6 +320,8 @@
 					data-edge-from={edge.fromKey}
 					data-edge-to={edge.toKey}
 					data-edge-state={graph.edgeState(edge)}
+					data-edge-overlay={edge.overlay ? '' : undefined}
+					style:--edge-weight={graph.edgeWeight(edge)}
 				>
 					<path d={graph.edgePath(edge)} />
 					<circle data-graph-edge-dot="from" cx={edge.x1} cy={edge.y1} r="3.2" />

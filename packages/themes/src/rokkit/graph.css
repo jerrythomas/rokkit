@@ -163,6 +163,15 @@
   stroke-dasharray: 5 4;
 }
 
+/* Overlay edges (co-change, a broken layering rule) never shaped the layout, and must not
+   read as if they had: dotted, in the readable secondary ink rather than the edge hairline,
+   and drawn with round caps so a short dotted run still reads as a line. */
+[data-style='rokkit'] [data-edge-overlay] path {
+  --graph-edge: var(--ink-mute);
+  stroke-dasharray: 2 4;
+  stroke-linecap: round;
+}
+
 /* The kind tag is a quiet fact, not part of the name — ink-mute against a faint chip, so it
    reads as secondary to the title sitting next to it. `--ink-mute`, never `--ink-soft`: the
    node card IS a button, and ink-soft (1.95-2.13:1 on paper) cannot carry an interactive

@@ -558,7 +558,9 @@
 
 [data-graph-edge] path {
   fill: none;
-  stroke-width: 1.25;
+  /* An edge with a weight (GraphState.edgeWeight, 0..1) thickens up to 4px; an edge without
+     one has no --edge-weight and draws at the plain 1.25. */
+  stroke-width: calc(1.25px + var(--edge-weight, 0) * 2.75px);
 }
 
 [data-graph-edge-dot] {

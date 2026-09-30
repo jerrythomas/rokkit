@@ -124,6 +124,10 @@ export type RoutedEdge = {
 	 * than the reader wondering why one link behaves differently.
 	 */
 	back?: boolean
+	/** GraphEdge.overlay — routed after the layout ran, over a picture it did not shape. */
+	overlay?: boolean
+	/** GraphEdge.weight, raw. `GraphState.edgeWeight` normalises it for drawing. */
+	weight?: number
 	x1: number
 	y1: number
 	x2: number
