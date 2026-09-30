@@ -8,9 +8,7 @@ import {
 	buildUnifiedYScale,
 	inferColorScaleType
 } from './lib/plot/scales.js'
-import { resolvePreset } from './lib/plot/preset.js'
-import { resolveFormat, resolveTooltip, resolveGeom } from './lib/plot/helpers.js'
-import { defaultPreset } from './lib/preset.js'
+import { PlotConfig, DEFAULT_MARGIN } from './state/PlotConfig.svelte.js'
 import { distinct, assignColors, isLiteralColor, buildSequentialScale, buildDivergingScale } from './lib/brewing/colors.js'
 import { assignPatterns } from './lib/brewing/patterns.js'
 import { assignSymbols } from './lib/brewing/marks/points.js'
@@ -21,47 +19,14 @@ let nextId = 0
 const CATEGORICAL_X = new Set(['bar', 'box', 'violin', 'jitter'])
 
 export class PlotState {
-	#data = $state([])
-	#rawData = $state([])
-	#channels = $state({})
-	#labels = $state({})
-	#helpers = $state({})
-	#presetName = $state(undefined)
-	#colorMidpoint = $state(undefined)
-	#colorSpec = $state(undefined)
-	#colorScheme = $state(undefined)
-	#colorDomain = $state(undefined)
-	#xDomain = $state(undefined)
-	#yDomain = $state(undefined)
-	#width = $state(600)
-	#height = $state(400)
-	#margin = $state({ top: 20, right: 20, bottom: 40, left: 50 })
-	#marginOverride = $state(undefined)
-
 	#geoms = $state([])
-	#mode = $state('light')
-	#chartPreset = $state(defaultPreset)
 	#hovered = $state(null)
 	#selected = $state(new SvelteSet())
-	#onselect = $state(undefined)
-	#selectable = $state(false)
-	#orientationOverride = $state(undefined)
-	// When true, the category (x) axis is a CONTINUOUS position scale (kept linear, not
-	// band-forced) — e.g. AnimatedPlot's bar-chart race, whose tweened `_rank` must position
-	// smoothly. It still flips like any category-x chart; buildBars uses continuous positioning.
-	#continuousCategory = $state(false)
-	// Order the category (band) axis by aggregated value instead of by label: 'desc' | 'asc'.
-	// Sorts bars by size (histogram-style); undefined keeps data/label order.
-	#sort = $state(undefined)
-
-	axisOrigin = $state([undefined, undefined])
-	#axisOffset = $state(0)
-
 	#zoomTransform = $state(null)
 
-	#effectiveMargin = $derived(this.#marginOverride ?? this.#margin)
-	#innerWidth = $derived(this.#width - this.#effectiveMargin.left - this.#effectiveMargin.right)
-	#innerHeight = $derived(this.#height - this.#effectiveMargin.top - this.#effectiveMargin.bottom)
+	#effectiveMargin = $derived(this.config.margin ?? DEFAULT_MARGIN)
+	#innerWidth = $derived(this.config.width - this.#effectiveMargin.left - this.#effectiveMargin.right)
+	#innerHeight = $derived(this.config.height - this.#effectiveMargin.top - this.#effectiveMargin.bottom)
 
 	// Effective channels: prefer top-level channels PER FIELD, falling back to the
 	// first geom's channels. Merged per-field (not all-or-nothing) so a composable
@@ -88,8 +53,8 @@ export class PlotState {
 		const addField = (f) => {
 			if (f && !isLiteralColor(f) && !fields.includes(f)) fields.push(f)
 		}
-		addField(this.#channels.color)
-		addField(this.#channels.fill)
+		addField(this.config.channels.color)
+		addField(this.config.channels.fill)
 		for (const g of this.#geoms) {
 			addField(g.channels?.color)
 			addField(g.channels?.fill)
@@ -100,13 +65,13 @@ export class PlotState {
 		// a collection the reactivity linter has to be told to ignore.
 		const values = []
 		for (const f of fields) {
-			for (const v of distinct(this.#data, f)) if (!values.includes(v)) values.push(v)
+			for (const v of distinct(this.config.data, f)) if (!values.includes(v)) values.push(v)
 		}
 		return values
 	}
 
 	#effectiveChannels = $derived.by(() => {
-		const tc = this.#channels
+		const tc = this.config.channels
 		const firstGeom = this.#geoms[0]
 		if (!firstGeom) return tc
 		return this.#mergeGeomChannels(tc, firstGeom)
@@ -120,7 +85,7 @@ export class PlotState {
 	// Category order sorted by aggregated value (sum of the value channel per category).
 	// Drives "sort bars by size" for the band axis + its ticks. Returns null when not sorting.
 	#sortedBandDomain(datasets) {
-		if (!this.#sort) return null
+		if (!this.config.sort) return null
 		const xf = this.#effectiveChannels.x
 		const yf = this.#effectiveChannels.y
 		if (!xf || !yf) return null
@@ -137,17 +102,17 @@ export class PlotState {
 				totals.set(key, (totals.get(key) ?? 0) + (Number(d[yf]) || 0))
 			}
 		}
-		const dir = this.#sort === 'asc' ? 1 : -1
+		const dir = this.config.sort === 'asc' ? 1 : -1
 		return [...totals.keys()].sort((a, b) => dir * ((totals.get(a) ?? 0) - (totals.get(b) ?? 0)))
 	}
 
 	orientation = $derived.by(() => {
-		if (this.#orientationOverride) return this.#orientationOverride
+		if (this.config.orientation) return this.config.orientation
 		const xField = this.#effectiveChannels.x
 		const yField = this.#effectiveChannels.y
 		if (!xField || !yField) return 'none'
-		const rawXType = inferFieldType(this.#data, xField)
-		const yType = inferFieldType(this.#data, yField)
+		const rawXType = inferFieldType(this.config.data, xField)
+		const yType = inferFieldType(this.config.data, yField)
 		// Bar geoms treat numeric X as categorical (e.g. year on X → vertical bars).
 		return inferOrientation(this.#resolveXType(rawXType, yType), yType)
 	})
@@ -162,7 +127,7 @@ export class PlotState {
 		if (!x || !y) return false
 		// Resolved type: a bar/box/violin/jitter geom bands a numeric x (e.g. year, week),
 		// so those NUMERIC categories are flippable too — not just string categories.
-		return this.#resolveXType(inferFieldType(this.#data, x), inferFieldType(this.#data, y)) === 'band'
+		return this.#resolveXType(inferFieldType(this.config.data, x), inferFieldType(this.config.data, y)) === 'band'
 	})
 
 	// Flip = render a category-on-x chart horizontally: the category (x) axis stands up on the
@@ -173,9 +138,9 @@ export class PlotState {
 	colorScaleType = $derived.by(() => {
 		const field = this.#effectiveChannels.color
 		if (!field) return 'categorical'
-		return inferColorScaleType(this.#data, field, {
-			colorScale: this.#colorSpec,
-			colorMidpoint: this.#colorMidpoint
+		return inferColorScaleType(this.config.data, field, {
+			colorScale: this.config.colorScale,
+			colorMidpoint: this.config.colorMidpoint
 		})
 	})
 
@@ -184,21 +149,21 @@ export class PlotState {
 		const field = this.#effectiveChannels.color
 		if (!field || this.colorScaleType === 'categorical') return null
 		const opts = {
-			colorScheme: this.#colorScheme,
-			colorDomain: this.#colorDomain,
-			colorMidpoint: this.#colorMidpoint
+			colorScheme: this.config.colorScheme,
+			colorDomain: this.config.colorDomain,
+			colorMidpoint: this.config.colorMidpoint
 		}
 		if (this.colorScaleType === 'diverging') {
-			return buildDivergingScale(this.#data, field, opts)
+			return buildDivergingScale(this.config.data, field, opts)
 		}
-		return buildSequentialScale(this.#data, field, opts)
+		return buildSequentialScale(this.config.data, field, opts)
 	})
 
 	xScale = $derived.by(() => {
 		const field = this.#effectiveChannels.x
 		if (!field) return null
 		const datasets =
-			this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.#rawData]
+			this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.config.data]
 		// includeZero applies to the VALUE axis. When flipped, x is the category axis, not
 		// the value axis, so it must NOT include zero.
 		const includeZero = this.orientation === 'horizontal' && !this.#flipped
@@ -208,13 +173,13 @@ export class PlotState {
 		const hasBandGeom = this.#geoms.some((g) => CATEGORICAL_X.has(g.type))
 		const bandX =
 			hasBandGeom &&
-			!this.#continuousCategory &&
+			!this.config.continuousCategory &&
 			(this.orientation !== 'horizontal' || this.#flipped)
 		// Flip: the category (x) axis stands up on the vertical screen → range over height.
 		const range = this.#flipped ? [this.#innerHeight, 0] : undefined
 		// Sort the band domain by aggregated value when requested (bars by size); an explicit
 		// xDomain override wins.
-		const domain = this.#xDomain ?? (bandX ? this.#sortedBandDomain(datasets) : null) ?? undefined
+		const domain = this.config.xDomain ?? (bandX ? this.#sortedBandDomain(datasets) : null) ?? undefined
 		const base = buildUnifiedXScale(datasets, field, this.#innerWidth, {
 			domain,
 			includeZero,
@@ -222,7 +187,7 @@ export class PlotState {
 			range,
 			// A continuous category axis (bar-race rank) uses a deliberately padded domain —
 			// don't nice() it back to whole numbers.
-			nice: !this.#continuousCategory
+			nice: !this.config.continuousCategory
 		})
 		return this.#zoomTransform && typeof base?.bandwidth !== 'function'
 			? this.#zoomTransform.rescaleX(base)
@@ -316,12 +281,12 @@ export class PlotState {
 		const field = this.#effectiveChannels.y
 		if (!field) return null
 		const datasets =
-			this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.#rawData]
+			this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.config.data]
 		// includeZero applies to the VALUE axis: vertical charts (value on y) and flipped
 		// charts (value still y, but now the horizontal screen axis) both want a 0 baseline.
 		const includeZero = this.orientation === 'vertical' || this.#flipped
 		const yDomain =
-			this.#yDomain ??
+			this.config.yDomain ??
 			this.#resolveBoxDomain() ??
 			this.#resolveStackDomain(field) ??
 			this.#resolveWaterfallDomain(field)
@@ -344,11 +309,11 @@ export class PlotState {
 			const literal = new Map([[null, { fill: field, stroke: field }]])
 			return literal
 		}
-		const values = this.#colorDomain ?? this.#sharedColorValues()
+		const values = this.config.colorDomain ?? this.#sharedColorValues()
 		// No color channel but data exists → use first preset color for single-series rendering.
 		// This prevents geoms from falling back to gray (#888) on charts with no fill channel.
-		if (values.length === 0 && this.#data.length > 0) return assignColors([null], this.#mode, this.#chartPreset)
-		return assignColors(values, this.#mode, this.#chartPreset)
+		if (values.length === 0 && this.config.data.length > 0) return assignColors([null], this.config.mode, this.config.chartPreset)
+		return assignColors(values, this.config.mode, this.config.chartPreset)
 	})
 
 	// Patterns: Map<patternKey, patternName> — only populated when a pattern channel is set
@@ -356,15 +321,15 @@ export class PlotState {
 	patterns = $derived.by(() => {
 		const pf = this.#effectiveChannels.pattern
 		if (!pf) return new SvelteMap()
-		if (inferFieldType(this.#data, pf) === 'continuous') return new SvelteMap()
-		return assignPatterns(distinct(this.#data, pf))
+		if (inferFieldType(this.config.data, pf) === 'continuous') return new SvelteMap()
+		return assignPatterns(distinct(this.config.data, pf))
 	})
 
 	// Symbols: Map<symbolKey, shapeName> — only populated when a symbol channel is set.
 	symbols = $derived.by(() => {
 		const sf = this.#effectiveChannels.symbol
 		if (!sf) return new SvelteMap()
-		return assignSymbols(distinct(this.#data, sf), this.#chartPreset)
+		return assignSymbols(distinct(this.config.data, sf), this.config.chartPreset)
 	})
 
 	// Expose effective channel fields for consumers (e.g. Legend).
@@ -384,7 +349,7 @@ export class PlotState {
 
 	xAxisY = $derived.by(() => {
 		if (!this.yScale || typeof this.yScale !== 'function') return this.#innerHeight
-		const crossVal = this.axisOrigin[1]
+		const crossVal = this.config.axisOrigin[1]
 		if (crossVal !== undefined) return this.yScale(crossVal)
 		const domain = this.yScale.domain?.()
 		/* v8 ignore start -- unreachable: yScale is either null (caught by the guard
@@ -397,12 +362,12 @@ export class PlotState {
 		if (domain[0] <= 0 && domain[domain.length - 1] >= 0) return this.yScale(0)
 		// Q1-only: axis at bottom edge, optionally with offset
 		const base = this.yScale(domain[0])
-		return this.#axisOffset ? base + this.#axisOffset : base
+		return this.config.axisOffset ? base + this.config.axisOffset : base
 	})
 
 	yAxisX = $derived.by(() => {
 		if (!this.xScale || typeof this.xScale !== 'function') return 0
-		const crossVal = this.axisOrigin[0]
+		const crossVal = this.config.axisOrigin[0]
 		if (crossVal !== undefined) return this.xScale(crossVal)
 		const domain = this.xScale.domain?.()
 		if (!domain || typeof this.xScale.bandwidth === 'function') return 0
@@ -410,64 +375,27 @@ export class PlotState {
 		if (domain[0] <= 0 && domain[domain.length - 1] >= 0) return this.xScale(0)
 		// Q1-only: axis at left edge, optionally with offset
 		const base = this.xScale(domain[0])
-		return this.#axisOffset ? base - this.#axisOffset : base
+		return this.config.axisOffset ? base - this.config.axisOffset : base
 	})
 
+	/** The plot's inputs. The only thing `update()` writes. */
+	config
+
 	constructor(config = {}) {
-		this.#rawData = config.data ?? []
-		this.#data = config.data ?? []
-		this.#channels = config.channels ?? {}
-		this.#labels = config.labels ?? {}
-		this.#helpers = config.helpers ?? {}
-		this.#presetName = config.preset
-		this.#colorMidpoint = config.colorMidpoint
-		this.#colorSpec = config.colorScale
-		this.#colorScheme = config.colorScheme
-		this.#colorDomain = config.colorDomain
-		this.#xDomain = config.xDomain
-		this.#yDomain = config.yDomain
-		this.#width = config.width ?? 600
-		this.#height = config.height ?? 400
-		this.#mode = config.mode ?? 'light'
-		this.#chartPreset = config.chartPreset ?? defaultPreset
-		this.#onselect = config.onselect
-		this.#selectable = config.selectable ?? false
+		this.config = new PlotConfig(config)
 		if (config.selected) this.#selected = new SvelteSet(config.selected)
-		this.#axisOffset = config.axisOffset ?? 0
-		this.axisOrigin = config.axisOrigin ?? [undefined, undefined]
-		this.#marginOverride = config.margin ?? undefined
-		this.#orientationOverride = config.orientation ?? undefined
-		this.#continuousCategory = config.continuousCategory ?? false
-		this.#sort = config.sort ?? undefined
 	}
 
 	update(config) {
-		if (config.data !== undefined) {
-			this.#rawData = config.data
-			this.#data = config.data
-		}
-		if (config.channels !== undefined) this.#channels = config.channels
-		if (config.labels !== undefined) this.#labels = config.labels
-		if (config.helpers !== undefined) this.#helpers = config.helpers
-		if (config.preset !== undefined) this.#presetName = config.preset
-		if (config.colorMidpoint !== undefined) this.#colorMidpoint = config.colorMidpoint
-		if (config.colorScale !== undefined) this.#colorSpec = config.colorScale
-		if (config.colorScheme !== undefined) this.#colorScheme = config.colorScheme
-		this.#colorDomain = config.colorDomain
-		this.#xDomain = config.xDomain
-		this.#yDomain = config.yDomain
-		if (config.width !== undefined) this.#width = config.width
-		if (config.height !== undefined) this.#height = config.height
-		if (config.mode !== undefined) this.#mode = config.mode
-		if (config.chartPreset !== undefined) this.#chartPreset = config.chartPreset
-		if (config.onselect !== undefined) this.#onselect = config.onselect
-		if (config.selectable !== undefined) this.#selectable = config.selectable
-		if (config.axisOffset !== undefined) this.#axisOffset = config.axisOffset
-		this.axisOrigin = config.axisOrigin ?? [undefined, undefined]
-		this.#marginOverride = config.margin ?? undefined
-		this.#orientationOverride = config.orientation ?? undefined
-		this.#continuousCategory = config.continuousCategory ?? false
-		this.#sort = config.sort ?? undefined
+		this.config.update(config)
+	}
+
+	/** Pin the axis crossing directly — also reachable through `update({ axisOrigin })`. */
+	get axisOrigin() {
+		return this.config.axisOrigin
+	}
+	set axisOrigin(value) {
+		this.config.axisOrigin = value
 	}
 
 	registerGeom(config) {
@@ -490,7 +418,7 @@ export class PlotState {
 		const geom = this.#geoms.find((g) => g.id === id)
 		if (!geom) return []
 		const stat = geom.stat ?? 'identity'
-		if (stat === 'identity') return this.#rawData
+		if (stat === 'identity') return this.config.data
 		// Strip explicit `undefined` values before spreading: a geom that omits a channel
 		// to inherit it from the container sends `{ x: undefined }`, not `{}`, which would
 		// otherwise become an own property that clobbers the container's value below (see
@@ -498,37 +426,34 @@ export class PlotState {
 		const geomChannels = Object.fromEntries(
 			Object.entries(geom.channels ?? {}).filter(([, v]) => v !== undefined)
 		)
-		const mergedChannels = { ...this.#channels, ...geomChannels }
-		return applyGeomStat(this.#rawData, { stat, channels: mergedChannels }, this.#helpers)
+		const mergedChannels = { ...this.config.channels, ...geomChannels }
+		return applyGeomStat(this.config.data, { stat, channels: mergedChannels }, this.config.helpers)
 	}
 
 	label(field) {
-		return this.#labels?.[field] ?? field
+		return this.config.label(field)
 	}
-
 	format(field) {
-		return resolveFormat(field, this.#helpers)
+		return this.config.format(field)
 	}
 	tooltip() {
-		return resolveTooltip(this.#helpers)
+		return this.config.tooltip()
 	}
 	geomComponent(type) {
-		return resolveGeom(type, this.#helpers)
+		return this.config.geomComponent(type)
 	}
 	preset() {
-		return resolvePreset(this.#presetName, this.#helpers)
+		return this.config.resolvedPreset()
 	}
 
 	get data() {
-		// Return #rawData (not #data): geoms read their rows via geomData() which
-		// returns #rawData, so overlays and index lookups (plotState.data.indexOf(datum))
-		// must use the SAME proxy identity. #data and #rawData proxy the same source
-		// array separately, so their elements are not ===. Same content, aligned identity.
-		return this.#rawData
+		// One proxy for the rows: geomData() hands out these same objects, so overlays and
+		// index lookups (plotState.data.indexOf(datum)) match by identity.
+		return this.config.data
 	}
 	/** @returns {{ x?: string, y?: string, color?: string, fill?: string, pattern?: string, symbol?: string }} */
 	get channels() {
-		return this.#channels
+		return this.config.channels
 	}
 
 	// ─── Orientation helpers (horizontal / axis-flip) ──────────────────────────
@@ -540,7 +465,7 @@ export class PlotState {
 	// True when the category (x) axis is a continuous position scale (kept linear) rather than a
 	// band — a bar-chart race's tweened rank. buildBars uses continuous positioning for it.
 	get continuousCategory() {
-		return this.#continuousCategory
+		return this.config.continuousCategory
 	}
 	// Map abstract (x-channel, y-channel) scale outputs to screen coords. When flipped,
 	// the two screen axes swap. Geoms compute u = xScale(d[x]), v = yScale(d[y]) then
@@ -566,16 +491,16 @@ export class PlotState {
 		return this.#innerHeight
 	}
 	get mode() {
-		return this.#mode
+		return this.config.mode
 	}
 	get chartPreset() {
-		return this.#chartPreset
+		return this.config.chartPreset
 	}
 	get hovered() {
 		return this.#hovered
 	}
 	get interactive() {
-		return Boolean(this.#onselect) || this.#selectable
+		return Boolean(this.config.onselect) || this.config.selectable
 	}
 	get selectedRows() {
 		return [...this.#selected]
@@ -597,8 +522,8 @@ export class PlotState {
 		this.#selected = new SvelteSet()
 	}
 	handleSelect(detail) {
-		this.#onselect?.(detail)
-		if (this.#selectable && detail?.datum !== undefined) {
+		this.config.onselect?.(detail)
+		if (this.config.selectable && detail?.datum !== undefined) {
 			if (this.#selected.has(detail.datum)) this.#selected.delete(detail.datum)
 			else this.#selected.add(detail.datum)
 		}
