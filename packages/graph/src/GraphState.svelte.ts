@@ -4,7 +4,7 @@ import { layouts } from './layout/index.js'
 import { buildEdges, edgePath } from './layout/edges.js'
 import { nodeShapeOf } from './layout/options.js'
 import { arcPath } from './layout/arc.js'
-import { defaultGraphPreset, resolveGroupStyles } from './preset.js'
+import { resolveGroupStyles } from './preset.js'
 import type { GraphPreset } from './preset.js'
 import type {
 	Arrange,
@@ -24,6 +24,7 @@ import type { Relationship } from './model/relationships.js'
 import { entityRows } from './model/entities.js'
 import type { EntityRow } from './model/entities.js'
 import { contentExtent } from './layout/extent.js'
+import { GraphConfig } from './state/GraphConfig.svelte.js'
 
 export type { Relationship, EntityRow }
 
@@ -77,36 +78,12 @@ export type GraphStateConfig = {
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
 
 /**
- * The store. Turns raw `nodes`/`edges`/`fields` into the reactive shape the visuals
- * render, and owns every transition.
- *
- * Components read from this and call its methods — they never compute. That is what
- * lets the geometry, badge derivation and selection logic be covered exhaustively
- * with no DOM, and lets the component specs assert only attributes.
- *
- * `update()` is re-callable and FULLY re-applies config rather than merging deltas,
- * matching `SparkState.update` — so a prop reverting to undefined actually reverts.
- * Deliberately NOT `PlotState.update`, which guards each field with
- * `if (config.X !== undefined)` and therefore merges.
- */
-/**
  * Sorted unique strings, dropping empties.
  *
  * Sort-then-dedupe rather than a `Set`: these vocabularies are tiny and the result has to be
  * sorted anyway, so the Set would be an extra structure for nothing — and a plain Set inside a
  * reactive class is exactly what `svelte/prefer-svelte-reactivity` is right to flag.
  */
-/**
- * A level cap, or nothing.
- *
- * Left UNDEFINED when the caller said nothing: a state-level default of 2 is indistinguishable
- * from an explicit 2, and `radial` needs "no cap" to mean the whole tree — inventing a number
- * here silently pruned a codebase dendrogram to two rings.
- */
-function floorLevels(levels: number | undefined): number | undefined {
-	return levels === undefined ? undefined : Math.max(1, Math.floor(levels))
-}
-
 function unique(values: (string | undefined)[]): string[] {
 	return values
 		.filter((v): v is string => Boolean(v))
@@ -114,57 +91,47 @@ function unique(values: (string | undefined)[]): string[] {
 		.filter((v, i, all) => i === 0 || v !== all[i - 1])
 }
 
+/**
+ * The store. Turns raw `nodes`/`edges`/`fields` into the reactive shape the visuals
+ * render, and owns every transition.
+ *
+ * Components read from this and call its methods — they never compute. That is what
+ * lets the geometry, badge derivation and selection logic be covered exhaustively
+ * with no DOM, and lets the component specs assert only attributes.
+ *
+ * A composition: `config` (every input, `state/GraphConfig`) feeds the layout pipeline
+ * derived here; the selection and the view queries read both. `update()` FULLY re-applies
+ * config rather than merging deltas — so a prop reverting to undefined actually reverts;
+ * `apply()` merges.
+ */
 export class GraphState {
-	#nodes = $state<unknown[]>([])
-	#edges = $state<unknown[]>([])
-	#fields = $state<GraphFields>({})
-	#layout = $state<string | LayoutFn>('flow')
-	#groupTint = $state(false)
-	#radialMode = $state<'tree' | 'dendrogram'>('tree')
-	#root = $state<string | null>(null)
-	#bundleTension = $state<number | undefined>(undefined)
-	/** The last FULL config, so `apply` can merge over it rather than reset around it. */
-	#last: GraphStateConfig = {}
-	#density = $state<Density>('keys')
-	#arrange = $state<Arrange>('untangle')
-	#groupBy = $state<NodeAxis>('group')
-	#nestBy = $state<NodeAxis | null>(null)
-	#sizeBy = $state<string>('degree')
-	#sizeScale = $state<'linear' | 'log'>('linear')
-	#depth = $state<number>(1)
-	#focusPath = $state<string[]>([])
-	#levels = $state<number | undefined>(undefined)
-	#edgeStyle = $state<EdgeStyle>('curved')
-	#focus = $state<string | null>(null)
+	/** Every input — see `CONFIG_FIELDS` for what each omitted key falls back to. */
+	readonly config = new GraphConfig()
 	#value = $state<string | null>(null)
 	#expanded = new SvelteSet<string>()
-	#preset = $state<GraphPreset>(defaultGraphPreset)
-	#mode = $state<'light' | 'dark'>('light')
-	#label = $state<string | undefined>(undefined)
-	#onselect = $state<((id: string | null) => void) | undefined>(undefined)
 
-	#model = $derived(normalizeGraph(this.#nodes, this.#edges, this.#fields))
+	#model = $derived(normalizeGraph(this.config.nodes, this.config.edges, this.config.fields))
 
 	#layoutFn = $derived(
-		typeof this.#layout === 'function' ? this.#layout : (layouts[this.#layout] ?? layouts.cluster)
+		typeof this.config.layout === 'function' ? this.config.layout : (layouts[this.config.layout] ?? layouts.cluster)
 	)
 
 	#result = $derived(
 		this.#layoutFn(this.#model, {
-			density: this.#density,
-			arrange: this.#arrange,
-			groupBy: this.#groupBy,
-			nestBy: this.#nestBy ?? undefined,
-			sizeBy: this.#sizeBy,
-			sizeScale: this.#sizeScale,
-			depth: this.#depth,
-			focusPath: this.#focusPath,
-			levels: this.#levels,
-			radialMode: this.#radialMode,
-			root: this.#root,
-			bundleTension: this.#bundleTension,
-			edgeStyle: this.#edgeStyle,
-			focus: this.#focus ?? this.#value,
+			density: this.config.density,
+			arrange: this.config.arrange,
+			groupBy: this.config.groupBy,
+			nestBy: this.config.nestBy ?? undefined,
+			sizeBy: this.config.sizeBy,
+			sizeScale: this.config.sizeScale,
+			depth: this.config.depth,
+			focusPath: this.config.focusPath,
+			levels: this.config.levels,
+			radialMode: this.config.radialMode,
+			root: this.config.root,
+			bundleTension: this.config.bundleTension,
+			edgeStyle: this.config.edgeStyle,
+			focus: this.config.focus ?? this.#value,
 			expanded: this.#expanded
 		})
 	)
@@ -191,7 +158,7 @@ export class GraphState {
 	// that is where ramp assignment lives. A Set here would be a second, redundant de-dup.
 	#groups = $derived(this.#model.nodes.map((n) => n.group).filter((g): g is string => Boolean(g)))
 
-	#groupStyles = $derived(resolveGroupStyles(this.#groups, this.#mode, this.#preset))
+	#groupStyles = $derived(resolveGroupStyles(this.#groups, this.config.mode, this.config.preset))
 
 	#related = $derived(
 		this.#value
@@ -218,11 +185,15 @@ export class GraphState {
 	 * field by field.
 	 */
 	update(config: GraphStateConfig = {}): void {
-		this.#last = config
-		this.#applyData(config)
-		this.#applyView(config)
-		// `value` is input AND output, so it is only adopted when the caller supplies
-		// one — otherwise a re-render would wipe a selection the user just made.
+		this.config.update(config)
+		this.#adoptValue(config)
+	}
+
+	/**
+	 * `value` is input AND output, so it is only adopted when the caller supplies one —
+	 * otherwise a re-render would wipe a selection the user just made.
+	 */
+	#adoptValue(config: GraphStateConfig): void {
 		if (config.value !== undefined) this.#value = config.value
 	}
 
@@ -235,57 +206,13 @@ export class GraphState {
 	 * owner's data on every keystroke. This merges over the last full config instead.
 	 */
 	apply(config: Partial<GraphStateConfig>): void {
-		this.update({ ...this.#last, ...config })
-	}
-
-	#applyData(config: GraphStateConfig): void {
-		this.#nodes = config.nodes ?? []
-		this.#edges = config.edges ?? []
-		this.#fields = config.fields ?? {}
-		this.#layout = config.layout ?? 'flow'
-		this.#focus = config.focus ?? null
-	}
-
-	/** How the boxes are organised — one axis, or one subdivided by a second. */
-	#applyGrouping(config: GraphStateConfig): void {
-		const outer = config.groupBy ?? 'group'
-		this.#groupBy = outer
-		// Rejected rather than rendered: a box subdivided by its OWN axis yields exactly one
-		// child containing everything, which reads as a rendering fault, not a no-op.
-		this.#nestBy = config.nestBy === outer ? null : (config.nestBy ?? null)
-		this.#groupTint = config.groupTint ?? false
-	}
-
-	/** What a node's size encodes, and how far a neighbourhood reaches. */
-	#applyMeasure(config: GraphStateConfig): void {
-		this.#sizeBy = config.sizeBy ?? 'degree'
-		this.#sizeScale = config.sizeScale ?? 'linear'
-		// Floored at 1: a depth of 0 or -1 is a request for nothing, and returning an empty
-		// canvas for it looks identical to a broken focus.
-		this.#depth = Math.max(1, Math.floor(config.depth ?? 1))
-		this.#focusPath = config.focusPath ?? []
-		this.#levels = floorLevels(config.levels)
-		this.#root = config.root ?? null
-		this.#bundleTension = config.bundleTension
-		this.#radialMode = config.radialMode ?? 'tree'
-	}
-
-	#applyView(config: GraphStateConfig): void {
-		this.#density = config.density ?? 'keys'
-		this.#arrange = config.arrange ?? 'untangle'
-		this.#applyGrouping(config)
-		this.#applyMeasure(config)
-		this.#edgeStyle = config.edgeStyle ?? 'curved'
-		this.#preset = config.preset ?? defaultGraphPreset
-		this.#mode = config.mode ?? 'light'
-		this.#label = config.label
-		this.#onselect = config.onselect
+		this.#adoptValue(this.config.apply(config))
 	}
 
 	// ─── transitions ───────────────────────────────────────────────────────────
 	select(id: string): void {
 		this.#value = id
-		this.#onselect?.(id)
+		this.config.onselect?.(id)
 	}
 
 	/**
@@ -302,7 +229,7 @@ export class GraphState {
 	clear(): void {
 		if (this.#value === null) return
 		this.#value = null
-		this.#onselect?.(null)
+		this.config.onselect?.(null)
 	}
 
 	/**
@@ -338,7 +265,7 @@ export class GraphState {
 
 		const card = this.cards[id]
 		if (!card || card.more <= 0) return null
-		if (this.#density !== 'keys' || card.vis.length > 0) return `+ ${card.more} more`
+		if (this.config.density !== 'keys' || card.vis.length > 0) return `+ ${card.more} more`
 
 		return `no keys · ${card.more} ${card.more === 1 ? 'row' : 'rows'}`
 	}
@@ -351,7 +278,7 @@ export class GraphState {
 	 * prop would render, click, and change nothing.
 	 */
 	setDensity(density: Density): void {
-		this.#density = density
+		this.config.setDensity(density)
 	}
 
 	// ─── per-item lookups the templates need ───────────────────────────────────
@@ -369,7 +296,7 @@ export class GraphState {
 	edgePath(edge: RoutedEdge): string {
 		// A layout that knows more than the endpoints builds its own — a bundled edge follows
 		// the whole chain of ancestors between them, which `edgePath` never sees.
-		return edge.path ?? edgePath(edge, this.#edgeStyle)
+		return edge.path ?? edgePath(edge, this.config.edgeStyle)
 	}
 
 	groupStyle(group: string | undefined): Record<string, string> {
@@ -470,10 +397,10 @@ export class GraphState {
 		return this.#model.edges.filter((e) => e.unplaced !== undefined)
 	}
 	get density(): Density {
-		return this.#density
+		return this.config.density
 	}
 	get arrange(): Arrange {
-		return this.#arrange
+		return this.config.arrange
 	}
 
 	/**
@@ -517,7 +444,7 @@ export class GraphState {
 	}
 
 	get groupBy(): NodeAxis {
-		return this.#groupBy
+		return this.config.groupBy
 	}
 
 	/**
@@ -553,32 +480,32 @@ export class GraphState {
 	}
 
 	get groupTint(): boolean {
-		return this.#groupTint
+		return this.config.groupTint
 	}
 
 	get nestBy(): NodeAxis | null {
-		return this.#nestBy
+		return this.config.nestBy
 	}
 
 	get sizeBy(): string {
-		return this.#sizeBy
+		return this.config.sizeBy
 	}
 
 	get sizeScale(): 'linear' | 'log' {
-		return this.#sizeScale
+		return this.config.sizeScale
 	}
 
 	get depth(): number {
-		return this.#depth
+		return this.config.depth
 	}
 
 	get focusPath(): string[] {
-		return this.#focusPath
+		return this.config.focusPath
 	}
 
 	/** The configured cap, or the package default of 2 when none was set. */
 	get levels(): number {
-		return this.#levels ?? 2
+		return this.config.levels ?? 2
 	}
 
 	/**
@@ -604,25 +531,24 @@ export class GraphState {
 	 * a rendering fault rather than a no-op.
 	 */
 	setGrouping(outer: NodeAxis, inner: NodeAxis | null = null): void {
-		this.#groupBy = outer
-		this.#nestBy = inner === outer ? null : inner
+		this.config.setGrouping(outer, inner)
 	}
 	get edgeStyle(): EdgeStyle {
-		return this.#edgeStyle
+		return this.config.edgeStyle
 	}
 	get mode(): 'light' | 'dark' {
-		return this.#mode
+		return this.config.mode
 	}
 	/** The layout's registry key, or 'custom' when a LayoutFn was passed directly. */
 	get layoutName(): string {
-		return typeof this.#layout === 'string' ? this.#layout : 'custom'
+		return typeof this.config.layout === 'string' ? this.config.layout : 'custom'
 	}
 	get value(): string | null {
 		return this.#value
 	}
 	get label(): string {
 		return (
-			this.#label ??
+			this.config.label ??
 			`Diagram of ${plural(this.#model.nodes.length, 'node')} and ${plural(
 				this.#model.edges.length,
 				'relationship'
