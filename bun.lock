@@ -14,6 +14,7 @@
         "@testing-library/user-event": "^14.6.1",
         "@types/bun": "^1.2.22",
         "@vitest/browser": "^4.1.11",
+        "@vitest/browser-playwright": "^4.1.11",
         "@vitest/coverage-v8": "^4.1.11",
         "bumpp": "^10.2.3",
         "eslint": "^9.39.5",
@@ -37,7 +38,7 @@
     },
     "apps/learn": {
       "name": "@rokkit/learn",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@fontsource/caveat": "^5.2.8",
         "@fontsource/fraunces": "^5.2.9",
@@ -87,7 +88,7 @@
     },
     "packages/actions": {
       "name": "@rokkit/actions",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "ramda": "^0.32.0",
@@ -99,7 +100,7 @@
     },
     "packages/app": {
       "name": "@rokkit/app",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@rokkit/actions": "workspace:*",
         "@rokkit/core": "workspace:*",
@@ -126,7 +127,7 @@
     },
     "packages/blocks": {
       "name": "@rokkit/blocks",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "dompurify": "^3.4.13",
       },
@@ -156,7 +157,7 @@
     },
     "packages/chart": {
       "name": "@rokkit/chart",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -196,7 +197,7 @@
     },
     "packages/cli": {
       "name": "@rokkit/cli",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "bin": {
         "rokkit": "src/index.js",
       },
@@ -216,7 +217,7 @@
     },
     "packages/core": {
       "name": "@rokkit/core",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@unocss/preset-mini": "^66.6.1",
         "date-fns": "^4.1.0",
@@ -228,7 +229,7 @@
     },
     "packages/data": {
       "name": "@rokkit/data",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@lukeed/uuid": "^2.0.1",
         "@rokkit/core": "workspace:*",
@@ -245,7 +246,7 @@
     },
     "packages/forms": {
       "name": "@rokkit/forms",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -266,7 +267,7 @@
     },
     "packages/graph": {
       "name": "@rokkit/graph",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@rokkit/core": "workspace:*",
       },
@@ -287,7 +288,7 @@
     },
     "packages/helpers": {
       "name": "@rokkit/helpers",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@vitest/expect": "^4.1.11",
         "@vitest/spy": "^4.1.11",
@@ -296,7 +297,7 @@
     },
     "packages/icons": {
       "name": "@rokkit/icons",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "devDependencies": {
         "@iconify-json/solar": "^1.2.5",
         "@rokkit/cli": "workspace:latest",
@@ -305,7 +306,7 @@
     },
     "packages/states": {
       "name": "@rokkit/states",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/data": "workspace:*",
@@ -321,7 +322,7 @@
     },
     "packages/themes": {
       "name": "@rokkit/themes",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@rokkit/core": "workspace:*",
       },
@@ -333,7 +334,7 @@
     },
     "packages/ui": {
       "name": "@rokkit/ui",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@rokkit/actions": "workspace:*",
         "@rokkit/core": "workspace:*",
@@ -356,7 +357,7 @@
     },
     "packages/unocss": {
       "name": "@rokkit/unocss",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/icons": "workspace:*",
@@ -1012,6 +1013,8 @@
     "@upsetjs/venn.js": ["@upsetjs/venn.js@2.0.0", "", { "optionalDependencies": { "d3-selection": "^3.0.0", "d3-transition": "^3.0.1" } }, "sha512-WbBhLrooyePuQ1VZxrJjtLvTc4NVfpOyKx0sKqioq9bX1C1m7Jgykkn8gLrtwumBioXIqam8DLxp88Adbue6Hw=="],
 
     "@vitest/browser": ["@vitest/browser@4.1.11", "", { "dependencies": { "@blazediff/core": "1.9.1", "@vitest/mocker": "4.1.11", "@vitest/utils": "4.1.11", "magic-string": "^0.30.21", "pngjs": "^7.0.0", "sirv": "^3.0.2", "tinyrainbow": "^3.1.0", "ws": "^8.19.0" }, "peerDependencies": { "vitest": "4.1.11" } }, "sha512-bwMovvAeuTFOK5kIFevw4VEf+1gVEICv4SYK4k3knJOxl6b1zEWud8mYKD73e1B0odAn174h1MofURy2TPWf3w=="],
+
+    "@vitest/browser-playwright": ["@vitest/browser-playwright@4.1.11", "", { "dependencies": { "@vitest/browser": "4.1.11", "@vitest/mocker": "4.1.11", "tinyrainbow": "^3.1.0" }, "peerDependencies": { "playwright": "*", "vitest": "4.1.11" } }, "sha512-riLBxPqwnJ0lWs2DN2WeUfYeKLoAjbP2Xx8cLQdSddzMi20sksIa6K2mPz79DyMZKKVKH2ksOC2yJvtNcZg8cg=="],
 
     "@vitest/coverage-v8": ["@vitest/coverage-v8@4.1.11", "", { "dependencies": { "@bcoe/v8-coverage": "^1.0.2", "@vitest/utils": "4.1.11", "ast-v8-to-istanbul": "^1.0.0", "istanbul-lib-coverage": "^3.2.2", "istanbul-lib-report": "^3.0.1", "istanbul-reports": "^3.2.0", "magicast": "^0.5.2", "obug": "^2.1.1", "std-env": "^4.0.0-rc.1", "tinyrainbow": "^3.1.0" }, "peerDependencies": { "@vitest/browser": "4.1.11", "vitest": "4.1.11" }, "optionalPeers": ["@vitest/browser"] }, "sha512-8MVGEFnJIcdGjcbfKmeq8z0pZHH0JlVtoVZH9Q/qwUp6wyFnEJUBMrw9DCaj+ra3vShGmhavjalMIhPNxZAUcw=="],
 

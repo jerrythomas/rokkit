@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
-import { userEvent } from '@vitest/browser/context'
+import { userEvent } from 'vitest/browser'
 import SelectHarness from './fixtures/SelectHarness.svelte'
 
 /**

@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitest/config'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { svelteTesting } from '@testing-library/svelte/vite'
+import { playwright } from '@vitest/browser-playwright'
 
 /**
  * Browser-mode component tests — a real Chromium via Playwright.
@@ -32,7 +33,7 @@ export default defineConfig({
 		exclude: ['**/node_modules/**', '**/dist/**', '**/.worktrees/**'],
 		browser: {
 			enabled: true,
-			provider: 'playwright',
+			provider: playwright(),
 			headless: true,
 			screenshotFailures: false,
 			instances: [{ browser: 'chromium' }]
