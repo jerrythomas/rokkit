@@ -177,11 +177,20 @@ in `lib/brewing/colors.js`. This lets a geom be coloured straight from a design 
 ```svelte
 <PlotChart data={mpg} spec={{
   geoms: [
-    { type: 'bar', channels: { x: 'year', y: 'hwy', fill: 'class' }, stat: 'mean' },
-    { type: 'line', channels: { x: 'year', y: 'hwy', color: 'class' }, stat: 'mean' }
+    { type: 'bar', x: 'year', y: 'hwy', fill: 'class', stat: 'mean' },
+    { type: 'line', x: 'year', y: 'hwy', color: 'class', stat: 'mean' }
   ]
 }} />
 ```
+
+A geom's fields sit on the geom itself. There is no `channels` wrapper: a geom written
+`{ type: 'bar', channels: { … } }` draws nothing.
+
+A spec value overrides the matching `PlotChart` prop (`data`, `width`, `height`, `grid`, `legend`,
+`title`, `summary`, `xDomain`/`yDomain`, `axisOrigin`/`axisOffset`, `x`/`y`). The one exception is
+`orientation`, where the prop wins, so a wrapper can force the direction over a shared spec.
+Each geom inherits the spec's `x`/`y`/`color`/`fill` unless it names its own, plus its
+`stack`/`orientation` under `options`. The table is `PLOT_CONFIG_FIELDS` in `lib/plot/spec.js`.
 
 A `helpers` prop supplies custom stat functions, format functions, and tooltip renderers
 (`{ stats, formats, tooltip }`).

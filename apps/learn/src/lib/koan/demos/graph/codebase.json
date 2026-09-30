@@ -970,6 +970,24 @@
 			}
 		},
 		{
+			"id": "packages/chart/src/Plot/DataTable.svelte",
+			"label": "DataTable.svelte",
+			"kind": "view",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"Plot",
+				"DataTable.svelte"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 55
+			}
+		},
+		{
 			"id": "packages/chart/src/Plot/Grid.svelte",
 			"label": "Grid.svelte",
 			"kind": "view",
@@ -1021,6 +1039,24 @@
 				"tested": 0,
 				"files": 1,
 				"lines": 99
+			}
+		},
+		{
+			"id": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"label": "SpecGeoms.svelte",
+			"kind": "view",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"Plot",
+				"SpecGeoms.svelte"
+			],
+			"m": {
+				"declarations": 1,
+				"tested": 0,
+				"files": 1,
+				"lines": 79
 			}
 		},
 		{
@@ -1091,7 +1127,7 @@
 				"declarations": 1,
 				"tested": 1,
 				"files": 1,
-				"lines": 358
+				"lines": 226
 			}
 		},
 		{
@@ -2492,7 +2528,7 @@
 				"declarations": 1,
 				"tested": 0,
 				"files": 1,
-				"lines": 56
+				"lines": 64
 			}
 		},
 		{
@@ -2630,7 +2666,7 @@
 				"declarations": 9,
 				"tested": 0,
 				"files": 1,
-				"lines": 646
+				"lines": 651
 			}
 		},
 		{
@@ -2930,6 +2966,25 @@
 				"tested": 0,
 				"files": 1,
 				"lines": 90
+			}
+		},
+		{
+			"id": "packages/chart/src/lib/plot/spec.js",
+			"label": "spec.js",
+			"kind": "function",
+			"group": "chart",
+			"path": [
+				"rokkit",
+				"chart",
+				"lib",
+				"plot",
+				"spec.js"
+			],
+			"m": {
+				"declarations": 5,
+				"tested": 0,
+				"files": 1,
+				"lines": 132
 			}
 		},
 		{
@@ -5214,24 +5269,6 @@
 			}
 		},
 		{
-			"id": "packages/forms/src/lib/conditions.spec.js",
-			"label": "conditions.spec.js",
-			"kind": "function",
-			"group": "forms",
-			"path": [
-				"rokkit",
-				"forms",
-				"lib",
-				"conditions.spec.js"
-			],
-			"m": {
-				"declarations": 0,
-				"tested": 0,
-				"files": 1,
-				"lines": 59
-			}
-		},
-		{
 			"id": "packages/forms/src/lib/elements.js",
 			"label": "elements.js",
 			"kind": "function",
@@ -5264,25 +5301,7 @@
 				"declarations": 2,
 				"tested": 0,
 				"files": 1,
-				"lines": 146
-			}
-		},
-		{
-			"id": "packages/forms/src/lib/fields.spec.js",
-			"label": "fields.spec.js",
-			"kind": "function",
-			"group": "forms",
-			"path": [
-				"rokkit",
-				"forms",
-				"lib",
-				"fields.spec.js"
-			],
-			"m": {
-				"declarations": 0,
-				"tested": 0,
-				"files": 1,
-				"lines": 251
+				"lines": 159
 			}
 		},
 		{
@@ -5369,10 +5388,10 @@
 				"schema.js"
 			],
 			"m": {
-				"declarations": 2,
+				"declarations": 3,
 				"tested": 0,
 				"files": 1,
-				"lines": 59
+				"lines": 78
 			}
 		},
 		{
@@ -5485,7 +5504,7 @@
 				"declarations": 4,
 				"tested": 0,
 				"files": 1,
-				"lines": 284
+				"lines": 294
 			}
 		},
 		{
@@ -9975,6 +9994,101 @@
 			"kind": "imports"
 		},
 		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/lib/plot/types.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/lib/plot/spec.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Bar.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Line.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Area.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Point.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Arc.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Box.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Violin.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Heatmap.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Candlestick.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Waterfall.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Hexbin.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Ribbon.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Radar.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Rule.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Region.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Hull.svelte",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"target": "packages/chart/src/geoms/Contour.svelte",
+			"kind": "imports"
+		},
+		{
 			"source": "packages/chart/src/Plot/Tooltip.svelte",
 			"target": "packages/chart/src/PlotState.svelte.js",
 			"kind": "imports"
@@ -10036,6 +10150,11 @@
 		},
 		{
 			"source": "packages/chart/src/Plot.svelte",
+			"target": "packages/chart/src/lib/plot/spec.js",
+			"kind": "imports"
+		},
+		{
+			"source": "packages/chart/src/Plot.svelte",
 			"target": "packages/chart/src/PlotSurface.svelte",
 			"kind": "imports"
 		},
@@ -10061,87 +10180,12 @@
 		},
 		{
 			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Bar.svelte",
+			"target": "packages/chart/src/Plot/SpecGeoms.svelte",
 			"kind": "imports"
 		},
 		{
 			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Line.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Area.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Point.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Arc.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Box.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Violin.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Heatmap.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Candlestick.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Waterfall.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Hexbin.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Ribbon.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Radar.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Rule.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Region.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Hull.svelte",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/chart/src/Plot.svelte",
-			"target": "packages/chart/src/geoms/Contour.svelte",
+			"target": "packages/chart/src/Plot/DataTable.svelte",
 			"kind": "imports"
 		},
 		{
@@ -12350,11 +12394,6 @@
 			"kind": "imports"
 		},
 		{
-			"source": "packages/forms/src/lib/conditions.spec.js",
-			"target": "packages/forms/src/lib/conditions.js",
-			"kind": "imports"
-		},
-		{
 			"source": "packages/forms/src/lib/elements.js",
 			"target": "packages/forms/src/lib/fields.js",
 			"kind": "imports"
@@ -12362,21 +12401,6 @@
 		{
 			"source": "packages/forms/src/lib/elements.js",
 			"target": "packages/forms/src/lib/conditions.js",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/forms/src/lib/fields.spec.js",
-			"target": "packages/forms/src/lib/schema.js",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/forms/src/lib/fields.spec.js",
-			"target": "packages/forms/src/lib/layout.js",
-			"kind": "imports"
-		},
-		{
-			"source": "packages/forms/src/lib/fields.spec.js",
-			"target": "packages/forms/src/lib/fields.js",
 			"kind": "imports"
 		},
 		{

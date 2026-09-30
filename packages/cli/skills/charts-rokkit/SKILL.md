@@ -62,11 +62,15 @@ Shapes: `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `ScatterPlot`, `Bubble
 ```svelte
 <PlotChart {data} spec={{
   geoms: [
-    { type: 'bar',  channels: { x: 'quarter', y: 'revenue', fill: 'product' }, stat: 'sum' },
-    { type: 'line', channels: { x: 'quarter', y: 'forecast', color: 'class' } }
+    { type: 'bar',  x: 'quarter', y: 'revenue', fill: 'product', stat: 'sum' },
+    { type: 'line', x: 'quarter', y: 'forecast', color: 'class' }
   ]
 }} />
 ```
+
+Fields go on the geom itself. There is no `channels: { … }` wrapper, and a geom written with one
+draws nothing. Set `x`/`y`/`color` once on the spec and every geom inherits them. A spec value
+overrides the matching prop, except `orientation`, where the prop wins.
 
 ---
 

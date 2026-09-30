@@ -102,8 +102,8 @@
 			"component": "chart",
 			"package": "chart",
 			"files": 15,
-			"loc": 2471,
-			"churn": 221,
+			"loc": 2339,
+			"churn": 223,
 			"ca": 42,
 			"ce": 13,
 			"instability": 0.236,
@@ -163,24 +163,24 @@
 			"package": "chart",
 			"files": 43,
 			"loc": 4039,
-			"churn": 257,
-			"ca": 14,
+			"churn": 258,
+			"ca": 15,
 			"ce": 34,
-			"instability": 0.708,
+			"instability": 0.694,
 			"abstractness": 0.017,
-			"distance": 0.274
+			"distance": 0.289
 		},
 		{
 			"component": "chart/lib",
 			"package": "chart",
-			"files": 36,
-			"loc": 3436,
-			"churn": 211,
-			"ca": 44,
+			"files": 37,
+			"loc": 3581,
+			"churn": 214,
+			"ca": 45,
 			"ce": 6,
-			"instability": 0.12,
-			"abstractness": 0.115,
-			"distance": 0.765
+			"instability": 0.118,
+			"abstractness": 0.11,
+			"distance": 0.772
 		},
 		{
 			"component": "chart/patterns",
@@ -197,14 +197,14 @@
 		{
 			"component": "chart/Plot",
 			"package": "chart",
-			"files": 7,
-			"loc": 809,
-			"churn": 66,
+			"files": 9,
+			"loc": 943,
+			"churn": 68,
 			"ca": 3,
-			"ce": 6,
-			"instability": 0.667,
+			"ce": 7,
+			"instability": 0.7,
 			"abstractness": 0,
-			"distance": 0.333
+			"distance": 0.3
 		},
 		{
 			"component": "chart/spec",
@@ -341,14 +341,14 @@
 		{
 			"component": "forms/lib",
 			"package": "forms",
-			"files": 19,
-			"loc": 2724,
-			"churn": 106,
+			"files": 17,
+			"loc": 2456,
+			"churn": 104,
 			"ca": 4,
 			"ce": 4,
 			"instability": 0.5,
-			"abstractness": 0.188,
-			"distance": 0.313
+			"abstractness": 0.184,
+			"distance": 0.316
 		},
 		{
 			"component": "graph",
@@ -1641,7 +1641,7 @@
 			"component": "chart/geoms",
 			"loc": 107,
 			"complexity": 14,
-			"churn": 14,
+			"churn": 15,
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
@@ -2283,9 +2283,9 @@
 			"label": "arcs.js",
 			"package": "chart",
 			"component": "chart/lib",
-			"loc": 56,
-			"complexity": 7,
-			"churn": 9,
+			"loc": 64,
+			"complexity": 10,
+			"churn": 10,
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
@@ -2381,9 +2381,9 @@
 			"label": "polar.js",
 			"package": "chart",
 			"component": "chart/lib",
-			"loc": 646,
-			"complexity": 92,
-			"churn": 8,
+			"loc": 651,
+			"complexity": 93,
+			"churn": 9,
 			"coverage": 1,
 			"declarations": 14,
 			"abstract": 5,
@@ -2615,6 +2615,20 @@
 			"fanOut": 0
 		},
 		{
+			"id": "packages/chart/src/lib/plot/spec.js",
+			"label": "spec.js",
+			"package": "chart",
+			"component": "chart/lib",
+			"loc": 132,
+			"complexity": 26,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 5,
+			"abstract": 0,
+			"fanIn": 2,
+			"fanOut": 0
+		},
+		{
 			"id": "packages/chart/src/lib/plot/stacking.js",
 			"label": "stacking.js",
 			"package": "chart",
@@ -2653,7 +2667,7 @@
 			"coverage": null,
 			"declarations": 4,
 			"abstract": 3,
-			"fanIn": 6,
+			"fanIn": 7,
 			"fanOut": 0
 		},
 		{
@@ -2829,14 +2843,14 @@
 			"label": "Plot.svelte",
 			"package": "chart",
 			"component": "chart",
-			"loc": 358,
-			"complexity": 72,
-			"churn": 38,
-			"coverage": 0.94,
+			"loc": 226,
+			"complexity": 27,
+			"churn": 40,
+			"coverage": 0.932,
 			"declarations": 1,
 			"abstract": 0,
 			"fanIn": 14,
-			"fanOut": 26
+			"fanOut": 12
 		},
 		{
 			"id": "packages/chart/src/Plot/Axis.svelte",
@@ -2851,6 +2865,20 @@
 			"abstract": 0,
 			"fanIn": 3,
 			"fanOut": 1
+		},
+		{
+			"id": "packages/chart/src/Plot/DataTable.svelte",
+			"label": "DataTable.svelte",
+			"package": "chart",
+			"component": "chart/Plot",
+			"loc": 55,
+			"complexity": 10,
+			"churn": 1,
+			"coverage": 1,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 0
 		},
 		{
 			"id": "packages/chart/src/Plot/Grid.svelte",
@@ -2907,6 +2935,20 @@
 			"abstract": 0,
 			"fanIn": 2,
 			"fanOut": 2
+		},
+		{
+			"id": "packages/chart/src/Plot/SpecGeoms.svelte",
+			"label": "SpecGeoms.svelte",
+			"package": "chart",
+			"component": "chart/Plot",
+			"loc": 79,
+			"complexity": 10,
+			"churn": 1,
+			"coverage": 0.957,
+			"declarations": 1,
+			"abstract": 0,
+			"fanIn": 1,
+			"fanOut": 19
 		},
 		{
 			"id": "packages/chart/src/Plot/Timeline.svelte",
@@ -4599,22 +4641,8 @@
 			"coverage": 1,
 			"declarations": 1,
 			"abstract": 0,
-			"fanIn": 3,
+			"fanIn": 2,
 			"fanOut": 0
-		},
-		{
-			"id": "packages/forms/src/lib/conditions.spec.js",
-			"label": "conditions.spec.js",
-			"package": "forms",
-			"component": "forms/lib",
-			"loc": 59,
-			"complexity": 1,
-			"churn": 2,
-			"coverage": null,
-			"declarations": 0,
-			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 1
 		},
 		{
 			"id": "packages/forms/src/lib/elements.js",
@@ -4635,28 +4663,14 @@
 			"label": "fields.js",
 			"package": "forms",
 			"component": "forms/lib",
-			"loc": 146,
-			"complexity": 14,
-			"churn": 8,
+			"loc": 159,
+			"complexity": 16,
+			"churn": 9,
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 0,
-			"fanIn": 5,
+			"fanIn": 4,
 			"fanOut": 0
-		},
-		{
-			"id": "packages/forms/src/lib/fields.spec.js",
-			"label": "fields.spec.js",
-			"package": "forms",
-			"component": "forms/lib",
-			"loc": 251,
-			"complexity": 5,
-			"churn": 3,
-			"coverage": null,
-			"declarations": 0,
-			"abstract": 0,
-			"fanIn": 0,
-			"fanOut": 3
 		},
 		{
 			"id": "packages/forms/src/lib/index.js",
@@ -4697,7 +4711,7 @@
 			"coverage": 1,
 			"declarations": 2,
 			"abstract": 0,
-			"fanIn": 4,
+			"fanIn": 3,
 			"fanOut": 1
 		},
 		{
@@ -4733,13 +4747,13 @@
 			"label": "schema.js",
 			"package": "forms",
 			"component": "forms/lib",
-			"loc": 59,
-			"complexity": 9,
-			"churn": 6,
+			"loc": 78,
+			"complexity": 11,
+			"churn": 7,
 			"coverage": 1,
-			"declarations": 2,
+			"declarations": 3,
 			"abstract": 0,
-			"fanIn": 5,
+			"fanIn": 4,
 			"fanOut": 1
 		},
 		{
@@ -4817,9 +4831,9 @@
 			"label": "validation.js",
 			"package": "forms",
 			"component": "forms/lib",
-			"loc": 284,
-			"complexity": 55,
-			"churn": 8,
+			"loc": 294,
+			"complexity": 57,
+			"churn": 9,
 			"coverage": 1,
 			"declarations": 5,
 			"abstract": 1,
@@ -8096,12 +8110,12 @@
 		{
 			"source": "chart",
 			"target": "chart/geoms",
-			"count": 44
+			"count": 27
 		},
 		{
 			"source": "chart",
 			"target": "chart/lib",
-			"count": 17
+			"count": 18
 		},
 		{
 			"source": "chart",
@@ -8111,7 +8125,7 @@
 		{
 			"source": "chart",
 			"target": "chart/Plot",
-			"count": 9
+			"count": 11
 		},
 		{
 			"source": "chart",
@@ -8226,12 +8240,12 @@
 		{
 			"source": "chart/Plot",
 			"target": "chart/geoms",
-			"count": 5
+			"count": 22
 		},
 		{
 			"source": "chart/Plot",
 			"target": "chart/lib",
-			"count": 3
+			"count": 5
 		},
 		{
 			"source": "chart/state",
@@ -8508,13 +8522,13 @@
 		{
 			"source": "chart",
 			"target": "chart/lib",
-			"count": 34,
+			"count": 35,
 			"imported": true
 		},
 		{
 			"source": "chart/geoms",
 			"target": "chart/lib",
-			"count": 34,
+			"count": 35,
 			"imported": true
 		},
 		{
@@ -8549,13 +8563,13 @@
 		},
 		{
 			"source": "chart",
-			"target": "chart/charts",
-			"count": 13,
+			"target": "chart/Plot",
+			"count": 14,
 			"imported": true
 		},
 		{
 			"source": "chart",
-			"target": "chart/Plot",
+			"target": "chart/charts",
 			"count": 13,
 			"imported": true
 		},

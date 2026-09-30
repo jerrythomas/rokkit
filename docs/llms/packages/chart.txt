@@ -156,6 +156,12 @@ const spec = {
 }
 ```
 
+A spec value overrides the matching `PlotChart` prop (`data`, `width`, `height`, `grid`, `legend`,
+`title`, `summary`, `xDomain`/`yDomain`, `axisOrigin`/`axisOffset`, `x`/`y`). The one exception is
+`orientation`, where the prop wins, so a wrapper can force the direction over a shared spec.
+Each geom inherits the spec's `x`/`y`/`color`/`fill` unless it names its own, plus its
+`stack`/`orientation` under `options`. A geom's own fields sit on it directly (`{ type: 'bar', x, y, fill }`); there is no `channels` wrapper.
+
 ## Plot State (advanced)
 
 `PlotState` is the reactive state `PlotChart` publishes on the `'plot-state'` context. It is a
