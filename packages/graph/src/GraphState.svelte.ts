@@ -19,27 +19,13 @@ import type {
 	Size
 } from './layout/types.js'
 import type { GraphEdge, GraphFields, GraphModel, GraphNode } from './types.js'
+import { relationshipsOf } from './model/relationships.js'
+import type { Relationship } from './model/relationships.js'
+import { entityRows } from './model/entities.js'
+import type { EntityRow } from './model/entities.js'
+import { contentExtent } from './layout/extent.js'
 
-export type EntityRow = {
-	id: string
-	label: string
-	group?: string
-	kind?: string
-	rowCount: number
-	refCount: number
-	note?: string
-}
-
-export type Relationship = {
-	direction: 'in' | 'out'
-	id: string
-	label: string
-	group?: string
-	/** The canonical edge — always present. A relationship is a fact about the model. */
-	edge: GraphEdge
-	/** Routed geometry, present only when the ACTIVE layout placed this edge. */
-	routed?: RoutedEdge
-}
+export type { Relationship, EntityRow }
 
 export type GraphStateConfig = {
 	nodes?: unknown[]
@@ -89,61 +75,6 @@ export type GraphStateConfig = {
 }
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
-
-/** How `id` sits on an edge: not on it, both ends of it, or one end with a far side. */
-function endpointsFor(
-	edge: GraphEdge,
-	id: string
-): { self: boolean; other: string; direction: 'in' | 'out' } | null {
-	const isSource = edge.source === id
-	const isTarget = edge.target === id
-	if (!isSource && !isTarget) return null
-
-	return {
-		self: isSource && isTarget,
-		other: isSource ? edge.target : edge.source,
-		direction: isSource ? 'out' : 'in'
-	}
-}
-
-/**
- * One edge's contribution to the selected node's relationship list.
- *
- * An UNPLACED edge is reported too, with the raw name as the label — the far end is not a
- * node, so there is nothing to look up. Hiding it would be worse: "this references something
- * we have not indexed" is exactly what a reader of a partial graph needs to see.
- */
-function describeEdge(
-	edge: GraphEdge,
-	id: string,
-	describe: (other: string, direction: 'in' | 'out', edge: GraphEdge) => Relationship
-): Relationship[] {
-	const ends = endpointsFor(edge, id)
-	if (!ends) return []
-	if (ends.self) return [describe(id, 'out', edge)]
-
-	const { other, direction } = ends
-
-	// An unplaced far end is not a node, so there is nothing to look up: the raw name IS
-	// the label. Reported rather than hidden — "references something not indexed" is what a
-	// reader of a partial graph most needs to see.
-	return edge.unplaced
-		? [{ direction, id: other, label: other, edge }]
-		: [describe(other, direction, edge)]
-}
-
-/** Bottom-right extent of a set of boxes, or {0,0} when there are none. */
-function extentOf(boxes: { x: number; y: number; w: number; h: number }[]): Size {
-	let w = 0
-	let h = 0
-
-	for (const box of boxes) {
-		w = Math.max(w, box.x + box.w)
-		h = Math.max(h, box.y + box.h)
-	}
-
-	return { w, h }
-}
 
 /**
  * The store. Turns raw `nodes`/`edges`/`fields` into the reactive shape the visuals
@@ -268,63 +199,12 @@ export class GraphState {
 			: new SvelteSet<string>()
 	)
 
-	#entities = $derived(
-		this.#model.nodes.map((node) => ({
-			id: node.id,
-			label: node.label,
-			group: node.group,
-			kind: node.kind,
-			rowCount: node.rows.length,
-			refCount: this.#model.edges.filter((e) => e.source === node.id || e.target === node.id)
-				.length,
-			note: node.note
-		}))
-	)
+	#entities = $derived(entityRows(this.#model))
 
 	#entity = $derived(this.#value ? (this.#model.byId.get(this.#value) ?? null) : null)
 
-	/**
-	 * Derived from `#model.edges` — the canonical, unfiltered model — NOT from `#result.edges`.
-	 *
-	 * A layout filters: `cluster` drops edges whose endpoints were not laid out, and
-	 * `neighborhood` lays out only the focus node's 1-hop neighbourhood. Since `focus` and
-	 * `value` are independent config fields, reading the layout's edges lets the state
-	 * contradict itself: with `focus: 'audit.log'` (no neighbours) and `value: 'public.orders'`,
-	 * `relationships` would be `[]` while `entities`' `refCount` for the same node is 1.
-	 *
-	 * Routed geometry is attached opportunistically — it exists only for edges the active layout
-	 * actually placed, so `routed` is optional on `Relationship`. A relationship is a fact about
-	 * the model; its geometry is a fact about the current view.
-	 */
-	#relationships = $derived.by((): Relationship[] => {
-		const id = this.#value
-		if (!id) return []
-
-		// A plain Map on purpose: a call-local lookup built once from an already-derived array
-		// and discarded when this derivation re-runs. Nothing outside can observe it, so
-		// SvelteMap would add proxying for no reactivity.
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		const routed = new Map(this.#result.edges.map((e) => [e.id, e]))
-
-		const describe = (other: string, direction: 'in' | 'out', edge: GraphEdge): Relationship => {
-			// normalizeGraph drops any edge whose endpoints do not resolve, so both ends of
-			// every edge in #model.edges are in byId. No `?? other` fallback here: an
-			// unreachable branch cannot be tested, and the package's 100% statement bar
-			// exists to keep that honest.
-			const node = this.#model.byId.get(other) as GraphNode
-
-			return {
-				direction,
-				id: other,
-				label: node.label,
-				group: node.group,
-				edge,
-				routed: routed.get(edge.id)
-			}
-		}
-
-		return this.#model.edges.flatMap((edge) => describeEdge(edge, id, describe))
-	})
+	/** From the canonical model, not the layout's filtered edges — see `relationshipsOf`. */
+	#relationships = $derived(relationshipsOf(this.#model, this.#value, this.#result.edges))
 
 	constructor(config: GraphStateConfig = {}) {
 		this.update(config)
@@ -564,22 +444,7 @@ export class GraphState {
 	 * stay in the component. Keeping this here is what lets it be tested without a renderer.
 	 */
 	get contentSize(): Size {
-		const clusters = this.#result.clusters.map((c) => ({
-			x: c.x,
-			y: c.y,
-			w: c.w ?? 0,
-			h: c.h ?? 0
-		}))
-		let { w, h } = extentOf(clusters)
-
-		// An ungrouped layout (neighborhood) reports no clusters, so fall back to the cards.
-		if (!w || !h) {
-			const cards = extentOf(Object.values(this.#result.cards))
-			w = Math.max(w, cards.w)
-			h = Math.max(h, cards.h)
-		}
-
-		return { w: w || this.#result.size.w, h: h || this.#result.size.h }
+		return contentExtent(this.#result.clusters, this.#result.cards, this.#result.size)
 	}
 	get related(): SvelteSet<string> {
 		return this.#related
