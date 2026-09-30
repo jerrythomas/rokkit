@@ -24,9 +24,9 @@
  *   })
  */
 
-import { TYPEAHEAD_RESET_MS } from './nav-constants.js'
 import { buildKeymap, resolveAction } from './keymap.js'
 import { pathOf, clickAction, isNestedInteractive, isDisabledItem } from './navigator/dom.js'
+import { Typeahead } from './navigator/typeahead.js'
 
 // ─── Navigator ────────────────────────────────────────────────────────────────
 
@@ -38,9 +38,7 @@ export class Navigator {
 	// Set by destroy() so a deferred focusout can tell it's been torn down.
 	#destroyed = false
 
-	// Typeahead state
-	#buffer = ''
-	#bufferTimer = null
+	#typeahead = new Typeahead()
 
 	/**
 	 * @param {HTMLElement} root
@@ -71,7 +69,7 @@ export class Navigator {
 		if (this.#containScroll) {
 			this.#root.removeEventListener('wheel', this.#onWheel)
 		}
-		this.#clearTypeahead()
+		this.#typeahead.clear()
 	}
 
 	// ─── Keydown ────────────────────────────────────────────────────────────
@@ -235,56 +233,23 @@ export class Navigator {
 
 	// ─── Typeahead ───────────────────────────────────────────────────────────
 
-	#isPrintableKey(key, ctrlKey, metaKey, altKey) {
-		if (ctrlKey) return false
-		if (metaKey) return false
-		if (altKey) return false
-		if (key.length !== 1) return false
-		return key !== ' '
-	}
-
-	#appendBuffer(key) {
-		const startAfter = this.#buffer.length === 0 ? this.#wrapper.focusedKey : null
-		this.#buffer += key
-		if (this.#bufferTimer) {
-			clearTimeout(this.#bufferTimer)
-			this.#bufferTimer = null
-		}
-		this.#bufferTimer = setTimeout(() => this.#clearTypeahead(), TYPEAHEAD_RESET_MS)
-		return startAfter
-	}
-
 	/**
-	 * Handle printable character keys for typeahead search.
-	 * Returns true if the event was consumed.
+	 * A printable key searches the items by text. True when it matched (and was consumed); a key
+	 * that matches nothing still extends the search but falls through to the keymap.
 	 *
 	 * @param {KeyboardEvent} event
 	 * @returns {boolean}
 	 */
 	#tryTypeahead(event) {
-		const { key, ctrlKey, metaKey, altKey } = event
-
-		if (!this.#isPrintableKey(key, ctrlKey, metaKey, altKey)) return false
-
-		const startAfter = this.#appendBuffer(key)
-
-		const matchKey = this.#wrapper.findByText(this.#buffer, startAfter)
-		if (matchKey !== null) {
-			event.preventDefault()
-			event.stopPropagation()
-			this.#wrapper.moveTo(matchKey)
-			this.#syncFocus()
-			return true
-		}
-
-		return false
-	}
-
-	#clearTypeahead() {
-		this.#buffer = ''
-		if (this.#bufferTimer) {
-			clearTimeout(this.#bufferTimer)
-			this.#bufferTimer = null
-		}
+		if (!this.#typeahead.accepts(event)) return false
+		const match = this.#typeahead.type(event.key, this.#wrapper.focusedKey, (text, after) =>
+			this.#wrapper.findByText(text, after)
+		)
+		if (match === null) return false
+		event.preventDefault()
+		event.stopPropagation()
+		this.#wrapper.moveTo(match)
+		this.#syncFocus()
+		return true
 	}
 }

@@ -28,7 +28,7 @@ becomes event wiring over three focused parts:
 4. `Navigator` as wiring; event-replay differential old vs new (every wrapper call and every
    preventDefault / stopPropagation); re-measure; docs; journal.
 
-Characterisation: `spec/navigator.spec.js` already pins 54 behaviours (keys, clicks, links,
+Characterisation: `spec/navigator.spec.js` already pins 51 behaviours (keys, clicks, links,
 accordion triggers, focus redirect, deferred blur after destroy, wheel containment, typeahead
 timing, scroll-within-root, nested interactives, disabled items). It must pass unchanged.
 
