@@ -141,8 +141,10 @@ function buildNeighbourCards(
  * Place every ring, size the canvas, and name the columns.
  *
  * An EMPTY ring costs no width: a depth-2 request on a graph with nothing at depth 2 must not
- * leave a gap where that column would have been, so the width is measured from the rightmost
- * column that actually exists rather than from the depth asked for.
+ * leave a gap where that column would have been, so the width is measured from the deepest
+ * column that actually exists rather than from the depth asked for. An empty SIDE is
+ * different (#170): the focus is centred, so the shallower side reserves the deeper side's
+ * columns — otherwise "centred" would only hold for a node with neighbours both ways.
  */
 function arrange(
 	built: Ring[],
@@ -150,7 +152,10 @@ function arrange(
 	ctx: { focus: GraphNode; hasLoop: boolean; dependency: boolean }
 ): { columns: Column[]; size: Size } {
 	const occupied = built.filter((r) => r.ids.length > 0)
-	const { focusX, xFor } = geometry(occupied)
+	// The same edge room on BOTH sides — a self-loop's bow plus a hairline — so the canvas
+	// stays symmetric about the focus.
+	const edge = (ctx.hasLoop ? LOOP_W : 0) + 2
+	const { focusX, xFor } = geometry(occupied, edge)
 	const focusCard = cards[ctx.focus.id]
 
 	const height = placeRings(occupied, cards, { focusCard, focusX, xFor })
@@ -160,8 +165,9 @@ function arrange(
 		xFor,
 		dependency: ctx.dependency
 	})
-	const width =
-		xFor('out', furthest(occupied, 'out')) + CARD_W + (ctx.hasLoop ? LOOP_W : 0) + 4
+	// Symmetric about the focus (#170): as much room right of it as left, so the focus card's
+	// centre IS the canvas's centre whichever side is empty or deeper.
+	const width = focusX * 2 + CARD_W
 
 	return { columns, size: { w: width, h: height } }
 }
@@ -198,14 +204,19 @@ function drawableIn(model: GraphModel, cards: Cards) {
 
 /**
  * Where each ring sits. Ring d on the `in` side is d steps left of the focus; on the `out`
- * side, d steps right. The focus is pushed right by however deep the inbound side goes.
+ * side, d steps right. The focus sits past `edge` and as many columns as the DEEPER side
+ * needs, so both sides get the same room and the focus is the centre.
  */
-function geometry(occupied: Ring[]): {
+function geometry(
+	occupied: Ring[],
+	edge: number
+): {
 	focusX: number
 	xFor: (side: Side, depth: number) => number
 } {
 	const columnStep = CARD_W + COL_GAP
-	const focusX = furthest(occupied, 'in') * columnStep
+	const reach = Math.max(furthest(occupied, 'in'), furthest(occupied, 'out'))
+	const focusX = edge + reach * columnStep
 
 	return {
 		focusX,
