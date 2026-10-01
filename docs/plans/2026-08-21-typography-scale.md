@@ -4,11 +4,20 @@
 already solved at build time by self-hosted `@fontsource` packages. The remaining
 typography work is **heading levels and font styles**, not more faces.
 
-**Status:** Phase 1 tokens shipped (`22781202b`) but have no consumer yet; Phase 2 is blocked
-on a product decision (below); Phase 3 is not started. The font-selection half of #152 is
-done and tested (`f69308fa`). Its test gaps are closed (2026-10-01): step 04 shows all three
-roles, an e2e checks each pick reaches its role's preview element, and another checks that
-picking fetches nothing from another origin and that a bundled face is ready immediately.
+**Status:** DONE (2026-10-01), by a different route than the phases below. The owner chose the
+guides' scale as canonical (option a), then asked whether size tokens are needed at all if
+levels can be styled by a data attribute. They are not: a level is size + weight +
+line-height + tracking at once, and a custom property carries one value (the same call as the
+state vocabulary, #153). So:
+- the 18 `--text/--leading/--weight` tokens and the preset's `typography.ratio/base/levels`
+  are removed (`refactor!`);
+- `base/heading.css` styles `[data-heading='1'..'4']` and `[data-prose] h1..h4` with the
+  guides' values. The guides moved onto it with zero visual change, pinned by
+  `guide-type-scale.e2e.ts`;
+- wizard step 03 edits size and weight per level and emits `[data-heading]` rules for the
+  live preview, the saved preset and `tokens.css`.
+
+Phases 1–3 below are kept as history.
 
 ---
 

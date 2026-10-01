@@ -10600,3 +10600,22 @@ base. Recorded at the top of `18-state-patterns.md`; the migration plan is super
 Kept and enforced: one attribute shape. `packages/ui/spec/state-attributes.spec.ts` fails on a
 hand-built state value. It caught `CodeGroup`'s `data-open=""` (every theme rule reads
 `[data-open='true']`) and my own List `'true'` ternaries, all now `{flag || undefined}`.
+
+## 2026-10-01 (7) — #152: heading levels as [data-heading] rules
+
+The user picked option (a), the guides' scale as canonical, then asked whether size tokens
+are needed if levels can be styled by a data attribute. They are not, for the same reason as
+#153: a level is several properties at once.
+
+- `6572d9506` (`refactor!`): the `--text/--leading/--weight` scale and the preset's
+  `typography.ratio/base/levels` are removed. They had no consumer.
+- `62d17af02`: `base/heading.css` styles `[data-heading='1'..'4']` and `[data-prose] h1..h4` with the
+  guides' values. GuidePage sets `data-prose`. `guide-type-scale.e2e` pinned every level's
+  computed type before the move and still passes after it, so the move is zero-change. It
+  uses plain selectors, because the app's reset styles h1–h6 at element specificity.
+- `6885857e4`: wizard step 03 has size and weight per level, as `headingRules()`: live `<style>`,
+  preset and `tokens.css`. Step 04 shows real `data-heading` samples.
+
+Docs: themes llms gains a heading-levels section, the semantic-styles skill steers to
+`data-heading`, and the typography plan is marked done. Noted, not fixed: the tree-table demo
+reads `--text-md` / `--text-sm`, which never existed.

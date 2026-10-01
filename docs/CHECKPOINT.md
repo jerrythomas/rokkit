@@ -8,13 +8,14 @@
 **#153 closed** (2026-10-01, owner decision): the data attributes are the state vocabulary,
 with no token tier.
 
-**Open issues:** #152 only. Its heading-scale phase waits on the user's choice: (a) retune the
-scale to the guides' headings (recommended), (b) restyle the guides, or (c) leave the tokens
-unconsumed.
+**#152 done** (heading levels as `[data-heading]` rules), pending CI and closing.
 
-**Next command:** ask about #152's option; otherwise `gh issue list --state open`.
+**Open issues:** none from this batch once #152 closes. Next is `gh issue list --state open`.
+
+**Next command:** `gh issue list --state open`.
 
 **Open questions:**
+- The tree-table demo reads `--text-md` / `--text-sm`, which never existed, so its font-size falls back to inherited. Give it a `data-heading` or a real size.
 - #152's heading-levels phase: which heading set adopts the type scale. (a) Retune it to the
   guides' scale (recommended), (b) restyle the guides, or (c) leave the tokens unconsumed.
 - dbd's preview server was killed by mistake on 2026-10-01. Restart it in `dbd/site` if needed;

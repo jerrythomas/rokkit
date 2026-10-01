@@ -351,6 +351,12 @@ aliases. Usage classes: `font-heading` (display face), `font-body` (UI face), `f
 <code class="font-mono text-xs text-ink-soft">path/to/file.ts</code>
 ```
 
+**Heading levels** come from `[data-heading='1'..'4']` rules in `@rokkit/themes` (face, size,
+weight, line-height and tracking together). Give a title its level with `data-heading="2"` —
+or put prose under `data-prose` and its `h1`–`h4` take the levels — rather than hand-picking
+`text-2xl font-semibold`. There are no `--text-*` scale tokens; override a level with the same
+selector.
+
 ---
 
 ## Shape / radius configuration

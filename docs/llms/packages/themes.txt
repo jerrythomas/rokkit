@@ -176,6 +176,33 @@ Activate it with `data-style` just like a built-in theme:
 <body data-style="my-theme">
 ```
 
+## Heading levels — `[data-heading]`
+
+A heading level is a rule, not a token: face, size, weight, line-height and tracking together.
+`base/heading.css` styles levels 1–4 two ways at once:
+
+```html
+<h2 data-heading="2">Section</h2>            <!-- any element can take a level -->
+<span class="card-title" data-heading="3">Card title</span>
+<article data-prose>…markdown h1–h4…</article> <!-- prose headings, by element -->
+```
+
+| Level | Size | Weight | Line-height |
+|---|---|---|---|
+| 1 | 28px | 700 | 1.2 |
+| 2 | 18px | 600 | 1.3 |
+| 3 | 14.5px | 600 | normal |
+| 4 | 14px | 600 | 1.4 |
+
+Override with the same selector, loaded later, exactly as with state attributes:
+
+```css
+[data-heading='1'], [data-prose] h1 { font-size: 32px; font-weight: 600; }
+```
+
+There are no `--text-*` / `--leading-*` / `--weight-*` tokens (removed in #152): a custom
+property carries one property, and a level is several at once.
+
 ## Skins
 
 Skins are pre-built color bundles applied via the `data-skin` attribute on any ancestor element.
