@@ -14,6 +14,11 @@
 		FONT_VAR,
 		fontCatalogs,
 		fontStack,
+		HEADING_LEVELS,
+		HEADING_WEIGHTS,
+		headingRules,
+		stepHeadingSize,
+		setHeadingWeight,
 		type Palette,
 		type Role,
 		type FontRole
@@ -110,8 +115,21 @@
 		applyRolesToDocument()
 	})
 
+	// The heading levels as live `[data-heading]` rules (#152): one <style> this card owns,
+	// its text the same rules the export writes. textContent, not markup — it is CSS.
+	let headingStyle: HTMLStyleElement | null = null
+	$effect(() => {
+		const css = headingRules()
+		if (typeof document === 'undefined') return
+		headingStyle ??= document.createElement('style')
+		headingStyle.setAttribute('data-wizard-headings', '')
+		headingStyle.textContent = css
+		if (!headingStyle.isConnected) document.head.append(headingStyle)
+	})
+
 	onDestroy(() => {
 		clearAppliedVars()
+		headingStyle?.remove()
 	})
 </script>
 
@@ -309,6 +327,30 @@
 					</div>
 				{/each}
 			</div>
+			<span class="lbl heading-lbl">Headings — size and weight per level</span>
+			<div class="heading-rows">
+				{#each HEADING_LEVELS as level (level)}
+					{@const style = wizardState.headings[level]}
+					<div class="heading-row" data-wizard-heading={level}>
+						<span class="heading-sample" data-heading={level}>Heading {level}</span>
+						<div class="heading-size">
+							<button type="button" aria-label="Smaller h{level}" onclick={() => stepHeadingSize(level, -1)}>−</button>
+							<span data-heading-size>{style.size}px</span>
+							<button type="button" aria-label="Larger h{level}" onclick={() => stepHeadingSize(level, 1)}>+</button>
+						</div>
+						<div class="heading-weights" role="group" aria-label="Weight of h{level}">
+							{#each HEADING_WEIGHTS as weight (weight)}
+								<button
+									type="button"
+									aria-pressed={style.weight === weight}
+									data-active={style.weight === weight || undefined}
+									onclick={() => setHeadingWeight(level, weight)}>{weight}</button
+								>
+							{/each}
+						</div>
+					</div>
+				{/each}
+			</div>
 		</section>
 	{:else if activeStep === 3}
 		<section class="wiz-section">
@@ -321,7 +363,9 @@
 				<div class="preview-tile">
 					<span class="preview-tag">Type</span>
 					<div class="preview-type">
-						<span class="preview-type-display" data-preview-font="display">Quick brown fox</span>
+						<span data-heading="1" data-preview-heading="1">Quick brown fox</span>
+						<span data-heading="2" data-preview-heading="2" data-preview-font="display">Jumps over the lazy dog</span>
+						<span data-heading="3" data-preview-heading="3">A third-level heading</span>
 						<span class="preview-type-ui" data-preview-font="ui">Jumps over the lazy dog, in body text.</span>
 						<code class="preview-type-mono" data-preview-font="mono">const fox = 'brown'</code>
 					</div>
@@ -780,8 +824,9 @@
 		flex-direction: column;
 		gap: 6px;
 	}
-	.preview-type-display {
-		font: 500 20px/1.2 var(--font-display);
+	/* The heading lines take their level from the `[data-heading]` rules — the wizard's own
+	   live rules once a level is edited — so only colour is set here. */
+	.preview-type [data-heading] {
 		color: var(--ink);
 	}
 	.preview-type-ui {
@@ -791,6 +836,54 @@
 	.preview-type-mono {
 		font: 400 12px var(--font-mono);
 		color: var(--ink-mute);
+	}
+
+	.heading-lbl {
+		margin-top: 18px;
+	}
+	.heading-rows {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+	.heading-row {
+		display: grid;
+		grid-template-columns: 1fr auto auto;
+		align-items: center;
+		gap: 12px;
+		padding: 8px 12px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 8px;
+		background: var(--paper);
+	}
+	.heading-sample {
+		color: var(--ink);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.heading-size,
+	.heading-weights {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		font: 500 12px var(--font-mono);
+		color: var(--ink-mute);
+	}
+	.heading-size button,
+	.heading-weights button {
+		min-width: 28px;
+		padding: 3px 6px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 4px;
+		background: var(--paper-soft);
+		color: var(--ink);
+		font: inherit;
+		cursor: pointer;
+	}
+	.heading-weights button[data-active] {
+		border-color: var(--accent);
+		color: var(--accent);
 	}
 
 	.preview-row {

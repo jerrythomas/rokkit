@@ -49,6 +49,30 @@ function defaultFontChoiceIds(): Record<FontRole, string> {
 	return { display: 'fraunces', ui: 'inter', mono: 'jetbrains' }
 }
 
+/**
+ * Heading levels (#152). A level is styled by a `[data-heading]` rule — size and weight
+ * together — not by one-property tokens, so the wizard edits and exports rules. The defaults
+ * are @rokkit/themes' own (base/heading.css), which are the guides' scale; a spec holds the two
+ * equal.
+ */
+export type HeadingLevel = '1' | '2' | '3' | '4'
+export type HeadingStyle = { size: number; weight: number }
+
+export const HEADING_LEVELS: HeadingLevel[] = ['1', '2', '3', '4']
+export const HEADING_WEIGHTS = [400, 500, 600, 700] as const
+
+export const DEFAULT_HEADINGS: Record<HeadingLevel, HeadingStyle> = {
+	'1': { size: 28, weight: 700 },
+	'2': { size: 18, weight: 600 },
+	'3': { size: 14.5, weight: 600 },
+	'4': { size: 14, weight: 600 }
+}
+
+const HEADING_SIZE = { min: 10, max: 64, step: 0.5 }
+
+const defaultHeadings = (): Record<HeadingLevel, HeadingStyle> =>
+	Object.fromEntries(HEADING_LEVELS.map((l) => [l, { ...DEFAULT_HEADINGS[l] }])) as Record<HeadingLevel, HeadingStyle>
+
 export const stepKeys = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '950'] as const
 
 export const shadeLabels = ['50', '200', '500', '700', '950'] as const
@@ -96,23 +120,35 @@ function defaultRoles(): Role[] {
 	]
 }
 
-function loadStoredPreset(): {
+type StoredPreset = {
 	palettes: Palette[]
 	roles: Role[]
 	fonts: Record<FontRole, string>
-} | null {
+	headings: Record<HeadingLevel, HeadingStyle>
+}
+
+/** A saved preset's JSON, with any field it predates filled from the defaults; null if unusable. */
+function parsePreset(raw: string): StoredPreset | null {
+	const parsed = JSON.parse(raw) as {
+		palettes?: Palette[]
+		roles?: Role[]
+		fonts?: Partial<Record<FontRole, string>>
+		headings?: Partial<Record<HeadingLevel, HeadingStyle>>
+	}
+	if (!Array.isArray(parsed.palettes) || !Array.isArray(parsed.roles)) return null
+	return {
+		palettes: parsed.palettes,
+		roles: parsed.roles,
+		fonts: { ...defaultFontChoiceIds(), ...parsed.fonts },
+		headings: { ...defaultHeadings(), ...parsed.headings }
+	}
+}
+
+function loadStoredPreset(): StoredPreset | null {
 	if (typeof localStorage === 'undefined') return null
 	try {
 		const raw = localStorage.getItem(STORAGE_KEY)
-		if (!raw) return null
-		const parsed = JSON.parse(raw) as {
-			palettes?: Palette[]
-			roles?: Role[]
-			fonts?: Partial<Record<FontRole, string>>
-		}
-		if (!Array.isArray(parsed.palettes) || !Array.isArray(parsed.roles)) return null
-		const fonts = { ...defaultFontChoiceIds(), ...(parsed.fonts ?? {}) }
-		return { palettes: parsed.palettes, roles: parsed.roles, fonts }
+		return raw ? parsePreset(raw) : null
 	} catch {
 		return null
 	}
@@ -124,11 +160,36 @@ export const wizardState = $state<{
 	palettes: Palette[]
 	roles: Role[]
 	fonts: Record<FontRole, string>
+	headings: Record<HeadingLevel, HeadingStyle>
 }>({
 	palettes: initial?.palettes ?? defaultPalettes(),
 	roles: initial?.roles ?? defaultRoles(),
-	fonts: initial?.fonts ?? defaultFontChoiceIds()
+	fonts: initial?.fonts ?? defaultFontChoiceIds(),
+	headings: initial?.headings ?? defaultHeadings()
 })
+
+/** Grow or shrink a level by `steps` half-pixels, kept inside sane bounds. */
+export function stepHeadingSize(level: HeadingLevel, steps: number): void {
+	const next = wizardState.headings[level].size + steps * HEADING_SIZE.step
+	wizardState.headings[level].size = Math.min(HEADING_SIZE.max, Math.max(HEADING_SIZE.min, next))
+}
+
+/** Set a level's weight — only to one of the weights offered. */
+export function setHeadingWeight(level: HeadingLevel, weight: (typeof HEADING_WEIGHTS)[number]): void {
+	if ((HEADING_WEIGHTS as readonly number[]).includes(weight)) wizardState.headings[level].weight = weight
+}
+
+/**
+ * The `[data-heading]` rules for the current levels — for the attribute and for prose
+ * headings, as base/heading.css styles them. The live preview injects this text, and the
+ * export appends it, so what you see is what ships.
+ */
+export function headingRules(): string {
+	return HEADING_LEVELS.map((level) => {
+		const { size, weight } = wizardState.headings[level]
+		return `[data-heading='${level}'], [data-prose] h${level} { font-size: ${size}px; font-weight: ${weight}; }`
+	}).join('\n')
+}
 
 /** Resolve the chosen id to its full font-stack string. */
 export function fontStack(role: FontRole): string {
@@ -142,7 +203,8 @@ export function savePreset(): void {
 	const snapshot = {
 		palettes: wizardState.palettes,
 		roles: wizardState.roles,
-		fonts: wizardState.fonts
+		fonts: wizardState.fonts,
+		headings: wizardState.headings
 	}
 	localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot))
 }
@@ -151,6 +213,7 @@ export function resetPreset(): void {
 	wizardState.palettes = defaultPalettes()
 	wizardState.roles = defaultRoles()
 	wizardState.fonts = defaultFontChoiceIds()
+	wizardState.headings = defaultHeadings()
 	if (typeof localStorage !== 'undefined') localStorage.removeItem(STORAGE_KEY)
 }
 
@@ -203,6 +266,9 @@ export function exportTokensCss(): string {
 		'[data-mode="dark"] {',
 		...roleDeclarations('dark'),
 		'}',
+		'',
+		'/* Heading levels — rules, not tokens: a level is size and weight together. */',
+		headingRules(),
 		''
 	].join('\n')
 }
