@@ -136,6 +136,13 @@ const er = toGraphInput(model, 'er')             // tables + refs
 const deps = toGraphInput(model, 'dependencies') // tables + entities, deps as edges
 ```
 
+## Condensing cycles into group nodes
+
+Send each strongly-connected component as a node with `members` (rokkit computes none). Its
+members collapse into it, their edges reroute and aggregate onto it, and it expands back to
+show the cycle. Flag the cheapest edge to cut `weakest: true` and it is drawn dashed in the
+danger colour. `onexpand` / `oncollapse` tell you when the reader opens or folds one.
+
 ## Drilling a tree too large to load
 
 `Treemap`, `Sunburst` and `StructureDiagram` draw the subtree at `focusPath`. The reader

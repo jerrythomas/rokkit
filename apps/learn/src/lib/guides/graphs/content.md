@@ -134,6 +134,17 @@ methods rather than replacing it.
 they compute nothing. That is what lets the geometry, badge derivation and selection
 logic be covered exhaustively without a renderer.
 
+## Cycles, condensed
+
+A dependency graph with cycles is hard to read: everything points at everything. The usual
+fix is to collapse each cycle (a strongly-connected component) into one node, and what's left
+reads as a hierarchy. You find the cycles; the graph draws them. Send each one as a node with
+`members`, and mark its weakest edge, the one with the fewest occurrences, `weakest: true`.
+That's the cheapest link to cut.
+
+The **Import cycles** example does this with rokkit's own component imports. Expand a group to
+see the cycle and its dashed red weakest edge; double-click a member to fold it back.
+
 ## Reading a large diagram
 
 Fit-to-container alone shrinks a real schema until its labels are unreadable, so the

@@ -10333,3 +10333,35 @@ Tooling lessons, all folded into the gate:
   browser.
 
 Gates: 8,035 unit tests pass, plus 34 browser and 133 e2e; lint is 0/0.
+
+---
+
+## 2026-09-30 (13) — #166: collapsed group nodes (SCC condensation)
+
+The user said "yes once resolved close the issues"; #165 was closed with a summary (saved to
+memory as a standing approval). Then #166:
+
+- `60d47894`: model. `normalize` reads `members` / `collapsed` and the edge's `weakest`, added
+  only when present. The pure `model/condense.ts`: collapsed groups stand in for their members,
+  with rerouted, folded and aggregated edges. **Found on the way:** `flow` and `radial` routed
+  edges without the shared `carried()` half, so EDGE WEIGHT was silently dropped there. Every
+  builder now spreads it (adding `weakest` and `count`), and a spec covers all six layouts.
+- `2663ba5f`: `state/GraphGroups`. The state condenses the canonical model before layout.
+  `toggleGroup` fires `onexpand` / `oncollapse`. Collapsing a selected member's group moves the
+  selection to the group. `groupAction` feeds the drill bar.
+- `7a42dd32`: UI. The collapsed card is marked, counts its members, and has an inline
+  "Expand · N". Members carry `data-graph-member-of`, and double-clicking one folds the group.
+  The drill bar offers Expand / Collapse. Edges carry `data-edge-weakest` and
+  `data-edge-count`. The four node-link diagrams take the events.
+- `9ccb7c05`: a group card reserves its control row; it had been sized head-only.
+- `424c68eb`: theme CSS. A double rule for a stack; the weakest edge is dashed and stroked in
+  `--danger` (a stroke, so the contrast rule allows it).
+- `dd0902da`: the "Import cycles" demo. Tarjan runs in the DEMO, over rokkit's own component
+  imports (it has real cycles), plus `graph-cycles.e2e`.
+
+**Process slip, twice, caught both times:** `gate | tail && git commit` let `tail`'s success
+mask a red gate (lint), so a commit landed. It was amended after a real green, and every gate
+since is logged to a file with the commit conditioned on its exit code. The same mandatory rule
+(verify the outcome, never a masked wrapper) had to be re-learned within one session.
+
+Gates: 8,089 unit tests pass, plus 135 e2e; lint is 0/0.

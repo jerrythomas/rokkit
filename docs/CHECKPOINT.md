@@ -1,26 +1,23 @@
 # CHECKPOINT
 
-**Last slice: #165 (graph drill events). DONE.** Plan: `docs/plans/2026-09-30-graph-drill-events.md`; journal 2026-09-30 (12).
+**Last slices: #165 (drill events) CLOSED; #166 (group nodes / SCC condensation) DONE.** Journal 2026-09-30 (12)–(13).
 
-- `ondrill` / `ondrillup` with a promise contract, pending and rollback.
-- `DrillBar` and drill gestures.
-- The data-path addressing, with the focus chain kept unfolded.
-- A lazy demo, and 4 drill e2e tests.
-- Real-browser fixes: pointer capture, key collisions, setters undone by `apply()`, and a
-  caller's state.
+#166:
+- groups in the model, plus `condense`;
+- `GraphGroups` in the state;
+- the collapsed card, the Expand control, member double-click, and the drill bar actions;
+- the `weakest` edge and its theme;
+- the Import cycles demo and its e2e.
 
-Every #165 acceptance item is covered by a spec or an e2e test.
+Edge weight is now carried in `flow` and `radial` too.
 
-**Not done:** the issue is still open on GitHub. Closing it or commenting is outward-facing, so
-it waits for the user.
+**Remaining:** push, confirm CI is green, then close #166 with a summary (standing approval
+from the user).
 
-**Next slice:** #166 [graph] P1, a collapsed group node (SCC condensation) that expands to its members.
+**Next slice:** #167 [graph] P2, a layered DAG layout with climbing edges marked as violations.
 
-**Next command:** `gh issue view 166`, then plan it.
+**Next command:** `gh issue view 167`.
 
-**Open questions:**
-
-- Close #165 with a summary comment?
-- MultiSelect still lacks Select's fixed positioning and `maxRows`. Noted, not fixed.
+**Open questions:** MultiSelect still lacks Select's fixed positioning and `maxRows`. Noted, not fixed.
 
 **Known broken:** nothing. The sensei MCP server is disconnected, so this file is the only record.

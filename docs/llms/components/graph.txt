@@ -49,6 +49,8 @@ height** or it collapses.
 | `onselect` | `(id: string \| null) => void` | — | Fires when a node is activated, and with `null` when the selection is cleared |
 | `ondrill` | `(path, node) => void \| Promise<void>` | — | The reader opened a box. `node` is the declared node at `path`, `null` for a synthesised container. Return a promise while you load that level |
 | `ondrillup` | `(path) => void \| Promise<void>` | — | The reader climbed out to `path`. Same promise contract |
+| `onexpand` | `(id, node) => void` | — | The reader expanded a group node — see *Group nodes* |
+| `oncollapse` | `(id, node) => void` | — | The reader collapsed a group back into one node |
 
 ### Drilling — loading a large tree one level at a time
 
@@ -94,6 +96,43 @@ The state behind it (`GraphState`): `drillPath`, `breadcrumbs`, `canDrill(box)`,
 `drillInto(box)`, `drillOut(levels)`, `drillTo(ancestor)`, `pending`, `drillError`. Every
 containment box carries `path`, `leaf` and `declared` (the id of the node it is, leaf or
 container).
+
+### Group nodes — condensing cycles (#166)
+
+A dependency graph with cycles is unreadable. Collapse each strongly-connected component into
+one node and what remains is a DAG. **You compute the components; rokkit draws them.** A group
+is a node with `members`:
+
+```js
+nodes: [
+  { id: 'api', name: 'api' },
+  { id: 'scc:1', name: '3 modules in a cycle', members: ['tasks', 'indexer', 'watcher'], collapsed: true },
+  { id: 'tasks', name: 'tasks' }, { id: 'indexer', name: 'indexer' }, { id: 'watcher', name: 'watcher' }
+],
+edges: [
+  { source: 'api', target: 'tasks', weight: 320 },
+  { source: 'watcher', target: 'tasks', weight: 4, weakest: true }   // the cheapest link to cut
+]
+```
+
+- **Collapsed:** the members are hidden, and every edge touching one reroutes to the group.
+  Edges inside the group vanish. Parallel edges fold into one, with weights summed and
+  `data-edge-count` set.
+- **Expanded:** the group gives way to its members and the edges among them. A group whose
+  members are not in `nodes` yet stays as itself; answer `onexpand(id, node)` to load them.
+- `collapsed` is the starting state, defaulting to `true` for any node with `members`.
+  `oncollapse(id, node)` fires on the way back.
+- **Gestures:**
+  - a collapsed card has an inline **Expand · N** control (Enter / Space);
+  - double-clicking a member folds its group;
+  - the drill bar offers Expand / Collapse for the selection.
+
+  Collapsing a group whose member is selected moves the selection onto the group.
+- **Styling:** `data-graph-group`, `data-graph-collapsed`, `data-graph-member-of="<group id>"`,
+  and `data-edge-weakest` (dashed, in the danger colour). Fields: `members`, `collapsed`,
+  `weakest`.
+- `GraphState`: `isGroup`, `isCollapsed`, `memberCount`, `groupOf`, `toggleGroup` and
+  `groupAction`. The pure step is `condense(model, collapsed)`.
 
 **`mode` does not infer itself.** Left at `'light'` in a dark app, the group ramp resolves
 from the light ladder forever and every cluster keeps a pale fill — the canvas reads as light

@@ -715,3 +715,26 @@ than in the geometry.
 Slice 1 deliberately stops short of all of this. `points` answers "what does a dense flat
 graph look like"; the world view answers "what does a 1M-node hierarchy look like", and they
 are different questions with different models underneath.
+
+## Group nodes (#166)
+
+A node with `members` stands for them. `model/condense.ts` is the pure step between the model
+and the layout:
+
+- a collapsed group hides its members, reroutes their edges to itself, drops the edges inside
+  it, and folds parallel edges (weights summed, `count` kept, no longer `weakest`);
+- an expanded group gives way to its members and drops pre-aggregated edges to itself. One whose
+  members have not arrived stays as itself.
+
+`state/GraphGroups` holds which groups are collapsed: as each starts (`collapsed`, default true)
+and as the reader toggles. `GraphState` condenses the canonical model through it before any
+layout runs, so every layout draws groups with no change of its own.
+
+The library computes no strongly-connected components. The host groups, and rokkit draws: the
+learn demo runs Tarjan's algorithm itself, playing host.
+
+Two fixes came with it:
+- every edge builder now spreads the shared `carried()` half, which `flow` and `radial` used to
+  skip, silently dropping edge weight there;
+- a group card reserves its control row.
+

@@ -294,6 +294,43 @@ dependency against the grain**: a cycle, or a layer reaching up. It stays readab
 where a node-link drawing is a hairball; the drawing grows with the square of the node count,
 so aggregate to modules or components first.
 
+### Group nodes — condensing cycles (#166)
+
+A dependency graph with cycles is unreadable. Collapse each strongly-connected component into
+one node and what remains is a DAG. **You compute the components; rokkit draws them.** A group
+is a node with `members`:
+
+```js
+nodes: [
+  { id: 'api', name: 'api' },
+  { id: 'scc:1', name: '3 modules in a cycle', members: ['tasks', 'indexer', 'watcher'], collapsed: true },
+  { id: 'tasks', name: 'tasks' }, { id: 'indexer', name: 'indexer' }, { id: 'watcher', name: 'watcher' }
+],
+edges: [
+  { source: 'api', target: 'tasks', weight: 320 },
+  { source: 'watcher', target: 'tasks', weight: 4, weakest: true }   // the cheapest link to cut
+]
+```
+
+- **Collapsed:** the members are hidden, and every edge touching one reroutes to the group.
+  Edges inside the group vanish. Parallel edges fold into one, with weights summed and
+  `data-edge-count` set.
+- **Expanded:** the group gives way to its members and the edges among them. A group whose
+  members are not in `nodes` yet stays as itself; answer `onexpand(id, node)` to load them.
+- `collapsed` is the starting state, defaulting to `true` for any node with `members`.
+  `oncollapse(id, node)` fires on the way back.
+- **Gestures:**
+  - a collapsed card has an inline **Expand · N** control (Enter / Space);
+  - double-clicking a member folds its group;
+  - the drill bar offers Expand / Collapse for the selection.
+
+  Collapsing a group whose member is selected moves the selection onto the group.
+- **Styling:** `data-graph-group`, `data-graph-collapsed`, `data-graph-member-of="<group id>"`,
+  and `data-edge-weakest` (dashed, in the danger colour). Fields: `members`, `collapsed`,
+  `weakest`.
+- `GraphState`: `isGroup`, `isCollapsed`, `memberCount`, `groupOf`, `toggleGroup` and
+  `groupAction`. The pure step is `condense(model, collapsed)`.
+
 ### Drilling (#165)
 
 `ondrill(path, node)` and `ondrillup(path)` tell you the reader opened or left a box. Return a
