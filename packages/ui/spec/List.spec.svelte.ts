@@ -468,6 +468,11 @@ describe('List — multiselect', () => {
 		expect(selectedLabels(container)).toEqual(['Settings'])
 	})
 
+	it('marks the root data-multiselect, so base CSS stops shift-click selecting the page text', () => {
+		expect(render(List, { items: flatItems, multiselect: true }).container.querySelector('[data-list]')?.getAttribute('data-multiselect')).toBe('true')
+		expect(render(List, { items: flatItems }).container.querySelector('[data-list]')?.hasAttribute('data-multiselect')).toBe(false)
+	})
+
 	it('says so to assistive tech with aria-pressed', async () => {
 		const { container } = render(List, { items: flatItems, multiselect: true })
 		await fireEvent.click(rows(container)[1])

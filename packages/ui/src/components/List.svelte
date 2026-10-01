@@ -26,6 +26,7 @@
 	 *   data-list-group-icon   — icon span inside group headers
 	 *   data-active            — highlights current value match
 	 *   data-selected          — "true" on every row in the selection, multiselect only
+	 *   data-multiselect       — "true" on the root when multiselect (base CSS: no text selection)
 	 *   data-disabled          — disabled state
 	 */
 	import type { ProxyItem } from '@rokkit/states'
@@ -196,6 +197,7 @@
 	data-size={size}
 	data-disabled={disabled || undefined}
 	data-collapsible={collapsible || undefined}
+	data-multiselect={multiselect ? 'true' : undefined}
 	class={className || undefined}
 	aria-label={label}
 >
