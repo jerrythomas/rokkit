@@ -10619,3 +10619,28 @@ are needed if levels can be styled by a data attribute. They are not, for the sa
 Docs: themes llms gains a heading-levels section, the semantic-styles skill steers to
 `data-heading`, and the typography plan is marked done. Noted, not fixed: the tree-table demo
 reads `--text-md` / `--text-sm`, which never existed.
+
+## 2026-10-01 (8) — v1.8.1 shipped broken; v1.8.2 fixes it, and the release can't repeat it
+
+The follow-up came first: the tree-table demo read six custom properties that never existed
+(`--space-*`, `--text-md/sm`, `--font-weight-medium`). Fixed, with a guard spec over learn and
+the packages. The components-reviewer agent also learned about `data-heading` (release-checklist
+sync).
+
+**v1.8.1 was published broken.** The shipped-artifact check (installing the published
+`@rokkit/ui` into a scratch project, failing first against 1.8.0) failed on 1.8.1 too:
+`moveToValues is not a function`. The published `ui`, `graph` and `app` pinned their siblings to
+**1.8.0**. `bun pm pack` rewrites `workspace:*` from `bun.lock`, the bump updates only
+`package.json`, and the publish job's install used to refresh the lockfile in CI. My #156 change
+(`--frozen-lockfile`, `77d8a8906`) stopped that. graph@1.8.1 crashes on every label, since
+states@1.8.0 has no `messages.graph`.
+
+`ec45652e5`: the bump refreshes and commits `bun.lock` (`execute: 'bun install --ignore-scripts'`,
+`all: true`). `config/spec/lockfile.spec.js` fails on lockfile/package.json drift, in `check` and
+in a new pre-flight step in `publish.yml`. `config/check-pins.mjs` rejects any packed tarball
+with stale sibling pins, verified against the real ui@1.8.1 tarball.
+
+**v1.8.2** (`179cde8c5`): the release commit carries `bun.lock` at 1.8.2. The pre-flight passed in
+CI, all 15 published with correct pins, both shipped repros (List multi-select; graph controls)
+pass on 1.8.2, `main` is fast-forwarded with CI green, and the GitHub release was created.
+1.8.1 is still on npm. Deprecating it is the user's call.
