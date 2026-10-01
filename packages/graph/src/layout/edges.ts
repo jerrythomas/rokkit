@@ -48,18 +48,19 @@ function selfLoop(
 
 /**
  * What an edge carries onto the canvas whatever routes it — overlay flag, weight, the weakest
- * flag and a condensed edge's count — copied only when set, so existing routed edges stay
+ * and hidden flags and a condensed edge's count — copied only when set, so existing routed edges stay
  * key-identical. Every layout that builds routed edges spreads this; one that built its own
  * identity half without it silently drew weighted edges at the normal width.
  */
 export function carried(
 	edge: GraphEdge
-): Pick<RoutedEdge, 'overlay' | 'weight' | 'weakest' | 'count' | 'conformance'> {
-	const out: Pick<RoutedEdge, 'overlay' | 'weight' | 'weakest' | 'count' | 'conformance'> = {}
+): Pick<RoutedEdge, 'overlay' | 'weight' | 'weakest' | 'hidden' | 'count' | 'conformance'> {
+	const out: Pick<RoutedEdge, 'overlay' | 'weight' | 'weakest' | 'hidden' | 'count' | 'conformance'> = {}
 	if (edge.conformance) out.conformance = edge.conformance
 	if (edge.overlay) out.overlay = true
 	if (edge.weight !== undefined) out.weight = edge.weight
 	if (edge.weakest) out.weakest = true
+	if (edge.hidden) out.hidden = true
 	if (edge.count !== undefined) out.count = edge.count
 	return out
 }

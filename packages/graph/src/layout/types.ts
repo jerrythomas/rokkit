@@ -154,6 +154,8 @@ export type RoutedEdge = {
 	weight?: number
 	/** GraphEdge.weakest — the cheapest link to cut in a cycle (#166). */
 	weakest?: boolean
+	/** GraphEdge.hidden — coupling no import explains (#169). */
+	hidden?: boolean
 	/** GraphEdge.count — how many model edges a condensed edge stands for. */
 	count?: number
 	/** How the edge sits against the layering (#167) — given by the host or derived by `layers`. */

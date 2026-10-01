@@ -316,13 +316,14 @@ const CONFORMANCE = new Set<Conformance>(['down', 'skip', 'up', 'level'])
 function edgeExtras(
 	source: unknown,
 	fields: GraphFields
-): Pick<GraphEdge, 'overlay' | 'weight' | 'weakest' | 'conformance'> {
-	const extras: Pick<GraphEdge, 'overlay' | 'weight' | 'weakest' | 'conformance'> = {}
+): Pick<GraphEdge, 'overlay' | 'weight' | 'weakest' | 'hidden' | 'conformance'> {
+	const extras: Pick<GraphEdge, 'overlay' | 'weight' | 'weakest' | 'hidden' | 'conformance'> = {}
 	// Only the vocabulary — an unknown word would be a style hook no theme knows.
 	const conformance = str(pick(source, fields.conformance, 'conformance'))
 	if (conformance && CONFORMANCE.has(conformance as Conformance)) extras.conformance = conformance as Conformance
 	if (pick(source, fields.overlay, 'overlay')) extras.overlay = true
 	if (pick(source, fields.weakest, 'weakest')) extras.weakest = true
+	if (pick(source, fields.hidden, 'hidden')) extras.hidden = true
 	const weight = num(pick(source, fields.edgeWeight, 'weight'))
 	if (weight !== undefined) extras.weight = weight
 	return extras

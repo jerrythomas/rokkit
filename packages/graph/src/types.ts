@@ -138,6 +138,11 @@ export type GraphEdge = {
 	 * (`data-edge-weakest`).
 	 */
 	weakest?: boolean
+	/**
+	 * Coupling nothing in the code explains — a pair that changes together with no import
+	 * between them (#169). The host computes it; the graph only styles it (`data-edge-hidden`).
+	 */
+	hidden?: boolean
 	/** How many model edges this one stands for, when it aggregates a collapsed group's edges. */
 	count?: number
 	/**
@@ -288,6 +293,8 @@ export type GraphFields = {
 	collapsed?: string
 	/** Path to a truthy flag marking the weakest edge of a cycle — see `GraphEdge.weakest`. */
 	weakest?: string
+	/** Path to a truthy flag marking hidden coupling — see `GraphEdge.hidden`. */
+	hidden?: string
 	/** Path to a node's host-assigned layer — see `GraphNode.layer`. */
 	layer?: string
 	/**
