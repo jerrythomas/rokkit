@@ -134,6 +134,16 @@ methods rather than replacing it.
 they compute nothing. That is what lets the geometry, badge derivation and selection
 logic be covered exhaustively without a renderer.
 
+## Three measures at once
+
+A treemap shows one measure as area. `PolymetricTree` shows three: each file is a box whose
+width, height and shade you bind to measures, and its place in the tree shows where it lives.
+A narrow, tall, dark box is a long file that keeps changing, often the one to split.
+
+Each channel scales to its 95th percentile, so one outsized file doesn't shrink the rest. A
+box past the cap gets a heavy edge; a missing measure is dashed, never drawn as a zero. The
+**Polymetric view** example runs `@rokkit/core` through it: declarations, lines and churn.
+
 ## Layers, and what climbs them
 
 To check an architecture, say which layer each module belongs to, 0 at the top and the

@@ -136,6 +136,14 @@ const er = toGraphInput(model, 'er')             // tables + refs
 const deps = toGraphInput(model, 'dependencies') // tables + entities, deps as edges
 ```
 
+## Three measures per box
+
+`PolymetricTree` draws containment top down, each file a box whose width, height and shade are
+three measures you name: `widthBy="fns" heightBy="loc" colorBy="churn"`. Send containment as
+`parent` ids or as `path`. Each channel caps at its 95th percentile, so one huge file does not
+flatten the rest; a capped box and a missing measure are both marked, and a missing value is
+never drawn as a zero. The legend names each channel.
+
 ## Checking a layered architecture
 
 `LayersDiagram` draws the layers you intend (`layer` on each node, 0 at the top) and marks

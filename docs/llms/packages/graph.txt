@@ -126,10 +126,12 @@ Your own slots in exactly the same way.
 | `world` | Nested rectangles, area proportional to a measure | Containment — where the mass of a codebase is |
 | `sunburst` | Nested wedges, angle proportional to a measure | The same containment, with depth on the radius |
 | `structure` | Radial dendrogram + bundled edges | A codebase: containment on the rim, calls drawn through it |
+| `polymetric` | A top-down tree, each leaf box sized and shaded by three measures | `PolymetricTree`. `widthBy` / `heightBy` / `colorBy`; 95th-percentile caps |
 
 ```js
 import {
-  cluster, flow, neighborhood, points, radial, structure, sunburst, world, layouts
+  cluster, flow, layers, neighborhood, points, polymetric, radial, structure, sunburst, world,
+  layouts
 } from '@rokkit/graph'
 ```
 
@@ -294,6 +296,35 @@ reversed — so a layered graph is lower-triangular and **a cell above the diago
 dependency against the grain**: a cycle, or a layer reaching up. It stays readable at sizes
 where a node-link drawing is a hairball; the drawing grows with the square of the node count,
 so aggregate to modules or components first.
+
+### Polymetric — three measures per box (#168)
+
+`PolymetricTree` is Lanza & Marinescu's System Complexity view. A containment tree is drawn top
+down, and each leaf is a box whose **width**, **height** and **shade** carry three independent
+measures. `Treemap` encodes one measure as area; this shows three at once, so a narrow, tall,
+dark box (a long file that keeps changing) reads differently from a wide, short, pale one.
+
+```svelte
+<PolymetricTree {nodes} widthBy="fns" heightBy="loc" colorBy="churn" controls />
+<!-- nodes: { id, name, parent, measures: { fns, loc, churn } } -->
+```
+
+- **Containment from `parent` ids.** A node with no `path` gets one from its parent chain (ids,
+  not labels). A parent that is not a node is kept as the container it names; a cycle is cut.
+- **Channels.** `widthBy` / `heightBy` / `colorBy` each name a `measures` key, or `weight` /
+  `degree`. All three are bindable. Width and height default to `weight`; omit `colorBy` for no
+  shade. With `controls`, three pickers list the measures the data has.
+- **Degenerate values.** Each channel scales to the 95th percentile of its values, so one huge
+  file does not shrink every other box to a speck. A value past the cap draws at the maximum
+  and is marked `data-graph-clamped` (a heavy edge on that side). A zero is a value and draws
+  at the minimum. A **missing** measure also draws at the minimum but is marked
+  `data-graph-missing` (dashed; a missing shade is hatched): it never passes for a zero.
+- **Legend.** On by default, because three encodings are unreadable without a key. It names
+  the measure on each channel and what its full extent stands for (`full at {cap}`). The state
+  exposes the same as `graph.channels`, and the measures the pickers offer as
+  `graph.measureKeys`.
+- **Styling hooks:** `--shade` (0..1) on each leaf, `data-graph-missing`, `data-graph-clamped`,
+  `data-legend-channel`, `data-graph-measure`. The layout is `polymetric`.
 
 ### Layers — the intended architecture, and what climbs it (#167)
 

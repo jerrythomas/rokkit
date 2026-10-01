@@ -758,3 +758,31 @@ The learn demo assigns rokkit's packages their intended layers. Measured, no imp
 the honest *Violations only* view is empty, and the blurb says so. #167's own sample is a second
 example with the one climbing edge.
 
+## The polymetric layout (#168)
+
+`layout/polymetric.ts` is Lanza & Marinescu's System Complexity view: a top-down tidy tree
+whose leaves are boxes sized `widthBy` × `heightBy` and shaded by `colorBy`.
+
+- **Containment.** `normalize` derives `path` from `parent` ids when a node has none, so the
+  shape #168's sample sends needs no adapter. Segments are ids; a dangling parent becomes a
+  synthesised container, and a cycle is cut where it closes.
+- **Placement.** Children side by side, each parent centred over them; every box at one depth
+  is topped on one line, so heights compare at a glance. Containers are fixed label boxes;
+  links are elbows (`kind: 'containment'`).
+- **Scaling.** Each channel's `cap` is the 95th percentile of its present, positive values.
+  Past the cap a value clamps to the maximum and the box lists the channel in `clamped`; a
+  missing value draws at the minimum and is listed in `missing`. A zero is a value.
+- **Result.** `LayoutResult.channels` reports each channel's measure and cap; `GraphState`
+  exposes it as `channels`, and `measureKeys` lists what the pickers offer.
+- **Styling.** `--shade` (0..1) on the leaf; base marks missing (dashed) and clamped (a heavy
+  edge on that side) by shape, and each style maps the shade to ink-into-paper and hatches a
+  missing shade.
+
+`PolymetricTree` composes it with three `MeasureControl`s and the legend, on by default.
+
+The learn demo sends `@rokkit/core` as parent-linked nodes with declarations × lines × churn.
+The graph package (62 files in one row) read as a strip at fit, so the demo uses a package
+that reads without zooming; a wide tree is still pannable and zoomable. The explorer carries a
+picked measure back through `update()`, as it does the drill path, so a pick survives the next
+selection.
+

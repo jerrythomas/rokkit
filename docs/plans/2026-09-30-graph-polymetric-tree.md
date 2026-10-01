@@ -1,6 +1,7 @@
 # Polymetric tree (#168)
 
-**Status:** IMPLEMENT (2026-09-30), the fourth of the open issues from #165.
+**Status:** DONE (2026-09-30): `1fc6363e`, `c014cc2d`, `4ebcadc7`, `59179611`, `03439c1f`. See journal 2026-09-30 (15).
+The fourth of the open issues from #165.
 **Package:** `@rokkit/graph`
 
 ## The picture

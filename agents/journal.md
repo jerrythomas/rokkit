@@ -10396,3 +10396,34 @@ it, as CI does. A stale graph `dist` blocked a commit, and rebuilding it fixed t
 matter: the hook catches what local consumers see, the gate what CI sees.
 
 Gates: 8,128 unit tests pass, plus 138 e2e; lint is 0/0.
+
+---
+
+## 2026-09-30 (15) — #168: the polymetric tree
+
+#167 is closed. Then #168, plan `docs/plans/2026-09-30-graph-polymetric-tree.md`:
+
+- `1fc6363e`: containment from `parent` ids. A node with no `path` gets one from its parent
+  chain (ids); a dangling parent is kept as a container, a cycle is cut.
+- `c014cc2d`: `layout/polymetric`. A top-down tidy tree, leaves sized `widthBy` × `heightBy`
+  and shaded by `colorBy`. Each channel caps at its 95th percentile; past it a box is
+  `clamped`, a missing value is `missing` (never a zero). `LayoutResult.channels` reports the
+  measures and caps. 13 specs.
+- `4ebcadc7`: `PolymetricTree`, `MeasureControl`, the legend's channel section, `--shade`, and
+  `data-graph-missing` / `-clamped`. `GraphState.channels` and `measureKeys`. 8 specs.
+- `59179611`: theme CSS. Leaf labels hang below the box; missing is dashed, clamped gets a heavy
+  edge; each style tints ink into paper by `--shade` and hatches a missing shade.
+- `03439c1f`: the "Polymetric view" demo, `@rokkit/core` by declarations × lines × churn, sent
+  as parent-linked nodes. Plus `graph-polymetric.e2e`.
+
+Two findings from the browser, neither visible in jsdom:
+
+- **The explorer would undo a pick.** Its `update()` re-applies the registry props, so a picked
+  measure would snap back on the next selection, the same trap as the drill path. It now
+  carries the picked channels back; the e2e picks, selects, and checks the pick held.
+- **The graph package read as a strip.** 62 files side by side fit a 650px canvas as a thin
+  line. The layout is as agreed (one row of leaves per parent), so the demo uses `core`
+  (27 files), which reads at fit. A wide tree is still pannable and zoomable. Wrapping a
+  container's leaves into rows would help big packages; it is not built.
+
+Gates: 8,171 unit tests pass, plus 141 e2e; lint is 0/0.

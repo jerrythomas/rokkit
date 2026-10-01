@@ -97,6 +97,35 @@ The state behind it (`GraphState`): `drillPath`, `breadcrumbs`, `canDrill(box)`,
 containment box carries `path`, `leaf` and `declared` (the id of the node it is, leaf or
 container).
 
+### Polymetric — three measures per box (#168)
+
+`PolymetricTree` is Lanza & Marinescu's System Complexity view. A containment tree is drawn top
+down, and each leaf is a box whose **width**, **height** and **shade** carry three independent
+measures. `Treemap` encodes one measure as area; this shows three at once, so a narrow, tall,
+dark box (a long file that keeps changing) reads differently from a wide, short, pale one.
+
+```svelte
+<PolymetricTree {nodes} widthBy="fns" heightBy="loc" colorBy="churn" controls />
+<!-- nodes: { id, name, parent, measures: { fns, loc, churn } } -->
+```
+
+- **Containment from `parent` ids.** A node with no `path` gets one from its parent chain (ids,
+  not labels). A parent that is not a node is kept as the container it names; a cycle is cut.
+- **Channels.** `widthBy` / `heightBy` / `colorBy` each name a `measures` key, or `weight` /
+  `degree`. All three are bindable. Width and height default to `weight`; omit `colorBy` for no
+  shade. With `controls`, three pickers list the measures the data has.
+- **Degenerate values.** Each channel scales to the 95th percentile of its values, so one huge
+  file does not shrink every other box to a speck. A value past the cap draws at the maximum
+  and is marked `data-graph-clamped` (a heavy edge on that side). A zero is a value and draws
+  at the minimum. A **missing** measure also draws at the minimum but is marked
+  `data-graph-missing` (dashed; a missing shade is hatched): it never passes for a zero.
+- **Legend.** On by default, because three encodings are unreadable without a key. It names
+  the measure on each channel and what its full extent stands for (`full at {cap}`). The state
+  exposes the same as `graph.channels`, and the measures the pickers offer as
+  `graph.measureKeys`.
+- **Styling hooks:** `--shade` (0..1) on each leaf, `data-graph-missing`, `data-graph-clamped`,
+  `data-legend-channel`, `data-graph-measure`. The layout is `polymetric`.
+
 ### Layers — the intended architecture, and what climbs it (#167)
 
 `LayersDiagram` ranks nodes into horizontal bands by a **host-assigned** `layer` (0 at the top,
@@ -201,6 +230,7 @@ over one `Plot`.
 | `Sunburst` | The same containment as wedges | depth, zoom |
 | `StructureDiagram` | A codebase: containment on a rim, calls bundled through it | depth (what sits on the rim), bundling, zoom |
 | `Neighborhood` | One node and what reaches it | depth, edge style, zoom |
+| `PolymetricTree` | Containment top-down, each leaf a box: width, height and shade bound to three measures | width, height and shade measures, zoom; legend on by default |
 | `DependencyMatrix` | A dependency structure matrix — cells above the diagonal are dependencies against the grain | none; row headers select |
 
 `controls` and `legend` are both **off by default** — the default is the bare picture, because
@@ -264,6 +294,7 @@ LAYOUT_OPTIONS.world           // ['sizeBy', 'focusPath', 'levels']
 | `cluster` | `density` `arrange` `edgeStyle` `expanded` `groupBy` `nestBy` |
 | `flow` | `density` `edgeStyle` `expanded` |
 | `layers` | `density` `expanded` `showEdges` `layerLabels` |
+| `polymetric` | `widthBy` `heightBy` `colorBy` |
 | `neighborhood` | `edgeStyle` `expanded` `focus` `depth` |
 | `points` | `edgeStyle` `sizeBy` `sizeScale` |
 | `radial` | `edgeStyle` `sizeBy` `sizeScale` `radialMode` |
