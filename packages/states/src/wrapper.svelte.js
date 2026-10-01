@@ -47,6 +47,7 @@ export class Wrapper {
 
 	#onselect
 	#onchange
+	#onselectionchange
 	#selectedValue = $state(undefined)
 
 	#collapsible
@@ -59,12 +60,13 @@ export class Wrapper {
 
 	/**
 	 * @param {import('./proxy-tree.svelte.js').ProxyTree} proxyTree
-	 * @param {{ onselect?: Function, onchange?: Function, collapsible?: boolean, multiselect?: boolean }} [options]
+	 * @param {{ onselect?: Function, onchange?: Function, onselectionchange?: (values: unknown[]) => void, collapsible?: boolean, multiselect?: boolean }} [options]
 	 */
 	constructor(proxyTree, options = {}) {
 		this.#proxyTree = proxyTree
 		this.#onselect = options.onselect
 		this.#onchange = options.onchange
+		this.#onselectionchange = options.onselectionchange
 		this.#collapsible = options.collapsible ?? true
 		this.#multiselect = options.multiselect ?? false
 	}
@@ -168,8 +170,10 @@ export class Wrapper {
 	 */
 	#selectLeaf(proxy, key) {
 		if (this.#multiselect) {
-			this.#selectedKeys.clear()
-			this.#selectedKeys.add(key)
+			this.#commit(() => {
+				this.#selectedKeys.clear()
+				this.#selectedKeys.add(key)
+			})
 		}
 		if (proxy.value !== this.#selectedValue) {
 			this.#selectedValue = proxy.value
@@ -267,8 +271,19 @@ export class Wrapper {
 		this.#anchorKey = key
 		if (proxy.hasChildren) return
 
-		this.#toggleSelected(key)
+		this.#commit(() => this.#toggleSelected(key))
 		this.#onselect?.(proxy.value, proxy)
+	}
+
+	/**
+	 * Apply a change to the selection, and report the new set when it actually changed —
+	 * a re-click of the sole selected row is not a change.
+	 * @param {() => void} change
+	 */
+	#commit(change) {
+		const before = [...this.#selectedKeys].join('\u0000')
+		change()
+		if ([...this.#selectedKeys].join('\u0000') !== before) this.#onselectionchange?.(this.selected)
 	}
 
 	/**
@@ -330,12 +345,35 @@ export class Wrapper {
 	 * @param {string} key
 	 */
 	#replaceSelection(keys, key) {
-		this.#selectedKeys.clear()
-		for (const k of keys) this.#selectedKeys.add(k)
+		// Leaves only: a range swept across a group header must not select the header — a
+		// group is not a selectable value.
+		const leaves = keys.filter((k) => !this.#proxyTree.lookup.get(k)?.hasChildren)
+		this.#commit(() => {
+			this.#selectedKeys.clear()
+			for (const k of leaves) this.#selectedKeys.add(k)
+		})
 		this.#focusedKey = key
 
 		const proxy = this.#proxyTree.lookup.get(key)
 		if (proxy && !proxy.hasChildren) this.#onselect?.(proxy.value, proxy)
+	}
+
+	/**
+	 * Multi-select inbound: make the selection exactly the leaves whose value is in `values`,
+	 * matched by identity as `moveToValue` matches one. A no-op without `multiselect`.
+	 *
+	 * Does not fire `onselectionchange`: this is the owner telling the list what is selected,
+	 * and echoing it back would loop a bound `values` through its own setter.
+	 *
+	 * @param {unknown[]} values
+	 */
+	moveToValues(values) {
+		if (!this.#multiselect) return
+		const wanted = values ?? []
+		this.#selectedKeys.clear()
+		for (const [key, proxy] of this.#proxyTree.lookup) {
+			if (!proxy.hasChildren && wanted.includes(proxy.value)) this.#selectedKeys.add(key)
+		}
 	}
 
 	// ─── IWrapper: typeahead ───────────────────────────────────────────────────

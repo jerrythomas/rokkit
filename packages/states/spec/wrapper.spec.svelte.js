@@ -985,3 +985,94 @@ describe('Wrapper — extend without a target', () => {
 		expect(w.selectedKeys ?? []).toHaveLength(0)
 	})
 })
+
+// ─── multiselect: the set in and out (List multi-select) ──────────────────────
+
+describe('Wrapper — multiselect: moveToValues()', () => {
+	const values = [
+		{ label: 'Alpha', value: 'a' },
+		{ label: 'Beta', value: 'b' },
+		{ label: 'Gamma', value: 'g' }
+	]
+
+	it('selects the leaves whose value is in the list, and only those', () => {
+		const w = new Wrapper(new ProxyTree(values), { multiselect: true })
+		w.moveToValues(['a', 'g'])
+		expect(w.selected).toEqual(['a', 'g'])
+		w.moveToValues(['b'])
+		expect(w.selected).toEqual(['b'])
+	})
+
+	it('matches by identity, so an object value selects its own row', () => {
+		const one = { id: 1 }
+		const two = { id: 2 }
+		const w = new Wrapper(new ProxyTree([{ label: 'One', value: one }, { label: 'Two', value: two }]), { multiselect: true })
+		w.moveToValues([two])
+		expect(w.selected).toEqual([two])
+	})
+
+	it('selects nothing for no values, and ignores values no row has', () => {
+		const w = new Wrapper(new ProxyTree(values), { multiselect: true })
+		w.moveToValues(['a'])
+		w.moveToValues([])
+		expect(w.selected).toEqual([])
+		w.moveToValues(['zz'])
+		expect(w.selected).toEqual([])
+	})
+
+	it('does not report a change it was told about', () => {
+		const onselectionchange = vi.fn()
+		const w = new Wrapper(new ProxyTree(values), { multiselect: true, onselectionchange })
+		w.moveToValues(['a'])
+		expect(onselectionchange).not.toHaveBeenCalled()
+	})
+
+	it('is a no-op without multiselect', () => {
+		const w = new Wrapper(new ProxyTree(values))
+		w.moveToValues(['a'])
+		expect(w.selectedKeys.size).toBe(0)
+	})
+})
+
+describe('Wrapper — multiselect: onselectionchange', () => {
+	const values = [
+		{ label: 'Alpha', value: 'a' },
+		{ label: 'Beta', value: 'b' },
+		{ label: 'Gamma', value: 'g' }
+	]
+
+	it('reports the set after a select, an extend and a range', () => {
+		const onselectionchange = vi.fn()
+		const w = new Wrapper(new ProxyTree(values), { multiselect: true, onselectionchange })
+		w.select('0')
+		expect(onselectionchange).toHaveBeenLastCalledWith(['a'])
+		w.extend('2')
+		expect(onselectionchange).toHaveBeenLastCalledWith(['a', 'g'])
+		w.range('1')
+		expect(onselectionchange).toHaveBeenLastCalledWith(['b', 'g'])
+	})
+
+	it('stays quiet when the set did not change', () => {
+		const onselectionchange = vi.fn()
+		const w = new Wrapper(new ProxyTree(values), { multiselect: true, onselectionchange })
+		w.select('0')
+		w.select('0')
+		expect(onselectionchange).toHaveBeenCalledTimes(1)
+	})
+})
+
+describe('Wrapper — multiselect: a range keeps leaves only', () => {
+	it('does not sweep a group header into the selection', () => {
+		const items = [
+			{ label: 'A', value: 'a' },
+			{ label: 'Group', children: [{ label: 'B', value: 'b' }] },
+			{ label: 'C', value: 'c' }
+		]
+		const w = new Wrapper(new ProxyTree(items), { multiselect: true })
+		w.lookup.get('1').expanded = true
+		w.select('0')
+		w.range('2')
+		expect(w.selected).toEqual(['a', 'b', 'c'])
+		expect(w.selectedKeys.has('1')).toBe(false)
+	})
+})
