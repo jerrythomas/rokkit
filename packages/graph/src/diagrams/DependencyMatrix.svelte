@@ -13,7 +13,8 @@
 	 * node in both.
 	 */
 	import { GraphState } from '../GraphState.svelte.js'
-	import { buildMatrix } from '../layout/matrix.js'
+	import { buildMatrix, cellState, matrixFrame, matrixLabel } from '../layout/matrix.js'
+	import { interactions } from '../actions/interactions.js'
 	import type { NodeAxis } from '../layout/types.js'
 	import type { GraphFields } from '../types.js'
 
@@ -66,37 +67,15 @@
 
 	const matrix = $derived(buildMatrix(graph.model, { groupBy: groupBy ?? undefined }))
 
-	// Labels are measured by length, not by the DOM — deterministic, like every layout here.
-	const labelW = $derived(
-		Math.min(220, Math.max(48, Math.max(0, ...matrix.labels.map((l) => l.length)) * 6.5 + 14))
-	)
-	const n = $derived(matrix.order.length)
-	const width = $derived(labelW + n * cell + 8)
-	const height = $derived(labelW + n * cell + 8)
+	const frame = $derived(matrixFrame(matrix, cell))
+	const labelW = $derived(frame.labelW)
+	const n = $derived(frame.n)
 	const selected = $derived(graph.value)
-
-	const name = $derived(
-		label ??
-			`Dependency matrix: ${n} nodes, ${matrix.cells.length} dependencies, ${matrix.above} above the diagonal`
-	)
-
-	function toggle(id: string) {
-		if (selected === id) graph.clear()
-		else graph.select(id)
-	}
-
-	function onKey(event: KeyboardEvent, id: string) {
-		if (event.key !== 'Enter' && event.key !== ' ') return
-		event.preventDefault()
-		toggle(id)
-	}
-
-	const cellState = (source: string, target: string) =>
-		selected && (source === selected || target === selected) ? 'highlight' : undefined
+	const name = $derived(label ?? matrixLabel(n, matrix.cells.length, matrix.above))
 </script>
 
-<div data-graph-matrix class={className} role="group" aria-label={name}>
-	<svg {width} {height} viewBox="0 0 {width} {height}">
+<div data-graph-matrix class={className} role="group" aria-label={name} use:interactions={{ state: graph }}>
+	<svg width={frame.width} height={frame.height} viewBox="0 0 {frame.width} {frame.height}">
 		<!-- Column headings, rotated so a long name costs height rather than width. -->
 		{#each matrix.labels as text, i (matrix.order[i])}
 			<text
@@ -116,8 +95,8 @@
 				tabindex="0"
 				aria-pressed={selected === id}
 				aria-label={text}
-				onclick={() => toggle(id)}
-				onkeydown={(event) => onKey(event, id)}
+				data-graph-press="toggle"
+				data-graph-key={id}
 			>
 				<rect
 					x="0"
@@ -151,7 +130,7 @@
 				data-matrix-from={c.source}
 				data-matrix-to={c.target}
 				data-matrix-above={c.above ? '' : undefined}
-				data-matrix-state={cellState(c.source, c.target)}
+				data-matrix-state={cellState(selected, c.source, c.target)}
 				style:--cell-weight={c.count / matrix.maxCount}
 			>
 				<rect

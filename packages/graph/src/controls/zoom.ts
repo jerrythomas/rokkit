@@ -13,3 +13,11 @@ export const ZOOM_STEP = 1.25
 /** `value` brought inside the range. */
 export const clampZoom = (value: number): number =>
 	Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, value))
+
+export type ZoomMove = 'in' | 'out' | 'reset'
+
+/** The zoom after one move: a notch in or out, kept inside the range, or back to fit. */
+export function nextZoom(zoom: number, move: ZoomMove): number {
+	if (move === 'reset') return 1
+	return clampZoom(zoom * (move === 'in' ? ZOOM_STEP : 1 / ZOOM_STEP))
+}

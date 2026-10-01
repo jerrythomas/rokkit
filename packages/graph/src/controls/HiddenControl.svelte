@@ -5,6 +5,9 @@
 	 * A toggle: on a real repo the ordinary pairs vastly outnumber the ones nothing in the code
 	 * explains, and those are the only rows anyone acts on.
 	 */
+	import ToggleControl from './ToggleControl.svelte'
+	import { say } from '../messages.js'
+
 	type Props = {
 		showEdges?: 'all' | 'hidden'
 		onchange?: (value: 'all' | 'hidden') => void
@@ -15,12 +18,10 @@
 	const only = $derived(showEdges === 'hidden')
 </script>
 
-<button
-	type="button"
-	data-graph-hidden-only={showEdges}
-	aria-pressed={only}
-	title={only ? 'Showing only coupling no import explains' : 'Showing every pair'}
-	onclick={() => onchange?.(only ? 'all' : 'hidden')}
->
-	<span data-graph-control-label>{only ? 'Hidden only' : 'All pairs'}</span>
-</button>
+<ToggleControl
+	pressed={only}
+	hooks={{ 'data-graph-hidden-only': showEdges }}
+	label={say(only ? 'hiddenOnly' : 'allPairs')}
+	title={say(only ? 'hiddenOnlyTitle' : 'allPairsTitle')}
+	onchange={(on) => onchange?.(on ? 'hidden' : 'all')}
+/>

@@ -7,9 +7,11 @@
 	 * nothing is legible — show the crates first, then drill. Depth and drilling are the same
 	 * idea from two directions: this caps how far DOWN, `focusPath` moves where you start.
 	 */
+	import { choices } from '../actions/choices.js'
+	import { counted, say } from '../messages.js'
+
 	type Props = {
 		levels?: number
-		/** Deepest level offered. Beyond the tree's own depth the extra buttons do nothing. */
 		max?: number
 		onchange?: (value: number) => void
 	}
@@ -20,15 +22,20 @@
 	const steps = $derived(Array.from({ length: Math.max(1, max) }, (_, i) => i + 1))
 </script>
 
-<div data-graph-depth-controls role="group" aria-label="Levels shown">
+<div
+	data-graph-depth-controls
+	role="group"
+	aria-label={say('levelsShown')}
+	use:choices={{ onchoose: (value) => onchange?.(Number(value)) }}
+>
 	{#each steps as level (level)}
 		<button
 			type="button"
 			data-graph-depth={level}
+			data-graph-choice={level}
 			data-selected={levels === level ? '' : undefined}
 			aria-pressed={levels === level}
-			title="{level} level{level === 1 ? '' : 's'}"
-			onclick={() => onchange?.(level)}>{level}</button
+			title={counted(level, 'levelOne', 'levelMany')}>{level}</button
 		>
 	{/each}
 </div>

@@ -14,6 +14,9 @@
 	 */
 	import type { GraphState } from './GraphState.svelte.js'
 	import { DEFAULT_ICONS } from './icons.js'
+	import { choices } from './actions/choices.js'
+	import { say } from './messages.js'
+	import { readable } from './state/text.js'
 
 	type Section = 'kind' | 'relation' | 'group'
 
@@ -32,9 +35,10 @@
 		channels?: boolean
 		/**
 		 * The two sides of an arc diagram, left then right (#169) — which relation is which is
-		 * not something a reader can guess from the arcs.
+		 * not something a reader can guess from the arcs. `true` names them from the data
+		 * (`GraphState.sideNames`); a pair names them yourself.
 		 */
-		sides?: [string, string]
+		sides?: boolean | [string, string]
 		/** A key for the hidden-coupling stroke (#169). */
 		hidden?: boolean
 		icons?: Record<string, string>
@@ -58,19 +62,17 @@
 	}: Props = $props()
 
 	const icons = $derived<Record<string, string>>({ ...DEFAULT_ICONS, ...userIcons })
-	const channelRows = $derived(
-		channels && graph.channels
-			? [
-					{ key: 'width', label: 'Width', scale: graph.channels.width },
-					{ key: 'height', label: 'Height', scale: graph.channels.height },
-					...(graph.channels.color ? [{ key: 'color', label: 'Shade', scale: graph.channels.color }] : [])
-				]
-			: []
+	const channelRows = $derived(channels ? graph.channelRows : [])
+	const sideLabels = $derived(
+		sides === true ? [graph.sideNames.below, graph.sideNames.above] : sides || null
 	)
-	const shown = $derived(kinds || relations || groups || channelRows.length > 0 || Boolean(sides) || hidden)
+	const shown = $derived(kinds || relations || groups || channelRows.length > 0 || Boolean(sideLabels) || hidden)
 
-	/** Underscores are the WIRE format (dbd sends `materialized_view`), not something to read. */
-	const readable = (value: string) => value.replace(/_/g, ' ')
+	/** A pick names its section and value in one choice; split at the first colon. */
+	function pick(choice: string) {
+		const at = choice.indexOf(':')
+		onpick?.(choice.slice(0, at) as Section, choice.slice(at + 1))
+	}
 
 	/** `data-legend-kind` / `-relation` / `-group`, so CSS and tests can address a section. */
 	const attrs = (section: Section, value: string) => ({ [`data-legend-${section}`]: value })
@@ -96,12 +98,7 @@
      a screen reader — and a click handler on a `<span>` is unreachable by keyboard. -->
 {#snippet row(section: Section, value: string)}
 	{#if onpick}
-		<button
-			type="button"
-			data-graph-legend-entry
-			{...attrs(section, value)}
-			onclick={() => onpick(section, value)}
-		>
+		<button type="button" data-graph-legend-entry {...attrs(section, value)} data-graph-choice="{section}:{value}">
 			{@render swatch(section, value)}
 			<span data-legend-label>{readable(value)}</span>
 		</button>
@@ -114,7 +111,7 @@
 {/snippet}
 
 {#if shown}
-	<div data-graph-legend aria-label="Legend">
+	<div data-graph-legend aria-label={say('legend')} use:choices={{ onchoose: pick }}>
 		{#if kinds}
 			{#each graph.kindsPresent as kind (kind)}
 				{@render row('kind', kind)}
@@ -133,12 +130,12 @@
 			{/each}
 		{/if}
 
-		{#if sides}
+		{#if sideLabels}
 			<span data-graph-legend-entry data-legend-side="below">
-				<span data-legend-label>← {sides[0]}</span>
+				<span data-legend-label>← {sideLabels[0]}</span>
 			</span>
 			<span data-graph-legend-entry data-legend-side="above">
-				<span data-legend-label>{sides[1]} →</span>
+				<span data-legend-label>{sideLabels[1]} →</span>
 			</span>
 		{/if}
 
@@ -147,7 +144,7 @@
 				<svg data-legend-swatch data-edge-hidden aria-hidden="true">
 					<line x1="2" y1="7" x2="26" y2="7" />
 				</svg>
-				<span data-legend-label>Hidden coupling</span>
+				<span data-legend-label>{say('legendHidden')}</span>
 			</span>
 		{/if}
 
@@ -157,7 +154,7 @@
 				<span data-legend-swatch data-legend-channel-swatch={channel.key} aria-hidden="true"></span>
 				<span data-legend-label>{channel.label}</span>
 				<span data-legend-measure>{readable(channel.scale.measure)}</span>
-				<span data-legend-cap>full at {channel.scale.cap}</span>
+				<span data-legend-cap>{say('legendCap', { cap: channel.scale.cap })}</span>
 			</span>
 		{/each}
 	</div>

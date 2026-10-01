@@ -6,6 +6,9 @@
 	 * the view is readable at all — a few hundred straight chords across a rim are a solid disc
 	 * of ink — and straight is what you switch to when you want to see one edge exactly.
 	 */
+	import ToggleControl from './ToggleControl.svelte'
+	import { say } from '../messages.js'
+
 	type Props = {
 		bundleTension?: number
 		/** Tension used for the bundled state. Holten's 0.85 by default. */
@@ -18,13 +21,11 @@
 	const on = $derived(bundleTension > 0)
 </script>
 
-<button
-	type="button"
-	data-graph-bundle={on ? 'bundled' : 'straight'}
-	aria-pressed={on}
-	title={on ? 'Edges follow the hierarchy' : 'Edges run straight across'}
-	onclick={() => onchange?.(on ? 0 : bundled)}
->
-	<span data-graph-bundle-glyph aria-hidden="true">{on ? '❨' : '／'}</span>
-	<span data-graph-control-label>{on ? 'Bundled' : 'Straight'}</span>
-</button>
+<ToggleControl
+	pressed={on}
+	hooks={{ 'data-graph-bundle': on ? 'bundled' : 'straight' }}
+	glyph={on ? '❨' : '／'}
+	label={say(on ? 'bundled' : 'straight')}
+	title={say(on ? 'bundledTitle' : 'straightTitle')}
+	onchange={(next) => onchange?.(next ? bundled : 0)}
+/>

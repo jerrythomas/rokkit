@@ -94,6 +94,14 @@ describe('act', () => {
 		expect(g.isExpanded('x')).toBe(true)
 	})
 
+	it('toggles a selection: selects, and clears when pressed again', () => {
+		const s = world()
+		s.act('toggle', 'list')
+		expect(s.value).toBe('list')
+		s.act('toggle', 'list')
+		expect(s.value).toBeNull()
+	})
+
 	it('drills into a leaf by the node id it carries', () => {
 		const s = world()
 		const into = vi.spyOn(s, 'drillInto')
@@ -109,6 +117,6 @@ describe('act', () => {
 	})
 
 	it('has one handler per intent in the vocabulary', () => {
-		expect(Object.keys(INTENTS).sort()).toEqual(['clear', 'crumb', 'drill', 'expand', 'group', 'group-selected', 'open-selected', 'select'])
+		expect(Object.keys(INTENTS).sort()).toEqual(['clear', 'crumb', 'drill', 'expand', 'group', 'group-selected', 'open-selected', 'select', 'toggle'])
 	})
 })

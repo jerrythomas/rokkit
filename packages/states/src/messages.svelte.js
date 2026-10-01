@@ -123,11 +123,17 @@ const defaultMessages = {
 		refs: 'Refs',
 		comment: 'Comment',
 		columns: 'Columns',
+		columnOne: '{n} column',
+		columnMany: '{n} columns',
 		indexes: 'Indexes',
 		unique: 'unique',
 		relationships: 'Relationships',
 		noRelationships: 'No relationships reference this entity.',
-		noEntity: 'No entity selected.'
+		noEntity: 'No entity selected.',
+		// Dependency matrix
+		matrix: 'Dependency matrix: {nodes}, {dependencies}, {above} above the diagonal',
+		dependencyOne: '{n} dependency',
+		dependencyMany: '{n} dependencies'
 	}
 }
 

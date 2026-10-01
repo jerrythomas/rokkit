@@ -6,6 +6,7 @@
 	import type { EntityRow, GraphStateConfig } from '../GraphState.svelte.js'
 	import NoteBlocks from './NoteBlocks.svelte'
 	import type { GraphFields } from '../types.js'
+	import { say } from '../messages.js'
 
 	let {
 		state: provided,
@@ -40,12 +41,13 @@
 		if (graph === own) own.update(config())
 	})
 
-	const columns: TableColumn[] = [
-		{ name: 'label', label: 'Entity', snippet: 'entity' },
-		{ name: 'rowCount', label: 'Rows', align: 'right', snippet: 'rows' },
-		{ name: 'refCount', label: 'Refs', align: 'right', snippet: 'refs' },
-		{ name: 'note', label: 'Comment', sortable: false, snippet: 'comment' }
-	]
+	// $derived, so the headings follow a locale change.
+	const columns: TableColumn[] = $derived([
+		{ name: 'label', label: say('entity'), snippet: 'entity' },
+		{ name: 'rowCount', label: say('rows'), align: 'right', snippet: 'rows' },
+		{ name: 'refCount', label: say('refs'), align: 'right', snippet: 'refs' },
+		{ name: 'note', label: say('comment'), sortable: false, snippet: 'comment' }
+	])
 </script>
 
 {#snippet entity(_value: unknown, _column: TableColumn, row: Record<string, unknown>)}

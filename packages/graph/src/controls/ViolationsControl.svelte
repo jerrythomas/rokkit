@@ -5,6 +5,9 @@
 	 * A toggle: on a real codebase the conformant edges are the vast majority and drown the
 	 * signal, so "only violations" is the view a reviewer actually reads.
 	 */
+	import ToggleControl from './ToggleControl.svelte'
+	import { say } from '../messages.js'
+
 	type Props = {
 		showEdges?: 'all' | 'violations'
 		onchange?: (value: 'all' | 'violations') => void
@@ -15,12 +18,10 @@
 	const only = $derived(showEdges === 'violations')
 </script>
 
-<button
-	type="button"
-	data-graph-violations={showEdges}
-	aria-pressed={only}
-	title={only ? 'Showing only the edges that climb a layer' : 'Showing every edge'}
-	onclick={() => onchange?.(only ? 'all' : 'violations')}
->
-	<span data-graph-control-label>{only ? 'Violations only' : 'All edges'}</span>
-</button>
+<ToggleControl
+	pressed={only}
+	hooks={{ 'data-graph-violations': showEdges }}
+	label={say(only ? 'violationsOnly' : 'allEdges')}
+	title={say(only ? 'violationsOnlyTitle' : 'allEdgesTitle')}
+	onchange={(on) => onchange?.(on ? 'violations' : 'all')}
+/>

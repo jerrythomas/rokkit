@@ -28,7 +28,10 @@
 		above?: string
 		/** Every pair, or only the hidden ones. Bindable — the control moves it. */
 		showEdges?: 'all' | 'hidden'
-		/** The two sides' names in the legend, left then right. */
+		/**
+		 * The two sides' names in the legend, left then right. Omitted, they come from the data:
+		 * the relations drawn on each side, else Declared / Observed from the locale.
+		 */
 		sideLabels?: [string, string]
 		controls?: boolean
 		/** On by default: the two sides are unreadable without a key. */
@@ -48,7 +51,7 @@
 		fields = {},
 		above = undefined,
 		showEdges = $bindable('all'),
-		sideLabels = ['Imports', 'Shared commits'],
+		sideLabels = undefined,
 		controls = false,
 		legend = true,
 		value = $bindable(undefined),
@@ -99,7 +102,7 @@
 {/snippet}
 
 {#snippet legendBar()}
-	<GraphLegend state={graph} sides={sideLabels} hidden />
+	<GraphLegend state={graph} sides={sideLabels ?? true} hidden />
 {/snippet}
 
 <DiagramFrame

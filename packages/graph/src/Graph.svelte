@@ -4,10 +4,11 @@
 	import type { GraphStateConfig } from './GraphState.svelte.js'
 	import type { GraphProps } from './types.js'
 	import { DEFAULT_ICONS } from './icons.js'
-	import { ZOOM_STEP, clampZoom } from './controls/zoom.js'
+	import { nextZoom } from './controls/zoom.js'
 	import { interactions } from './actions/interactions.js'
 	import { canvasNavigation } from './actions/canvas.js'
 	import { say } from './messages.js'
+	import { readable } from './state/text.js'
 
 	// Aliased: a local binding literally named `state` makes the compiler read the `$state`
 	// rune below as a store subscription on it. The PUBLIC prop name is still `state`.
@@ -109,10 +110,7 @@
 	let vh = $state(0)
 	let paper = $state<HTMLElement | null>(null)
 
-	function zoomBy(factor: number) {
-		zoom = clampZoom(zoom * factor)
-	}
-	const onzoom = (direction: 'in' | 'out') => zoomBy(direction === 'in' ? ZOOM_STEP : 1 / ZOOM_STEP)
+	const onzoom = (direction: 'in' | 'out') => (zoom = nextZoom(zoom, direction))
 
 	const fit = $derived(
 		Math.max(
@@ -328,7 +326,7 @@
 						     materialized view is. Icon for the glance, tag for the answer. Underscores
 						     are the WIRE format (dbd sends `materialized_view`), not something to
 						     read. -->
-							<span data-graph-node-kind>{card.node.kind.replace(/_/g, ' ')}</span>
+							<span data-graph-node-kind>{readable(card.node.kind)}</span>
 						{/if}
 						<!-- A group counts what it stands for; a table counts its rows. -->
 						<span data-graph-node-count>{graph.cardCount(key)}</span>

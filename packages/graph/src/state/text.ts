@@ -60,3 +60,6 @@ export function drillErrorText(error: unknown): string | null {
 	if (error === null || error === undefined) return null
 	return say('drillError', { message: error instanceof Error ? error.message : String(error) })
 }
+
+/** Underscores are the WIRE format (dbd sends `materialized_view`), not something to read. */
+export const readable = (value: string): string => value.replace(/_/g, ' ')

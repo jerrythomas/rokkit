@@ -262,7 +262,8 @@ export const registry: Record<DiagramId, DiagramConfig> = {
 		dataset: 'arcs',
 		blurb:
 			'rokkit’s components on one axis: imports arc to the left, pairs that change in the same commits to the right. A red arc has no import beside it — coupling the code does not declare. “Hidden only” leaves just those.',
-		props: {}
+		// The host names its sides; without it they read Declared / Observed.
+		props: { sideLabels: ['Imports', 'Shared commits'] }
 	},
 	'arcs-sample': {
 		id: 'arcs-sample',

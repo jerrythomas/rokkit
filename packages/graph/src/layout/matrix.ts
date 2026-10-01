@@ -14,6 +14,7 @@
  * Pure and DOM-free, like every layout.
  */
 
+import { counted, say } from '../messages.js'
 import { rank } from './rank.js'
 import type { NodeAxis } from './types.js'
 import type { GraphModel, GraphNode } from '../types.js'
@@ -128,4 +129,30 @@ export function buildMatrix(model: GraphModel, options: MatrixOptions = {}): Mat
 		above: cells.filter((c) => c.above).length,
 		maxCount: Math.max(0, ...cells.map((c) => c.count))
 	}
+}
+
+/** The matrix's frame: a label gutter sized by the longest name (by length, not the DOM —
+ *  deterministic, like every layout here), and the canvas around `n` cells of `cell` px. */
+export function matrixFrame(
+	matrix: Pick<Matrix, 'labels' | 'order'>,
+	cell: number
+): { labelW: number; n: number; width: number; height: number } {
+	const longest = Math.max(0, ...matrix.labels.map((label) => label.length))
+	const labelW = Math.min(220, Math.max(48, longest * 6.5 + 14))
+	const n = matrix.order.length
+	const side = labelW + n * cell + 8
+	return { labelW, n, width: side, height: side }
+}
+
+/** A cell on the selected node's row or column is highlighted; nothing is without a selection. */
+export const cellState = (selected: string | null, source: string, target: string) =>
+	selected && (source === selected || target === selected) ? 'highlight' : undefined
+
+/** The matrix's accessible name: what it holds, from the locale. */
+export function matrixLabel(nodes: number, dependencies: number, above: number): string {
+	return say('matrix', {
+		nodes: counted(nodes, 'nodeOne', 'nodeMany'),
+		dependencies: counted(dependencies, 'dependencyOne', 'dependencyMany'),
+		above
+	})
 }

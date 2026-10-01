@@ -75,12 +75,12 @@ describe('ArcDiagram', () => {
 		expect(edgesOf(container)).toHaveLength(5)
 	})
 
-	it('names the two sides and the hidden pairs in its legend, on by default', () => {
+	it('names the two sides from the data, and the hidden pairs, in its legend — on by default', () => {
 		const { container } = render(ArcDiagram, props)
 		const sides = [...container.querySelectorAll('[data-legend-side]')].map((e) => [e.getAttribute('data-legend-side'), e.textContent?.trim()])
 		expect(sides).toEqual([
-			['below', expect.stringContaining('Imports')],
-			['above', expect.stringContaining('Shared commits')]
+			['below', expect.stringContaining('imports')],
+			['above', expect.stringContaining('cochange')]
 		])
 		expect(container.querySelector('[data-legend-hidden]')?.textContent).toContain('Hidden coupling')
 	})

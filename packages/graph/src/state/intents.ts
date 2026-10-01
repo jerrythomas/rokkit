@@ -12,6 +12,7 @@ import type { Cluster } from '../layout/types.js'
 
 export type Intent =
 	| 'select'
+	| 'toggle'
 	| 'drill'
 	| 'group'
 	| 'expand'
@@ -24,6 +25,7 @@ export type Intent =
 export type Actor = {
 	select(id: string): void
 	clear(): void
+	readonly value: string | null
 	drillInto(cluster: Cluster): unknown
 	drillTo(path: string[]): unknown
 	toggleGroup(id: string): void
@@ -43,6 +45,8 @@ const groupFor = (graph: Actor, key: string) => (graph.isGroup(key) ? key : (gra
 
 export const INTENTS: Record<Intent, Perform> = {
 	select: (graph, key) => graph.select(key),
+	/** Select, or clear when it is already the selection — a matrix row's press. */
+	toggle: (graph, key) => (graph.value === key ? graph.clear() : graph.select(key)),
 	drill: (graph, key) => {
 		const cluster = graph.boxFor(key)
 		if (cluster) graph.drillInto(cluster)

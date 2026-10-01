@@ -5,33 +5,32 @@
 	 * The measures offered are the ones the data has (`GraphState.measureKeys`): a picker that
 	 * lists a metric no node carries offers a box of minimum size everywhere.
 	 */
+	import { choices } from '../actions/choices.js'
+	import { say } from '../messages.js'
+
 	type Props = {
-		/** The channel this picks for — width, height, or color. */
 		channel: 'width' | 'height' | 'color'
 		value?: string
+		/** The measures to offer — `GraphState.measureKeys`, what the data has. */
 		options: string[]
-		/** Allow "none" — a host may have only two metrics live yet (the colour stays off). */
+		/** Offer "none" — a host with two metrics yet can leave shade off. */
 		allowNone?: boolean
 		onchange?: (value: string | undefined) => void
 	}
 
 	let { channel, value = undefined, options, allowNone = false, onchange }: Props = $props()
 
-	const LABELS = { width: 'Width', height: 'Height', color: 'Shade' }
+	const LABEL = { width: 'width', height: 'height', color: 'shade' } as const
 </script>
 
-<label data-graph-measure-control>
-	<span data-graph-control-label>{LABELS[channel]}</span>
-	<select
-		data-graph-measure={channel}
-		value={value ?? ''}
-		onchange={(event) => {
-			const picked = (event.currentTarget as HTMLSelectElement).value
-			onchange?.(picked === '' ? undefined : picked)
-		}}
-	>
+<label
+	data-graph-measure-control
+	use:choices={{ onchoose: (picked) => onchange?.(picked === '' ? undefined : picked) }}
+>
+	<span data-graph-control-label>{say(LABEL[channel])}</span>
+	<select data-graph-measure={channel} value={value ?? ''}>
 		{#if allowNone}
-			<option value="">none</option>
+			<option value="">{say('measureNone')}</option>
 		{/if}
 		{#each options as option (option)}
 			<option value={option}>{option}</option>

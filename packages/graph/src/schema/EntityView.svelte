@@ -5,6 +5,8 @@
 	import NoteBlocks from './NoteBlocks.svelte'
 	import { baseType, typeSize } from './column-type.js'
 	import type { GraphFields } from '../types.js'
+	import { counted, say } from '../messages.js'
+	import { interactions } from '../actions/interactions.js'
 
 	let {
 		state: provided,
@@ -44,22 +46,22 @@
 </script>
 
 {#if entity}
-	<article data-graph-entity data-node-kind={entity.kind} class={className}>
+	<article data-graph-entity data-node-kind={entity.kind} class={className} use:interactions={{ state: graph }}>
 		<header data-graph-entity-head>
 			{#if entity.group}<span data-graph-entity-group>{entity.group}.</span>{/if}
 			<h2 data-graph-entity-title>{entity.label}</h2>
-			<span data-graph-entity-count>{entity.rows.length} columns</span>
+			<span data-graph-entity-count>{counted(entity.rows.length, 'columnOne', 'columnMany')}</span>
 		</header>
 
 		{#if entity.note}
 			<section data-graph-section="note">
-				<h3 data-graph-section-title>Comment</h3>
+				<h3 data-graph-section-title>{say('comment')}</h3>
 				<NoteBlocks note={entity.note} />
 			</section>
 		{/if}
 
 		<section data-graph-section="columns">
-			<h3 data-graph-section-title>Columns</h3>
+			<h3 data-graph-section-title>{say('columns')}</h3>
 			{#each entity.rows as row (row.name)}
 				<div data-graph-column>
 					<span data-graph-column-name>{row.name}</span>
@@ -77,11 +79,11 @@
 
 		{#if indexes.length > 0}
 			<section data-graph-section="indexes">
-				<h3 data-graph-section-title>Indexes</h3>
+				<h3 data-graph-section-title>{say('indexes')}</h3>
 				{#each indexes as index, i (i)}
 					<div data-graph-index>
 						<span data-graph-index-def>{index.def}</span>
-						{#if index.unique}<span data-graph-index-unique>unique</span>{/if}
+						{#if index.unique}<span data-graph-index-unique>{say('unique')}</span>{/if}
 						{#if index.name}<span data-graph-index-name>{index.name}</span>{/if}
 					</div>
 				{/each}
@@ -89,15 +91,16 @@
 		{/if}
 
 		<section data-graph-section="relationships">
-			<h3 data-graph-section-title>Relationships</h3>
+			<h3 data-graph-section-title>{say('relationships')}</h3>
 			{#if graph.relationships.length === 0}
-				<p data-graph-relationships-empty>No relationships reference this entity.</p>
+				<p data-graph-relationships-empty>{say('noRelationships')}</p>
 			{:else}
 				{#each graph.relationships as rel, i (rel.edge.id + i)}
 					<button
 						type="button"
 						data-graph-relationship={rel.direction}
-						onclick={() => graph.select(rel.id)}
+						data-graph-press="select"
+						data-graph-key={rel.id}
 					>
 						{#if rel.group}<span data-graph-relationship-group>{rel.group}.</span>{/if}
 						<span data-graph-relationship-label>{rel.label}</span>
@@ -111,6 +114,6 @@
 	</article>
 {:else}
 	<article data-graph-entity data-graph-entity-empty class={className}>
-		<p>No entity selected.</p>
+		<p>{say('noEntity')}</p>
 	</article>
 {/if}

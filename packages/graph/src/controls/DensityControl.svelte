@@ -6,34 +6,42 @@
 	 * control that moves while the picture does not reads as a broken view. The diagram that
 	 * wants it places it; the rest never render it.
 	 */
+	import { choices } from '../actions/choices.js'
+	import { say } from '../messages.js'
+	import type { GraphMessageKey } from '../messages.js'
 	import type { Density } from '../layout/types.js'
 
 	type Props = {
 		density?: Density
-		/** Fires with the chosen value. The caller owns the value — this control stores none. */
 		onchange?: (value: Density) => void
 	}
 
 	let { density = 'keys', onchange }: Props = $props()
 
-	const options: [Density, string, string][] = [
-		['names', 'Names', 'Titles only'],
-		['keys', 'Keys', 'Key rows only'],
-		['full', 'All', 'All rows']
+	/** Each level, and the words for it. */
+	const LEVELS: [Density, GraphMessageKey, GraphMessageKey][] = [
+		['names', 'densityNames', 'densityNamesTitle'],
+		['keys', 'densityKeys', 'densityKeysTitle'],
+		['full', 'densityFull', 'densityFullTitle']
 	]
 </script>
 
 <!-- Named, because three unlabelled buttons announce as "Names Keys All" and say nothing
      about what they control. -->
-<div data-graph-density-controls role="group" aria-label="Detail level">
-	{#each options as [value, short, title] (value)}
+<div
+	data-graph-density-controls
+	role="group"
+	aria-label={say('detailLevel')}
+	use:choices={{ onchoose: (value) => onchange?.(value as Density) }}
+>
+	{#each LEVELS as [value, short, title] (value)}
 		<button
 			type="button"
 			data-graph-density={value}
+			data-graph-choice={value}
 			data-selected={density === value ? '' : undefined}
 			aria-pressed={density === value}
-			{title}
-			onclick={() => onchange?.(value)}>{short}</button
+			title={say(title)}>{say(short)}</button
 		>
 	{/each}
 </div>
