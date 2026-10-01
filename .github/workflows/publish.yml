@@ -38,6 +38,11 @@ jobs:
         # after install completes (deps fully linked), so no build is needed here.
         run: bun install --frozen-lockfile --ignore-scripts
 
+      # Before anything is published: bun.lock must record every workspace at its package.json
+      # version, or `bun pm pack` pins siblings to the previous release (v1.8.1).
+      - name: Check the lockfile matches the release
+        run: bunx vitest run --project config
+
       - name: Publish packages
         env:
           NODE_NO_WARNINGS: 1
@@ -64,6 +69,8 @@ jobs:
               fi
               # bun pm pack rewrites workspace:* deps; doesn't run lifecycle scripts
               TARBALL=$(bun pm pack | grep '\.tgz$')
+              # The last gate: a sibling pinned to another release must not reach npm.
+              node ../../config/check-pins.mjs "$TARBALL"
               bunx npm publish "$TARBALL" --provenance --access public --tag latest || {
                 echo "::warning::Failed to publish ${PKG_NAME}@${VERSION} — may need manual retry"
               }
