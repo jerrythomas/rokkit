@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { cluster, layouts, neighborhood, points } from '../../src/layout/index.js'
+import { cluster, layouts, neighborhood, points, layers } from '../../src/layout/index.js'
 import { normalizeGraph } from '../../src/model/normalize.js'
 
 describe('layout registry', () => {
 	it('registers exactly the built-in layouts', () => {
-		expect(Object.keys(layouts).sort()).toEqual(['cluster', 'flow', 'neighborhood', 'points', 'radial', 'structure', 'sunburst', 'world'])
+		expect(Object.keys(layouts).sort()).toEqual(['cluster', 'flow', 'layers', 'neighborhood', 'points', 'radial', 'structure', 'sunburst', 'world'])
 	})
 
 	it('maps each name to the layout of that name, not merely to some layout', () => {
@@ -12,6 +12,7 @@ describe('layout registry', () => {
 		// a key check and a callable check. Identity is what catches it, and the consequence
 		// is silent: `layout="neighborhood"` would render a cluster diagram.
 		expect(layouts.cluster).toBe(cluster)
+		expect(layouts.layers).toBe(layers)
 		expect(layouts.neighborhood).toBe(neighborhood)
 		expect(layouts.points).toBe(points)
 	})

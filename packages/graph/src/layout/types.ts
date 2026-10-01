@@ -150,6 +150,8 @@ export type RoutedEdge = {
 	weakest?: boolean
 	/** GraphEdge.count — how many model edges a condensed edge stands for. */
 	count?: number
+	/** How the edge sits against the layering (#167) — given by the host or derived by `layers`. */
+	conformance?: import('../types.js').Conformance
 	x1: number
 	y1: number
 	x2: number
@@ -263,6 +265,13 @@ export type LayoutOptions = {
 	 * highlight it would silently re-root the diagram.
 	 */
 	root?: string | null
+	/**
+	 * `layers` only — `violations` draws just the edges that climb (#167). On a real codebase
+	 * the conformant edges are the vast majority and drown the signal.
+	 */
+	showEdges?: 'all' | 'violations'
+	/** `layers` only — band names by layer index. Unnamed layers read "Layer N". */
+	layerLabels?: string[]
 }
 
 export type LayoutResult = {

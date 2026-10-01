@@ -20,7 +20,9 @@ export const LAYOUT_OPTION_KEYS = [
 	'levels',
 	'radialMode',
 	'root',
-	'bundleTension'
+	'bundleTension',
+	'showEdges',
+	'layerLabels'
 ] as const
 
 /**
@@ -44,6 +46,8 @@ export const LAYOUT_OPTION_KEYS = [
 export const LAYOUT_OPTIONS: Record<string, readonly (typeof LAYOUT_OPTION_KEYS)[number][]> = {
 	cluster: ['density', 'arrange', 'edgeStyle', 'expanded', 'groupBy', 'nestBy'],
 	flow: ['density', 'edgeStyle', 'expanded'],
+	// No edgeStyle: a layered edge is always a vertical S, built by the layout itself.
+	layers: ['density', 'expanded', 'showEdges', 'layerLabels'],
 	neighborhood: ['edgeStyle', 'expanded', 'focus', 'depth'],
 	points: ['edgeStyle', 'sizeBy', 'sizeScale'],
 	radial: ['edgeStyle', 'sizeBy', 'sizeScale', 'radialMode', 'levels', 'root'],

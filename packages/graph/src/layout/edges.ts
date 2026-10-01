@@ -52,8 +52,11 @@ function selfLoop(
  * key-identical. Every layout that builds routed edges spreads this; one that built its own
  * identity half without it silently drew weighted edges at the normal width.
  */
-export function carried(edge: GraphEdge): Pick<RoutedEdge, 'overlay' | 'weight' | 'weakest' | 'count'> {
-	const out: Pick<RoutedEdge, 'overlay' | 'weight' | 'weakest' | 'count'> = {}
+export function carried(
+	edge: GraphEdge
+): Pick<RoutedEdge, 'overlay' | 'weight' | 'weakest' | 'count' | 'conformance'> {
+	const out: Pick<RoutedEdge, 'overlay' | 'weight' | 'weakest' | 'count' | 'conformance'> = {}
+	if (edge.conformance) out.conformance = edge.conformance
 	if (edge.overlay) out.overlay = true
 	if (edge.weight !== undefined) out.weight = edge.weight
 	if (edge.weakest) out.weakest = true
