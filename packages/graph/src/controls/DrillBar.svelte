@@ -6,34 +6,35 @@
 	 * while the host loads a level, the error when a load fails, "Open" for the selected box
 	 * when it can be drilled — the keyboard route into a leaf, since Enter on a leaf selects it —
 	 * and Expand / Collapse for the selected group or group member (#166).
-	 * Renders nothing when there is nothing to show. Reads and calls the state; computes nothing.
+	 * Renders nothing when there is nothing to show. Each control declares its intent; the
+	 * `interactions` action performs it, so this reads the state and computes nothing.
 	 */
+	import { interactions } from '../actions/interactions.js'
+	import { say } from '../messages.js'
 	import type { GraphState } from '../GraphState.svelte.js'
 
 	type Props = {
 		state: GraphState
-		/** What the root crumb says. */
+		/** What the root crumb says. Defaults to the locale's (`All`). */
 		rootLabel?: string
 	}
 
-	let { state: graph, rootLabel = 'All' }: Props = $props()
-
-	const message = (error: unknown) => (error instanceof Error ? error.message : String(error))
+	let { state: graph, rootLabel = undefined }: Props = $props()
 </script>
 
 {#if graph.showsDrillBar}
-	<nav data-graph-drill aria-label="Drill path">
+	<nav data-graph-drill aria-label={say('drillPath')} use:interactions={{ state: graph }}>
 		<ol data-graph-drill-trail>
 			{#each graph.breadcrumbs as crumb, i (crumb.path.join('/'))}
 				<li>
-					{#if i < graph.breadcrumbs.length - 1}
-						<button
-							type="button"
-							data-graph-drill-crumb
-							onclick={() => graph.drillTo(crumb.path)}>{crumb.label ?? rootLabel}</button
+					{#if crumb.current}
+						<span data-graph-drill-crumb aria-current="location"
+							>{crumb.label ?? rootLabel ?? say('drillRoot')}</span
 						>
 					{:else}
-						<span data-graph-drill-crumb aria-current="location">{crumb.label ?? rootLabel}</span>
+						<button type="button" data-graph-drill-crumb data-graph-press="crumb" data-graph-key={String(i)}
+							>{crumb.label ?? rootLabel ?? say('drillRoot')}</button
+						>
 					{/if}
 				</li>
 			{/each}
@@ -43,23 +44,20 @@
 			<button
 				type="button"
 				data-graph-group-action={graph.groupAction.kind}
-				onclick={() => graph.groupAction && graph.toggleGroup(graph.groupAction.group)}
-				>{graph.groupAction.kind === 'expand' ? 'Expand' : 'Collapse'} {graph.groupAction.label}</button
+				data-graph-press="group-selected"
+				>{say(graph.groupAction.kind, { name: graph.groupAction.label })}</button
 			>
 		{/if}
 		{#if graph.drillTarget}
-			<button
-				type="button"
-				data-graph-drill-open
-				onclick={() => graph.drillTarget && graph.drillInto(graph.drillTarget)}
-				>Open {graph.drillTarget.name}</button
+			<button type="button" data-graph-drill-open data-graph-press="open-selected"
+				>{say('open', { name: graph.drillTarget.name })}</button
 			>
 		{/if}
 		{#if graph.pending}
-			<span data-graph-drill-status role="status">Loading…</span>
+			<span data-graph-drill-status role="status">{say('drillLoading')}</span>
 		{/if}
-		{#if graph.drillError !== null}
-			<span data-graph-drill-error role="alert">Could not open: {message(graph.drillError)}</span>
+		{#if graph.drillErrorText}
+			<span data-graph-drill-error role="alert">{graph.drillErrorText}</span>
 		{/if}
 	</nav>
 {/if}

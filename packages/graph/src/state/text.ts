@@ -54,3 +54,9 @@ export function sideNames(edges: GraphEdge[], above: string | undefined): { belo
 		named[side].size > 0 ? [...named[side]].join(' · ') : say(fallback)
 	return { below: name('below', 'sideBelow'), above: name('above', 'sideAbove') }
 }
+
+/** What a failed drill says: the error's own message, in the locale's sentence. */
+export function drillErrorText(error: unknown): string | null {
+	if (error === null || error === undefined) return null
+	return say('drillError', { message: error instanceof Error ? error.message : String(error) })
+}

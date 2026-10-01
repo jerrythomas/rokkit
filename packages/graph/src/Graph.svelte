@@ -5,6 +5,9 @@
 	import type { GraphProps } from './types.js'
 	import { DEFAULT_ICONS } from './icons.js'
 	import { ZOOM_STEP, clampZoom } from './controls/zoom.js'
+	import { interactions } from './actions/interactions.js'
+	import { canvasNavigation } from './actions/canvas.js'
+	import { say } from './messages.js'
 
 	// Aliased: a local binding literally named `state` makes the compiler read the `$state`
 	// rune below as a store subscription on it. The PUBLIC prop name is still `state`.
@@ -109,50 +112,7 @@
 	function zoomBy(factor: number) {
 		zoom = clampZoom(zoom * factor)
 	}
-
-	/**
-	 * Ctrl/meta + wheel is what a trackpad pinch reports as. Without preventDefault the
-	 * browser zooms the whole PAGE instead of the diagram, which is the behaviour a reader
-	 * hits first and reads as the component ignoring them.
-	 *
-	 * A plain wheel is left alone: the canvas scrolls, which is how panning works here.
-	 */
-	function onWheel(event: WheelEvent) {
-		if (!zoomable || !(event.ctrlKey || event.metaKey)) return
-		event.preventDefault()
-		zoomBy(event.deltaY < 0 ? ZOOM_STEP : 1 / ZOOM_STEP)
-	}
-
-	// Drag-to-pan on the background. Scrolling already reaches the overflow, so this is the
-	// direct-manipulation path on top of it, not the only way across.
-	let panning = $state(false)
-	let panFrom = { x: 0, y: 0, left: 0, top: 0 }
-
-	/**
-	 * What a press can start on without being a pan: a node card, and anything interactive —
-	 * a containment box is a <button>, a wedge is role="button". A pan captures the pointer, and
-	 * the browser then delivers the CLICK to the canvas (which clears the selection) instead of
-	 * the box, so a treemap box could be neither opened nor selected by mouse.
-	 */
-	const OWNS_ITS_PRESS = '[data-graph-node], button, [role="button"], a[href], input, select, textarea'
-
-	function onPointerDown(event: PointerEvent) {
-		// Only the background drags — a press that starts on something interactive is its own.
-		if (!paper || (event.target as Element).closest(OWNS_ITS_PRESS)) return
-		panning = true
-		panFrom = { x: event.clientX, y: event.clientY, left: paper.scrollLeft, top: paper.scrollTop }
-		paper.setPointerCapture(event.pointerId)
-	}
-
-	function onPointerMove(event: PointerEvent) {
-		if (!panning || !paper) return
-		paper.scrollLeft = panFrom.left - (event.clientX - panFrom.x)
-		paper.scrollTop = panFrom.top - (event.clientY - panFrom.y)
-	}
-
-	function endPan() {
-		panning = false
-	}
+	const onzoom = (direction: 'in' | 'out') => zoomBy(direction === 'in' ? ZOOM_STEP : 1 / ZOOM_STEP)
 
 	const fit = $derived(
 		Math.max(
@@ -196,20 +156,14 @@
 		data-graph-paper
 		data-graph-detail={detail}
 		data-graph-group-tint={graph.groupTint ? '' : undefined}
-		data-graph-panning={panning ? '' : undefined}
 		data-graph-pending={graph.pending ? '' : undefined}
 		aria-busy={graph.pending}
 		role="presentation"
 		bind:this={paper}
 		bind:clientWidth={vw}
 		bind:clientHeight={vh}
-		onclick={() => graph.clear()}
-		onkeydown={(e) => e.key === 'Escape' && graph.clear()}
-		onwheel={onWheel}
-		onpointerdown={onPointerDown}
-		onpointermove={onPointerMove}
-		onpointerup={endPan}
-		onpointercancel={endPan}
+		use:interactions={{ state: graph, clearOnBackground: true }}
+		use:canvasNavigation={{ zoomable, onzoom }}
 		tabindex="-1"
 	>
 		<div
@@ -248,63 +202,24 @@
 				>
 					<title>{graph.label}</title>
 					{#each graph.clusters as cluster (graph.clusterKey(cluster))}
-						{@const shared = graph.boxAttrs(cluster)}
-						{@const caption = `${cluster.name} · ${cluster.caption ?? cluster.count}`}
-						<!-- Two branches so `role` is STATIC. A wedge that is a node is a button and says
-					     so; a region is scenery. Written as one element with a conditional role, the
-					     compiler cannot tell which it is and neither can a screen reader. The shared
-					     attributes come from state, so the branches cannot drift apart. -->
-						{#if cluster.nodeId}
+						<!-- Two branches so `role` is STATIC: an interactive wedge is a button and says so;
+						     a region is scenery. What a press on it means comes from state, in the
+						     shared attributes, and the canvas's one `interactions` action acts on it. -->
+						{#if graph.interactive(cluster)}
 							<path
 								data-graph-wedge
-								{...shared}
+								{...graph.boxAttrs(cluster)}
 								style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
 								d={graph.wedgePath(cluster)}
 								role="button"
-								tabindex={0}
-								aria-label={caption}
-								onclick={(event: Event) => {
-									event.stopPropagation()
-									graph.select(cluster.nodeId!)
-								}}
-								onkeydown={(event: KeyboardEvent) => {
-									if (event.key !== 'Enter' && event.key !== ' ') return
-									event.preventDefault()
-									event.stopPropagation()
-									graph.select(cluster.nodeId!)
-								}}
-								ondblclick={(event: Event) => {
-									event.stopPropagation()
-									graph.drillInto(cluster)
-								}}><title>{caption}</title></path
-							>
-						{:else if graph.canDrill(cluster)}
-							<path
-								data-graph-wedge
-								data-graph-drillable
-								{...shared}
-								style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
-								d={graph.wedgePath(cluster)}
-								role="button"
-								tabindex={0}
-								aria-label="Open {caption}"
-								onclick={(event: Event) => {
-									event.stopPropagation()
-									graph.drillInto(cluster)
-								}}
-								onkeydown={(event: KeyboardEvent) => {
-									if (event.key !== 'Enter' && event.key !== ' ') return
-									event.preventDefault()
-									event.stopPropagation()
-									graph.drillInto(cluster)
-								}}><title>{caption}</title></path
+								tabindex={0}><title>{graph.caption(cluster)}</title></path
 							>
 						{:else}
 							<path
 								data-graph-wedge
-								{...shared}
+								{...graph.boxAttrs(cluster)}
 								style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
-								d={graph.wedgePath(cluster)}><title>{caption}</title></path
+								d={graph.wedgePath(cluster)}><title>{graph.caption(cluster)}</title></path
 							>
 						{/if}
 					{/each}
@@ -312,72 +227,38 @@
 			{/if}
 
 			{#each graph.boxes as cluster (graph.clusterKey(cluster))}
-				{@const shared = graph.boxAttrs(cluster)}
-				{@const caption = `${cluster.name} · ${cluster.caption ?? cluster.count}`}
-				<!-- One box shape at every depth. A containment layout nests boxes inside boxes, so a
-			     childless one is still a box — rendering it as a node CARD instead put two
-			     structures in one hierarchy and brought the card's furniture with it, down to a
-			     row count that is `0` for anything without rows.
+				<!-- One box shape at every depth: a containment layout nests boxes inside boxes, so a
+			     childless one is still a box, not a node card.
 
-			     Two branches, not one element with a conditional tag: a leaf is clickable and
-			     focusable, so it is a real <button> and gets Enter/Space, focus order and the right
-			     announcement for free. A region is scenery and is a <div> that says so. The shared
-			     attributes come from state, so the two cannot drift. -->
-				{#if cluster.nodeId}
+			     Two branches, not one element with a conditional tag: an interactive box is a real
+			     <button> and gets Enter/Space, focus order and the right announcement for free; a
+			     region is scenery and is a <div> that says so. What its press means — select a leaf,
+			     open a container — comes from state in the shared attributes. -->
+				{#if graph.interactive(cluster)}
 					<button
 						type="button"
 						data-graph-cluster
-						{...shared}
+						{...graph.boxAttrs(cluster)}
 						style:left="{cluster.x}px"
 						style:top="{cluster.y}px"
 						style:width="{cluster.w}px"
 						style:height="{cluster.h}px"
 						style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
 						style:--shade={cluster.shade}
-						onclick={(event) => {
-							event.stopPropagation()
-							graph.select(cluster.nodeId!)
-						}}
-						ondblclick={(event) => {
-							event.stopPropagation()
-							graph.drillInto(cluster)
-						}}
 					>
-						<span data-graph-cluster-label>{caption}</span>
-					</button>
-				{:else if graph.canDrill(cluster)}
-					<!-- A container that can be opened. Not selectable (it is a region, not a thing),
-					     so its click is free to mean "go in" — a real <button>, so Enter and Space
-					     open it too. -->
-					<button
-						type="button"
-						data-graph-cluster
-						data-graph-drillable
-						{...shared}
-						style:left="{cluster.x}px"
-						style:top="{cluster.y}px"
-						style:width="{cluster.w}px"
-						style:height="{cluster.h}px"
-						style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
-						aria-label="Open {caption}"
-						onclick={(event) => {
-							event.stopPropagation()
-							graph.drillInto(cluster)
-						}}
-					>
-						<span data-graph-cluster-label>{caption}</span>
+						<span data-graph-cluster-label>{graph.caption(cluster)}</span>
 					</button>
 				{:else}
 					<div
 						data-graph-cluster
-						{...shared}
+						{...graph.boxAttrs(cluster)}
 						style:left="{cluster.x}px"
 						style:top="{cluster.y}px"
 						style:width="{cluster.w}px"
 						style:height="{cluster.h}px"
 						style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
 					>
-						<span data-graph-cluster-label>{caption}</span>
+						<span data-graph-cluster-label>{graph.caption(cluster)}</span>
 					</div>
 				{/if}
 			{/each}
@@ -430,31 +311,14 @@
 				<button
 					type="button"
 					data-graph-node={key}
-					data-node-kind={card.node.kind}
-					data-node-group={card.node.group}
-					data-node-state={graph.nodeState(key)}
-					data-graph-group={graph.isGroup(key) ? '' : undefined}
-					data-graph-collapsed={graph.isCollapsed(key) ? '' : undefined}
-					data-graph-member-of={graph.groupOf(key) ?? undefined}
+					{...graph.cardAttrs(key)}
 					data-label-side={card.labelSide}
 					style:--label-angle={card.labelAngle === undefined ? undefined : `${card.labelAngle}deg`}
-					data-node-headonly={card.vis.length === 0 && card.more <= 0 && !graph.isGroup(key)
-						? ''
-						: undefined}
 					style:left="{card.x}px"
 					style:top="{card.y}px"
 					style:width="{card.w}px"
 					style:height="{card.h}px"
 					style={graph.groupStyleAttr(card.node.group)}
-					onclick={(event) => {
-						event.stopPropagation()
-						graph.select(key)
-					}}
-					ondblclick={(event) => {
-						// A group opens; a member of an open group folds it back. Neither is a selection.
-						event.stopPropagation()
-						graph.toggleGroup(graph.isGroup(key) ? key : (graph.groupOf(key) ?? key))
-					}}
 				>
 					<span data-graph-node-head>
 						<span data-graph-node-icon class={icons[card.node.kind ?? ''] ?? icons.fallback}></span>
@@ -467,9 +331,7 @@
 							<span data-graph-node-kind>{card.node.kind.replace(/_/g, ' ')}</span>
 						{/if}
 						<!-- A group counts what it stands for; a table counts its rows. -->
-						<span data-graph-node-count
-							>{graph.isGroup(key) ? graph.memberCount(key) : card.node.rows.length}</span
-						>
+						<span data-graph-node-count>{graph.cardCount(key)}</span>
 					</span>
 					{#each card.vis as row (row.name)}
 						<span data-graph-row data-graph-row-key={row.badges.length > 0 ? '' : undefined}>
@@ -484,45 +346,22 @@
 					{/each}
 					{#if graph.isCollapsed(key)}
 						<!-- The way in, as a real control inside the card — the same pattern as "+3 more":
-						     the card's own click still selects, this one expands. -->
+						     the card's own press still selects, this one expands. -->
 						<span
 							role="button"
 							tabindex="0"
 							data-graph-group-toggle
-							aria-label="Expand {card.node.label}"
-							onclick={(event) => {
-								event.stopPropagation()
-								graph.toggleGroup(key)
-							}}
-							onkeydown={(event) => {
-								if (event.key !== 'Enter' && event.key !== ' ') return
-								event.preventDefault()
-								event.stopPropagation()
-								graph.toggleGroup(key)
-							}}>Expand · {graph.memberCount(key)}</span
+							data-graph-press="group"
+							data-graph-key={key}
+							aria-label={say('expand', { name: card.node.label })}
+							>{say('expandCount', { n: graph.memberCount(key) })}</span
 						>
 					{/if}
 					{#if graph.moreLabel(key)}
 						<!-- A real control. "+3 more" that does nothing is a statement dressed as an
 					     affordance; this expands just this card. -->
-						<span
-							role="button"
-							tabindex="0"
-							data-graph-more
-							data-graph-more-empty={card.vis.length === 0 && !graph.isExpanded(key)
-								? ''
-								: undefined}
-							data-expanded={graph.isExpanded(key) ? '' : undefined}
-							onclick={(event) => {
-								event.stopPropagation()
-								graph.toggleExpanded(key)
-							}}
-							onkeydown={(event) => {
-								if (event.key !== 'Enter' && event.key !== ' ') return
-								event.preventDefault()
-								event.stopPropagation()
-								graph.toggleExpanded(key)
-							}}>{graph.moreLabel(key)}</span
+						<span role="button" tabindex="0" data-graph-more {...graph.moreAttrs(key)}
+							>{graph.moreLabel(key)}</span
 						>
 					{/if}
 				</button>

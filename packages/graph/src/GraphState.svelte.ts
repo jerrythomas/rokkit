@@ -31,7 +31,13 @@ import { GraphDrill } from './state/GraphDrill.svelte.js'
 import { GraphGroups } from './state/GraphGroups.svelte.js'
 import type { GroupAction } from './state/GraphGroups.svelte.js'
 import { condense } from './model/condense.js'
-import { channelRows, diagramLabel, moreRowsLabel, sideNames } from './state/text.js'
+import { channelRows, diagramLabel, drillErrorText, moreRowsLabel, sideNames } from './state/text.js'
+import { INTENTS, isIntent } from './state/intents.js'
+import type { Intent } from './state/intents.js'
+import { say } from './messages.js'
+
+/** A presence attribute: `''` when on, absent when off. */
+const flag = (on: boolean) => (on ? '' : undefined)
 import type { ChannelRow } from './state/text.js'
 import type { Breadcrumb } from './state/GraphDrill.svelte.js'
 
@@ -347,6 +353,10 @@ export class GraphState {
 	 * The selected box, when it can be opened — what a drill bar's "Open" acts on. The keyboard
 	 * route into a leaf: Enter selects it, and this is the next step.
 	 */
+	/** The failed drill, worded for the reader; null when the last drill did not fail. */
+	get drillErrorText(): string | null {
+		return drillErrorText(this.drillError)
+	}
 	get drillTarget(): Cluster | null {
 		const value = this.value
 		if (!value) return null
@@ -540,6 +550,7 @@ export class GraphState {
 	 */
 	boxAttrs(cluster: Cluster): Record<string, string | null | undefined> {
 		return {
+			...this.#boxIntent(cluster),
 			'data-cluster-depth': String(cluster.depth ?? 0),
 			// polymetric (#168): the channels a box could not show — missing data, or past the cap.
 			'data-graph-missing': cluster.missing?.join(' '),
@@ -549,6 +560,102 @@ export class GraphState {
 			'data-node-kind': cluster.kind,
 			'data-node-state': cluster.nodeId ? this.nodeState(cluster.nodeId) : undefined
 		}
+	}
+
+	/**
+	 * What a press and a double-click on a box mean (see `state/intents`): a leaf selects, and
+	 * opens into its level; a container that can be drilled opens on press; a region does
+	 * neither. The label says so for assistive tech.
+	 */
+	#boxIntent(cluster: Cluster): Record<string, string | undefined> {
+		if (cluster.nodeId) {
+			const key = cluster.nodeId
+			return { 'data-graph-press': 'select', 'data-graph-open': 'drill', 'data-graph-key': key, 'aria-label': this.caption(cluster) }
+		}
+		if (!this.canDrill(cluster)) return {}
+		return {
+			'data-graph-drillable': '',
+			'data-graph-press': 'drill',
+			'data-graph-key': this.clusterKey(cluster),
+			'aria-label': say('open', { name: this.caption(cluster) })
+		}
+	}
+
+	/** Whether a box takes the pointer and the keyboard: it has an intent. */
+	interactive(cluster: Cluster): boolean {
+		return Boolean(cluster.nodeId) || this.canDrill(cluster)
+	}
+
+	/** A box's visible caption: its name, and the layout's caption or its count. */
+	caption(cluster: Cluster): string {
+		return `${cluster.name} · ${cluster.caption ?? cluster.count}`
+	}
+
+	/**
+	 * A node card's hooks and intents: it selects on press, and folds or opens its group on open
+	 * (#166). A card with nothing below its head — no rows shown, none to reveal, not a group —
+	 * is marked head-only so the theme can drop the empty body.
+	 */
+	cardAttrs(key: string): Record<string, string | undefined> {
+		return {
+			...this.#cardNodeAttrs(key),
+			...this.#cardGroupAttrs(key),
+			'data-graph-press': 'select',
+			'data-graph-open': 'group',
+			'data-graph-key': key
+		}
+	}
+
+	#cardNodeAttrs(key: string): Record<string, string | undefined> {
+		const card = this.cards[key]
+		const headOnly = card !== undefined && card.vis.length === 0 && card.more <= 0 && !this.isGroup(key)
+		return {
+			'data-node-kind': card?.node.kind,
+			'data-node-group': card?.node.group,
+			'data-node-state': this.nodeState(key) ?? undefined,
+			'data-node-headonly': flag(headOnly)
+		}
+	}
+
+	#cardGroupAttrs(key: string): Record<string, string | undefined> {
+		return {
+			'data-graph-group': flag(this.isGroup(key)),
+			'data-graph-collapsed': flag(this.isCollapsed(key)),
+			'data-graph-member-of': this.groupOf(key) ?? undefined
+		}
+	}
+
+	/** What a card's head counts: a group, the members it stands for; anything else, its rows. */
+	cardCount(key: string): number {
+		return this.isGroup(key) ? this.memberCount(key) : (this.cards[key]?.node.rows.length ?? 0)
+	}
+
+	/** The "more rows" control's hooks: it expands the card, and says when a filter emptied it. */
+	moreAttrs(key: string): Record<string, string | undefined> {
+		const expanded = this.isExpanded(key)
+		return {
+			'data-graph-press': 'expand',
+			'data-graph-key': key,
+			'data-graph-more-empty': flag(this.cards[key]?.vis.length === 0 && !expanded),
+			'data-expanded': flag(expanded)
+		}
+	}
+
+	/**
+	 * The box a `data-graph-key` names, if it is on the canvas: a container by its render key,
+	 * a leaf by its node id — the one key a leaf carries for both its press and its open.
+	 */
+	boxFor(key: string): Cluster | undefined {
+		return this.clusters.find((cluster) => cluster.nodeId === key || this.clusterKey(cluster) === key)
+	}
+
+	/**
+	 * Perform an intent read off the DOM (see `state/intents`). An unknown intent, or a key
+	 * that names nothing, does nothing — the DOM is not a trusted source.
+	 */
+	act(intent: Intent, key: string | null): void {
+		if (!isIntent(intent)) return
+		INTENTS[intent](this, key ?? '')
 	}
 
 	/**

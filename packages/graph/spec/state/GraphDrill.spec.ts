@@ -18,14 +18,18 @@ function deferred() {
 const settle = () => new Promise((r) => setTimeout(r, 0))
 
 describe('GraphDrill — where the reader is', () => {
-	it('breadcrumbs are the root, then each segment of the drill path', () => {
+	it('breadcrumbs are the root, then each segment of the drill path; the last is where you are', () => {
 		const s = make({ focusPath: ['dbd', 'core'] })
 		expect(s.drillPath).toEqual(['dbd', 'core'])
 		expect(s.breadcrumbs).toEqual([
-			{ path: [], label: null },
-			{ path: ['dbd'], label: 'dbd' },
-			{ path: ['dbd', 'core'], label: 'core' }
+			{ path: [], label: null, current: false },
+			{ path: ['dbd'], label: 'dbd', current: false },
+			{ path: ['dbd', 'core'], label: 'core', current: true }
 		])
+	})
+
+	it('at the root, the root crumb is the current one', () => {
+		expect(make().breadcrumbs).toEqual([{ path: [], label: null, current: true }])
 	})
 })
 

@@ -77,3 +77,14 @@ describe('GraphState.sideNames', () => {
 		expect(s.sideNames.above).toBe('Beobachtet')
 	})
 })
+
+describe('drillErrorText', () => {
+	it('words a failed drill from the error, or says nothing when there is none', async () => {
+		const { drillErrorText } = await import('../src/state/text.js')
+		expect(drillErrorText(null)).toBeNull()
+		expect(drillErrorText(new Error('offline'))).toBe('Could not open: offline')
+		expect(drillErrorText('timeout')).toBe('Could not open: timeout')
+		de({ drillError: 'Fehler: {message}' })
+		expect(drillErrorText('timeout')).toBe('Fehler: timeout')
+	})
+})

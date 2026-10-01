@@ -8,6 +8,8 @@ export type Breadcrumb = {
 	path: string[]
 	/** The segment's name; null for the root, which the view names (`All`, a title…). */
 	label: string | null
+	/** Where the reader is now — the last crumb, which is shown but not a way back. */
+	current: boolean
 }
 
 type Sources = {
@@ -53,8 +55,12 @@ export class GraphDrill {
 	get breadcrumbs(): Breadcrumb[] {
 		const path = this.path
 		return [
-			{ path: [], label: null },
-			...path.map((segment, i) => ({ path: path.slice(0, i + 1), label: segment }))
+			{ path: [], label: null, current: path.length === 0 },
+			...path.map((segment, i) => ({
+				path: path.slice(0, i + 1),
+				label: segment,
+				current: i === path.length - 1
+			}))
 		]
 	}
 
