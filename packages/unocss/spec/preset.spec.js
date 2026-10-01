@@ -286,79 +286,14 @@ describe('presetRokkit', () => {
 			expect(css).toContain('--font-display:Cal Sans')
 		})
 
-		// Type scale — #152. Levels are h1-h3 + body + small (h4 as headroom); h5/h6 are
-		// deliberately absent, since nothing in the app or the rendered guides uses them.
-		it('emits the default type scale even with no typography config', () => {
-			const preset = presetRokkit({})
-			const css = preset.preflights[0].getCSS()
-			// A scale that only appears when configured would leave every existing consumer
-			// with no sizes at all.
-			expect(css).toContain('--text-h1:')
-			expect(css).toContain('--text-body:')
-			expect(css).toContain('--leading-h1:')
-			expect(css).toContain('--weight-h1:')
-		})
-
-		it('derives level sizes from typography.ratio', () => {
-			const tight = presetRokkit({ typography: { ratio: 1.15 } }).preflights[0].getCSS()
-			const loose = presetRokkit({ typography: { ratio: 1.5 } }).preflights[0].getCSS()
-
-			const h1Of = (css) => Number(css.match(/--text-h1:([\d.]+)rem/)?.[1])
-			// A bigger ratio must produce a bigger h1 — a hardcoded scale passes neither.
-			expect(h1Of(loose)).toBeGreaterThan(h1Of(tight))
-		})
-
-		it('keeps the scale monotonically decreasing from h1 to small', () => {
-			const css = presetRokkit({ typography: { ratio: 1.25 } }).preflights[0].getCSS()
-			// Parsed with one static regex rather than a per-level dynamic RegExp.
-			const sizes = Object.fromEntries(
-				[...css.matchAll(/--text-([a-z0-9]+):([\d.]+)rem/g)].map(([, k, v]) => [k, Number(v)])
-			)
-			const levels = ['h1', 'h2', 'h3', 'h4', 'body', 'small'].map((k) => sizes[k])
-
-			expect(levels.every((n) => Number.isFinite(n))).toBe(true)
-			for (let i = 1; i < levels.length; i++) {
-				expect(levels[i], `level ${i} vs ${i - 1}`).toBeLessThan(levels[i - 1])
-			}
-		})
-
-		it('lets an explicit per-level override win over the ratio', () => {
-			const preset = presetRokkit({ typography: { ratio: 1.25, levels: { h1: '5rem' } } })
-			const css = preset.preflights[0].getCSS()
-			expect(css).toContain('--text-h1:5rem')
-			// Only the overridden level changes; the rest still come from the ratio.
-			expect(css).not.toContain('--text-h2:5rem')
-		})
-
-		it('does not emit h5/h6 levels, which have no consumer', () => {
-			const css = presetRokkit({}).preflights[0].getCSS()
-			expect(css).not.toContain('--text-h5')
-			expect(css).not.toContain('--text-h6')
-		})
-
-		it('agrees with the base-layer defaults in @rokkit/themes', () => {
-			// The scale is declared twice on purpose — base/typography.css so the tokens exist
-			// without the UnoCSS preset, and typeScaleVars (src/typography.js) so a config can retune them.
-			// Two sources of one truth drift silently unless something pins them together.
-			const base = readFileSync(
-				resolve(import.meta.dirname, '../../themes/src/base/typography.css'),
-				'utf8'
-			)
-			const fromCss = Object.fromEntries(
-				[...base.matchAll(/--text-([a-z0-9]+):\s*([\d.]+)rem/g)].map(([, k, v]) => [k, Number(v)])
-			)
-			const fromPreset = Object.fromEntries(
-				[
-					...presetRokkit({})
-						.preflights[0].getCSS()
-						.matchAll(/--text-([a-z0-9]+):([\d.]+)rem/g)
-				].map(([, k, v]) => [k, Number(v)])
-			)
-
-			// Non-empty on both sides, or the comparison is vacuous.
-			expect(Object.keys(fromCss).length).toBe(6)
-			expect(Object.keys(fromPreset).length).toBe(6)
-			expect(fromCss).toEqual(fromPreset)
+		// No type scale (#152). A heading level is several properties at once — size, weight,
+		// line-height, tracking — so it is styled through `[data-heading]` rules each style ships,
+		// not one-property tokens; the preset emits none, whatever the config says.
+		it('emits no type-scale tokens, even when a ratio or levels are configured', () => {
+			const css = presetRokkit({ typography: { ratio: 1.5, levels: { h1: '5rem' } } }).preflights[0].getCSS()
+			expect(css).not.toMatch(/--text-(h[1-6]|body|small):/)
+			expect(css).not.toMatch(/--leading-(h[1-6]|body|small):/)
+			expect(css).not.toMatch(/--weight-(h[1-6]|body|small):/)
 		})
 
 		it('should include radius vars in :root when a named shape preset is set', () => {
