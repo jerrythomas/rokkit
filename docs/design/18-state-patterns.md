@@ -1,8 +1,24 @@
 # State Patterns
 
-> Shared CSS custom-property sets defining hover / focus / active / selected /
-> disabled behavior at element and group level. Reduces per-component
-> repetition in theme CSS by pushing the state vocabulary into the base layer.
+> **Decision 2026-10-01 (owner), which supersedes the token tiers below:** the state vocabulary
+> is the **data attributes** themselves (`data-active`, `data-selected`, `data-disabled`,
+> `data-open`, …), not a layer of `--state-*` custom properties.
+>
+> - **Why.** A custom property carries one value for one property. A state is often several
+>   at once: a fill *and* a text colour *and* a border, or zen-sumi's inset bar plus primary
+>   text where another style fills. A `[data-selected='true']` rule sets all of them, in
+>   whatever shape the style needs, and a user overrides it with the same selector.
+>   `--state-current-mark` would have been reinterpreted per theme (§"When a theme's mark is a
+>   different shape" already found this), and putting its defaults in base would break the
+>   headless-base rule.
+> - **So.** Every style ships its own default rules against the attributes; base stays
+>   structure-only. Each component emits a state attribute in ONE shape — `"true"` or absent,
+>   written `data-x={flag || undefined}`. `packages/ui/spec/state-attributes.spec.ts` holds
+>   that.
+> - **Keep from below:** the vocabulary (§State Vocabulary) and the group-vs-element
+>   distinction (§Group context), expressed as selectors (`[data-list]:focus-within
+>   [data-list-item][data-active='true']`). The Token Tiers, Element vs Group Tokens and the
+>   migration plan are not pursued.
 
 ---
 
@@ -278,7 +294,7 @@ component CSS is the same across themes.
 
 ---
 
-## Migration plan (proposal — not yet executed)
+## Migration plan (proposal — superseded 2026-10-01, see the decision at the top)
 
 1. Add `packages/themes/src/base/state-tokens.css` with the default token set.
 2. Pick one component (List is the smallest with both group + element states)

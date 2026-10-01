@@ -9,8 +9,16 @@ and themes only retoken.
 List before/after (§Refactoring an existing component), and the 5-step plan
 (§Migration plan).
 
-**Status:** Phase 0 DONE (2026-08-21). The Phase 2 prerequisite (the `[data-selected]` decision)
-is resolved: List multi-select shipped 2026-10-01. Phases 1–5 not started. Survey below is measured,
+**Status:** SUPERSEDED (2026-10-01). The owner decided the state vocabulary is the data
+attributes themselves, not a `--state-*` token tier: a variable can express only one property,
+while a `[data-selected]` rule can set fill, colour and border together, and users override it
+with the same selector (see the decision at the top of `docs/design/18-state-patterns.md`).
+Phases 1–5 (tokens, then migrating onto them) are therefore not pursued. What stays:
+- Phase 0's state-snapshot gate, which still protects every style's state rules.
+- The `[data-selected]` question: answered by List multi-select (2026-10-01), so those rules
+  are live.
+- One attribute shape across components (`"true"` or absent), held by
+  `packages/ui/spec/state-attributes.spec.ts`. Survey below is measured,
 not estimated.
 
 ---

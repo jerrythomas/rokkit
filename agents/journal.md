@@ -10588,3 +10588,15 @@ navigator's `extend` / `range`. List had never wired them.
 
 Corrected my own test once: a ctrl/⌘-click moves the range anchor (standard file-list
 behaviour), so shift-click on the same row selects just that row.
+
+## 2026-10-01 (6) — #153 rescoped and closed
+
+The owner rejected the `--state-*` token tier. The data attributes ARE the vocabulary: a
+variable expresses one property, but a `[data-selected]` rule can set fill, colour and border
+together, each style ships its own defaults, and users override with the same selector. That
+also removes the conflict with the headless-base rule, since Phase 1 would have put colour in
+base. Recorded at the top of `18-state-patterns.md`; the migration plan is superseded.
+
+Kept and enforced: one attribute shape. `packages/ui/spec/state-attributes.spec.ts` fails on a
+hand-built state value. It caught `CodeGroup`'s `data-open=""` (every theme rule reads
+`[data-open='true']`) and my own List `'true'` ternaries, all now `{flag || undefined}`.

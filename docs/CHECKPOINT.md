@@ -5,12 +5,14 @@
 
 **List multi-select: DONE** (journal 2026-10-01 (5)). The `[data-selected]` rules are live.
 
-**Next slice: #153 Phase 1.** Add `packages/themes/src/base/state-tokens.css`. Then Phase 2:
-List onto the tokens, adding a multi-select List case to the state-snapshot fixture first.
-Plan: `docs/plans/2026-08-21-state-pattern-migration.md`.
+**#153 closed** (2026-10-01, owner decision): the data attributes are the state vocabulary,
+with no token tier.
 
-**Next command:** read `docs/design/18-state-patterns.md` (the token set), then write the
-Phase 1 spec.
+**Open issues:** #152 only. Its heading-scale phase waits on the user's choice: (a) retune the
+scale to the guides' headings (recommended), (b) restyle the guides, or (c) leave the tokens
+unconsumed.
+
+**Next command:** ask about #152's option; otherwise `gh issue list --state open`.
 
 **Open questions:**
 - #152's heading-levels phase: which heading set adopts the type scale. (a) Retune it to the
