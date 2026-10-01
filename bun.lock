@@ -270,6 +270,7 @@
       "version": "1.8.0",
       "dependencies": {
         "@rokkit/core": "workspace:*",
+        "@rokkit/states": "workspace:*",
       },
       "devDependencies": {
         "@rokkit/ui": "workspace:*",

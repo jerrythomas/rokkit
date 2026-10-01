@@ -61,6 +61,28 @@ describe('MessagesStore', () => {
 			expect(messages.mode).toEqual({ system: 'System', light: 'Light', dark: 'Dark' })
 		})
 
+		it('has a flat graph namespace, so a locale can override one string', () => {
+			expect(messages.graph).toMatchObject({
+				diagram: 'Diagram of {nodes} and {edges}',
+				more: '+ {n} more',
+				open: 'Open {name}',
+				drillLoading: 'Loading…',
+				legendHidden: 'Hidden coupling',
+				layer: 'Layer {n}',
+				sideBelow: 'Declared',
+				sideAbove: 'Observed',
+				zoomIn: 'Zoom in'
+			})
+			for (const value of Object.values(messages.graph)) expect(typeof value).toBe('string')
+		})
+
+		it('overrides one graph string and keeps the rest', () => {
+			messages.register('de', { graph: { zoomIn: 'Vergrößern' } })
+			messages.setLocale('de')
+			expect(messages.graph.zoomIn).toBe('Vergrößern')
+			expect(messages.graph.zoomOut).toBe('Zoom out')
+		})
+
 		it('locale is "en" by default', () => {
 			expect(messages.locale).toBe('en')
 		})

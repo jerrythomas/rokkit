@@ -47,7 +47,8 @@
 		"check:types": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@rokkit/core": "workspace:*"
+		"@rokkit/core": "workspace:*",
+		"@rokkit/states": "workspace:*"
 	},
 	"peerDependencies": {
 		"@rokkit/ui": "workspace:*",

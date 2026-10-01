@@ -53,6 +53,82 @@ const defaultMessages = {
 		noResults: 'No commands found',
 		label: 'Command palette'
 	},
+	graph: {
+		// The canvas and its state
+		diagram: 'Diagram of {nodes} and {edges}',
+		nodeOne: '{n} node',
+		nodeMany: '{n} nodes',
+		relationshipOne: '{n} relationship',
+		relationshipMany: '{n} relationships',
+		more: '+ {n} more',
+		less: 'show less',
+		noKeys: 'no keys · {rows}',
+		rowOne: '{n} row',
+		rowMany: '{n} rows',
+		open: 'Open {name}',
+		expand: 'Expand {name}',
+		expandCount: 'Expand · {n}',
+		collapse: 'Collapse {name}',
+		layer: 'Layer {n}',
+		layerUnassigned: 'Unassigned',
+		sideBelow: 'Declared',
+		sideAbove: 'Observed',
+		// Drill bar
+		drillPath: 'Drill path',
+		drillRoot: 'All',
+		drillLoading: 'Loading…',
+		drillError: 'Could not open: {message}',
+		// Legend and measures
+		legend: 'Legend',
+		legendHidden: 'Hidden coupling',
+		legendCap: 'full at {cap}',
+		width: 'Width',
+		height: 'Height',
+		shade: 'Shade',
+		measureNone: 'none',
+		// Controls
+		detailLevel: 'Detail level',
+		densityNames: 'Names',
+		densityNamesTitle: 'Titles only',
+		densityKeys: 'Keys',
+		densityKeysTitle: 'Key rows only',
+		densityFull: 'All',
+		densityFullTitle: 'All rows',
+		levelsShown: 'Levels shown',
+		levelOne: '{n} level',
+		levelMany: '{n} levels',
+		zoom: 'Zoom',
+		zoomOut: 'Zoom out',
+		zoomReset: 'Reset zoom to fit',
+		zoomIn: 'Zoom in',
+		bundled: 'Bundled',
+		bundledTitle: 'Edges follow the hierarchy',
+		straight: 'Straight',
+		straightTitle: 'Edges run straight across',
+		angled: 'Angled',
+		angledTitle: 'Right-angle connectors',
+		curved: 'Curved',
+		curvedTitle: 'Curved connectors',
+		violationsOnly: 'Violations only',
+		violationsOnlyTitle: 'Showing only the edges that climb a layer',
+		allEdges: 'All edges',
+		allEdgesTitle: 'Showing every edge',
+		hiddenOnly: 'Hidden only',
+		hiddenOnlyTitle: 'Showing only coupling no import explains',
+		allPairs: 'All pairs',
+		allPairsTitle: 'Showing every pair',
+		// Entity views
+		entity: 'Entity',
+		rows: 'Rows',
+		refs: 'Refs',
+		comment: 'Comment',
+		columns: 'Columns',
+		indexes: 'Indexes',
+		unique: 'unique',
+		relationships: 'Relationships',
+		noRelationships: 'No relationships reference this entity.',
+		noEntity: 'No entity selected.'
+	}
 }
 
 /**
@@ -109,6 +185,7 @@ class MessagesStore {
 	floatingNav = $state({ ...defaultMessages.floatingNav })
 	mode = $state({ ...defaultMessages.mode })
 	command = $state({ ...defaultMessages.command })
+	graph = $state({ ...defaultMessages.graph })
 
 	// ─── Active locale ─────────────────────────────────────────────────────────
 
