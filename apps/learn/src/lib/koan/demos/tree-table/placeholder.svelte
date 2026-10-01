@@ -64,7 +64,7 @@
 <div data-tree-table-demo>
 	<section>
 		<header>
-			<h3>Nested rows (canonical)</h3>
+			<h3 data-heading="3">Nested rows (canonical)</h3>
 			<p>
 				Pass rows with a <code>children</code> array directly. Click a region header
 				to expand it. Sort by any column — siblings reorder, hierarchy is preserved.
@@ -83,7 +83,7 @@
 
 	<section>
 		<header>
-			<h3>From a path-string flat list</h3>
+			<h3 data-heading="3">From a path-string flat list</h3>
 			<p>
 				Flat rows with a separator-delimited path field — pass through
 				<code>nestByPath()</code> to turn them into nested children.
@@ -101,7 +101,7 @@
 
 	<section>
 		<header>
-			<h3>From group-by columns</h3>
+			<h3 data-heading="3">From group-by columns</h3>
 			<p>
 				Flat rows that should be grouped by one or more columns — pass through
 				<code>nestByColumns(rows, ['region', 'country'])</code>. Synthetic group
@@ -125,26 +125,26 @@
 	[data-tree-table-demo] {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-7);
+		gap: var(--density-spacing-xl);
 	}
 	section {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-3);
+		gap: var(--density-spacing-md);
 	}
 	header {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-1);
+		gap: var(--density-spacing-xs);
 	}
+	/* The level comes from [data-heading] (@rokkit/themes base/heading.css). */
 	h3 {
 		margin: 0;
-		font-size: var(--text-md);
-		font-weight: var(--font-weight-medium);
+		color: var(--ink);
 	}
 	p {
 		margin: 0;
-		font-size: var(--text-sm);
+		font-size: 13px;
 		color: var(--ink-soft);
 	}
 	code {
