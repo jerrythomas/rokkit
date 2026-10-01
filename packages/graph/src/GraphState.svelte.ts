@@ -31,6 +31,8 @@ import { GraphDrill } from './state/GraphDrill.svelte.js'
 import { GraphGroups } from './state/GraphGroups.svelte.js'
 import type { GroupAction } from './state/GraphGroups.svelte.js'
 import { condense } from './model/condense.js'
+import { channelRows, diagramLabel, moreRowsLabel, sideNames } from './state/text.js'
+import type { ChannelRow } from './state/text.js'
 import type { Breadcrumb } from './state/GraphDrill.svelte.js'
 
 export type { Relationship, EntityRow, Breadcrumb, GroupAction }
@@ -116,7 +118,6 @@ export type GraphStateConfig = {
 	above?: string
 }
 
-const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
 
 /**
  * Sorted unique strings, dropping empties.
@@ -375,13 +376,7 @@ export class GraphState {
 	 * answer to what was asked, not a filter that matched nothing.
 	 */
 	moreLabel(id: string): string | null {
-		if (this.selection.isExpanded(id)) return 'show less'
-
-		const card = this.cards[id]
-		if (!card || card.more <= 0) return null
-		if (this.config.density !== 'keys' || card.vis.length > 0) return `+ ${card.more} more`
-
-		return `no keys · ${card.more} ${card.more === 1 ? 'row' : 'rows'}`
+		return moreRowsLabel(this.selection.isExpanded(id), this.cards[id], this.config.density)
 	}
 
 	/**
@@ -577,6 +572,16 @@ export class GraphState {
 		return this.#result.channels
 	}
 
+	/** The polymetric legend's rows, labelled from the locale (#168). */
+	get channelRows(): ChannelRow[] {
+		return channelRows(this.#result.channels)
+	}
+
+	/** What each side of an arc diagram shows, named from the data or the locale (#169). */
+	get sideNames(): { below: string; above: string } {
+		return sideNames([...this.#model.edges, ...this.#model.overlays], this.config.above)
+	}
+
 	/**
 	 * Every measure a channel could bind: the keys in the nodes' `measures`, plus `weight` and
 	 * `degree`, which every node has an answer for. Sorted, so a picker does not reshuffle.
@@ -693,12 +698,6 @@ export class GraphState {
 		return this.selection.value
 	}
 	get label(): string {
-		return (
-			this.config.label ??
-			`Diagram of ${plural(this.#model.nodes.length, 'node')} and ${plural(
-				this.#model.edges.length,
-				'relationship'
-			)}`
-		)
+		return this.config.label ?? diagramLabel(this.#model.nodes.length, this.#model.edges.length)
 	}
 }

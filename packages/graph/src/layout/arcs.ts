@@ -35,7 +35,7 @@ function axisOrder(nodes: GraphNode[]): GraphNode[] {
 }
 
 /** Which side an edge belongs on: the named relation's when `above` is given, else overlays. */
-const sideOf = (edge: GraphEdge, above: string | undefined): 'above' | 'below' =>
+export const sideOf = (edge: GraphEdge, above: string | undefined): 'above' | 'below' =>
 	(above === undefined ? edge.overlay : edge.relation === above) ? 'above' : 'below'
 
 type Placed = { node: GraphNode; y: number }

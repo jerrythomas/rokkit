@@ -22,8 +22,9 @@
 - **`messages.graph`.** One namespace in the store holds every string graph shows. Templates
   use `{token}` placeholders, filled by `fill()` in graph. Graph depends on `@rokkit/states`;
   `@rokkit/ui`, already a graph peer, depends on it, so a consumer installs nothing new.
-- **Text from state reads the store.** A pure layout cannot, so the state passes it in:
-  `LayoutOptions.wording` carries `layers`' fallback band names.
+- **Text from state reads the store**, through pure functions in `state/text.ts`. `layers`
+  reads its fallback band names ("Layer {n}", "Unassigned") the same way. That stays
+  deterministic for a given locale, and needs no new layout option.
 - **Intent from state, meaning in one action.**
   - `boxAttrs` / `cardAttrs` emit `data-graph-press` / `data-graph-open` (the intent) and
     `data-graph-key`.
@@ -43,8 +44,8 @@
 ## Slices (test first)
 
 1. `messages.graph` defaults (states spec) and `fill()`.
-2. State text through messages: `moreLabel`, `label`, layer wording, `sideNames`,
-   `channelRows`.
+2. State text through messages (`state/text.ts`): `moreLabel`, `label`, layer names,
+   `sideNames`, `channelRows`.
 3. Intents and `act()` in state; the `interactions` and `canvasNavigation` actions (jsdom
    specs on bare elements); `Graph.svelte` and `DrillBar` moved onto them.
 4. Components' text through messages; `ToggleControl`; `sideLabels` from data.

@@ -16,6 +16,7 @@ import { buildCards } from './cards.js'
 import { CARD_W } from './constants.js'
 import { carried, keepsEdge } from './edges.js'
 import { warnUnknownOptions } from './options.js'
+import { say } from '../messages.js'
 import type { Cards, Cluster, LayoutFn, LayoutResult, RoutedEdge, ShowEdges } from './types.js'
 import type { Conformance, GraphEdge, GraphModel, GraphNode } from '../types.js'
 
@@ -104,8 +105,9 @@ function placeBand(band: GraphNode[], cards: Cards, top: number, width: number):
 	return y + PAD - top
 }
 
+/** The host's name for a layer, else the locale's — "Layer 2", "Unassigned". */
 const labelFor = (layer: number, labels: string[] | undefined) =>
-	layer === UNASSIGNED ? 'Unassigned' : (labels?.[layer] ?? `Layer ${layer}`)
+	layer === UNASSIGNED ? say('layerUnassigned') : (labels?.[layer] ?? say('layer', { n: layer }))
 
 /** A vertical S: out of the bottom of a card above, into the top of a card below (or reverse). */
 function route(edge: GraphEdge, i: number, cards: Cards, conformance?: Conformance): RoutedEdge {
