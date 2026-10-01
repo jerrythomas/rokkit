@@ -1159,6 +1159,8 @@ ${tabsTag}`
 	//      check compares that Proxy against the raw array item and never matches.
 	//      Giving every leaf an explicit `value` makes the match a string compare.
 	let listValue = $state<unknown>('profile')
+	// The multi-select variant's set (#153) — `bind:values`, as `value` is bound above.
+	let listValues = $state<unknown[]>([])
 
 	// value → label, for the props readout. Handles both the flat and grouped
 	// shapes, since the variant picker swaps between them.
@@ -2781,8 +2783,9 @@ ${tabsTag}`
 							-->
 							<List
 								items={listItems}
-								collapsible={activeVariant?.id !== 'flat'}
+								collapsible={activeVariant?.id !== 'flat' && activeVariant?.id !== 'multiselect'}
 								bind:value={listValue}
+								bind:values={listValues}
 								itemContent={activeVariant?.id === 'snippets' ? listItemSnippet : undefined}
 								{...variantProps}
 							/>
@@ -2792,7 +2795,11 @@ ${tabsTag}`
 							<span data-sep>·</span>
 							<span>collapsible</span><span data-value>{activeVariant?.id === 'flat' ? 'no' : 'yes'}</span>
 							<span data-sep>·</span>
-							<span>selected</span><span data-value>{listLabelByValue.get(listValue) ?? '—'}</span>
+							{#if activeVariant?.id === 'multiselect'}
+								<span>selected</span><span data-value data-list-selection>{listValues.length} selected</span>
+							{:else}
+								<span>selected</span><span data-value>{listLabelByValue.get(listValue) ?? '—'}</span>
+							{/if}
 							{#if activeVariant}
 								<span data-sep>·</span>
 								<span>variant</span><span data-value>{activeVariant.id}</span>

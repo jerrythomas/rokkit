@@ -10569,3 +10569,22 @@ The user chose to ADD multi-select to List for #153 rather than delete the dead
 sends `extend` / `range`; List needs wiring. That's next.
 
 Gates: 169 e2e, full unit suite, lint 0/0.
+
+## 2026-10-01 (5) — List multi-select (#153's prerequisite)
+
+The user chose to ADD multi-select to List rather than delete the dead `[data-selected]`
+rules, recalling partial support. It was there: Wrapper's `multiselect` (`84b42070d`) and the
+navigator's `extend` / `range`. List had never wired them.
+
+- `b0bafc6c7`: Wrapper gains `moveToValues` (inbound, no echo) and `onselectionchange` (fires only on
+  a real change). A range no longer sweeps group headers in.
+- `14cc902a3`, plus a follow-up: List gains `multiselect`, a bindable `values`, `onchange`;
+  `data-selected="true"` and `aria-pressed` on rows; and `data-multiselect="true"` on the
+  root, which base CSS already used to stop shift-click selecting text.
+- The learn List demo has a "Multi-select" variant, with an e2e. zen-sumi marks a selection
+  with an inset bar and primary text rather than a fill, so the e2e compares the paint
+  signature, not the background.
+- The state-pattern plan records the decision; its Phase 2 can now migrate live rules.
+
+Corrected my own test once: a ctrl/⌘-click moves the range anchor (standard file-list
+behaviour), so shift-click on the same row selects just that row.

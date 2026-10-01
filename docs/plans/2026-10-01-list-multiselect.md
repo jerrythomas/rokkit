@@ -1,6 +1,6 @@
 # List multi-select (#153, the step before Phase 2)
 
-**Status:** IMPLEMENT (2026-10-01).
+**Status:** DONE (2026-10-01). See journal 2026-10-01 (5).
 **Packages:** `@rokkit/states` (Wrapper), `@rokkit/ui` (List), learn (List demo)
 
 ## Why

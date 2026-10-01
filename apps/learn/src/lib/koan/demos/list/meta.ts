@@ -26,7 +26,8 @@ const meta: DemoMeta = {
 	inline: { capable: true },
 	variants: [
 		{ id: 'flat', label: 'Flat list (no groups)', mode: 'dynamic' },
-		{ id: 'snippets', label: 'Custom item snippets', mode: 'dynamic' }
+		{ id: 'snippets', label: 'Custom item snippets', mode: 'dynamic' },
+		{ id: 'multiselect', label: 'Multi-select', mode: 'dynamic', props: { multiselect: true } }
 	],
 	props: {
 		size: {
@@ -41,17 +42,21 @@ const meta: DemoMeta = {
 			{ name: 'items', type: 'any[]', default: '[]', desc: 'Array of items (objects or primitives)' },
 			{ name: 'fields', type: 'FieldMapping', desc: 'Remap data keys to component fields' },
 			{ name: 'value', type: 'any', default: 'null', desc: 'Currently selected item value. Two-way — a selection writes it back, so `bind:value` is all you need', bindable: true },
+			{ name: 'multiselect', type: 'boolean', default: 'false', desc: 'Select several rows: click selects one, ctrl/⌘-click toggles, shift-click extends a range (Space / ctrl+Space / shift+Space from the keyboard)' },
+			{ name: 'values', type: 'any[]', default: '[]', desc: 'The selected values when `multiselect`. Two-way — `bind:values`; an outside change re-selects without being reported back', bindable: true },
 			{ name: 'collapsible', type: 'boolean', default: 'false', desc: 'Allow groups to expand/collapse' },
 			{ name: 'icons', type: 'Partial<IconMap>', desc: 'Override expand/collapse icons' },
 			{ name: 'disabled', type: 'boolean', default: 'false', desc: 'Disable the entire list' },
 			{ name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", desc: 'Row density' }
 		],
 		events: [
-			{ name: 'onselect', signature: '(value, proxy) => void', desc: 'Fires when an item is selected — receives raw value + ProxyItem. Notification only; `value` is already updated by the time it runs' }
+			{ name: 'onselect', signature: '(value, proxy) => void', desc: 'Fires when an item is selected — receives raw value + ProxyItem. Notification only; `value` is already updated by the time it runs' },
+			{ name: 'onchange', signature: '(values) => void', desc: 'Fires once per real change of a multiselect selection, with the new set; `values` is already updated' }
 		],
 		attrs: [
 			{ selector: '[data-list]', desc: 'Root <nav> (carries data-size, data-collapsible)' },
-			{ selector: '[data-list-item]', desc: 'Leaf item button/link (data-active, data-disabled, data-level)' },
+			{ selector: '[data-list-item]', desc: 'Leaf item button/link (data-active, data-selected, data-disabled, data-level)' },
+			{ selector: '[data-selected]', desc: '"true" on every row in a multiselect selection (with aria-pressed)' },
 			{ selector: '[data-list-group]', desc: 'Group header button (aria-expanded, data-level)' },
 			{ selector: '[data-list-separator]', desc: 'Separator <hr>' },
 			{ selector: '[data-item-label]', desc: 'Default-rendered label text' },

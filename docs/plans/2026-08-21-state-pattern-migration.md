@@ -9,7 +9,8 @@ and themes only retoken.
 List before/after (§Refactoring an existing component), and the 5-step plan
 (§Migration plan).
 
-**Status:** Phase 0 DONE (2026-08-21). Phases 1–5 not started. Survey below is measured,
+**Status:** Phase 0 DONE (2026-08-21). The Phase 2 prerequisite (the `[data-selected]` decision)
+is resolved: List multi-select shipped 2026-10-01. Phases 1–5 not started. Survey below is measured,
 not estimated.
 
 ---
@@ -167,10 +168,11 @@ snapshotted and cannot change silently while the question is open.
 - [ ] Per-theme `state-tokens.css` overrides reproducing each theme's current look.
 - [ ] Rewrite `base/list.css` state rules to reference tokens only.
 - [ ] Delete the now-redundant state rules from all 5 `<theme>/list.css`.
-- [ ] **Decide the `[data-selected]` question first** (Phase 0 finding 3): those ~20 rules
-      are unreachable today. Deleting them is a one-line change per theme; porting them
-      is real work for a feature that does not exist. Needs an owner call, because the
-      answer might be "List should support multi-select".
+- [x] **Decide the `[data-selected]` question first** (Phase 0 finding 3). **Decided
+      2026-10-01 (user): List should support multi-select.** It shipped
+      (`docs/plans/2026-10-01-list-multiselect.md`), so the rules are live and migrate with
+      the rest. Add a multi-select List case to the state-snapshot fixture before this phase
+      touches them.
 - [ ] Phase 0 snapshots must be **unchanged**:
       `cd apps/learn && npx playwright test state-snapshot`. Any diff is a regression to
       fix or an intentional change to re-baseline (`UPDATE_STATE_BASELINE=1`) with the

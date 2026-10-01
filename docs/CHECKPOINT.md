@@ -1,17 +1,16 @@
 # CHECKPOINT
 
-**Closed 2026-10-01:** #156, #163, #159, #155, #164, and (pending CI) #170, #171, #172.
+**Closed 2026-10-01:** #156, #163, #159, #155, #164, #170, #171, #172.
 #152's test gaps are fixed. Journal 2026-10-01 (1)–(4).
 
-**Next slice: List multi-select (#153, the user's decision: add it rather than delete the dead
-rules).** Wrapper already has `multiselect` with extend and range (`84b42070d`), and the
-navigator already emits `extend` / `range` on ctrl/⌘ and shift. List needs a `multiselect`
-prop, a bindable `values` array, `data-selected` per item, and an `onchange` for the set. The
-themes' `[data-list-item][data-selected]` rules then become live. After that, #153 Phase 2
-(List onto the state tokens) can proceed.
+**List multi-select: DONE** (journal 2026-10-01 (5)). The `[data-selected]` rules are live.
 
-**Next command:** read `packages/states/src/wrapper.svelte.js` (multiselect API) and
-`packages/ui/src/components/List.svelte`, then write the failing List multiselect spec.
+**Next slice: #153 Phase 1.** Add `packages/themes/src/base/state-tokens.css`. Then Phase 2:
+List onto the tokens, adding a multi-select List case to the state-snapshot fixture first.
+Plan: `docs/plans/2026-08-21-state-pattern-migration.md`.
+
+**Next command:** read `docs/design/18-state-patterns.md` (the token set), then write the
+Phase 1 spec.
 
 **Open questions:**
 - #152's heading-levels phase: which heading set adopts the type scale. (a) Retune it to the

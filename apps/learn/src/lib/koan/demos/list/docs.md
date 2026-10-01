@@ -36,6 +36,18 @@ visible items; left/right collapse and expand groups.
 />
 ```
 
+## Multi-select
+
+Add `multiselect` and bind `values`: a click selects one row, ctrl/⌘-click toggles one in or
+out, and shift-click extends a range (`Space`, `ctrl+Space`, `shift+Space` from the keyboard).
+
+```svelte
+<List {items} multiselect bind:values />
+```
+
+`onchange(values)` fires once per real change. Selected rows carry `data-selected="true"`, which
+every style already paints.
+
 ## Field mapping
 
 Remap your data's field names without transforming the data itself:

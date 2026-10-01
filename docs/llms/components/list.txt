@@ -59,9 +59,25 @@ All of these are data-driven. You do **not** need a snippet to show an icon, a b
 | `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
 | `disabled` | `boolean` | `false` | Disable all items |
 | `collapsible` | `boolean` | `false` | Allow groups to be expanded/collapsed |
+| `multiselect` | `boolean` | `false` | Select several rows: click selects one, ctrl/⌘-click toggles, shift-click extends a range |
+| `values` | `unknown[]` | `[]` | The selected values when `multiselect`. **Two-way** — `bind:values`; matched by identity |
 | `icons` | `{ opened?, closed? }` | — | Override expand/collapse icons |
 | `class` | `string` | `''` | Additional CSS classes on the root `<nav>` |
 | `onselect` | `(value, proxy) => void` | — | Called when an item is selected. Notification only — `value` is already updated when it runs, and assigning your own value here overrides it |
+| `onchange` | `(values) => void` | — | Called once per real change of a `multiselect` selection, with the new set. `values` is already updated; an outside change to `values` is not reported back |
+
+## Multi-select
+
+```svelte
+<List {items} multiselect bind:values />
+```
+
+A click selects one row; ctrl/⌘-click toggles a row in or out and moves the range anchor there,
+as a file list does; shift-click extends a range from the anchor. From the keyboard: `Space`,
+`ctrl+Space`, `shift+Space`. A range never selects a group header. Selected rows carry
+`data-selected="true"` and `aria-pressed`; every style already paints them — a fill in most, an
+inset bar and primary text in zen-sumi. `value` / `data-active` keep meaning the last row
+activated.
 
 ## Field mapping (complete)
 
@@ -243,7 +259,7 @@ Or theme globally with named tokens in your theme CSS:
 
 ## Keyboard navigation
 
-`↑`/`↓` move focus · `→`/`←` expand/collapse groups (when `collapsible`) · `Home`/`End` · `Enter`/`Space` select or toggle · `a-z` typeahead. Disabled items are skipped.
+`↑`/`↓` move focus · `→`/`←` expand/collapse groups (when `collapsible`) · `Home`/`End` · `Enter`/`Space` select or toggle · `ctrl+Space` / `shift+Space` toggle or extend a range (when `multiselect`) · `a-z` typeahead. Disabled items are skipped.
 
 ## Import
 
