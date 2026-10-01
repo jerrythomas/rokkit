@@ -1,4 +1,4 @@
-import { categoricalPalette } from '@rokkit/core'
+import { categoricalPalette, pickOnColor, relativeLuminance } from '@rokkit/core'
 
 /**
  * How open-ended groups are differentiated.
@@ -11,6 +11,12 @@ import { categoricalPalette } from '@rokkit/core'
 export type GraphChannel = 'color' | 'pattern'
 
 export type GraphShades = { fill: string; stroke: string; label: string }
+
+/**
+ * The sequential ramp a share is shaded on (#164): a palette family and the two steps it runs
+ * between. Unlike `groups` this is ORDINAL — more of the measure is more of the colour.
+ */
+export type GraphShadeRamp = { family: string; from: string; to: string }
 
 /*
  * Node KINDS are deliberately absent from this type. The design splits the two
@@ -27,6 +33,8 @@ export type GraphPreset = {
 	shades: { light: GraphShades; dark: GraphShades }
 	patterns: string[]
 	using: GraphChannel
+	/** The ramp a `shadeBy` share is painted on (#164). Independent of `using`. */
+	shade: GraphShadeRamp
 }
 
 /**
@@ -47,7 +55,9 @@ export const defaultGraphPreset: GraphPreset = {
 		dark: { fill: '900', stroke: '600', label: '100' }
 	},
 	patterns: ['diagonal', 'dots', 'triangles', 'hatch', 'lattice', 'swell', 'checkerboard', 'waves'],
-	using: 'color'
+	using: 'color',
+	// Neutral, so a shade never reads as a group's hue. The palette has no `slate`.
+	shade: { family: 'gray', from: '50', to: '900' }
 }
 
 export function createGraphPreset(overrides: Partial<GraphPreset> = {}): GraphPreset {
@@ -57,7 +67,42 @@ export function createGraphPreset(overrides: Partial<GraphPreset> = {}): GraphPr
 		shades: {
 			light: { ...defaultGraphPreset.shades.light, ...overrides.shades?.light },
 			dark: { ...defaultGraphPreset.shades.dark, ...overrides.shades?.dark }
-		}
+		},
+		shade: { ...defaultGraphPreset.shade, ...overrides.shade }
+	}
+}
+
+/** The family's steps from `from` to `to`, in that order — reversed in dark mode. */
+function rampSteps(ramp: GraphShadeRamp, mode: 'light' | 'dark'): string[] {
+	const family = categoricalPalette[ramp.family] ?? categoricalPalette[defaultGraphPreset.shade.family]
+	const [lo, hi] = [Number(ramp.from), Number(ramp.to)].sort((a, b) => a - b)
+	const steps = Object.keys(family)
+		.map(Number)
+		.filter((step) => step >= lo && step <= hi)
+		.sort((a, b) => a - b)
+		.map((step) => family[String(step)])
+	// In dark mode the paper is dark, so "more ink" runs toward the light end.
+	return mode === 'dark' ? steps.reverse() : steps
+}
+
+/**
+ * A share in 0..1 as custom properties, the way `resolveGroupStyles` resolves a group: the
+ * ramp step nearest the share for the fill, two steps on for the stroke, and a label MEASURED
+ * against that fill — rokkit's auto on-color (near-black or near-white by luminance), so the
+ * flip point falls out of the ramp instead of being guessed.
+ */
+export function resolveShade(
+	share: number,
+	mode: 'light' | 'dark',
+	preset: GraphPreset = defaultGraphPreset
+): Record<'--group-fill' | '--group-stroke' | '--group-label', string> {
+	const steps = rampSteps(preset.shade, mode)
+	const at = Math.round(Math.min(1, Math.max(0, share)) * (steps.length - 1))
+	const fill = steps[at]
+	return {
+		'--group-fill': fill,
+		'--group-stroke': steps[Math.min(steps.length - 1, at + 2)],
+		'--group-label': pickOnColor(relativeLuminance(fill))
 	}
 }
 
