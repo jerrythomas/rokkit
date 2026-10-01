@@ -90,7 +90,8 @@ const CLAIMED_NODE_KEYS = [
 	'note',
 	'members',
 	'collapsed',
-	'layer'
+	'layer',
+	'parent'
 ] as const
 
 function buildMeta(source: unknown, fields: GraphFields): Record<string, unknown> {
@@ -375,12 +376,44 @@ export function buildNeighbors(edges: GraphEdge[]): Map<string, Set<string>> {
  * Everything downstream (layouts, routing, components) sees concrete types, so no
  * field mapping leaks past this function.
  */
+/** A node's ancestry as ids, root first and itself last — cut where a cycle closes. */
+function chainOf(id: string, parentOf: Map<string, string | undefined>): string[] {
+	const chain = [id]
+	const seen = new Set(chain)
+	let parent = parentOf.get(id)
+	while (parent !== undefined && !seen.has(parent)) {
+		chain.unshift(parent)
+		seen.add(parent)
+		// A parent that is not a node ends the walk: it is kept as the container it names.
+		parent = parentOf.get(parent)
+	}
+	return chain
+}
+
+/**
+ * Containment given as `parent` ids (#168) — the shape many hosts send — becomes a `path`.
+ *
+ * Only for a node with no `path` of its own, and only where the parent relation is in play: a
+ * node that HAS a parent, or that another node names as one (so a root still heads the paths
+ * of its children). Segments are node ids, since labels repeat across branches.
+ */
+function pathsFromParents(built: GraphNode[], sources: unknown[], fields: GraphFields): void {
+	const parentOf = new Map<string, string | undefined>()
+	built.forEach((node, i) => parentOf.set(node.id, str(pick(sources[i], fields.parent, 'parent'))))
+	const named = new Set([...parentOf.values()].filter((p) => p !== undefined))
+	for (const node of built) {
+		if (node.path || (parentOf.get(node.id) === undefined && !named.has(node.id))) continue
+		node.path = chainOf(node.id, parentOf)
+	}
+}
+
 export function normalizeGraph(
 	nodes: unknown[],
 	edges: unknown[],
 	fields: GraphFields = {}
 ): GraphModel {
 	const built = nodes.map((source) => buildNode(source, fields))
+	pathsFromParents(built, nodes, fields)
 	const byId = new Map(built.map((node) => [node.id, node]))
 
 	const seen = new Map<string, number>()

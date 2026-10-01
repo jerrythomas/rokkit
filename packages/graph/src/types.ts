@@ -57,6 +57,10 @@ export type GraphNode = {
 	 *
 	 * Accepts a delimited STRING too (`'dbd/core/lexer/parse'`), since that is how a file path
 	 * arrives. See `GraphFields.pathDelimiter`.
+	 *
+	 * A host that gives containment as `parent` ids instead (#168) need not convert: a node with
+	 * no path but a parent chain gets one, as ids (`GraphFields.parent`). The path is still what
+	 * the model holds — the chain is read once, at normalisation.
 	 */
 	path?: string[]
 	/**
@@ -282,6 +286,11 @@ export type GraphFields = {
 	weakest?: string
 	/** Path to a node's host-assigned layer — see `GraphNode.layer`. */
 	layer?: string
+	/**
+	 * Path to a node's PARENT id — containment as a parent chain rather than a `path` (#168).
+	 * Used only for a node with no `path`; it becomes one, as ids.
+	 */
+	parent?: string
 	/** Path to an edge's conformance to the layering — see `GraphEdge.conformance`. */
 	conformance?: string
 	/** Path to an edge's strength — see `GraphEdge.weight`. */
