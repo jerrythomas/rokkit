@@ -858,3 +858,26 @@ Built as step 5 of `24-world-view.md`, which also records what building it chang
 - A shaded box carries `data-graph-shaded`, and each style paints it at full strength.
 - The demo is *Treemap, shaded by tests*.
 
+## Neighborhood parity and the canvas frame (#170, #171, #172), 2026-10-01
+
+All three were found migrating dbd's viewer (dbd#25).
+
+- **#170.** `neighborhood` placed the focus by the inbound depth only, and ended the canvas at
+  the deepest outbound column. It now reserves `max(in, out)` columns on both sides and pads
+  both edges equally, so the focus centre is `w / 2`.
+- **#172.**
+  - `Neighborhood` gains `groupTint`, on by default.
+  - In the neighborhood layout, a selection that IS the focus yields no `related` / `dim` /
+    `highlight` states. The canvas is built from adjacency to the focus, so they meant nothing,
+    and they dimmed ring 2.
+  - The dark-mode card that matched the paper came from dbd's `rokkit.config.js` overriding
+    dark `paper`. rokkit's zen-sumi steps the card above it, measured at 0.21 vs 0.17.
+- **#171.**
+  - `canvas/frame.ts` is pure. The extent is the scaled drawing plus `PAD` all round, or exactly
+    the viewport while the drawing fits. `anchoredScroll` keeps a content point under an anchor.
+  - `Graph.svelte` sizes a clipping `[data-graph-extent]` box from the frame. Its old
+    transformed world left the scroll extent unscaled.
+  - A pinch anchors at the pointer, and the buttons at the viewport centre. On an axis that
+    still fits, centring wins.
+  - The e2e covers flow, neighborhood, radial, layers and world.
+

@@ -263,6 +263,10 @@ const meta: DemoMeta = {
 				desc: 'Scrolling canvas — reuses the shared dotted-canvas primitive'
 			},
 			{
+				selector: '[data-graph-extent]',
+				desc: 'The scrollable extent (#171): the scaled drawing plus padding on all four sides — exactly the viewport while the drawing fits. It clips the world, whose unscaled box would otherwise decide the scroll'
+			},
+			{
 				selector: '[data-graph-panning]',
 				desc: 'Present on the canvas while a drag-pan is in progress'
 			},

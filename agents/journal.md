@@ -10542,3 +10542,30 @@ session). The user was told. A later full run failed 145 tests while something h
 again. The clean rerun was 148/148. Rokkit's e2e needs its own port.
 
 Gates: 8,342 unit tests, 148 e2e, lint 0/0.
+
+## 2026-10-01 (4) — #152's gaps; #170, #171 and #172
+
+- `5ef217773`: rokkit's e2e runs on its own port, 4183, with `--strictPort`. A shared 4173 with dbd's
+  preview had made runs test the wrong app.
+- `c6f506fc0` (#152 gaps): the vacuous "reaches a real element" e2e is replaced by a check that each
+  pick reaches its role's line in a new step 04 Type tile (display was never shown there). A
+  new e2e gives the no-FOUT claim a test: nothing is fetched from another origin, and a bundled
+  face is ready at once. Four stale doc lines fixed. #152 stays open for the heading-scale
+  decision.
+- `b252ba3f9` (#170): neighborhood centres the focus. The canvas reserves the deeper side's columns on
+  both sides. An old test that pinned the focus at x=0 now asserts what it meant: no left
+  column.
+- `44e488947` (#172): Neighborhood gets `groupTint` (on by default). No related / dim / highlight state
+  when the selection is the focus. A parity spec checks a neighbour's card against ErDiagram's.
+  The dark card-equals-paper report came from dbd's config overriding dark `paper`; rokkit's
+  zen-sumi measures card 0.21 against paper 0.17.
+- `7bfb33b30` (#171): `canvas/frame.ts` (pure frame and anchoring), plus a clipping
+  `[data-graph-extent]`. A pinch anchors at the pointer, the buttons at the centre. The e2e over
+  five layouts failed 14 of 20 before the fix. Radial exposed that anchoring yields to centring
+  on an axis that still fits, so the test now zooms past fit on both axes.
+
+The user chose to ADD multi-select to List for #153 rather than delete the dead
+`[data-selected]` rules. Wrapper already supports it (`84b42070d`), and the navigator already
+sends `extend` / `range`; List needs wiring. That's next.
+
+Gates: 169 e2e, full unit suite, lint 0/0.

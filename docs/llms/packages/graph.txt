@@ -331,6 +331,18 @@ side and none on the other: files that change together with nothing in the code 
 - **Styling hooks:** `data-edge-hidden`, `data-edge-side` (`below` / `above`),
   `data-graph-hidden-only`, `data-legend-side`, `data-legend-hidden`. The layout is `arcs`.
 
+### Neighborhood: centred, tinted, and states that mean something (#170, #172)
+
+- **The focus is the centre.** The canvas reserves as many columns on the empty or shallower
+  side as the deeper side uses, so a focus with neighbours on one side only still sits in the
+  middle.
+- **`groupTint`** is on by default, as in `ErDiagram`. Neither draws group boxes, so the
+  schema colour on each card is what keeps a table's schema visible one click in.
+- **Selection.** With the selection on the focus, which is the default, no card is `related`
+  or `dim` and no edge is highlighted. Every card is adjacent to the focus by construction,
+  so those states would carry nothing, and ring 2 would be dimmed for being the ring you
+  asked for. Select a neighbour and its own adjacency lights up as usual.
+
 ### Shade — a share on a ramp, in the containment views (#164)
 
 `Treemap` and `Sunburst` take `shadeBy`: a `measures` key holding a **share in 0..1** (how much
