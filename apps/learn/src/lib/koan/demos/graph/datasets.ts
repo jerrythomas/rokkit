@@ -23,6 +23,7 @@ import architecture from '../chart/architecture.json'
 import type { GraphFields } from '@rokkit/graph'
 import { LazyCodebase } from './lazy-codebase.svelte'
 import { withCycleGroups } from './cycles'
+import { layerOfComponent } from './layers'
 
 export type DatasetId =
 	| 'ecommerce'
@@ -33,6 +34,8 @@ export type DatasetId =
 	| 'components'
 	| 'cochange'
 	| 'cycles'
+	| 'layers'
+	| 'layers-sample'
 
 /* ─── 1. dbd v2-shaped ───────────────────────────────────────────────────────
    `tables` holds tables (plus the two enums — dbd flags an enum COLUMN via `Column.en`
@@ -466,6 +469,31 @@ const hiddenCoupling = architecture.cochange
 		relation: 'co-change'
 	}))
 
+/** The same components, each in its package's INTENDED layer (#167) — assigned by the host. */
+const componentLayers = componentNodes.map((n) => ({ ...n, layer: layerOfComponent(n.id) }))
+
+/**
+ * #167's own sample, verbatim: five modules, one dependency that climbs. rokkit's packages have
+ * no such edge, so this is where the violation styling is visible.
+ */
+const layersSample = {
+	nodes: [
+		{ id: 'mod:api', name: 'api', layer: 0 },
+		{ id: 'mod:tasks', name: 'tasks', layer: 1 },
+		{ id: 'mod:indexer', name: 'indexer', layer: 2 },
+		{ id: 'mod:db', name: 'db', layer: 3 },
+		{ id: 'mod:config', name: 'config', layer: 4 }
+	],
+	edges: [
+		{ source: 'mod:api', target: 'mod:tasks', kind: 'calls', weight: 320, conformance: 'down' },
+		{ source: 'mod:tasks', target: 'mod:indexer', kind: 'calls', weight: 1840, conformance: 'down' },
+		{ source: 'mod:indexer', target: 'mod:db', kind: 'calls', weight: 610, conformance: 'down' },
+		{ source: 'mod:db', target: 'mod:tasks', kind: 'calls', weight: 12, conformance: 'up' },
+		{ source: 'mod:api', target: 'mod:db', kind: 'calls', weight: 88, conformance: 'skip' }
+	],
+	fields: { id: 'id', label: 'name', source: 'source', target: 'target', relation: 'kind' } as GraphFields
+}
+
 /** The same imports, with each import cycle sent as a collapsed group node (#166). */
 const componentCycles = withCycleGroups(componentNodes, componentImports)
 
@@ -534,6 +562,20 @@ export const datasets = {
 		nodes: componentNodes as unknown[],
 		edges: componentImports as unknown[],
 		fields: componentFields
+	},
+	layers: {
+		id: 'layers' as const,
+		label: 'This codebase, by intended layer',
+		nodes: componentLayers as unknown[],
+		edges: componentImports as unknown[],
+		fields: componentFields
+	},
+	'layers-sample': {
+		id: 'layers-sample' as const,
+		label: '#167 sample — five modules, one climbing edge',
+		nodes: layersSample.nodes as unknown[],
+		edges: layersSample.edges as unknown[],
+		fields: layersSample.fields
 	},
 	cycles: {
 		id: 'cycles' as const,

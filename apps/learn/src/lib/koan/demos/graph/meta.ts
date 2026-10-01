@@ -92,7 +92,14 @@ const meta: DemoMeta = {
 		{ id: 'sunburst', label: 'Sunburst', mode: 'dynamic', props: { diagram: 'sunburst' } },
 		{ id: 'matrix', label: 'Dependency matrix', mode: 'dynamic', props: { diagram: 'matrix' } },
 		{ id: 'coupling', label: 'Hidden coupling', mode: 'dynamic', props: { diagram: 'coupling' } },
-		{ id: 'cycles', label: 'Import cycles', mode: 'dynamic', props: { diagram: 'cycles' } }
+		{ id: 'cycles', label: 'Import cycles', mode: 'dynamic', props: { diagram: 'cycles' } },
+		{ id: 'layers', label: 'Layers', mode: 'dynamic', props: { diagram: 'layers' } },
+		{
+			id: 'layers-sample',
+			label: 'Layers, with a violation',
+			mode: 'dynamic',
+			props: { diagram: 'layers-sample' }
+		}
 	],
 	api: {
 		props: [
@@ -216,6 +223,16 @@ const meta: DemoMeta = {
 				desc: 'The reader opened a box. `node` is the declared node at the path, null for a synthesised container. Return a promise while you load that level: the canvas shows it pending, and a rejection returns to the previous level. Not a selection — onselect is not called'
 			},
 			{
+				name: 'showEdges',
+				type: "'all' | 'violations'",
+				desc: 'LayersDiagram: every edge, or only the ones that climb a layer. Bindable — its control moves it. On a real codebase the conformant edges drown the signal'
+			},
+			{
+				name: 'layerLabels',
+				type: 'string[]',
+				desc: 'LayersDiagram: band names by layer index. Layers come from each node’s host-assigned `layer`; rokkit computes no depth'
+			},
+			{
 				name: 'onexpand',
 				type: '(id: string, node: GraphNode) => void',
 				desc: 'The reader expanded a group node (#166). A group is a node with `members` (ids); with the members in `nodes` they appear at once, edges among them included. A host that sends only the group can load them here'
@@ -248,6 +265,15 @@ const meta: DemoMeta = {
 			{
 				selector: '[data-graph-pending]',
 				desc: 'Present on the canvas (with aria-busy) while a drill’s level is loading — the old level stays, dimmed'
+			},
+			// Layers (#167)
+			{
+				selector: '[data-edge-conformance]',
+				desc: 'How an edge sits against the layering: `down` (conformant), `skip` (down more than one, dashed), `up` (climbs — the violation, in the danger colour), `level` (within a layer)'
+			},
+			{
+				selector: '[data-graph-violations]',
+				desc: 'The LayersDiagram toggle between every edge and only the ones that climb (aria-pressed when filtering)'
 			},
 			// Groups (#166)
 			{

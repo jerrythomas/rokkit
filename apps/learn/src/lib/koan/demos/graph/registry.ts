@@ -2,6 +2,7 @@ import type { Component } from 'svelte'
 import {
 	CallTree,
 	DependencyDiagram,
+	LayersDiagram,
 	DependencyMatrix,
 	ErDiagram,
 	Graph,
@@ -11,6 +12,7 @@ import {
 	Treemap
 } from '@rokkit/graph'
 import { datasets, lazyCodebase } from './datasets'
+import { LAYER_LABELS } from './layers'
 
 /**
  * One entry per DIAGRAM, each carrying the dataset it is for.
@@ -39,6 +41,8 @@ export type DiagramId =
 	| 'matrix'
 	| 'coupling'
 	| 'cycles'
+	| 'layers'
+	| 'layers-sample'
 
 /** What question the diagram answers. Groups the picker, nothing more. */
 export type DiagramGroup = 'Schema' | 'Code'
@@ -210,6 +214,28 @@ export const registry: Record<DiagramId, DiagramConfig> = {
 		blurb:
 			'Each group of components that import each other is collapsed into one node, so what remains reads as a hierarchy. Expand one to see the cycle; the dashed red edge is the weakest link, the cheapest one to cut.',
 		props: { density: 'names' }
+	},
+	layers: {
+		id: 'layers',
+		layout: 'layers',
+		label: 'Layers',
+		group: 'Code',
+		component: LayersDiagram as Component<Record<string, unknown>>,
+		dataset: 'layers',
+		blurb:
+			'rokkit’s components in the layers its packages are meant to keep, foundations at the bottom. Arrows should only point down — dashed ones skip a layer. Switch to “Violations only” and the canvas empties: no rokkit package imports upward.',
+		props: { layerLabels: LAYER_LABELS }
+	},
+	'layers-sample': {
+		id: 'layers-sample',
+		layout: 'layers',
+		label: 'Layers, with a violation',
+		group: 'Code',
+		component: LayersDiagram as Component<Record<string, unknown>>,
+		dataset: 'layers-sample',
+		blurb:
+			'The sample from #167: five modules, every call going down a layer — except one, which climbs. That red edge is the violation, and “Violations only” leaves just it.',
+		props: {}
 	}
 }
 
