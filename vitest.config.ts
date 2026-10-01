@@ -111,6 +111,8 @@ export default defineConfig({
 				}
 			},
 			{ extends: true, test: { name: 'cli', root: 'packages/cli' } },
+			// The repo's own scripts (config/*.mjs) — upgrade-all's hold list, for one.
+			{ extends: true, test: { name: 'config', root: 'config' } },
 			{ extends: true, test: { name: 'core', root: 'packages/core' } },
 			{ extends: true, test: { name: 'unocss', root: 'packages/unocss' } },
 			{ extends: true, test: { name: 'themes', root: 'packages/themes' } },
