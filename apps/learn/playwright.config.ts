@@ -1,5 +1,12 @@
 import { defineConfig, devices } from '@playwright/test'
 
+/**
+ * rokkit's own port. `vite preview` defaults to 4173, which other projects on the same machine
+ * use too (dbd's site does) — and with `reuseExistingServer` a run then silently tests
+ * whichever app holds the port. `--strictPort` makes a clash fail loudly instead.
+ */
+const PORT = 4183
+
 export default defineConfig({
 	testDir: 'e2e',
 	testMatch: /.*\.e2e\.ts/,
@@ -13,8 +20,8 @@ export default defineConfig({
 		}
 	},
 	webServer: {
-		command: 'bun run build && bun run preview',
-		port: 4173,
+		command: `bun run build && bun run preview --port ${PORT} --strictPort`,
+		port: PORT,
 		/**
 		 * Playwright's default is 60s, which is less than a cold build takes here — `bun run
 		 * build` is `sync:assets && svelte-kit sync && vite build` and measures ~23s warm, more
@@ -27,7 +34,7 @@ export default defineConfig({
 		 * Reusing a server skips BOTH the build and the preview, so a preview left running from
 		 * an earlier checkout serves stale code and the suite silently tests the wrong thing.
 		 * Worth it for the local iterate loop, but it means: if results look impossible, kill
-		 * 4173 and re-run before believing them.
+		 * the preview on PORT and re-run before believing them.
 		 *
 		 * Do NOT run `vite dev` at the same time. Both it and `vite build` run `sync:assets`,
 		 * which `cp -r`s the same trees into `static/`, and `static/` is copied into the build —
@@ -37,7 +44,7 @@ export default defineConfig({
 		reuseExistingServer: !process.env.CI
 	},
 	use: {
-		baseURL: 'http://localhost:4173'
+		baseURL: `http://localhost:${PORT}`
 	},
 	projects: [
 		{

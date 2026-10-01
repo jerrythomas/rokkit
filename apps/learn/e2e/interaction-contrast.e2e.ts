@@ -46,7 +46,7 @@ const configs = matrix().filter((c) => !only || c.style === only)
 test('interaction contrast — no new failures beyond baseline', async ({ page, baseURL }, testInfo) => {
 	testInfo.setTimeout(Math.max(configs.length * STATES.length * 1500, 240_000))
 
-	const base = baseURL ?? 'http://localhost:4173'
+	const base = baseURL ?? 'http://localhost:4183'
 	const uniq = new Map()
 	const perConfig: Array<{ style: string; coverage: unknown[] }> = []
 

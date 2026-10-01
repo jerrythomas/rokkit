@@ -25,7 +25,7 @@ test('theme contrast — no new failures beyond baseline', async ({ page, baseUR
 	// 5 × 2 × 5 = 50 gallery loads; well over the default per-test timeout.
 	testInfo.setTimeout(Math.max(STYLES.length * MODES.length * SKINS.length * 3000, 180_000))
 
-	const base = baseURL ?? 'http://localhost:4173'
+	const base = baseURL ?? 'http://localhost:4183'
 	const rows = await auditGallery(page, base)
 
 	await testInfo.attach('contrast-report.md', {

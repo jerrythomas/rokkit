@@ -194,7 +194,7 @@ for (const screen of SCREENS) {
 	test(`screen: ${screen.path}`, async ({ page, baseURL }, testInfo) => {
 		const found = attachDiagnostics(page)
 
-		const response = await page.goto(`${baseURL ?? 'http://localhost:4173'}${screen.path}`, {
+		const response = await page.goto(`${baseURL ?? 'http://localhost:4183'}${screen.path}`, {
 			waitUntil: 'networkidle',
 			timeout: 20_000
 		})

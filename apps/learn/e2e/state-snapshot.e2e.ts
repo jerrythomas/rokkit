@@ -35,7 +35,7 @@ test('list state snapshot — computed styles match the baseline', async ({ page
 	// 5 × 2 × 2 = 20 fixture loads, each driving 28 cases through hover/focus/press.
 	testInfo.setTimeout(Math.max(STYLES.length * MODES.length * SKINS.length * 12_000, 300_000))
 
-	const base = baseURL ?? 'http://localhost:4173'
+	const base = baseURL ?? 'http://localhost:4183'
 	const current = await snapshotAll(page, base)
 
 	if (process.env.UPDATE_STATE_BASELINE) {
