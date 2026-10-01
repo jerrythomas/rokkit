@@ -39,6 +39,7 @@ export type GraphConfigValues = {
 	heightBy: string | undefined
 	colorBy: string | undefined
 	above: string | undefined
+	shadeBy: string | undefined
 }
 
 type Key = keyof GraphConfigValues
@@ -114,7 +115,8 @@ export const CONFIG_FIELDS: readonly Field[] = Object.freeze([
 	{ key: 'widthBy', raw: true },
 	{ key: 'heightBy', raw: true },
 	{ key: 'colorBy', raw: true },
-	{ key: 'above', raw: true }
+	{ key: 'above', raw: true },
+	{ key: 'shadeBy', raw: true }
 ])
 
 function resolve(config: GraphStateConfig): GraphConfigValues {
@@ -146,10 +148,23 @@ export class GraphConfig {
 	}
 
 	update(config: GraphStateConfig = {}): void {
+		const previous = this.#last
 		this.#last = config
 		// Field by field onto the one proxy, not a new object: each field stays its own signal,
 		// so a re-render that leaves `nodes` alone does not re-trigger what reads only `nodes`.
-		Object.assign(this.#v, resolve(config))
+		//
+		// And only the fields whose INPUT changed. Re-assigning the same array still fires its
+		// signal — the proxy wraps it afresh — and an absent `fields` resolves to a fresh `{}`, so
+		// every update would re-normalise the whole model even when only a layout option moved.
+		// A consumer's own `$state` array mutated in place is unaffected: it is tracked through
+		// its own proxy, not through this assignment.
+		const resolved = resolve(config) as Record<Key, unknown>
+		const target = this.#v as Record<Key, unknown>
+		for (const key of Object.keys(resolved) as Key[]) {
+			if (key in config && config[key as keyof GraphStateConfig] === previous[key as keyof GraphStateConfig]) continue
+			if (!(key in config) && !(key in previous)) continue
+			target[key] = resolved[key]
+		}
 	}
 
 	/** Merge a partial config over the last full one, leaving every key it does not name alone. */
@@ -298,5 +313,8 @@ export class GraphConfig {
 	}
 	get above() {
 		return this.#v.above
+	}
+	get shadeBy() {
+		return this.#v.shadeBy
 	}
 }
