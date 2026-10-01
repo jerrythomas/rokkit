@@ -197,7 +197,7 @@
 	data-size={size}
 	data-disabled={disabled || undefined}
 	data-collapsible={collapsible || undefined}
-	data-multiselect={multiselect ? 'true' : undefined}
+	data-multiselect={multiselect || undefined}
 	class={className || undefined}
 	aria-label={label}
 >
@@ -276,7 +276,7 @@
 				data-path={node.key}
 				data-level={node.level}
 				data-active={isActive || undefined}
-				data-selected={isSelected ? 'true' : undefined}
+				data-selected={isSelected || undefined}
 				aria-pressed={multiselect ? isSelected : undefined}
 				data-disabled={proxy.disabled || undefined}
 				disabled={proxy.disabled || disabled}

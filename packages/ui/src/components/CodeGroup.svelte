@@ -168,7 +168,7 @@
 		<aside
 			id="codegroup-drawer"
 			class="rail"
-			data-open={drawerOpen ? '' : undefined}
+			data-open={drawerOpen || undefined}
 			aria-label="Files"
 		>
 			<div class="rail-header">Files</div>
