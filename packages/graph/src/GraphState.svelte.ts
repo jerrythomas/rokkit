@@ -99,6 +99,10 @@ export type GraphStateConfig = {
 	onexpand?: (id: string, node: GraphNode) => void
 	/** The reader collapsed a group back into one node. */
 	oncollapse?: (id: string, node: GraphNode) => void
+	/** `layers` only — every edge, or only the ones that climb (#167). Defaults to `all`. */
+	showEdges?: 'all' | 'violations'
+	/** `layers` only — band names by layer index. */
+	layerLabels?: string[]
 }
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
@@ -177,6 +181,8 @@ export class GraphState {
 			radialMode: this.config.radialMode,
 			root: this.config.root,
 			bundleTension: this.config.bundleTension,
+			showEdges: this.config.showEdges,
+			layerLabels: this.config.layerLabels,
 			edgeStyle: this.config.edgeStyle,
 			focus: this.config.focus ?? this.selection.value,
 			expanded: this.selection.expanded
@@ -372,6 +378,14 @@ export class GraphState {
 	 */
 	setDensity(density: Density): void {
 		this.config.setDensity(density)
+	}
+
+	/** Every edge or only the climbing ones — what `ViolationsControl` drives (#167). */
+	setShowEdges(value: 'all' | 'violations'): void {
+		this.config.setShowEdges(value)
+	}
+	get showEdges(): 'all' | 'violations' {
+		return this.config.showEdges
 	}
 
 	// ─── per-item lookups the templates need ───────────────────────────────────

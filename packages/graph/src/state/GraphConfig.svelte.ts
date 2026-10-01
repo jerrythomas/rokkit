@@ -33,6 +33,8 @@ export type GraphConfigValues = {
 	onfocuspath: GraphStateConfig['onfocuspath']
 	onexpand: GraphStateConfig['onexpand']
 	oncollapse: GraphStateConfig['oncollapse']
+	showEdges: 'all' | 'violations'
+	layerLabels: string[] | undefined
 }
 
 type Key = keyof GraphConfigValues
@@ -102,7 +104,9 @@ export const CONFIG_FIELDS: readonly Field[] = Object.freeze([
 	{ key: 'ondrillup', raw: true },
 	{ key: 'onfocuspath', raw: true },
 	{ key: 'onexpand', raw: true },
-	{ key: 'oncollapse', raw: true }
+	{ key: 'oncollapse', raw: true },
+	{ key: 'showEdges', fallback: () => 'all' },
+	{ key: 'layerLabels', raw: true }
 ])
 
 function resolve(config: GraphStateConfig): GraphConfigValues {
@@ -155,6 +159,12 @@ export class GraphConfig {
 	setDensity(density: Density): void {
 		this.#v.density = density
 		this.#remember({ density })
+	}
+
+	/** Every edge or only the climbing ones (#167) — what `ViolationsControl` drives. */
+	setShowEdges(value: 'all' | 'violations'): void {
+		this.#v.showEdges = value
+		this.#remember({ showEdges: value })
 	}
 
 	/** Move the drill path from inside the state — drilling. See `GraphDrill`. */
@@ -262,5 +272,11 @@ export class GraphConfig {
 	}
 	get oncollapse() {
 		return this.#v.oncollapse
+	}
+	get showEdges() {
+		return this.#v.showEdges
+	}
+	get layerLabels() {
+		return this.#v.layerLabels
 	}
 }

@@ -399,6 +399,7 @@
 						data-edge-state={graph.edgeState(edge)}
 						data-edge-overlay={edge.overlay ? '' : undefined}
 						data-edge-weakest={edge.weakest ? '' : undefined}
+						data-edge-conformance={edge.conformance}
 						data-edge-count={edge.count}
 						style:--edge-weight={graph.edgeWeight(edge)}
 					>
