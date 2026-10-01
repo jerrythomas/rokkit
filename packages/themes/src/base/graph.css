@@ -934,6 +934,35 @@
   font-weight: 600;
 }
 
+/* ─── arcs (issue 169) ─────────────────────────────────────────────────────── */
+
+/* Each item on the shared axis is a node: it takes the click, and selecting it lights its arcs
+   on both sides. Its name is a file or a module, so it reads as written, not shouted. */
+[data-graph-layout='arcs'] [data-graph-cluster][data-graph-node-id] {
+  pointer-events: auto;
+  cursor: pointer;
+  border-radius: 3px;
+  text-transform: none;
+}
+
+[data-graph-layout='arcs'] [data-graph-cluster][data-graph-node-id] > [data-graph-cluster-label] {
+  top: 50%;
+  left: 0.4rem;
+  right: 0.4rem;
+  transform: translateY(-50%);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.65rem;
+}
+
+/* The pair nothing in the code explains is the finding: heavier than the arcs around it, and
+   coloured by each style. */
+[data-graph-edge][data-edge-hidden] path {
+  stroke-width: calc(2.25px + var(--edge-weight, 0) * 3px);
+}
+
 /* ─── drilling (issue 165) ─────────────────────────────────────────────────── */
 
 /* A container that can be opened takes the pointer the way a leaf does — clusters are

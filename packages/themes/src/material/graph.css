@@ -578,3 +578,13 @@
 [data-style='material'] [data-legend-channel-swatch='color'] {
   background-image: linear-gradient(to right, var(--paper-soft), color-mix(in oklch, var(--ink) 85%, var(--paper-soft)));
 }
+
+/* ─── arcs (#169) — the hidden pair is the finding. A stroke, so the status colour is legible ─── */
+[data-style='material'] [data-graph-edge][data-edge-hidden] path {
+  stroke: var(--danger);
+}
+
+[data-style='material'] svg[data-legend-swatch][data-edge-hidden] line {
+  stroke: var(--danger);
+  stroke-width: 2.5px;
+}

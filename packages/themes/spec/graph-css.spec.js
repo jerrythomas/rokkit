@@ -431,3 +431,23 @@ describe('graph theme CSS — polymetric (#168)', () => {
 		expect(rulesFor(`${style}/graph.css`, '[data-legend-channel-swatch]').length, style).toBeGreaterThan(0)
 	})
 })
+
+describe('graph theme CSS — arcs (#169)', () => {
+	it('lets an item on the axis take the pointer, its name read as written, in base', () => {
+		const box = rulesFor('base/graph.css', "[data-graph-layout='arcs'] [data-graph-cluster][data-graph-node-id]")
+		expect(box.some((r) => /pointer-events:\s*auto/.test(r))).toBe(true)
+		expect(box.some((r) => /text-transform:\s*none/.test(r))).toBe(true)
+	})
+
+	it('draws a hidden pair heavier than an ordinary one, in base', () => {
+		const rules = rulesFor('base/graph.css', '[data-graph-edge][data-edge-hidden] path')
+		expect(rules.some((r) => /stroke-width:\s*calc\(/.test(r))).toBe(true)
+	})
+
+	it.each(STYLES)('%s strokes a hidden pair — and its legend key — in the danger colour', (style) => {
+		const edge = rulesFor(`${style}/graph.css`, '[data-graph-edge][data-edge-hidden] path')
+		expect(edge.some((r) => /stroke:\s*var\(--danger\)/.test(r)), style).toBe(true)
+		const key = rulesFor(`${style}/graph.css`, 'svg[data-legend-swatch][data-edge-hidden] line')
+		expect(key.some((r) => /stroke:\s*var\(--danger\)/.test(r)), style).toBe(true)
+	})
+})
