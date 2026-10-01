@@ -14,6 +14,7 @@
  * needs dummy nodes on the intervening ranks and that is its own slice.
  */
 
+import { carried } from './edges.js'
 import { buildCards } from './cards.js'
 import { rank } from './rank.js'
 import { order } from './order.js'
@@ -76,7 +77,8 @@ function identity(edge: GraphEdge, i: number) {
 		fromKey: edge.source,
 		toKey: edge.target,
 		kind: edge.kind,
-		relation: edge.relation
+		relation: edge.relation,
+		...carried(edge)
 	}
 }
 

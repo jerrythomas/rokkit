@@ -21,6 +21,7 @@
  * Structure"), which is d3.cluster + lineRadial + curveBundle over the same hierarchy.
  */
 
+import { carried } from './edges.js'
 import { buildTree, findNode } from '../model/tree.js'
 import type { TreeNode } from '../model/tree.js'
 import { bundlePath, commonDepth } from './bundle.js'
@@ -311,6 +312,7 @@ function routeAll(model: GraphModel, root: TreeNode, ctx: Ctx, tension: number):
 			toKey: edge.target,
 			kind: edge.kind,
 			relation: edge.relation ?? reach(a, b),
+			...carried(edge),
 			self: false,
 			x1: from.x,
 			y1: from.y,

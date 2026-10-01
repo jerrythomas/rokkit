@@ -88,7 +88,9 @@ const CLAIMED_NODE_KEYS = [
 	'path',
 	'measures',
 	'rows',
-	'note'
+	'note',
+	'members',
+	'collapsed'
 ] as const
 
 function buildMeta(source: unknown, fields: GraphFields): Record<string, unknown> {
@@ -123,8 +125,22 @@ function buildNode(source: unknown, fields: GraphFields): GraphNode {
 		measures: measures(pick(source, fields.measures, 'measures')),
 		rows: buildRows(source, fields),
 		note: str(pick(source, fields.note, 'note')),
+		...groupExtras(source, fields),
 		meta: buildMeta(source, fields)
 	}
+}
+
+/**
+ * `members` and `collapsed`, added only when present — like the edge extras, so every node a
+ * consumer already has stays key-for-key identical.
+ */
+function groupExtras(source: unknown, fields: GraphFields): Pick<GraphNode, 'members' | 'collapsed'> {
+	const extras: Pick<GraphNode, 'members' | 'collapsed'> = {}
+	const members = pick(source, fields.members, 'members')
+	if (Array.isArray(members)) extras.members = members.map(String)
+	const collapsed = pick(source, fields.collapsed, 'collapsed')
+	if (typeof collapsed === 'boolean') extras.collapsed = collapsed
+	return extras
 }
 
 /**
@@ -289,9 +305,10 @@ function buildEdge(
  * `overlay` and `weight`, added only when present so every edge a v1 consumer already has
  * stays key-for-key identical — `toEqual` on an edge is a contract downstream specs rely on.
  */
-function edgeExtras(source: unknown, fields: GraphFields): Pick<GraphEdge, 'overlay' | 'weight'> {
-	const extras: Pick<GraphEdge, 'overlay' | 'weight'> = {}
+function edgeExtras(source: unknown, fields: GraphFields): Pick<GraphEdge, 'overlay' | 'weight' | 'weakest'> {
+	const extras: Pick<GraphEdge, 'overlay' | 'weight' | 'weakest'> = {}
 	if (pick(source, fields.overlay, 'overlay')) extras.overlay = true
+	if (pick(source, fields.weakest, 'weakest')) extras.weakest = true
 	const weight = num(pick(source, fields.edgeWeight, 'weight'))
 	if (weight !== undefined) extras.weight = weight
 	return extras
@@ -320,7 +337,7 @@ function markForeignKeys(byId: Map<string, GraphNode>, edges: GraphEdge[]): void
 	}
 }
 
-function buildNeighbors(edges: GraphEdge[]): Map<string, Set<string>> {
+export function buildNeighbors(edges: GraphEdge[]): Map<string, Set<string>> {
 	const neighbors = new Map<string, Set<string>>()
 
 	const link = (a: string, b: string) => {

@@ -59,6 +59,14 @@ export type GraphNode = {
 	 * arrives. See `GraphFields.pathDelimiter`.
 	 */
 	path?: string[]
+	/**
+	 * The node ids this node STANDS FOR — a group, typically one strongly-connected component
+	 * the host condensed (#166). rokkit computes no SCCs: it draws what the host grouped. While
+	 * the group is collapsed its members are hidden and their edges reroute to it.
+	 */
+	members?: string[]
+	/** Whether a group starts collapsed. A node with `members` and no flag is collapsed. */
+	collapsed?: boolean
 	rows: GraphRow[]
 	note?: string
 	/** Source fields the map did not claim, passed through untouched. */
@@ -111,6 +119,14 @@ export type GraphEdge = {
 	overlay?: boolean
 	/** A strength this edge carries — co-change count, call frequency. Drives stroke width. */
 	weight?: number
+	/**
+	 * The cheapest link to cut to break a cycle — the edge with the fewest occurrences (#166).
+	 * Naming it is the actionable output of a cycles view, so it is styleable on its own
+	 * (`data-edge-weakest`).
+	 */
+	weakest?: boolean
+	/** How many model edges this one stands for, when it aggregates a collapsed group's edges. */
+	count?: number
 }
 
 export type GraphModel = {
@@ -241,6 +257,12 @@ export type GraphFields = {
 	relation?: string
 	/** Path to a truthy flag marking an overlay edge — see `GraphEdge.overlay`. */
 	overlay?: string
+	/** Path to a group's member ids — see `GraphNode.members`. */
+	members?: string
+	/** Path to a group's starting state — see `GraphNode.collapsed`. */
+	collapsed?: string
+	/** Path to a truthy flag marking the weakest edge of a cycle — see `GraphEdge.weakest`. */
+	weakest?: string
 	/** Path to an edge's strength — see `GraphEdge.weight`. */
 	edgeWeight?: string
 	cardinality?: string

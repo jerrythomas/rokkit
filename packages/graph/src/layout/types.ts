@@ -146,6 +146,10 @@ export type RoutedEdge = {
 	overlay?: boolean
 	/** GraphEdge.weight, raw. `GraphState.edgeWeight` normalises it for drawing. */
 	weight?: number
+	/** GraphEdge.weakest — the cheapest link to cut in a cycle (#166). */
+	weakest?: boolean
+	/** GraphEdge.count — how many model edges a condensed edge stands for. */
+	count?: number
 	x1: number
 	y1: number
 	x2: number

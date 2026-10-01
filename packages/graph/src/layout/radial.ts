@@ -15,6 +15,7 @@
  * exactly what a reader is looking for.
  */
 
+import { carried } from './edges.js'
 import { childrenIn, hierarchy } from './hierarchy.js'
 import type { Hierarchy } from './hierarchy.js'
 import { nodeSizes } from './sizing.js'
@@ -170,7 +171,8 @@ function identity(edge: GraphEdge, i: number) {
 		fromKey: edge.source,
 		toKey: edge.target,
 		kind: edge.kind,
-		relation: edge.relation
+		relation: edge.relation,
+		...carried(edge)
 	}
 }
 
