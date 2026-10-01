@@ -1,6 +1,6 @@
 # Graph: the shade channel (#164)
 
-**Status:** IMPLEMENT (2026-10-01). Step 5 of `docs/design/24-world-view.md`, its Decision 4.
+**Status:** DONE (2026-10-01). Step 5 of `docs/design/24-world-view.md`, its Decision 4. See journal 2026-10-01 (3).
 **Package:** `@rokkit/graph` (plus each style's `graph.css`)
 
 ## The gap

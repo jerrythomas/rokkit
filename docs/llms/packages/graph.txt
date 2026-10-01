@@ -124,7 +124,7 @@ Your own slots in exactly the same way.
 | `neighborhood` | One focus node + its 1-hop neighbours | Walking a graph one step at a time |
 | `radial` | A tidy tree or dendrogram around a circle | Call graphs — who calls whom, and how deep |
 | `points` | Degree-sized rounded rects, shelf-packed | Dense graphs — a code index, 1000+ nodes |
-| `world` | Nested rectangles, area proportional to a measure | Containment — where the mass of a codebase is |
+| `world` | Nested rectangles, area proportional to a measure | Containment — where the mass of a codebase is. `shadeBy` adds a share on a ramp |
 | `sunburst` | Nested wedges, angle proportional to a measure | The same containment, with depth on the radius |
 | `structure` | Radial dendrogram + bundled edges | A codebase: containment on the rim, calls drawn through it |
 | `polymetric` | A top-down tree, each leaf box sized and shaded by three measures | `PolymetricTree`. `widthBy` / `heightBy` / `colorBy`; 95th-percentile caps |
@@ -282,7 +282,7 @@ missing control — it moves and nothing happens, which reads as a broken view:
 import { appliesTo, LAYOUT_OPTIONS } from '@rokkit/graph'
 
 appliesTo('world', 'density')  // false — a treemap box has no row list to thin
-LAYOUT_OPTIONS.world           // ['sizeBy', 'focusPath', 'levels']
+LAYOUT_OPTIONS.world           // ['sizeBy', 'shadeBy', 'focusPath', 'levels']
 ```
 
 Two entries are not simply "what the layout reads": `edgeStyle` is applied when a path is
@@ -330,6 +330,35 @@ side and none on the other: files that change together with nothing in the code 
   names them yourself.
 - **Styling hooks:** `data-edge-hidden`, `data-edge-side` (`below` / `above`),
   `data-graph-hidden-only`, `data-legend-side`, `data-legend-hidden`. The layout is `arcs`.
+
+### Shade — a share on a ramp, in the containment views (#164)
+
+`Treemap` and `Sunburst` take `shadeBy`: a `measures` key holding a **share in 0..1** (how much
+is tested, how much reaches no target). Each box or wedge is painted from a sequential ramp
+by its share, beside the size its area or angle already shows.
+
+```svelte
+<Treemap {nodes} sizeBy="declarations" shadeBy="tested" controls legend />
+<!-- nodes: { id, path, measures: { declarations, tested } } -->
+```
+
+- **A container's share is the size-weighted mean** of what it holds: 30 tested lines of 40
+  is 0.75, where a plain mean of the two files' 1 and 0 would say 0.5. A container that
+  declares its own share keeps it. A box with nothing measured beneath it is marked missing
+  (`data-graph-missing="color"`, hatched) and never drawn as a zero.
+- **The ramp is on the preset:** `createGraphPreset({ shade: { family: 'blue', from: '100', to: '800' } })`.
+  The default is `gray` 50 → 900. In dark mode the ramp runs the other way, so more is always
+  more ink.
+- **The label is measured** against each step's fill (rokkit's auto on-color by luminance), so
+  every step stays readable: a spec checks 4.5:1 on 21 steps in both modes.
+- **Switching is cheap.** Changing `shadeBy` re-runs the layout over the same model; nothing
+  is re-normalised.
+- **Controls and legend.** With `controls`, a measure picker appears ("none" turns shading
+  off). The legend row names the measure beside the ramp itself.
+- **Not a `GraphChannel`.** Shading is on exactly when `shadeBy` is set. It sits beside the
+  categorical group colour and does not replace `using`.
+- **Styling hooks:** `data-graph-shaded`, `data-legend-shade`, `data-legend-shade-swatch`;
+  `resolveShade(share, mode, preset)` gives the custom properties.
 
 ### Polymetric — three measures per box (#168)
 

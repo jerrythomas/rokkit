@@ -10512,3 +10512,33 @@ Gates: 1,150+ graph unit tests, 146 e2e passing unchanged, lint 0/0.
   #159, #153 and #152. #163 is closed: steps 1–4 of the world-view design shipped, and the
   #162 fan-out was deferred by design. #164, #159 (progress comment posted), #155, #153 and
   #152 stay open; what remains for each is in CHECKPOINT.
+
+## 2026-10-01 (3) — #159, #155 and #164 closed
+
+The user said to close #159 (rokkit's side is done; dbd is in its own session) and to complete
+what needs no input.
+
+- **#159:** closed.
+- **#155:** `e425a69a0`. `sensei.library.json` gains `documents`, a tag `ref` (replacing `branch`),
+  all 15 `packages` and `ecosystem`. It joins `config/bump.config.js`, so `bun run bump` moves
+  `documents` and `ref`; a spec holds them to the root version. The repo's GitHub homepage now
+  points at rokkit.sensei-hq.com. The user stopped me from re-implementing bumpp's regex to
+  "prove" the bump. Releases are `bun run bump`, and the memory is updated.
+- **#164 (shade channel):**
+  - `afcd5f4e8`: `model/share.ts` (size-weighted roll-up); `world` / `sunburst` set `Cluster.shade`.
+  - `fe2d2fc31`: the preset ramp and `resolveShade`, with the label measured by auto on-color;
+    every step clears 4.5:1 in both modes.
+  - `b4cbff9ff`: a real bug the acceptance test exposed. `GraphConfig.update` re-normalised the
+    model on EVERY update, because the deep proxy re-wraps the same array. It now assigns
+    changed inputs only.
+  - `04a87a6a2`: `Treemap` / `Sunburst` `shadeBy`, a picker, the legend row, `data-graph-shaded`.
+  - `9b3c8f1f5`: theme CSS. `fd5d6e8f8`: the "Treemap, shaded by tests" demo, plus the explorer
+    carrying `shadeBy`.
+
+**Environment incident:** e2e runs share port 4173 with dbd's `vite preview`, and Playwright
+reuses an existing server outside CI. A run first hit dbd's site; I then killed what I took for
+a stale rokkit preview, and it was **dbd's** preview server (PID 41073, from the user's dbd
+session). The user was told. A later full run failed 145 tests while something held the port
+again. The clean rerun was 148/148. Rokkit's e2e needs its own port.
+
+Gates: 8,342 unit tests, 148 e2e, lint 0/0.

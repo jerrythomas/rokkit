@@ -143,6 +143,12 @@ co-change pair with no import `hidden` (rokkit computes no history) and it draws
 only* leaves just those. Arcs are as thick as their weight, and each side is scaled on its own.
 The legend names each side from the relations drawn there; `sideLabels` names them yourself.
 
+## Shading by a share
+
+`Treemap` and `Sunburst` take `shadeBy`, a 0..1 share from each node's measures, and paint it
+on a ramp beside the size. A container takes the size-weighted mean of what it holds, and
+unmeasured boxes are hatched, not zeroed. The label colour is measured for every step.
+
 ## Three measures per box
 
 `PolymetricTree` draws containment top down, each file a box whose width, height and shade are

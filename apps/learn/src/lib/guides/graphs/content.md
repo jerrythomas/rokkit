@@ -151,6 +151,13 @@ code explains, and that's the one worth a look. Flag those `hidden` and they dra
 The **Imports vs shared commits** example runs rokkit's own components through it. **Arcs,
 #169's sample** is the issue's data, sent as-is.
 
+## How much of it, as a shade
+
+A treemap's area answers "how big". Give it `shadeBy` too, and each box is shaded by a share:
+how much of it is tested, how much reaches nothing. A package's shade weighs its files by
+size, so one tested file doesn't light up a package of fifty. **Treemap, shaded by tests**
+runs this repo through it.
+
 ## Three measures at once
 
 A treemap shows one measure as area. `PolymetricTree` shows three: each file is a box whose

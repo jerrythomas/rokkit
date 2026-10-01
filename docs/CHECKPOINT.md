@@ -1,27 +1,26 @@
 # CHECKPOINT
 
-**Done 2026-10-01:** graph messages + actions (`3bf82cc2c`..`5afcbdc64`); #156 closed (`fc2bc36b1`,
-`94280a734`, `77d8a8906`: bun audit 7 -> 0, the TS 7 hold, a frozen-lockfile CI gate); #163
-closed. CI is green on `77d8a8906`. Journal 2026-10-01 (1).
+**Closed 2026-10-01:** #156, #163, #159, #155, #164. Journal 2026-10-01 (1)–(3).
 
-**Open issues, each checked against its acceptance (none resolved):**
-- #164: the `shade` preset channel, `shadeBy` on world/treemap/sunburst, and the label-contrast
-  flip. This is step 5 of `24-world-view.md`, not built.
-- #159: rokkit's side is complete; the remaining work is adoption in dbd (sensei-hq/dbd#25) and
-  sensei. A progress comment is posted.
-- #155: `sensei.library.json` needs `documents`, a tag `ref` and `packages`. The repo homepage
-  field still points at rokkit.vercel.app, a setting that is the user's.
-- #153: state-pattern migration. Phase 0 only; Phases 1–5 have not started.
-- #152: font picking is built. Open are the heading-levels/styles scope (blocked on a product
-  decision: which heading set adopts the type scale) and two test gaps (a vacuous preview e2e,
-  and no layout-shift check).
+**Open issues: both need the user's input.**
+- **#153 (state-pattern migration):** Phase 0 only. Phase 2 needs a decision: delete List's
+  dead `[data-selected]` rules, or support multi-select in List.
+- **#152 (theme wizard typography):** font picking is done. The heading-levels phase is
+  blocked on which heading set adopts the type scale (retune to the guides' scale, which is
+  recommended; restyle the guides; or leave the tokens unconsumed). Test gaps that need no
+  input: the vacuous preview e2e (`theme-wizard-fonts.e2e.ts:63-79`), `--font-display` not
+  shown in step 04, no layout-shift check, and stale docs (`12-priority.md:121`, the plan
+  header, a `store.svelte.ts:16-20` comment, the step 03 copy).
 
-**Next command:** the user's pick. #155 is the smallest; #164 is the next graph feature.
+**Next command:** discuss #153 and #152 with the user.
 
 **Open questions:**
-- MultiSelect still lacks Select's fixed positioning and `maxRows`.
-- Polymetric: a container's leaves are one row, so a big package is a wide strip at fit.
-- `fill()` could move into `@rokkit/states` for all components; ui's Carousel hardcodes text today.
-- `stash@{0}` (an old develop WIP) is intact.
+- **e2e port:** rokkit's Playwright and dbd's `vite preview` both use :4173, and
+  `reuseExistingServer` makes a rokkit run silently test whatever holds the port. Give
+  rokkit's preview its own port.
+- dbd's preview server (PID 41073) was killed by mistake on 2026-10-01. Restart it in
+  `dbd/site` with `vite preview --port 4173 --strictPort`.
+- MultiSelect lacks Select's fixed positioning and `maxRows`. Polymetric's wide strip for big
+  packages. `fill()` could move into `@rokkit/states`. `stash@{0}` is intact.
 
 **Known broken:** nothing. The sensei MCP server is disconnected, so this file is the only record.

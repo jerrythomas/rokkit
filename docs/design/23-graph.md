@@ -848,3 +848,13 @@ handlers.
 Graph now depends on `@rokkit/states`. `@rokkit/ui`, already a graph peer, depends on it, so
 a consumer installs nothing new. Plan: `docs/plans/2026-10-01-graph-messages-and-interactions.md`.
 
+## The shade channel (#164)
+
+Built as step 5 of `24-world-view.md`, which also records what building it changed. In brief:
+
+- `shadeBy` on `world` / `sunburst` gives each box `Cluster.shade`, with a container taking the
+  size-weighted mean of what it holds.
+- `resolveShade` paints the share from the preset's ramp with a measured label.
+- A shaded box carries `data-graph-shaded`, and each style paints it at full strength.
+- The demo is *Treemap, shaded by tests*.
+

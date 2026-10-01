@@ -268,9 +268,27 @@ everything else waits on.
 2. **`measures` bag**, `sizeBy`/`shadeBy` by key. `weight` stays the default.
 3. **`world` LayoutFn** — squarified treemap over `focusPath` + `levels`.
 4. **Drill state** — `drillPath`, `drillInto`, `drillOut`, `breadcrumbs`.
-5. **`shade` channel** on the preset, with the label-contrast flip.
+5. **`shade` channel** on the preset, with the label-contrast flip. *Built 2026-10-01 (#164): see
+   "What building it changed" below.*
 6. *(optional)* **`radial`** — sunburst minimap over the same model.
 7. *(separate question)* **`force`** — adjacency, no hierarchy, seeded and frozen.
 
 Steps 1–2 close the model half of #163 and #164. Steps 3–4 make it a view. Step 5 is the
 second channel. 6 and 7 are additions to the same seam, not prerequisites.
+
+## What building it changed (step 5, #164)
+
+- **No `'shade'` in `GraphChannel`.** Shading is on exactly when `shadeBy` is set. A `using:
+  'shade'` value would be a second switch that does nothing without `shadeBy`, the "config
+  that looks live and does nothing" `preset.ts` rules out. The ramp lives on the preset as
+  `shade: { family, from, to }`, default `gray` (the palette has no `slate`).
+- **A container's share is the size-weighted mean** of its children (`model/share.ts`), since a
+  share does not sum. A host-declared share wins. Nothing measured means missing, not zero.
+- **The label flip is measured, not 34%.** It uses rokkit's auto on-color by luminance per step.
+  Choosing between the ramp's own two ends failed AA on the middle steps.
+- **Found while testing "switching re-runs the layout over an unchanged model":** it didn't.
+  `GraphConfig.update` re-assigned every input, and the deep `$state` proxy fired the signal
+  even for the same array, so every option change re-normalised the whole model. Fixed by
+  assigning only the inputs whose reference changed. A consumer's own `$state` array mutated
+  in place still re-normalises through its own proxy.
+
