@@ -963,6 +963,17 @@
   stroke-width: calc(2.25px + var(--edge-weight, 0) * 3px);
 }
 
+/* ─── shade (issue 164) ────────────────────────────────────────────────────── */
+
+/* The key to a shaded view is the ramp itself, low to high. Its colours are each style's. */
+[data-legend-shade-swatch] {
+  display: inline-block;
+  flex: none;
+  width: 28px;
+  height: 10px;
+  border-radius: 2px;
+}
+
 /* ─── drilling (issue 165) ─────────────────────────────────────────────────── */
 
 /* A container that can be opened takes the pointer the way a leaf does — clusters are

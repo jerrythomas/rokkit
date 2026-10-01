@@ -451,3 +451,28 @@ describe('graph theme CSS — arcs (#169)', () => {
 		expect(key.some((r) => /stroke:\s*var\(--danger\)/.test(r)), style).toBe(true)
 	})
 })
+
+describe('graph theme CSS — shade (#164)', () => {
+	it('sizes the shade legend swatch, in base — its colours are each style’s', () => {
+		expect(rulesFor('base/graph.css', '[data-legend-shade-swatch]').some((r) => /width:/.test(r))).toBe(true)
+	})
+
+	it.each(STYLES)('%s paints a shaded box and wedge at full strength, labelled from the ramp', (style) => {
+		const box = rulesFor(`${style}/graph.css`, '[data-graph-cluster][data-graph-shaded]')
+		expect(box.some((r) => /background-color:\s*var\(--group-fill/.test(r)), style).toBe(true)
+		const label = rulesFor(`${style}/graph.css`, '[data-graph-shaded] > [data-graph-cluster-label]')
+		expect(label.some((r) => /color:\s*var\(--group-label/.test(r)), style).toBe(true)
+		const wedge = rulesFor(`${style}/graph.css`, '[data-graph-wedge][data-graph-shaded]')
+		expect(wedge.some((r) => /fill:\s*var\(--group-fill/.test(r)), style).toBe(true)
+	})
+
+	it.each(STYLES)('%s hatches a containment box whose share is missing — never a zero', (style) => {
+		const rules = rulesFor(`${style}/graph.css`, "[data-graph-layout='world'] [data-graph-missing~='color']")
+		expect(rules.some((r) => /background-image/.test(r)), style).toBe(true)
+	})
+
+	it.each(STYLES)('%s draws the shade key as the ramp itself', (style) => {
+		const rules = rulesFor(`${style}/graph.css`, '[data-legend-shade-swatch]')
+		expect(rules.some((r) => /var\(--shade-low\)/.test(r) && /var\(--shade-high\)/.test(r)), style).toBe(true)
+	})
+})

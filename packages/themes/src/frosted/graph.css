@@ -579,3 +579,36 @@
   stroke: var(--danger);
   stroke-width: 2.5px;
 }
+
+/* ─── shade (#164) — a share painted from the ramp at full strength, labelled for its fill ───
+   The generic cluster fill is the group colour at a fraction; a ramp diluted that way stops
+   meaning anything, so a shaded box paints its step as given. The label colour was measured
+   against that step by the state. */
+[data-style='frosted'] [data-graph-cluster][data-graph-shaded] {
+  background-color: var(--group-fill, var(--paper-soft));
+  border-color: var(--group-stroke, var(--paper-edge));
+}
+
+[data-style='frosted'] [data-graph-shaded] > [data-graph-cluster-label] {
+  color: var(--group-label, var(--ink));
+}
+
+[data-style='frosted'] [data-graph-wedge][data-graph-shaded] {
+  fill: var(--group-fill, var(--paper-soft));
+  stroke: var(--group-stroke, var(--paper-edge));
+}
+
+/* No share beneath it: hatched, so "unknown" never reads as "none". */
+[data-style='frosted'] [data-graph-layout='world'] [data-graph-missing~='color'] {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0 3px,
+    color-mix(in oklch, var(--ink-mute) 45%, transparent) 3px 4px
+  );
+}
+
+[data-style='frosted'] [data-legend-shade-swatch] {
+  background-image: linear-gradient(to right, var(--shade-low), var(--shade-high));
+  border: 1px solid var(--paper-edge);
+}
+
