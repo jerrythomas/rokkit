@@ -109,6 +109,12 @@ export type Cluster = {
 	path?: string[]
 	/** Whether nothing lies below this box in the data — so only a host loader can go deeper. */
 	leaf?: boolean
+	/** `polymetric` (#168) — the colour measure as 0..1 of its cap; absent when not bound or missing. */
+	shade?: number
+	/** `polymetric` — the channels whose measure this box lacks, drawn at the minimum and marked. */
+	missing?: PolymetricChannel[]
+	/** `polymetric` — the channels whose value exceeded the cap and was clamped to the maximum. */
+	clamped?: PolymetricChannel[]
 	/**
 	 * The id of the node this box IS, when one is declared — a leaf OR a container.
 	 *
@@ -272,9 +278,23 @@ export type LayoutOptions = {
 	showEdges?: 'all' | 'violations'
 	/** `layers` only — band names by layer index. Unnamed layers read "Layer N". */
 	layerLabels?: string[]
+	/** `polymetric` only — the measure box WIDTH encodes. A `measures` key, `weight` or `degree`. */
+	widthBy?: string
+	/** `polymetric` only — the measure box HEIGHT encodes. */
+	heightBy?: string
+	/** `polymetric` only — the measure box SHADE encodes. Omit for no colour channel. */
+	colorBy?: string
 }
 
+/** The three encodings of the polymetric view (#168). */
+export type PolymetricChannel = 'width' | 'height' | 'color'
+
+/** Which measure a channel carries, and the value its full extent stands for. */
+export type ChannelScale = { measure: string; cap: number }
+
 export type LayoutResult = {
+	/** `polymetric` — what each channel encodes, for the legend. */
+	channels?: { width: ChannelScale; height: ChannelScale; color?: ChannelScale }
 	clusters: Cluster[]
 	cards: Cards
 	edges: RoutedEdge[]

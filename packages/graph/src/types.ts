@@ -14,7 +14,11 @@ export type GraphRow = {
  * (a view reading a table, a procedure calling a function). Layouts branch on
  * this rather than on any schema-specific notion.
  */
-export type EdgeKind = 'reference' | 'dependency'
+/**
+ * `reference` (a foreign key) and `dependency` come from the data. `containment` is drawn by a
+ * tree layout (`polymetric`) between a container and what it holds — the tree's own links.
+ */
+export type EdgeKind = 'reference' | 'dependency' | 'containment'
 
 export type GraphNode = {
 	/** Stable key. `${group}.${label}` when a group is present, else `label`. */

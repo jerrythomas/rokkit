@@ -22,7 +22,10 @@ export const LAYOUT_OPTION_KEYS = [
 	'root',
 	'bundleTension',
 	'showEdges',
-	'layerLabels'
+	'layerLabels',
+	'widthBy',
+	'heightBy',
+	'colorBy'
 ] as const
 
 /**
@@ -50,6 +53,8 @@ export const LAYOUT_OPTIONS: Record<string, readonly (typeof LAYOUT_OPTION_KEYS)
 	layers: ['density', 'expanded', 'showEdges', 'layerLabels'],
 	neighborhood: ['edgeStyle', 'expanded', 'focus', 'depth'],
 	points: ['edgeStyle', 'sizeBy', 'sizeScale'],
+	// No edgeStyle: the tree's links are elbows the layout draws itself.
+	polymetric: ['widthBy', 'heightBy', 'colorBy'],
 	radial: ['edgeStyle', 'sizeBy', 'sizeScale', 'radialMode', 'levels', 'root'],
 	sunburst: ['sizeBy', 'focusPath', 'levels'],
 	structure: ['sizeBy', 'sizeScale', 'focusPath', 'levels', 'bundleTension'],

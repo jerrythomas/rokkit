@@ -4,6 +4,7 @@ import { layers } from './layers.js'
 import { neighborhood } from './neighborhood.js'
 import { world } from './world.js'
 import { points } from './points.js'
+import { polymetric } from './polymetric.js'
 import { radial } from './radial.js'
 import { structure } from './structure.js'
 import { sunburst } from './sunburst.js'
@@ -16,6 +17,7 @@ export const layouts: Record<string, LayoutFn> = {
 	layers,
 	neighborhood,
 	points,
+	polymetric,
 	radial,
 	structure,
 	sunburst,
@@ -24,6 +26,6 @@ export const layouts: Record<string, LayoutFn> = {
 
 export type LayoutName = keyof typeof layouts
 
-export { cluster, flow, layers, neighborhood, points, radial, structure, sunburst, world }
+export { cluster, flow, layers, neighborhood, points, polymetric, radial, structure, sunburst, world }
 export { LAYOUT_OPTIONS, appliesTo } from './options.js'
 export * from './types.js'
