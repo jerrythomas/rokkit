@@ -52,7 +52,20 @@
 		return true
 	}
 
+	/**
+	 * The polymetric channels the reader picked, carried back like the drill path: update()
+	 * fully re-applies, so the registry's opening measures would otherwise undo a pick the next
+	 * time anything changed. Undefined for every other diagram, where they mean nothing.
+	 */
+	const pickedChannels = () =>
+		untrack(() => ({
+			widthBy: graph.config.widthBy,
+			heightBy: graph.config.heightBy,
+			colorBy: graph.config.colorBy
+		}))
+
 	$effect(() => {
+		const fresh = freshDiagram()
 		graph.update({
 			nodes: dataset.nodes,
 			edges: dataset.edges,
@@ -62,11 +75,12 @@
 			// compares the two so they cannot drift.
 			layout: config.layout,
 			...config.props,
+			...(fresh ? {} : pickedChannels()),
 			// The drill path, carried back like `value` below: update() fully re-applies, so the
 			// registry's OPENING path spread above would snap a drilled diagram back to its start
 			// whenever anything else changed — selecting a box, say. The state holds where the
 			// reader drilled to; only a newly opened diagram starts at its registry path.
-			focusPath: freshDiagram() ? openingPath(config.props) : untrack(() => graph.drillPath),
+			focusPath: fresh ? openingPath(config.props) : untrack(() => graph.drillPath),
 			preset: createGraphPreset({ using: explorer.using }),
 			// Without this the group ramp resolves from the LIGHT ladder forever, so every
 			// cluster keeps its pale shade-100 fill in dark mode and the canvas reads as

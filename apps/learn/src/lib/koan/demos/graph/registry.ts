@@ -3,6 +3,7 @@ import {
 	CallTree,
 	DependencyDiagram,
 	LayersDiagram,
+	PolymetricTree,
 	DependencyMatrix,
 	ErDiagram,
 	Graph,
@@ -43,6 +44,7 @@ export type DiagramId =
 	| 'cycles'
 	| 'layers'
 	| 'layers-sample'
+	| 'polymetric'
 
 /** What question the diagram answers. Groups the picker, nothing more. */
 export type DiagramGroup = 'Schema' | 'Code'
@@ -236,6 +238,17 @@ export const registry: Record<DiagramId, DiagramConfig> = {
 		blurb:
 			'The sample from #167: five modules, every call going down a layer — except one, which climbs. That red edge is the violation, and “Violations only” leaves just it.',
 		props: {}
+	},
+	polymetric: {
+		id: 'polymetric',
+		layout: 'polymetric',
+		label: 'Polymetric view',
+		group: 'Code',
+		component: PolymetricTree as Component<Record<string, unknown>>,
+		dataset: 'polymetric',
+		blurb:
+			'@rokkit/core’s folders and files, each file a box: as wide as it has declarations, as tall as it has lines, as dark as it has changed. Narrow-tall-dark is a long file that keeps changing — the one to split. Swap the measures from the controls.',
+		props: { widthBy: 'declarations', heightBy: 'loc', colorBy: 'churn' }
 	}
 }
 

@@ -24,6 +24,7 @@ import type { GraphFields } from '@rokkit/graph'
 import { LazyCodebase } from './lazy-codebase.svelte'
 import { withCycleGroups } from './cycles'
 import { layerOfComponent } from './layers'
+import { filesWithParents } from './polymetric'
 
 export type DatasetId =
 	| 'ecommerce'
@@ -36,6 +37,7 @@ export type DatasetId =
 	| 'cycles'
 	| 'layers'
 	| 'layers-sample'
+	| 'polymetric'
 
 /* ─── 1. dbd v2-shaped ───────────────────────────────────────────────────────
    `tables` holds tables (plus the two enums — dbd flags an enum COLUMN via `Column.en`
@@ -497,6 +499,15 @@ const layersSample = {
 /** The same imports, with each import cycle sent as a collapsed group node (#166). */
 const componentCycles = withCycleGroups(componentNodes, componentImports)
 
+/** Containment as `parent` ids (#168) — no paths; the library derives them. */
+const polymetricFields: GraphFields = {
+	id: 'id',
+	label: 'label',
+	kind: 'kind',
+	parent: 'parent',
+	measures: 'measures'
+}
+
 export const componentFields: GraphFields = {
 	id: 'id',
 	label: 'label',
@@ -569,6 +580,13 @@ export const datasets = {
 		nodes: componentLayers as unknown[],
 		edges: componentImports as unknown[],
 		fields: componentFields
+	},
+	polymetric: {
+		id: 'polymetric' as const,
+		label: 'The core package — files by declarations, lines and churn',
+		nodes: filesWithParents(architecture.modules, 'core') as unknown[],
+		edges: [] as unknown[],
+		fields: polymetricFields
 	},
 	'layers-sample': {
 		id: 'layers-sample' as const,

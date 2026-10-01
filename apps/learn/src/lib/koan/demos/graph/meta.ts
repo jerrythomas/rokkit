@@ -99,7 +99,8 @@ const meta: DemoMeta = {
 			label: 'Layers, with a violation',
 			mode: 'dynamic',
 			props: { diagram: 'layers-sample' }
-		}
+		},
+		{ id: 'polymetric', label: 'Polymetric view', mode: 'dynamic', props: { diagram: 'polymetric' } }
 	],
 	api: {
 		props: [
@@ -266,6 +267,19 @@ const meta: DemoMeta = {
 				selector: '[data-graph-pending]',
 				desc: 'Present on the canvas (with aria-busy) while a drill’s level is loading — the old level stays, dimmed'
 			},
+			// Polymetric (#168)
+			{
+				selector: '[data-graph-missing]',
+				desc: 'A polymetric box with no value for these channels (`width` / `height` / `color`): drawn at the minimum, dashed, a missing shade hatched — never passed off as a zero'
+			},
+			{
+				selector: '[data-graph-clamped]',
+				desc: 'A polymetric box whose value passed the channel’s 95th-percentile cap: drawn at the maximum with a heavy edge on that side'
+			},
+			{
+				selector: '[data-graph-measure]',
+				desc: 'A PolymetricTree measure picker; the value is the channel it binds (`width`, `height`, `color`)'
+			},
 			// Layers (#167)
 			{
 				selector: '[data-edge-conformance]',
@@ -428,6 +442,16 @@ const meta: DemoMeta = {
 				desc: 'A legend row for one group, carrying the group ramp so the chip matches the canvas'
 			},
 			{ selector: '[data-legend-label]', desc: 'The entry’s text' },
+			{
+				selector: '[data-legend-channel]',
+				desc: 'A polymetric legend row: which measure is on width, height or shade'
+			},
+			{
+				selector: '[data-legend-channel-swatch]',
+				desc: 'The channel’s key drawn as the shape it encodes — a wide bar, a tall bar, a ramp'
+			},
+			{ selector: '[data-legend-measure]', desc: 'The measure bound to a channel' },
+			{ selector: '[data-legend-cap]', desc: 'What a channel’s full extent stands for — its 95th-percentile cap' },
 			{
 				selector: '[data-graph-wedges]',
 				desc: 'The SVG arc layer a sunburst draws into — a wedge is an annulus sector and has no box, so it cannot be a positioned div'
