@@ -10499,3 +10499,16 @@ Actions are classic `{ update, destroy }`, not `$effect`-based, so each is teste
 A security hook blocked `innerHTML` fixtures, so the newer specs build theirs with DOM methods.
 
 Gates: 1,150+ graph unit tests, 146 e2e passing unchanged, lint 0/0.
+
+## 2026-10-01 (2) — #156 and the open-issue sweep
+
+- #156: the original advisory list had already been cleared (`5bce77205`, `97cc8b644`). Fixed
+  since: `brace-expansion` (both majors, within range) and the `dompurify` floor raised to
+  ^3.4.16 in ui and blocks, taking bun audit from 7 to 0 (`fc2bc36b1`). `upgrade:all` now holds
+  TypeScript below 7 through `config/upgrade-all.mjs` (`94280a734`); TS `latest` is 7.0.2, so
+  the trap was live. CI installs with `--frozen-lockfile` (`77d8a8906`). The repo security
+  settings turned out to be on already. Closed.
+- The sweep checked each open issue against its acceptance. Read-only verifier agents took
+  #159, #153 and #152. #163 is closed: steps 1–4 of the world-view design shipped, and the
+  #162 fan-out was deferred by design. #164, #159 (progress comment posted), #155, #153 and
+  #152 stay open; what remains for each is in CHECKPOINT.
