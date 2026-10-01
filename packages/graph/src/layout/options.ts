@@ -26,7 +26,8 @@ export const LAYOUT_OPTION_KEYS = [
 	'widthBy',
 	'heightBy',
 	'colorBy',
-	'above'
+	'above',
+	'shadeBy'
 ] as const
 
 /**
@@ -59,9 +60,9 @@ export const LAYOUT_OPTIONS: Record<string, readonly (typeof LAYOUT_OPTION_KEYS)
 	// No edgeStyle: the tree's links are elbows the layout draws itself.
 	polymetric: ['widthBy', 'heightBy', 'colorBy'],
 	radial: ['edgeStyle', 'sizeBy', 'sizeScale', 'radialMode', 'levels', 'root'],
-	sunburst: ['sizeBy', 'focusPath', 'levels'],
+	sunburst: ['sizeBy', 'shadeBy', 'focusPath', 'levels'],
 	structure: ['sizeBy', 'sizeScale', 'focusPath', 'levels', 'bundleTension'],
-	world: ['sizeBy', 'focusPath', 'levels']
+	world: ['sizeBy', 'shadeBy', 'focusPath', 'levels']
 }
 
 /**

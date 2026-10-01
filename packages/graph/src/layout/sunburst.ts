@@ -15,6 +15,7 @@
  */
 
 import { buildTree, findNode } from '../model/tree.js'
+import { shadeFields, shares } from '../model/share.js'
 import type { TreeNode } from '../model/tree.js'
 import { warnUnknownOptions } from './options.js'
 import type { Cluster, LayoutFn, LayoutResult } from './types.js'
@@ -85,7 +86,7 @@ function split(
 	})
 }
 
-function wedgeOf(entry: Placed, groupIndex: number, ring: number): Cluster {
+function wedgeOf(entry: Placed, groupIndex: number, ring: number, shaded?: Map<string, number>): Cluster {
 	const leaf = entry.tree.children.length === 0 ? entry.tree.node : undefined
 
 	return {
@@ -113,7 +114,8 @@ function wedgeOf(entry: Placed, groupIndex: number, ring: number): Cluster {
 		x: RADIUS + PAD + Math.cos((entry.a0 + entry.a1) / 2) * ((entry.depth + 0.5) * ring),
 		y: RADIUS + PAD + Math.sin((entry.a0 + entry.a1) / 2) * ((entry.depth + 0.5) * ring),
 		w: 0,
-		h: 0
+		h: 0,
+		...shadeFields(shaded, entry.tree.id)
 	}
 }
 
@@ -133,6 +135,8 @@ export const sunburst: LayoutFn = (model, options): LayoutResult => {
 	}
 
 	const levels = options.levels ?? 2
+	// #164: as in `world` — a share per wedge when a measure is named for it.
+	const shaded = options.shadeBy ? shares(root, options.shadeBy) : undefined
 	const placed: Placed[] = []
 	split(root, { a0: 0, a1: Math.PI * 2 }, { levels, out: placed, origin: root.path.length })
 
@@ -140,7 +144,7 @@ export const sunburst: LayoutFn = (model, options): LayoutResult => {
 	const extent = (RADIUS + PAD) * 2
 
 	return {
-		clusters: placed.map((entry, i) => wedgeOf(entry, i, ring)),
+		clusters: placed.map((entry, i) => wedgeOf(entry, i, ring, shaded)),
 		cards: {},
 		// Edges are absent for the same reason as the treemap: containment IS the relationship,
 		// and an adjacency graph cannot be drawn at this scale.

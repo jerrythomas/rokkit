@@ -18,6 +18,7 @@
  */
 
 import { buildTree, findNode } from '../model/tree.js'
+import { shadeFields, shares } from '../model/share.js'
 import type { TreeNode } from '../model/tree.js'
 import { squarify } from './squarify.js'
 import type { Rect } from './squarify.js'
@@ -103,7 +104,7 @@ function compact(value: number): string {
  * A childless box keeps its node's id and kind, so uniform structure costs no identity: the
  * box is still selectable and still colours by what it is.
  */
-function clusterOf(entry: Placed, groupIndex: number): Cluster {
+function clusterOf(entry: Placed, groupIndex: number, shaded?: Map<string, number>): Cluster {
 	const leaf = entry.tree.children.length === 0 ? entry.tree.node : undefined
 
 	return {
@@ -125,7 +126,8 @@ function clusterOf(entry: Placed, groupIndex: number): Cluster {
 		x: entry.rect.x,
 		y: entry.rect.y,
 		w: entry.rect.w,
-		h: entry.rect.h
+		h: entry.rect.h,
+		...shadeFields(shaded, entry.tree.id)
 	}
 }
 
@@ -145,6 +147,8 @@ export const world: LayoutFn = (model, options): LayoutResult => {
 		return { clusters: [], cards: {}, edges: [], size: { w: 0, h: 0 } }
 	}
 
+	// #164: a share per box when a measure is named for it; the layout's geometry is unchanged.
+	const shaded = options.shadeBy ? shares(root, options.shadeBy) : undefined
 	const placed: Placed[] = []
 	place(root, { x: 0, y: 0, w: CANVAS.w, h: CANVAS.h }, {
 		levels: options.levels ?? 2,
@@ -158,7 +162,7 @@ export const world: LayoutFn = (model, options): LayoutResult => {
 	// `cards` is empty by construction rather than by filtering — there is no box in this
 	// layout that a card could represent.
 	return {
-		clusters: placed.map(clusterOf),
+		clusters: placed.map((entry, i) => clusterOf(entry, i, shaded)),
 		cards: {},
 		edges: [],
 		size: CANVAS

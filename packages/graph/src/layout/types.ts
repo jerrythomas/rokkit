@@ -300,6 +300,11 @@ export type LayoutOptions = {
 	 * right and structural edges left: what the history reveals against what the code declares.
 	 */
 	above?: string
+	/**
+	 * `world` / `sunburst` — the measure each box is SHADED by, a share in 0..1 (#164). A
+	 * container takes the size-weighted mean of what it holds unless it declares its own.
+	 */
+	shadeBy?: string
 }
 
 /** Every edge, or only the ones a view is about. */
