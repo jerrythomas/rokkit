@@ -16,6 +16,7 @@ import { buildTree } from '../model/tree.js'
 import type { TreeNode } from '../model/tree.js'
 import { degreeOf } from './sizing.js'
 import { warnUnknownOptions } from './options.js'
+import { capOf } from './percentile.js'
 import type {
 	ChannelScale,
 	Cluster,
@@ -35,13 +36,6 @@ const GAP_X = 18
 /** Between depth rows — room for the leaf labels under the boxes and the links. */
 const GAP_Y = 46
 const PAD = 16
-
-/** The 95th-percentile cap of the present, positive values — 1 when there are none. */
-function capOf(values: (number | undefined)[]): number {
-	const sorted = values.filter((v): v is number => v !== undefined && v > 0).sort((a, b) => a - b)
-	if (sorted.length === 0) return 1
-	return sorted[Math.min(sorted.length - 1, Math.ceil(0.95 * sorted.length) - 1)]
-}
 
 /** One encoding: the measure it reads, and the value its full extent stands for. */
 class Channel {

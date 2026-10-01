@@ -6,11 +6,13 @@
  * host flags a co-change pair with no import `hidden`, and `showEdges: 'hidden'` keeps only those.
  *
  * Vertical, so ~50 item labels read horizontally, one per row. Each side normalises its weights
- * to its own heaviest edge: an import count and a commit count are different units, and one
- * shared maximum would draw a whole side hairline.
+ * on its own — an import count and a commit count are different units, and one shared maximum
+ * would draw a whole side hairline — and to its 95th percentile, not its maximum, so one
+ * outlying pair does not flatten the rest.
  */
 import { carried, keepsEdge } from './edges.js'
 import { warnUnknownOptions } from './options.js'
+import { capOf } from './percentile.js'
 import type { Cluster, LayoutFn, LayoutOptions, LayoutResult, RoutedEdge } from './types.js'
 import type { GraphEdge, GraphModel, GraphNode } from '../types.js'
 
@@ -68,13 +70,12 @@ function arc(edge: GraphEdge, i: number, side: 'above' | 'below', { x, y1, y2 }:
 	}
 }
 
-/** Each side's weights as 0..1 of that side's heaviest. */
+/** Each side's weights as 0..1 of that side's 95th percentile, clamped past it. */
 function strengthen(edges: RoutedEdge[]): void {
 	for (const side of ['above', 'below'] as const) {
-		const mine = edges.filter((e) => e.side === side)
-		const max = Math.max(0, ...mine.map((e) => e.weight ?? 0))
-		if (max <= 0) continue
-		for (const e of mine) if (e.weight !== undefined) e.strength = e.weight / max
+		const mine = edges.filter((e) => e.side === side && e.weight !== undefined)
+		const cap = capOf(mine.map((e) => e.weight))
+		for (const e of mine) e.strength = Math.min(1, Math.max(0, e.weight! / cap))
 	}
 }
 

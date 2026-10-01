@@ -159,8 +159,9 @@ export type RoutedEdge = {
 	/** `arcs` — which side of the axis the arc is drawn on (#169). */
 	side?: 'above' | 'below'
 	/**
-	 * 0..1 of the heaviest edge in its OWN set, when a layout normalises per set (`arcs`, #169):
-	 * imports and shared commits are different units. Preferred over the global weight scale.
+	 * 0..1 against its OWN set's 95th-percentile weight, clamped past it, when a layout normalises
+	 * per set (`arcs`, #169): imports and shared commits are different units, and one outlying
+	 * pair should not flatten the rest. Preferred over the global weight scale.
 	 */
 	strength?: number
 	/** GraphEdge.count — how many model edges a condensed edge stands for. */

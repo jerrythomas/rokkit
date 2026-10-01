@@ -106,6 +106,18 @@ describe('arcs — weight and the hidden pairs', () => {
 		expect(strength['cochange:file:resolve>file:fqn']).toBeCloseTo(0.5)
 	})
 
+	it('caps each side at its 95th percentile, so one outlier does not flatten the rest', () => {
+		const nodes = Array.from({ length: 21 }, (_, i) => ({ id: `n${i}` }))
+		const weights = [...Array.from({ length: 19 }, (_, i) => i + 1), 1000]
+		const edges = weights.map((weight, i) => ({ source: 'n0', target: `n${i + 1}`, weight }))
+		const r = arcs(normalizeGraph(nodes, edges, {}), {})
+		const at = (w: number) => r.edges.find((e) => e.weight === w)!.strength
+		expect(at(19)).toBe(1)
+		expect(at(10)).toBeCloseTo(10 / 19)
+		// Past the cap it clamps: the outlier is as thick as the cap, not 50 times thicker.
+		expect(at(1000)).toBe(1)
+	})
+
 	it('leaves an unweighted edge’s strength unset', () => {
 		const r = arcs(normalizeGraph([{ id: 'a' }, { id: 'b' }], [{ source: 'a', target: 'b' }], {}), {})
 		expect(r.edges[0].strength).toBeUndefined()

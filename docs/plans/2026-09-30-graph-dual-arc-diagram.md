@@ -30,8 +30,10 @@ finding is a pair with an arc on one side and none on the other: co-change with 
     verbatim (`fields.relation = 'set'`, `above = 'cochange'`).
   - The layout routes both sets itself, because there are no cards for the generic overlay router.
 - **Per-set thickness.** Imports (counts of 1–68) and shared commits (up to 35) are different
-  units. One shared max would make one side hairline, so each side normalises to its own
-  heaviest. `RoutedEdge.strength` (0..1) carries it, and `edgeWeight` prefers it.
+  units. One shared max would make one side hairline, so each side normalises on its own, to
+  its 95th percentile (the same cap as #168, now shared as `layout/percentile.ts`). Otherwise
+  rokkit's one 68-count import pair flattened every other import to hairline. Past the cap the
+  width clamps. `RoutedEdge.strength` (0..1) carries it, and `edgeWeight` prefers it.
 - **`hidden`.** An edge flag (`fields.hidden`) that the host computes and the chart only styles:
   `data-edge-hidden`, in the danger colour.
 - **Only hidden.** `showEdges: 'hidden'` keeps only the hidden edges. `ArcDiagram` offers a toggle.
