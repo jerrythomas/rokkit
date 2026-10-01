@@ -412,11 +412,24 @@ export class GraphState {
 	}
 
 	// ─── per-item lookups the templates need ───────────────────────────────────
+	/**
+	 * In `neighborhood`, the selection IS the focus (it defaults to it), and the canvas is built
+	 * from adjacency to the focus — so every card is "related" and every edge "highlight" by
+	 * construction, and ring 2 is "dim" for being the ring the reader asked for (#172). Those
+	 * states would say nothing, so they are withheld; a selected NEIGHBOUR still lights its own.
+	 */
+	get #selectingFocus(): boolean {
+		const value = this.value
+		return this.layoutName === 'neighborhood' && value !== null && (this.config.focus ?? value) === value
+	}
+
 	nodeState(id: string): 'selected' | 'related' | 'dim' | null {
+		if (this.#selectingFocus) return id === this.value ? 'selected' : null
 		return this.selection.nodeState(id)
 	}
 
 	edgeState(edge: RoutedEdge): 'highlight' | 'dim' | null {
+		if (this.#selectingFocus) return null
 		return this.selection.edgeState(edge)
 	}
 

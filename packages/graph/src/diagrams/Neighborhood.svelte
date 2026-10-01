@@ -35,6 +35,12 @@
 		/** How many hops out. One answers "what touches this"; two, "what does this reach". */
 		depth?: number
 		edgeStyle?: EdgeStyle
+		/**
+		 * Mark each card with its group's colour (#172). On by default, as in `ErDiagram`: a
+		 * neighbourhood has no group boxes either, so without it a table's schema is visible at
+		 * the root and invisible one click later.
+		 */
+		groupTint?: boolean
 		controls?: boolean
 		maxDepth?: number
 		legend?: boolean
@@ -59,6 +65,7 @@
 		focus = $bindable(null),
 		depth = $bindable(1),
 		edgeStyle = $bindable('curved'),
+		groupTint = true,
 		controls = false,
 		maxDepth = 3,
 		legend = false,
@@ -83,6 +90,7 @@
 		focus,
 		depth,
 		edgeStyle,
+		groupTint,
 		value,
 		preset,
 		mode,
