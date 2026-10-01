@@ -476,3 +476,10 @@ describe('graph theme CSS — shade (#164)', () => {
 		expect(rules.some((r) => /var\(--shade-low\)/.test(r) && /var\(--shade-high\)/.test(r)), style).toBe(true)
 	})
 })
+
+describe('graph theme CSS — the scroll extent (#171)', () => {
+	it('clips the world to an extent box, so the paper scrolls exactly the scaled drawing, in base', () => {
+		const rules = rulesFor('base/graph.css', '[data-graph-extent]')
+		expect(rules.some((r) => /overflow:\s*hidden/.test(r) && /position:\s*relative/.test(r))).toBe(true)
+	})
+})

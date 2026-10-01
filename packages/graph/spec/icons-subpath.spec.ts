@@ -30,7 +30,9 @@ describe('@rokkit/graph/icons', () => {
 		expect(imports).toEqual([])
 	})
 
-	it('exports the same map as the main barrel', async () => {
+	// The barrel is every component, compiled cold on first import — about 4.4s alone, and over
+	// vitest's 5s default under a loaded run. This asserts identity, not speed, so it gets room.
+	it('exports the same map as the main barrel', { timeout: 20_000 }, async () => {
 		const direct = await import('../src/icons.js')
 		const barrel = await import('../src/index.js')
 

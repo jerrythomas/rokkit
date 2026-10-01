@@ -31,6 +31,15 @@
   touch-action: pan-x pan-y;
 }
 
+/* The scrollable extent: the scaled drawing plus padding all round, sized by the canvas
+   (issue 171). It clips, because the world inside it keeps its UNSCALED layout box — a
+   transform does not change layout size — and left unclipped that box, not the drawing,
+   decided how far the paper scrolled. */
+[data-graph-extent] {
+  position: relative;
+  overflow: hidden;
+}
+
 [data-graph-paper][data-graph-panning] {
   cursor: grabbing;
   user-select: none;

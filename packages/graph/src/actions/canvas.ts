@@ -11,7 +11,8 @@ import { listen } from './listen.js'
 
 export type CanvasParams = {
 	zoomable?: boolean
-	onzoom?: (direction: 'in' | 'out') => void
+	/** A pinch: which way, and where — relative to the paper — so the zoom can keep that point still. */
+	onzoom?: (direction: 'in' | 'out', at: { x: number; y: number }) => void
 }
 
 /**
@@ -50,7 +51,8 @@ function zoomHandler(params: () => CanvasParams) {
 	return (event: WheelEvent) => {
 		if (!params().zoomable || !(event.ctrlKey || event.metaKey)) return
 		event.preventDefault()
-		params().onzoom?.(event.deltaY < 0 ? 'in' : 'out')
+		const box = (event.currentTarget as HTMLElement).getBoundingClientRect()
+		params().onzoom?.(event.deltaY < 0 ? 'in' : 'out', { x: event.clientX - box.left, y: event.clientY - box.top })
 	}
 }
 

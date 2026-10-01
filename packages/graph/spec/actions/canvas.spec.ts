@@ -61,10 +61,16 @@ describe('canvasNavigation — pan', () => {
 describe('canvasNavigation — zoom', () => {
 	it('zooms in on a pinch (ctrl-wheel up) and out on the way back, keeping the page still', () => {
 		const pinch = wheel({ deltaY: -10, ctrlKey: true })
-		expect(onzoom).toHaveBeenLastCalledWith('in')
+		expect(onzoom).toHaveBeenLastCalledWith('in', expect.any(Object))
 		expect(pinch.defaultPrevented).toBe(true)
 		wheel({ deltaY: 10, metaKey: true })
-		expect(onzoom).toHaveBeenLastCalledWith('out')
+		expect(onzoom).toHaveBeenLastCalledWith('out', expect.any(Object))
+	})
+
+	it('reports where the pinch happened, relative to the paper, so the zoom can anchor there', () => {
+		paper.getBoundingClientRect = () => ({ left: 100, top: 50, right: 900, bottom: 650, width: 800, height: 600, x: 100, y: 50, toJSON: () => ({}) }) as DOMRect
+		wheel({ deltaY: -10, ctrlKey: true, clientX: 340, clientY: 250 })
+		expect(onzoom).toHaveBeenLastCalledWith('in', { x: 240, y: 200 })
 	})
 
 	it('leaves a plain wheel to scroll the canvas', () => {

@@ -5,6 +5,8 @@
 	import type { GraphProps } from './types.js'
 	import { DEFAULT_ICONS } from './icons.js'
 	import { nextZoom } from './controls/zoom.js'
+	import { anchoredScroll, frameOf } from './canvas/frame.js'
+	import type { Frame } from './canvas/frame.js'
 	import { interactions } from './actions/interactions.js'
 	import { canvasNavigation } from './actions/canvas.js'
 	import { say } from './messages.js'
@@ -110,19 +112,42 @@
 	let vh = $state(0)
 	let paper = $state<HTMLElement | null>(null)
 
-	const onzoom = (direction: 'in' | 'out') => (zoom = nextZoom(zoom, direction))
+	// The frame — scale, placement and scroll extent — is pure arithmetic over the measured
+	// viewport (`canvas/frame.ts`, #171). The world sits inside an EXTENT box sized to the
+	// scaled drawing plus PAD all round: a CSS transform does not change layout size, so left
+	// to the transformed world the paper's scroll area was the unscaled box — unreachable past
+	// fit, phantom scroll at it.
+	const frame = $derived(frameOf({ vw, vh, content: graph.contentSize, zoom, pad: PAD }))
+	const scale = $derived(frame.scale)
 
-	const fit = $derived(
-		Math.max(
-			0.08,
-			Math.min((vw - PAD * 2) / graph.contentSize.w, (vh - PAD * 2) / graph.contentSize.h, 1)
-		) || 0.5
-	)
-	const scale = $derived(fit * zoom)
-	// Centre while the content is smaller than the viewport; once it is larger, pin to a
-	// padding offset so scrolling reaches the far edge instead of clipping it.
-	const tx = $derived(Math.max(PAD, (vw - graph.contentSize.w * scale) / 2))
-	const ty = $derived(Math.max(PAD, (vh - graph.contentSize.h * scale) / 2))
+	/** Where the next zoom should hold still: the pointer for a pinch; the centre otherwise. */
+	let anchor: { x: number; y: number } | null = null
+	let previous: Frame | null = null
+
+	const onzoom = (direction: 'in' | 'out', at: { x: number; y: number }) => {
+		anchor = at
+		zoom = nextZoom(zoom, direction)
+	}
+
+	// After a change of scale, scroll so the anchored content point is where it was. Runs after
+	// the DOM update, so the extent has already grown or shrunk to the new size.
+	$effect(() => {
+		const next = frame
+		untrack(() => {
+			if (previous && paper && next.scale !== previous.scale) {
+				const scroll = anchoredScroll({
+					before: previous,
+					after: next,
+					scroll: { left: paper.scrollLeft, top: paper.scrollTop },
+					anchor: anchor ?? { x: vw / 2, y: vh / 2 }
+				})
+				paper.scrollLeft = scroll.left
+				paper.scrollTop = scroll.top
+			}
+			previous = next
+			anchor = null
+		})
+	})
 
 	/**
 	 * Level of detail, from the EFFECTIVE scale rather than from `zoom` — a diagram fitted to
@@ -164,18 +189,16 @@
 		use:canvasNavigation={{ zoomable, onzoom }}
 		tabindex="-1"
 	>
+		<div data-graph-extent style:width="{frame.extent.w}px" style:height="{frame.extent.h}px">
 		<div
 			data-graph-world
 			data-graph-node-shape={graph.nodeShape}
 			data-graph-layout={graph.layoutName}
 			style="width: {graph.size.w}px; height: {graph.size
-				.h}px; transform: translate({tx}px, {ty}px) scale({scale}); --graph-label-counter-scale: {(
+				.h}px; transform: translate({frame.tx}px, {frame.ty}px) scale({scale}); --graph-label-counter-scale: {(
 				1 / scale
 			).toFixed(3)};"
 		>
-			<!-- Column headings. Three columns get away without them — the focus is visibly
-		     central — but a depth-2 portrait is five columns and ambiguous without one.
-		     Position, width and wording all come from the layout; this only prints them. -->
 			{#each graph.columns as column (column.side + column.depth)}
 				<span
 					data-graph-column
@@ -364,6 +387,7 @@
 					{/if}
 				</button>
 			{/each}
+		</div>
 		</div>
 	</div>
 </div>
