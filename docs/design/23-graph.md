@@ -817,3 +817,34 @@ Building the demo exposed a latent explorer bug: its `update()` re-applied the r
 so selecting a node reset *Hidden only*, and since #167 *Violations only* too. The explorer
 now carries the reader's `showEdges` back with the measure picks.
 
+## Words and interactions (2026-10-01)
+
+An audit of the #165–#169 visuals found the package breaking two rules the rest of rokkit
+keeps: its text was hardcoded English (rokkit's convention is the `messages` store), and
+`Graph.svelte` decided in each element's branch what its click meant, with 21 inline
+handlers.
+
+- **Words.** `messages.graph` in `@rokkit/states` is one flat namespace, flat because the store
+  merges only one level deep. Templates take `{token}` values, filled by `fill` / `say` /
+  `counted` (`src/messages.ts`). Pure functions in `state/text.ts` word what the state
+  produces: the default label, the more-rows control, legend rows, side names, the drill
+  error. `layers` names its fallback bands from the same store.
+- **Intents.** State emits `data-graph-press` / `data-graph-open` / `data-graph-key` in
+  `boxAttrs`, `cardAttrs` and `moreAttrs`. `GraphState.act` looks the intent up in
+  `state/intents.ts`. A leaf carries one key (its node id) for both its press and its open,
+  and `boxFor` resolves either kind of key.
+- **Actions.** `interactions` delegates click, double-click, Enter / Space on non-button
+  controls, and Escape. `canvasNavigation` handles pan and zoom. `choices` reports a
+  control's pick. All three are classic `{ update, destroy }` actions, so they are tested on
+  bare DOM with no component.
+- **Controls.** Four toggles share an internal `ToggleControl`, and zoom steps through a pure
+  `nextZoom`.
+- **Arc sides** come from the data, and the sensei-specific default is gone.
+- **Guards.** `spec/locale.spec.ts` checks that a locale changes every surface.
+  `spec/no-literals.spec.ts` fails on any literal word or DOM handler in a component. On its
+  first run it caught two that the audit had missed (EntityView's column count and its
+  relationship links).
+
+Graph now depends on `@rokkit/states`. `@rokkit/ui`, already a graph peer, depends on it, so
+a consumer installs nothing new. Plan: `docs/plans/2026-10-01-graph-messages-and-interactions.md`.
+

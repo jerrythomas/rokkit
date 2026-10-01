@@ -141,6 +141,7 @@ const deps = toGraphInput(model, 'dependencies') // tables + entities, deps as e
 `ArcDiagram` puts items on one axis, with imports arcing left and shared commits right. Flag a
 co-change pair with no import `hidden` (rokkit computes no history) and it draws in red; *Hidden
 only* leaves just those. Arcs are as thick as their weight, and each side is scaled on its own.
+The legend names each side from the relations drawn there; `sideLabels` names them yourself.
 
 ## Three measures per box
 
@@ -206,3 +207,11 @@ from `createGraphPreset({ using: 'color' | 'pattern' })`.
 - [Package reference](../../docs/llms/packages/graph.txt) — data contract, layouts, dbd adapter
 - [Component reference](../../docs/llms/components/graph.txt) — props, interaction, attributes
 - [Design](../../docs/design/23-graph.md) — why it is its own package, and what is locked
+
+## Words and interactions
+
+Every string graph shows is a key in `messages.graph` (`@rokkit/states`), so a locale replaces
+it: `messages.register('de', { graph: { zoomIn: 'Vergrößern' } })`. No element carries an event
+handler: the state writes each element's intent (`data-graph-press`, `data-graph-open`) and
+the `interactions`, `choices` and `canvasNavigation` actions perform it through
+`GraphState.act`.

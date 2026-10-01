@@ -134,6 +134,12 @@ methods rather than replacing it.
 they compute nothing. That is what lets the geometry, badge derivation and selection
 logic be covered exhaustively without a renderer.
 
+## In another language
+
+Every word a graph shows, from control labels to "+ 3 more" and "Layer 2", comes from
+`messages.graph` in `@rokkit/states`. Register a locale and the diagram follows it:
+`messages.register('de', { graph: { zoomIn: 'Vergrößern' } })`.
+
 ## What changes together, against what imports what
 
 An import graph shows only the coupling the code declares. `ArcDiagram` puts every item on one

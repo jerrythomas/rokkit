@@ -10465,3 +10465,37 @@ I backed them up to `/tmp/stash-pop-backup` and restored them to HEAD; `stash@{0
 Rule: never pair a stash push with an unconditional pop. For a red/green check, copy the file.
 
 Gates: 8,218 unit tests pass, plus 146 e2e; lint is 0/0.
+
+---
+
+## 2026-10-01 (1) — graph: words through messages, interactions through actions
+
+The user asked whether the #165–#169 visuals keep state separate from visuals and stay
+data-driven. The audit found them mostly data-driven, with three gaps:
+
+- hardcoded English throughout the package (it predates this batch);
+- a sensei-specific default (`sideLabels`);
+- 21 inline handlers in `Graph.svelte`, each element's branch deciding what its click meant.
+
+The user's direction was to use actions, so that interaction handling lives in one place,
+is more testable, and reads cleaner. Plan: `docs/plans/2026-10-01-graph-messages-and-interactions.md`.
+
+- `3bf82cc2c`: `messages.graph` in `@rokkit/states`, flat because the store merges only one level
+  deep, plus `fill` / `say` / `counted`. Graph now depends on states, which `@rokkit/ui` (a
+  graph peer) already brings.
+- `6a34dc618`: `state/text.ts` words everything the state produces, and `layers` names its
+  bands from the locale.
+- `97bd3c998`: intents. The state writes `data-graph-press` / `-open` / `-key`, and
+  `GraphState.act` looks the intent up in `state/intents.ts`. New `interactions` and
+  `canvasNavigation` actions. `Graph.svelte` and `DrillBar` now have no handler at all.
+  Found along the way: a leaf's one key must resolve for both select and drill, hence `boxFor`.
+- `1ea3c0288`: a `choices` action for the controls, an internal `ToggleControl`, and a pure
+  `nextZoom`. The legend's rows and the arc side names come from state (side names from the
+  data). `DependencyMatrix` uses a `toggle` intent. The two guard specs are a locale sweep and
+  a source scan for literals and DOM handlers. The scan caught two misses the audit had not
+  (EntityView's column count and its relationship links).
+
+Actions are classic `{ update, destroy }`, not `$effect`-based, so each is tested on bare DOM.
+A security hook blocked `innerHTML` fixtures, so the newer specs build theirs with DOM methods.
+
+Gates: 1,150+ graph unit tests, 146 e2e passing unchanged, lint 0/0.

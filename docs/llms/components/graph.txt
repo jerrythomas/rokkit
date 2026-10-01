@@ -123,8 +123,10 @@ side and none on the other: files that change together with nothing in the code 
   danger colour.
 - **`showEdges: 'hidden'`** keeps only the hidden pairs. The control is `HiddenControl`, and the
   prop is bindable.
-- **Legend.** On by default. It names the two sides (`sideLabels`, default
-  `['Imports', 'Shared commits']`) and the hidden stroke.
+- **Legend.** On by default. It names the two sides and the hidden stroke. The side names
+  come from the data: the relations drawn on each side, or *Declared* / *Observed* (from the
+  locale) where a side's edges name none. `sideLabels={['Imports', 'Shared commits']}`
+  names them yourself.
 - **Styling hooks:** `data-edge-hidden`, `data-edge-side` (`below` / `above`),
   `data-graph-hidden-only`, `data-legend-side`, `data-legend-hidden`. The layout is `arcs`.
 
@@ -235,6 +237,38 @@ the existing instance through its methods and `update()` rather than swapping in
 
 Expansion is per node on purpose: a reader clicking "+3 more" is asking about that card, and
 expanding all of them answers a question they did not ask.
+
+### How interactions are wired — and how to add one
+
+No graph element carries an event handler. What a press MEANS is state: `GraphState` writes
+an intent onto each element (`data-graph-press` for a click and Enter / Space,
+`data-graph-open` for a double-click, `data-graph-key` for what it is about), and one
+delegated action, `interactions`, hands it to `GraphState.act(intent, key)`. The vocabulary
+is a table in `state/intents.ts`: `select`, `toggle`, `drill`, `group`, `expand`, `crumb`,
+`open-selected`, `group-selected`, `clear`. An unknown intent, or a key naming nothing, does
+nothing; the DOM is not trusted.
+
+Two more actions finish the set. `canvasNavigation` covers drag-to-pan and pinch-zoom, and
+marks the paper `data-graph-panning` while a drag lasts. `choices` serves the controls: a
+button's `data-graph-choice`, or a select's value, is reported to the control, which maps it
+to its own type and calls its `onchange`. Each action is unit-tested on bare DOM.
+
+## Words — every one is a message
+
+Graph shows no English of its own. Every label, title, aria-label and sentence (state and
+layouts included: "+ 3 more", "Layer 2", "Diagram of 5 nodes…") is a key in
+`messages.graph` from `@rokkit/states`, flat so that a locale can replace one string:
+
+```js
+import { messages } from '@rokkit/states'
+
+messages.register('de', { graph: { zoomIn: 'Vergrößern', more: 'noch {n}', layer: 'Ebene {n}' } })
+messages.setLocale('de')
+```
+
+Templates name their values in braces. A spec registers a locale and checks every control,
+the drill bar and the entity views; another scans the components and fails on any literal
+word or DOM event handler.
 
 ## Reach for a named diagram first
 

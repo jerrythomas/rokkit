@@ -1,6 +1,6 @@
 # Graph: text through `messages`, interactions through actions
 
-**Status:** IMPLEMENT (2026-10-01). Requested after an audit of the #165–#169 visuals.
+**Status:** DONE (2026-10-01). Requested after an audit of the #165–#169 visuals. See journal 2026-10-01 (1).
 **Package:** `@rokkit/graph` (plus a `graph` namespace in `@rokkit/states` messages)
 
 ## What the audit found

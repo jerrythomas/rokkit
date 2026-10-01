@@ -1,17 +1,21 @@
 # CHECKPOINT
 
-**#165–#169 CLOSED** (#169 at `39057303`, CI green).
-The arc diagram is in `@rokkit/graph`. Journal 2026-09-30 (12)–(16).
+**Graph messages + actions: DONE** (`3bf82cc2c`..`1ea3c0288` plus docs), pending the push and CI.
+#165–#169 are closed. Journal 2026-10-01 (1).
 
-**Next slices:** none from the #165 batch. Pick the next open issue (`gh issue list`).
+**Next slices, in the order the user set:**
+1. #156: dependency advisories (vitest, vite, esbuild, undici, devalue, dompurify, svelte,
+   cookie) and the TypeScript 7 landmine in `upgrade:all`. Turning Dependabot alerts on is a
+   repo setting, so that part is the user's.
+2. Close every resolved issue: check #163, #164, #159 and #155 against their acceptance.
 
-**Next command:** `gh issue list --state open`.
+**Next command:** `gh issue view 156`.
 
 **Open questions:**
-- MultiSelect still lacks Select's fixed positioning and `maxRows`. Noted, not fixed.
+- MultiSelect still lacks Select's fixed positioning and `maxRows`.
 - Polymetric: a container's leaves are one row, so a big package is a wide strip at fit.
-  Wrapping leaves into rows is not built.
-- `stash@{0}` (an old develop WIP, 6471f2c7) was accidentally popped and conflicted, then
-  restored. It is intact in the stash list; nothing was dropped.
+- `fill()` could move into `@rokkit/states` for every component; ui's Carousel hardcodes
+  "Slide {n} of {count}" today.
+- `stash@{0}` (an old develop WIP) is intact; it was accidentally popped and restored on 2026-09-30.
 
 **Known broken:** nothing. The sensei MCP server is disconnected, so this file is the only record.
