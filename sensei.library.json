@@ -1,9 +1,28 @@
 {
   "library": "rokkit",
+  "ecosystem": "npm",
   "version": ">=1.3",
+  "documents": "1.8.0",
   "repo": "https://github.com/jerrythomas/rokkit",
-  "branch": "main",
+  "ref": "v1.8.0",
   "site": "https://rokkit.sensei-hq.com",
+  "packages": [
+    "@rokkit/actions",
+    "@rokkit/app",
+    "@rokkit/blocks",
+    "@rokkit/chart",
+    "@rokkit/cli",
+    "@rokkit/core",
+    "@rokkit/data",
+    "@rokkit/forms",
+    "@rokkit/graph",
+    "@rokkit/helpers",
+    "@rokkit/icons",
+    "@rokkit/states",
+    "@rokkit/themes",
+    "@rokkit/ui",
+    "@rokkit/unocss"
+  ],
   "skills": [
     {
       "name": "semantic-styles-rokkit",

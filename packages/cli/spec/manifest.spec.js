@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { readFileSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { listSkills } from '../src/skills.js'
 import { listAgents } from '../src/agents.js'
@@ -13,12 +13,39 @@ const manifest = JSON.parse(readFileSync(join(REPO_ROOT, 'sensei.library.json'),
 const rootPath = (p) => join(REPO_ROOT, p)
 
 describe('sensei.library.json — top level', () => {
-	it('declares library, version range, repo, branch and site', () => {
+	it('declares library, ecosystem, version range, repo, ref and site', () => {
 		expect(manifest.library).toBe('rokkit')
+		expect(manifest.ecosystem).toBe('npm')
 		expect(manifest.version).toMatch(/^[<>=~^]/)
 		expect(manifest.repo).toMatch(/^https:\/\/github\.com\//)
-		expect(manifest.branch).toBeTruthy()
 		expect(manifest.site).toMatch(/^https:\/\//)
+	})
+})
+
+/* #155 — a consumer must be able to tell which release the published docs DESCRIBE, fetch
+ * them reproducibly, and reach them from any @rokkit package it depends on. */
+describe('sensei.library.json — the release it documents', () => {
+	const root = JSON.parse(readFileSync(rootPath('package.json'), 'utf-8'))
+
+	it('documents the current release, at its tag rather than a moving branch', () => {
+		expect(manifest.documents).toBe(root.version)
+		expect(manifest.ref).toBe(`v${root.version}`)
+		expect(manifest.branch).toBeUndefined()
+	})
+
+	it('is bumped with every release, so documents and ref never fall behind', () => {
+		expect(readFileSync(rootPath('config/bump.config.js'), 'utf-8')).toContain("'sensei.library.json'")
+	})
+
+	it('lists exactly the packages rokkit publishes', () => {
+		const published = readdirSync(rootPath('packages'))
+			.map((dir) => rootPath(`packages/${dir}/package.json`))
+			.filter((path) => existsSync(path))
+			.map((path) => JSON.parse(readFileSync(path, 'utf-8')))
+			.filter((pkg) => !pkg.private)
+			.map((pkg) => pkg.name)
+			.sort()
+		expect(manifest.packages).toEqual(published)
 	})
 })
 
