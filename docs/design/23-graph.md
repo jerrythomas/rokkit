@@ -786,3 +786,34 @@ that reads without zooming; a wide tree is still pannable and zoomable. The expl
 picked measure back through `update()`, as it does the drill path, so a pick survives the next
 selection.
 
+## The arcs layout (#169)
+
+`layout/arcs.ts` is a dual arc diagram: items on one vertical axis, and two relations arcing
+out of either side of it.
+
+- **Package.** It lives in graph, not chart, although #169 is filed `[chart]`. Chart's `Arc`
+  is a pie slice and `Ribbon` a y-band; `Plot`'s rows-and-channels grammar has no
+  items-plus-relations. Graph already had both edge sets (structural and overlay), weight to
+  width, selection, the legend, theme CSS, and the co-change data.
+- **Axis.** One box per item, ordered by group (first appearance) then input order. It is
+  vertical so labels read horizontally at ~50 items, and fixed by the items alone, so filtering
+  never moves a box.
+- **Sides.** Structural edges go left (`side: 'below'`) and overlays right (`'above'`), unless
+  `above` names a relation. Arcs are elliptical: the horizontal reach is half the vertical
+  span, so the canvas stays narrower than it is tall. The layout routes overlays itself,
+  because it has no cards for the generic overlay router.
+- **Strength.** Per side, to the 95th percentile (`layout/percentile.ts`, shared with
+  `polymetric`), clamped past it. `GraphState.edgeWeight` prefers it.
+- **Filter.** `keepsEdge(showEdges, edge)` is shared with `layers`: `violations` keeps `up`,
+  `hidden` keeps `hidden`.
+
+`ArcDiagram` composes it with `HiddenControl` and the legend's side and hidden keys, on by
+default.
+
+The demos are rokkit's 47 components (110 imports, 62 co-change pairs, 15 hidden; a spec checks
+each `hidden` against the imports) and #169's sample, verbatim.
+
+Building the demo exposed a latent explorer bug: its `update()` re-applied the registry props,
+so selecting a node reset *Hidden only*, and since #167 *Violations only* too. The explorer
+now carries the reader's `showEdges` back with the measure picks.
+

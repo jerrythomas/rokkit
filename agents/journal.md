@@ -10427,3 +10427,41 @@ Two findings from the browser, neither visible in jsdom:
   container's leaves into rows would help big packages; it is not built.
 
 Gates: 8,171 unit tests pass, plus 141 e2e; lint is 0/0.
+
+---
+
+## 2026-09-30 (16) — #169: the dual arc diagram
+
+#168 is closed. Then #169, the last of the batch, plan `docs/plans/2026-09-30-graph-dual-arc-diagram.md`.
+
+**Placed in `@rokkit/graph`, though filed `[chart]`.** The issue left composition open. Chart's
+`Arc` is a pie slice and `Ribbon` a y-band, and `Plot` has no items-plus-relations. Graph
+already had both edge sets, weight to width, and the co-change data.
+
+- `c950cf7c`: edge `hidden` (`fields.hidden`), carried in every layout like `weakest`.
+- `628e9ed1`: `layout/arcs`. One vertical axis ordered by group; structural edges arc left,
+  overlays right (or the relation named by `above`); per-side `strength`; `showEdges: 'hidden'`
+  through a `keepsEdge` predicate now shared with `layers`. 15 specs.
+- `5ad20f5c`: `ArcDiagram`, `HiddenControl`, the legend's side and hidden keys,
+  `data-edge-hidden` / `data-edge-side`; `edgeWeight` prefers `strength`. 8 specs.
+- `faafd268`: theme CSS. The hidden pair is heavier and in `--danger`, in every style.
+- `89083949`: two demos. One is rokkit's 47 components, with each `hidden` checked against the
+  imports by a spec. The other is #169's sample, verbatim. Plus `graph-arcs.e2e`.
+- `87d79c98`: widths cap at each side's 95th percentile.
+
+Found in the browser, none of it visible in jsdom:
+
+- **Selecting a node reset the edge filter.** The explorer's `update()` re-applied the registry
+  props, which undid *Hidden only*. It had also undone *Layers*' *Violations only* since #167,
+  unnoticed. The explorer now carries `showEdges` back with the measure picks. An e2e for each
+  was confirmed red without the fix.
+- **One outlier flattened a side.** A 68-count import pair made every other import hairline.
+  The fix is the same 95th-percentile cap as #168, moved to `layout/percentile.ts`.
+
+Process slip: I ran `git stash push <path> && … ; git stash pop` with a cwd-relative path. The
+push failed, and the unconditional pop then applied an unrelated old stash (`stash@{0}`), which
+conflicted in `packages/cli` and `themes/package.json`. Those five files had no work of mine.
+I backed them up to `/tmp/stash-pop-backup` and restored them to HEAD; `stash@{0}` is intact.
+Rule: never pair a stash push with an unconditional pop. For a red/green check, copy the file.
+
+Gates: 8,218 unit tests pass, plus 146 e2e; lint is 0/0.

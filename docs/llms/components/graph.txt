@@ -97,6 +97,37 @@ The state behind it (`GraphState`): `drillPath`, `breadcrumbs`, `canDrill(box)`,
 containment box carries `path`, `leaf` and `declared` (the id of the node it is, leaf or
 container).
 
+### Arcs — what the code declares against what the history reveals (#169)
+
+`ArcDiagram` puts items on one shared, ordered axis and draws two relations over it: imports
+arc to the **left**, shared commits to the **right**. The finding is a pair with an arc on one
+side and none on the other: files that change together with nothing in the code tying them.
+
+```svelte
+<ArcDiagram nodes={items} edges={relations} {fields} above="cochange" controls />
+<!-- fields: { label: 'name', group: 'group', relation: 'set' };
+     relations: { set, source, target, weight, hidden? } -->
+```
+
+- **Which side.** By default structural edges go left and overlays (`overlay: true`) go right,
+  since an overlay is observed rather than declared. `above` names the relation drawn right
+  instead, so a host that labels each relation with a `set` needs no reshaping.
+- **The axis.** One labelled box per item, top to bottom, ordered by group (first appearance)
+  and then as given, and tinted by group. Readable at ~50 items; send a top-N, not thousands.
+  Filtering never moves a box.
+- **Thickness.** Each side scales its weights on its own, to its 95th percentile (clamped
+  past it): an import count and a commit count are different units, and one outlying pair
+  should not flatten the rest. The routed edge carries it as `strength`.
+- **`hidden`.** The host flags a co-change pair with no import (`hidden: true`, or
+  `fields.hidden`); rokkit computes no history and only styles it. It is drawn heavier, in the
+  danger colour.
+- **`showEdges: 'hidden'`** keeps only the hidden pairs. The control is `HiddenControl`, and the
+  prop is bindable.
+- **Legend.** On by default. It names the two sides (`sideLabels`, default
+  `['Imports', 'Shared commits']`) and the hidden stroke.
+- **Styling hooks:** `data-edge-hidden`, `data-edge-side` (`below` / `above`),
+  `data-graph-hidden-only`, `data-legend-side`, `data-legend-hidden`. The layout is `arcs`.
+
 ### Polymetric — three measures per box (#168)
 
 `PolymetricTree` is Lanza & Marinescu's System Complexity view. A containment tree is drawn top
@@ -230,6 +261,7 @@ over one `Plot`.
 | `Sunburst` | The same containment as wedges | depth, zoom |
 | `StructureDiagram` | A codebase: containment on a rim, calls bundled through it | depth (what sits on the rim), bundling, zoom |
 | `Neighborhood` | One node and what reaches it | depth, edge style, zoom |
+| `ArcDiagram` | Two relations over one axis: imports left, shared commits right, hidden pairs marked | only-hidden toggle, zoom; legend on by default |
 | `PolymetricTree` | Containment top-down, each leaf a box: width, height and shade bound to three measures | width, height and shade measures, zoom; legend on by default |
 | `DependencyMatrix` | A dependency structure matrix — cells above the diagonal are dependencies against the grain | none; row headers select |
 
@@ -293,6 +325,7 @@ LAYOUT_OPTIONS.world           // ['sizeBy', 'focusPath', 'levels']
 |--------|---------------------------|
 | `cluster` | `density` `arrange` `edgeStyle` `expanded` `groupBy` `nestBy` |
 | `flow` | `density` `edgeStyle` `expanded` |
+| `arcs` | `showEdges` `above` |
 | `layers` | `density` `expanded` `showEdges` `layerLabels` |
 | `polymetric` | `widthBy` `heightBy` `colorBy` |
 | `neighborhood` | `edgeStyle` `expanded` `focus` `depth` |

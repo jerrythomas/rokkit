@@ -136,6 +136,12 @@ const er = toGraphInput(model, 'er')             // tables + refs
 const deps = toGraphInput(model, 'dependencies') // tables + entities, deps as edges
 ```
 
+## Imports against shared commits
+
+`ArcDiagram` puts items on one axis, with imports arcing left and shared commits right. Flag a
+co-change pair with no import `hidden` (rokkit computes no history) and it draws in red; *Hidden
+only* leaves just those. Arcs are as thick as their weight, and each side is scaled on its own.
+
 ## Three measures per box
 
 `PolymetricTree` draws containment top down, each file a box whose width, height and shade are

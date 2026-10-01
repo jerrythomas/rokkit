@@ -118,6 +118,7 @@ Your own slots in exactly the same way.
 | Name | Shape | For |
 |------|-------|-----|
 | `flow` | Cards in columns by reference direction | **The default.** Every edge leaves right, enters left |
+| `arcs` | Items on one axis, two relations arcing either side | `ArcDiagram`. `above` picks the right-hand relation; `showEdges: 'hidden'` |
 | `layers` | Host-assigned layers as horizontal bands | `LayersDiagram`. Edges marked `down` / `skip` / `up` / `level`; `showEdges: 'violations'` |
 | `cluster` | Cards in group boxes | Entity diagrams grouped by schema |
 | `neighborhood` | One focus node + its 1-hop neighbours | Walking a graph one step at a time |
@@ -130,7 +131,7 @@ Your own slots in exactly the same way.
 
 ```js
 import {
-  cluster, flow, layers, neighborhood, points, polymetric, radial, structure, sunburst, world,
+  arcs, cluster, flow, layers, neighborhood, points, polymetric, radial, structure, sunburst, world,
   layouts
 } from '@rokkit/graph'
 ```
@@ -296,6 +297,37 @@ reversed — so a layered graph is lower-triangular and **a cell above the diago
 dependency against the grain**: a cycle, or a layer reaching up. It stays readable at sizes
 where a node-link drawing is a hairball; the drawing grows with the square of the node count,
 so aggregate to modules or components first.
+
+### Arcs — what the code declares against what the history reveals (#169)
+
+`ArcDiagram` puts items on one shared, ordered axis and draws two relations over it: imports
+arc to the **left**, shared commits to the **right**. The finding is a pair with an arc on one
+side and none on the other: files that change together with nothing in the code tying them.
+
+```svelte
+<ArcDiagram nodes={items} edges={relations} {fields} above="cochange" controls />
+<!-- fields: { label: 'name', group: 'group', relation: 'set' };
+     relations: { set, source, target, weight, hidden? } -->
+```
+
+- **Which side.** By default structural edges go left and overlays (`overlay: true`) go right,
+  since an overlay is observed rather than declared. `above` names the relation drawn right
+  instead, so a host that labels each relation with a `set` needs no reshaping.
+- **The axis.** One labelled box per item, top to bottom, ordered by group (first appearance)
+  and then as given, and tinted by group. Readable at ~50 items; send a top-N, not thousands.
+  Filtering never moves a box.
+- **Thickness.** Each side scales its weights on its own, to its 95th percentile (clamped
+  past it): an import count and a commit count are different units, and one outlying pair
+  should not flatten the rest. The routed edge carries it as `strength`.
+- **`hidden`.** The host flags a co-change pair with no import (`hidden: true`, or
+  `fields.hidden`); rokkit computes no history and only styles it. It is drawn heavier, in the
+  danger colour.
+- **`showEdges: 'hidden'`** keeps only the hidden pairs. The control is `HiddenControl`, and the
+  prop is bindable.
+- **Legend.** On by default. It names the two sides (`sideLabels`, default
+  `['Imports', 'Shared commits']`) and the hidden stroke.
+- **Styling hooks:** `data-edge-hidden`, `data-edge-side` (`below` / `above`),
+  `data-graph-hidden-only`, `data-legend-side`, `data-legend-hidden`. The layout is `arcs`.
 
 ### Polymetric — three measures per box (#168)
 

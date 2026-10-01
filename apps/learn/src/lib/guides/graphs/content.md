@@ -134,6 +134,17 @@ methods rather than replacing it.
 they compute nothing. That is what lets the geometry, badge derivation and selection
 logic be covered exhaustively without a renderer.
 
+## What changes together, against what imports what
+
+An import graph shows only the coupling the code declares. `ArcDiagram` puts every item on one
+axis and draws two relations: imports to the left, pairs that change in the same commits to
+the right. A pair with an arc on the right and none on the left is coupling nothing in the
+code explains, and that's the one worth a look. Flag those `hidden` and they draw in red;
+*Hidden only* leaves just them.
+
+The **Imports vs shared commits** example runs rokkit's own components through it. **Arcs,
+#169's sample** is the issue's data, sent as-is.
+
 ## Three measures at once
 
 A treemap shows one measure as area. `PolymetricTree` shows three: each file is a box whose

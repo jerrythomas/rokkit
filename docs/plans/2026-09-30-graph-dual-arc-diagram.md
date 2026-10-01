@@ -1,6 +1,7 @@
 # Dual arc diagram (#169)
 
-**Status:** IMPLEMENT (2026-09-30), the fifth of the open issues from #165.
+**Status:** DONE (2026-09-30): `c950cf7c`, `628e9ed1`, `5ad20f5c`, `faafd268`, `89083949`, `87d79c98`. See journal 2026-09-30 (16).
+The fifth of the open issues from #165.
 **Package:** `@rokkit/graph` (the issue is filed as `[chart]`; see the first decision)
 
 ## The picture
