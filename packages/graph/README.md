@@ -136,6 +136,12 @@ const er = toGraphInput(model, 'er')             // tables + refs
 const deps = toGraphInput(model, 'dependencies') // tables + entities, deps as edges
 ```
 
+## Checking a layered architecture
+
+`LayersDiagram` draws the layers you intend (`layer` on each node, 0 at the top) and marks
+every edge `down`, `skip` (dashed), `up` (red, the violation) or `level`. *Violations only*
+leaves just the edges that climb. rokkit computes no depth; it compares the layers you gave.
+
 ## Condensing cycles into group nodes
 
 Send each strongly-connected component as a node with `members` (rokkit computes none). Its

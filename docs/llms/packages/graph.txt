@@ -118,6 +118,7 @@ Your own slots in exactly the same way.
 | Name | Shape | For |
 |------|-------|-----|
 | `flow` | Cards in columns by reference direction | **The default.** Every edge leaves right, enters left |
+| `layers` | Host-assigned layers as horizontal bands | `LayersDiagram`. Edges marked `down` / `skip` / `up` / `level`; `showEdges: 'violations'` |
 | `cluster` | Cards in group boxes | Entity diagrams grouped by schema |
 | `neighborhood` | One focus node + its 1-hop neighbours | Walking a graph one step at a time |
 | `radial` | A tidy tree or dendrogram around a circle | Call graphs — who calls whom, and how deep |
@@ -293,6 +294,28 @@ reversed — so a layered graph is lower-triangular and **a cell above the diago
 dependency against the grain**: a cycle, or a layer reaching up. It stays readable at sizes
 where a node-link drawing is a hairball; the drawing grows with the square of the node count,
 so aggregate to modules or components first.
+
+### Layers — the intended architecture, and what climbs it (#167)
+
+`LayersDiagram` ranks nodes into horizontal bands by a **host-assigned** `layer` (0 at the top,
+foundations at the bottom). rokkit computes no depth: you know the layering you intend.
+
+```svelte
+<LayersDiagram {nodes} {edges} layerLabels={['Interface', 'Domain', 'Infrastructure']} controls />
+<!-- nodes: { id, name, layer }, edges: { source, target, conformance? } -->
+```
+
+- **Conformance.** Each edge is `down` (one layer down, conformant), `skip` (down more than
+  one, drawn dashed), `up` (climbs, which is the violation, drawn in the danger colour) or
+  `level` (within a layer). Send `conformance` and yours wins; otherwise it's derived from the
+  two layers. An edge touching an unlayered node has none.
+- **`showEdges: 'violations'`** keeps only the climbing edges. The control is
+  `ViolationsControl`, and the prop is bindable. On a real codebase the conformant edges drown
+  the signal.
+- **Readability.** Each layer is a labelled full-width band, and a crowded one wraps into rows.
+  Each layer is ordered under its neighbours in the layer above, to cut crossings. A node with
+  no `layer` lands in an *Unassigned* band at the bottom.
+- **Styling hooks:** `data-edge-conformance`, `data-graph-violations`. The layout is `layers`.
 
 ### Group nodes — condensing cycles (#166)
 

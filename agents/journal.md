@@ -10365,3 +10365,34 @@ since is logged to a file with the commit conditioned on its exit code. The same
 (verify the outcome, never a masked wrapper) had to be re-learned within one session.
 
 Gates: 8,089 unit tests pass, plus 135 e2e; lint is 0/0.
+
+---
+
+## 2026-09-30 (14) — #167: the layers layout
+
+#166 is closed. Then #167, plan `docs/plans/2026-09-30-graph-layers-layout.md`:
+
+- `1a073dc7`: node `layer` and edge `conformance` in the model; an off-vocabulary conformance is
+  ignored.
+- `f77b7e9e`: `layout/layers`. One labelled band per layer, wrapping, a barycenter order,
+  vertical edges. Conformance is the host's or derived (`down` / `skip` / `up` / `level`), and
+  `showEdges: 'violations'` filters. 14 specs.
+- `16f15210`: `LayersDiagram`, `ViolationsControl`, and `data-edge-conformance`. `showEdges`
+  and `layerLabels` go through the state, and `setShowEdges` is remembered. `DrillBar` and
+  `layers` are now exported too.
+- `01924fa9`: theme CSS. Bands are dashed lanes, `skip` is dashed, `up` is heavier and in
+  `--danger`.
+- `93649287`: two demos. "Layers" is rokkit's components in their package's INTENDED layer.
+  Measured, no import climbs, so the violations view is honestly empty and the blurb says so.
+  "Layers, with a violation" is #167's sample, verbatim. Plus `graph-layers.e2e`.
+
+A judgement call worth recording: 17 component imports go from a package's subfolder to its own
+src root (`chart/geoms` → `chart`). They looked like violations, but that root is every top-level
+file, not the barrel, so `geoms` importing `PlotState` is legitimate. They were NOT presented as
+violations.
+
+Tooling: the pre-commit hook type-checks against local `dist`, while the gate checks without
+it, as CI does. A stale graph `dist` blocked a commit, and rebuilding it fixed that. Both checks
+matter: the hook catches what local consumers see, the gate what CI sees.
+
+Gates: 8,128 unit tests pass, plus 138 e2e; lint is 0/0.

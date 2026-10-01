@@ -134,6 +134,16 @@ methods rather than replacing it.
 they compute nothing. That is what lets the geometry, badge derivation and selection
 logic be covered exhaustively without a renderer.
 
+## Layers, and what climbs them
+
+To check an architecture, say which layer each module belongs to, 0 at the top and the
+foundations at the bottom. `LayersDiagram` draws one band per layer, and every edge should
+point down. A dashed edge skips a layer, which is legal but worth seeing. A red edge climbs:
+that's a violation. Switch to *Violations only* to see just those.
+
+The **Layers** example runs rokkit's own packages through it. There's nothing red, because no
+package imports upward. **Layers, with a violation** shows what one looks like.
+
 ## Cycles, condensed
 
 A dependency graph with cycles is hard to read: everything points at everything. The usual

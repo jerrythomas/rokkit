@@ -738,3 +738,23 @@ Two fixes came with it:
   skip, silently dropping edge weight there;
 - a group card reserves its control row.
 
+## The layers layout (#167)
+
+`layout/layers.ts` places nodes by a host-assigned `layer`: rokkit computes no depth. It is
+Sugiyama-shaped, minus the half the host owns.
+
+- **Bands.** One full-width band per layer, drawn as a cluster box so it renders through the
+  existing box path with its label.
+- **Wrapping.** A crowded layer wraps into rows of 8.
+- **Ordering.** One barycenter pass against the layer above.
+- **Edges.** Vertical S-curves, carrying `conformance`. Host-supplied wins; otherwise it is
+  derived from the two layers, a comparison and not a depth computation.
+- **Filter.** `showEdges: 'violations'` keeps only `up`.
+- **Options.** `edgeStyle` is not one: a layered edge is always the vertical S.
+
+`LayersDiagram` composes it with `ViolationsControl`.
+
+The learn demo assigns rokkit's packages their intended layers. Measured, no import climbs, so
+the honest *Violations only* view is empty, and the blurb says so. #167's own sample is a second
+example with the one climbing edge.
+

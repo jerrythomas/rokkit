@@ -97,6 +97,28 @@ The state behind it (`GraphState`): `drillPath`, `breadcrumbs`, `canDrill(box)`,
 containment box carries `path`, `leaf` and `declared` (the id of the node it is, leaf or
 container).
 
+### Layers — the intended architecture, and what climbs it (#167)
+
+`LayersDiagram` ranks nodes into horizontal bands by a **host-assigned** `layer` (0 at the top,
+foundations at the bottom). rokkit computes no depth: you know the layering you intend.
+
+```svelte
+<LayersDiagram {nodes} {edges} layerLabels={['Interface', 'Domain', 'Infrastructure']} controls />
+<!-- nodes: { id, name, layer }, edges: { source, target, conformance? } -->
+```
+
+- **Conformance.** Each edge is `down` (one layer down, conformant), `skip` (down more than
+  one, drawn dashed), `up` (climbs, which is the violation, drawn in the danger colour) or
+  `level` (within a layer). Send `conformance` and yours wins; otherwise it's derived from the
+  two layers. An edge touching an unlayered node has none.
+- **`showEdges: 'violations'`** keeps only the climbing edges. The control is
+  `ViolationsControl`, and the prop is bindable. On a real codebase the conformant edges drown
+  the signal.
+- **Readability.** Each layer is a labelled full-width band, and a crowded one wraps into rows.
+  Each layer is ordered under its neighbours in the layer above, to cut crossings. A node with
+  no `layer` lands in an *Unassigned* band at the bottom.
+- **Styling hooks:** `data-edge-conformance`, `data-graph-violations`. The layout is `layers`.
+
 ### Group nodes — condensing cycles (#166)
 
 A dependency graph with cycles is unreadable. Collapse each strongly-connected component into
@@ -241,6 +263,7 @@ LAYOUT_OPTIONS.world           // ['sizeBy', 'focusPath', 'levels']
 |--------|---------------------------|
 | `cluster` | `density` `arrange` `edgeStyle` `expanded` `groupBy` `nestBy` |
 | `flow` | `density` `edgeStyle` `expanded` |
+| `layers` | `density` `expanded` `showEdges` `layerLabels` |
 | `neighborhood` | `edgeStyle` `expanded` `focus` `depth` |
 | `points` | `edgeStyle` `sizeBy` `sizeScale` |
 | `radial` | `edgeStyle` `sizeBy` `sizeScale` `radialMode` |

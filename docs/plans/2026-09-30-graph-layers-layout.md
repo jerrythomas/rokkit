@@ -1,6 +1,7 @@
 # Layered DAG layout (#167)
 
-**Status:** IMPLEMENT (2026-09-30), the third of the open issues from #165.
+**Status:** DONE (2026-09-30): `1a073dc7`, `f77b7e9e`, `16f15210`, `01924fa9`, `93649287`. See journal 2026-09-30 (14).
+The third of the open issues from #165.
 **Package:** `@rokkit/graph`
 
 ## The picture
