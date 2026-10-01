@@ -831,6 +831,25 @@
   stroke-width: calc(2px + var(--edge-weight, 0) * 2.75px);
 }
 
+/* ─── layers (issue 167) ─────────────────────────────────────────────────────── */
+
+/* A layer band is a lane, not a region you click: dashed, and never in the pointer's way. */
+[data-graph-layout='layers'] [data-graph-cluster] {
+  pointer-events: none;
+  border-style: dashed;
+  border-radius: 0.25rem;
+}
+
+/* Down one layer is the rule and draws plain. Skipping layers is legal but worth seeing —
+   dashed. Climbing is the violation: heavier, and coloured by each style. */
+[data-graph-edge][data-edge-conformance='skip'] path {
+  stroke-dasharray: 5 4;
+}
+
+[data-graph-edge][data-edge-conformance='up'] path {
+  stroke-width: calc(2.25px + var(--edge-weight, 0) * 2.75px);
+}
+
 /* ─── drilling (issue 165) ─────────────────────────────────────────────────── */
 
 /* A container that can be opened takes the pointer the way a leaf does — clusters are

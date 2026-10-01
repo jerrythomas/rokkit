@@ -383,3 +383,20 @@ describe('graph theme CSS — groups and the weakest edge (#166)', () => {
 		expect(rules.some((r) => /background-color:/.test(r)), style).toBe(true)
 	})
 })
+
+describe('graph theme CSS — layers (#167)', () => {
+	it('dashes a skipping edge and thickens a climbing one in base', () => {
+		expect(rulesFor('base/graph.css', "[data-edge-conformance='skip']").some((r) => /stroke-dasharray/.test(r))).toBe(true)
+		expect(rulesFor('base/graph.css', "[data-edge-conformance='up']").some((r) => /stroke-width/.test(r))).toBe(true)
+	})
+
+	it('keeps a layer band behind its cards and out of the pointer’s way, in base', () => {
+		const rules = rulesFor('base/graph.css', "[data-graph-layout='layers'] [data-graph-cluster]")
+		expect(rules.some((r) => /pointer-events:\s*none/.test(r))).toBe(true)
+	})
+
+	it.each(STYLES)('%s strokes the climbing edge in the danger colour — the violation', (style) => {
+		const rules = rulesFor(`${style}/graph.css`, "[data-edge-conformance='up']")
+		expect(rules.some((r) => /stroke:\s*var\(--danger\)/.test(r)), style).toBe(true)
+	})
+})

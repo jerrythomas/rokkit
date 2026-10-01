@@ -568,3 +568,8 @@
 [data-style='rokkit'] [data-graph-edge][data-edge-weakest] path {
   stroke: var(--danger);
 }
+
+/* ─── layers (#167) — the edge that climbs a layer is the violation ─── */
+[data-style='rokkit'] [data-graph-edge][data-edge-conformance='up'] path {
+  stroke: var(--danger);
+}
