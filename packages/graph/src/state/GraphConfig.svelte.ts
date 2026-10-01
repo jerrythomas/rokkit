@@ -1,6 +1,6 @@
 import { defaultGraphPreset } from '../preset.js'
 import type { GraphPreset } from '../preset.js'
-import type { Arrange, Density, EdgeStyle, LayoutFn, NodeAxis } from '../layout/types.js'
+import type { Arrange, Density, EdgeStyle, LayoutFn, NodeAxis, ShowEdges } from '../layout/types.js'
 import type { GraphFields } from '../types.js'
 import type { GraphStateConfig } from '../GraphState.svelte.js'
 
@@ -33,7 +33,7 @@ export type GraphConfigValues = {
 	onfocuspath: GraphStateConfig['onfocuspath']
 	onexpand: GraphStateConfig['onexpand']
 	oncollapse: GraphStateConfig['oncollapse']
-	showEdges: 'all' | 'violations'
+	showEdges: ShowEdges
 	layerLabels: string[] | undefined
 	widthBy: string | undefined
 	heightBy: string | undefined
@@ -168,7 +168,7 @@ export class GraphConfig {
 	}
 
 	/** Every edge or only the climbing ones (#167) — what `ViolationsControl` drives. */
-	setShowEdges(value: 'all' | 'violations'): void {
+	setShowEdges(value: ShowEdges): void {
 		this.#v.showEdges = value
 		this.#remember({ showEdges: value })
 	}

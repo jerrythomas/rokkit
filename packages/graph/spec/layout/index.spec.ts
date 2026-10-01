@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { cluster, layouts, neighborhood, points, layers, polymetric } from '../../src/layout/index.js'
+import { arcs, cluster, layouts, neighborhood, points, layers, polymetric } from '../../src/layout/index.js'
 import { normalizeGraph } from '../../src/model/normalize.js'
 
 describe('layout registry', () => {
 	it('registers exactly the built-in layouts', () => {
-		expect(Object.keys(layouts).sort()).toEqual(['cluster', 'flow', 'layers', 'neighborhood', 'points', 'polymetric', 'radial', 'structure', 'sunburst', 'world'])
+		expect(Object.keys(layouts).sort()).toEqual(['arcs', 'cluster', 'flow', 'layers', 'neighborhood', 'points', 'polymetric', 'radial', 'structure', 'sunburst', 'world'])
 	})
 
 	it('maps each name to the layout of that name, not merely to some layout', () => {
@@ -14,6 +14,7 @@ describe('layout registry', () => {
 		expect(layouts.cluster).toBe(cluster)
 		expect(layouts.layers).toBe(layers)
 		expect(layouts.polymetric).toBe(polymetric)
+		expect(layouts.arcs).toBe(arcs)
 		expect(layouts.neighborhood).toBe(neighborhood)
 		expect(layouts.points).toBe(points)
 	})

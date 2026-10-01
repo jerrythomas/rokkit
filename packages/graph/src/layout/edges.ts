@@ -5,7 +5,7 @@
    bow, the [46, 170] control-point clamp and the +52 orthogonal sweep. */
 
 import { HEAD_H, ROW_H } from './constants.js'
-import type { Card, Cards, EdgeStyle, RoutedEdge } from './types.js'
+import type { Card, Cards, EdgeStyle, RoutedEdge, ShowEdges } from './types.js'
 import type { GraphEdge } from '../types.js'
 
 /**
@@ -44,6 +44,19 @@ function selfLoop(
 		s1: 1,
 		s2: 1
 	}
+}
+
+/**
+ * Whether a `showEdges` filter keeps this edge: `violations` keeps the edges that climb a layer
+ * (#167), `hidden` the coupling no import explains (#169), `all` everything.
+ */
+export function keepsEdge(
+	showEdges: ShowEdges,
+	edge: Pick<RoutedEdge, 'conformance' | 'hidden'>
+): boolean {
+	if (showEdges === 'violations') return edge.conformance === 'up'
+	if (showEdges === 'hidden') return edge.hidden === true
+	return true
 }
 
 /**

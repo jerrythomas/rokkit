@@ -16,6 +16,7 @@ import type {
 	LayoutFn,
 	NodeAxis,
 	RoutedEdge,
+	ShowEdges,
 	Size,
 	LayoutResult
 } from './layout/types.js'
@@ -101,7 +102,7 @@ export type GraphStateConfig = {
 	/** The reader collapsed a group back into one node. */
 	oncollapse?: (id: string, node: GraphNode) => void
 	/** `layers` only — every edge, or only the ones that climb (#167). Defaults to `all`. */
-	showEdges?: 'all' | 'violations'
+	showEdges?: ShowEdges
 	/** `layers` only — band names by layer index. */
 	layerLabels?: string[]
 	/** `polymetric` only — the measures box width, height and shade encode (#168). */
@@ -389,10 +390,10 @@ export class GraphState {
 	}
 
 	/** Every edge or only the climbing ones — what `ViolationsControl` drives (#167). */
-	setShowEdges(value: 'all' | 'violations'): void {
+	setShowEdges(value: ShowEdges): void {
 		this.config.setShowEdges(value)
 	}
-	get showEdges(): 'all' | 'violations' {
+	get showEdges(): ShowEdges {
 		return this.config.showEdges
 	}
 

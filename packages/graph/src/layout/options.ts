@@ -25,7 +25,8 @@ export const LAYOUT_OPTION_KEYS = [
 	'layerLabels',
 	'widthBy',
 	'heightBy',
-	'colorBy'
+	'colorBy',
+	'above'
 ] as const
 
 /**
@@ -47,6 +48,8 @@ export const LAYOUT_OPTION_KEYS = [
  *     its own purpose.
  */
 export const LAYOUT_OPTIONS: Record<string, readonly (typeof LAYOUT_OPTION_KEYS)[number][]> = {
+	// No edgeStyle: an arc is the only shape that keeps one axis readable.
+	arcs: ['showEdges', 'above'],
 	cluster: ['density', 'arrange', 'edgeStyle', 'expanded', 'groupBy', 'nestBy'],
 	flow: ['density', 'edgeStyle', 'expanded'],
 	// No edgeStyle: a layered edge is always a vertical S, built by the layout itself.

@@ -156,6 +156,13 @@ export type RoutedEdge = {
 	weakest?: boolean
 	/** GraphEdge.hidden — coupling no import explains (#169). */
 	hidden?: boolean
+	/** `arcs` — which side of the axis the arc is drawn on (#169). */
+	side?: 'above' | 'below'
+	/**
+	 * 0..1 of the heaviest edge in its OWN set, when a layout normalises per set (`arcs`, #169):
+	 * imports and shared commits are different units. Preferred over the global weight scale.
+	 */
+	strength?: number
 	/** GraphEdge.count — how many model edges a condensed edge stands for. */
 	count?: number
 	/** How the edge sits against the layering (#167) — given by the host or derived by `layers`. */
@@ -274,10 +281,11 @@ export type LayoutOptions = {
 	 */
 	root?: string | null
 	/**
-	 * `layers` only — `violations` draws just the edges that climb (#167). On a real codebase
-	 * the conformant edges are the vast majority and drown the signal.
+	 * Which edges to draw. `layers`: `violations` keeps just the edges that climb (#167).
+	 * `arcs`: `hidden` keeps just the hidden coupling (#169). On a real codebase the ordinary
+	 * edges are the vast majority and drown the signal.
 	 */
-	showEdges?: 'all' | 'violations'
+	showEdges?: ShowEdges
 	/** `layers` only — band names by layer index. Unnamed layers read "Layer N". */
 	layerLabels?: string[]
 	/** `polymetric` only — the measure box WIDTH encodes. A `measures` key, `weight` or `degree`. */
@@ -286,7 +294,15 @@ export type LayoutOptions = {
 	heightBy?: string
 	/** `polymetric` only — the measure box SHADE encodes. Omit for no colour channel. */
 	colorBy?: string
+	/**
+	 * `arcs` only — the relation drawn on the right of the axis (#169). Omitted, overlays go
+	 * right and structural edges left: what the history reveals against what the code declares.
+	 */
+	above?: string
 }
+
+/** Every edge, or only the ones a view is about. */
+export type ShowEdges = 'all' | 'violations' | 'hidden'
 
 /** The three encodings of the polymetric view (#168). */
 export type PolymetricChannel = 'width' | 'height' | 'color'

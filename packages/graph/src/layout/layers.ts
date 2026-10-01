@@ -14,9 +14,9 @@
  */
 import { buildCards } from './cards.js'
 import { CARD_W } from './constants.js'
-import { carried } from './edges.js'
+import { carried, keepsEdge } from './edges.js'
 import { warnUnknownOptions } from './options.js'
-import type { Cards, Cluster, LayoutFn, LayoutResult, RoutedEdge } from './types.js'
+import type { Cards, Cluster, LayoutFn, LayoutResult, RoutedEdge, ShowEdges } from './types.js'
 import type { Conformance, GraphEdge, GraphModel, GraphNode } from '../types.js'
 
 /** Cards per row before a layer wraps. */
@@ -137,15 +137,15 @@ function route(edge: GraphEdge, i: number, cards: Cards, conformance?: Conforman
 	}
 }
 
-function edgesFor(model: GraphModel, cards: Cards, showEdges: 'all' | 'violations'): RoutedEdge[] {
+function edgesFor(model: GraphModel, cards: Cards, showEdges: ShowEdges): RoutedEdge[] {
 	const routed: RoutedEdge[] = []
 	model.edges.forEach((edge, i) => {
 		if (edge.source === edge.target || !cards[edge.source] || !cards[edge.target]) return
 		const conformance =
 			edge.conformance ??
 			deriveConformance(cards[edge.source].node.layer, cards[edge.target].node.layer)
-		if (showEdges === 'violations' && conformance !== 'up') return
-		routed.push(route(edge, i, cards, conformance))
+		const routedEdge = route(edge, i, cards, conformance)
+		if (keepsEdge(showEdges, routedEdge)) routed.push(routedEdge)
 	})
 	return routed
 }
