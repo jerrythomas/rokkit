@@ -1,7 +1,7 @@
 # CHECKPOINT
 
-**#165–#169 DONE.** #165–#168 are closed. #169 (dual arc diagram, in `@rokkit/graph`) is
-pending the push, CI and closing it. Journal 2026-09-30 (12)–(16).
+**#165–#169 CLOSED** (#169 at `39057303`, CI green).
+The arc diagram is in `@rokkit/graph`. Journal 2026-09-30 (12)–(16).
 
 **Next slices:** none from the #165 batch. Pick the next open issue (`gh issue list`).
 
