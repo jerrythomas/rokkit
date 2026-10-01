@@ -275,8 +275,8 @@
 			<span class="lbl">Typography — display / UI / mono</span>
 			<span class="desc">
 				Pick the font stack for each role. Only system fonts and the demo's
-				already-loaded faces are listed — no network load on selection. Live
-				preview below each row shows the running app's render.
+				already-loaded faces are listed — no network load on selection. Each card
+				renders in its own face; step 04 shows the picks together.
 			</span>
 			<div class="font-rows">
 				{#each ['display', 'ui', 'mono'] as FontRole[] as role (role)}
@@ -318,6 +318,14 @@
 				preset or export tokens.css from the action bar below.
 			</span>
 			<div class="preview-grid">
+				<div class="preview-tile">
+					<span class="preview-tag">Type</span>
+					<div class="preview-type">
+						<span class="preview-type-display" data-preview-font="display">Quick brown fox</span>
+						<span class="preview-type-ui" data-preview-font="ui">Jumps over the lazy dog, in body text.</span>
+						<code class="preview-type-mono" data-preview-font="mono">const fox = 'brown'</code>
+					</div>
+				</div>
 				<div class="preview-tile">
 					<span class="preview-tag">Buttons</span>
 					<div class="preview-row">
@@ -764,6 +772,25 @@
 		color: var(--ink-soft);
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
+	}
+
+	/* Each line reads its role's variable, so a pick in step 03 shows here as it will ship. */
+	.preview-type {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+	.preview-type-display {
+		font: 500 20px/1.2 var(--font-display);
+		color: var(--ink);
+	}
+	.preview-type-ui {
+		font: 400 13px/1.45 var(--font-ui);
+		color: var(--ink-mute);
+	}
+	.preview-type-mono {
+		font: 400 12px var(--font-mono);
+		color: var(--ink-mute);
 	}
 
 	.preview-row {

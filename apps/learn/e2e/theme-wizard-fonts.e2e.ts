@@ -58,23 +58,48 @@ test('picking a font updates the live --font-* custom property', async ({ page }
 	expect(after.toLowerCase()).toContain(label.split(' ')[0].toLowerCase())
 })
 
-test('the picked font reaches a real element’s computed style', async ({ page }) => {
+/** A font-family list with quoting and spacing normalised, so `'Fraunces', serif` = `Fraunces,serif`. */
+const familyList = (value: string) => value.replace(/["']/g, '').replace(/\s*,\s*/g, ',').trim()
+
+test('each pick reaches its role’s element on the step 04 preview', async ({ page }) => {
 	await openTypographyStep(page)
 
-	const uiRow = page.locator('.font-row', { hasText: '--font-ui' })
-	const inactive = uiRow.locator('.font-card:not([data-active])').first()
-	await inactive.click()
+	// A non-default face for every role, so a preview that ignored the pick would still
+	// show the default and fail here.
+	const picked: Record<string, string> = {}
+	for (const role of ['display', 'ui', 'mono']) {
+		const row = page.locator('.font-row', { hasText: `--font-${role}` })
+		await row.locator('.font-card:not([data-active])').first().click()
+		picked[role] = await rootFontVar(page, role)
+	}
 
-	const applied = await rootFontVar(page, 'ui')
-	expect(applied.length).toBeGreaterThan(0)
+	await page.getByRole('tab', { name: /Preview/ }).click()
+	for (const role of ['display', 'ui', 'mono']) {
+		const element = page.locator(`[data-preview-font="${role}"]`)
+		await expect(element, role).toBeVisible()
+		const computed = await element.evaluate((el) => getComputedStyle(el).fontFamily)
+		expect(familyList(computed), role).toBe(familyList(picked[role]))
+	}
+})
 
-	// Something in the running app must actually resolve to the chosen stack — this is
-	// the difference between "we set a variable" and "the preview reflects the choice".
-	const computed = await page.evaluate(() => {
-		const el = document.querySelector('.font-card-sample')
-		return el ? getComputedStyle(el).fontFamily : ''
+test('picking a font fetches nothing from another origin, and a bundled face is ready at once', async ({ page }) => {
+	const foreign: string[] = []
+	page.on('request', (request) => {
+		if (new URL(request.url()).origin !== new URL(page.url() || 'http://localhost').origin) foreign.push(request.url())
 	})
-	expect(computed.length).toBeGreaterThan(0)
+	await openTypographyStep(page)
+	foreign.length = 0
+
+	// Fraunces is self-hosted with the app (no runtime loader): picking it must not wait on
+	// a download — that wait is what a flash of unstyled text is.
+	await page.locator('.font-row', { hasText: '--font-display' }).locator('.font-card', { hasText: 'Fraunces' }).click()
+	await page.locator('.font-row', { hasText: '--font-ui' }).locator('.font-card:not([data-active])').first().click()
+	const ready = await page.evaluate(async () => {
+		await document.fonts.ready
+		return document.fonts.check('400 16px Fraunces') && document.fonts.check('400 16px Inter')
+	})
+	expect(ready).toBe(true)
+	expect(foreign).toEqual([])
 })
 
 test('every role keeps a system fallback in the applied stack', async ({ page }) => {

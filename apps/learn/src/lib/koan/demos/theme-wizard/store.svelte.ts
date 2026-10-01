@@ -14,9 +14,10 @@ export type FontChoice = { id: string; label: string; stack: string; note?: stri
 
 /**
  * Curated font catalogs per role. Each entry's `stack` is dropped straight
- * into `--font-{role}` and rendered immediately — system fallbacks first so
- * picking a font never triggers a network load. Adding new fonts (Google
- * Fonts etc.) is a future iteration once we wire a loader.
+ * into `--font-{role}` and rendered immediately: every named face is either
+ * self-hosted with the app (`@fontsource`, imported in app.css) or a system
+ * font, so picking one never triggers a network load. There is deliberately
+ * no runtime loader (#152 decision) — a new face is added by bundling it.
  */
 export const fontCatalogs: Record<FontRole, FontChoice[]> = {
 	display: [

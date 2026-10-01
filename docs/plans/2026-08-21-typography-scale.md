@@ -4,8 +4,11 @@
 already solved at build time by self-hosted `@fontsource` packages. The remaining
 typography work is **heading levels and font styles**, not more faces.
 
-**Status:** NOT STARTED. The font-selection half of #152 is done and tested
-(`f69308fa`).
+**Status:** Phase 1 tokens shipped (`22781202b`) but have no consumer yet; Phase 2 is blocked
+on a product decision (below); Phase 3 is not started. The font-selection half of #152 is
+done and tested (`f69308fa`). Its test gaps are closed (2026-10-01): step 04 shows all three
+roles, an e2e checks each pick reaches its role's preview element, and another checks that
+picking fetches nothing from another origin and that a bundled face is ready immediately.
 
 ---
 
@@ -79,14 +82,14 @@ six levels and two axes looks thorough while half of it is unreachable and unver
 ## Phases
 
 ### Phase 1 — tokens
-- [ ] Add the scale to `packages/themes/src/base/typography.css` (`:where(:root)` so
-      preset emissions still win — see that file's own note on specificity).
-- [ ] Emit from the UnoCSS preset: extend `buildTypographyVars` and the config's
+- [x] Add the scale to `packages/themes/src/base/typography.css` (`:where(:root)` so
+      preset emissions still win — see that file's own note on specificity). `22781202b`
+- [x] Emit from the UnoCSS preset: extend `buildTypographyVars` and the config's
       `typography: {}` shape. `buildTypographyVars` already carries a complexity lint
-      warning at 9 — split it rather than growing it.
+      warning at 9 — split it rather than growing it. `22781202b`
 - [ ] Apply the tokens in `base/display.css` (or wherever headings are styled) so the
       tokens have a real consumer. Tokens nothing reads are dead output.
-- [ ] Unit tests on the preset emit; contrast/e2e stay green.
+- [x] Unit tests on the preset emit; contrast/e2e stay green. `22781202b`
 
 ### ⚠ Phase 2 blocker found 2026-08-21 — the app has no scale to opt into
 
