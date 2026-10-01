@@ -41,6 +41,8 @@
 		sides?: boolean | [string, string]
 		/** A key for the hidden-coupling stroke (#169). */
 		hidden?: boolean
+		/** What the shade means in a containment view (#164): the measure, on its ramp. */
+		shade?: boolean
 		icons?: Record<string, string>
 		/**
 		 * Fires with the entry a reader activated. Given one, entries become real buttons;
@@ -57,6 +59,7 @@
 		channels = false,
 		sides = undefined,
 		hidden = false,
+		shade = false,
 		icons: userIcons,
 		onpick
 	}: Props = $props()
@@ -66,7 +69,10 @@
 	const sideLabels = $derived(
 		sides === true ? [graph.sideNames.below, graph.sideNames.above] : sides || null
 	)
-	const shown = $derived(kinds || relations || groups || channelRows.length > 0 || Boolean(sideLabels) || hidden)
+	const shadeRow = $derived(shade ? graph.shadeLegend : null)
+	const shown = $derived(
+		kinds || relations || groups || channelRows.length > 0 || Boolean(sideLabels) || hidden || Boolean(shadeRow)
+	)
 
 	/** A pick names its section and value in one choice; split at the first colon. */
 	function pick(choice: string) {
@@ -145,6 +151,22 @@
 					<line x1="2" y1="7" x2="26" y2="7" />
 				</svg>
 				<span data-legend-label>{say('legendHidden')}</span>
+			</span>
+		{/if}
+
+		{#if shadeRow}
+			<!-- The swatch is the ramp itself, low to high: the colours on the canvas, not a sample. -->
+			<span data-graph-legend-entry data-legend-shade={shadeRow.measure}>
+				<span
+					data-legend-swatch
+					data-legend-shade-swatch
+					style:--shade-low={shadeRow.low}
+					style:--shade-high={shadeRow.high}
+					aria-hidden="true"
+				></span>
+				<span data-legend-label>{say('shade')}</span>
+				<span data-legend-measure>{readable(shadeRow.measure)}</span>
+				<span data-legend-cap>{say('shadeScale')}</span>
 			</span>
 		{/if}
 

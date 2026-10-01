@@ -2,9 +2,9 @@ import { SvelteSet } from 'svelte/reactivity'
 import { normalizeGraph } from './model/normalize.js'
 import { layouts } from './layout/index.js'
 import { buildEdges, edgePath } from './layout/edges.js'
-import { nodeShapeOf } from './layout/options.js'
+import { appliesTo, nodeShapeOf } from './layout/options.js'
 import { arcPath } from './layout/arc.js'
-import { resolveGroupStyles } from './preset.js'
+import { resolveGroupStyles, resolveShade } from './preset.js'
 import type { GraphPreset } from './preset.js'
 import type {
 	Arrange,
@@ -122,6 +122,8 @@ export type GraphStateConfig = {
 	colorBy?: string
 	/** `arcs` only — the relation drawn on the right of the axis (#169). */
 	above?: string
+	/** `world` / `sunburst` — the measure (a 0..1 share) each box is shaded by (#164). */
+	shadeBy?: string
 }
 
 
@@ -205,6 +207,7 @@ export class GraphState {
 			heightBy: this.config.heightBy,
 			colorBy: this.config.colorBy,
 			above: this.config.above,
+			shadeBy: this.config.shadeBy,
 			edgeStyle: this.config.edgeStyle,
 			focus: this.config.focus ?? this.selection.value,
 			expanded: this.selection.expanded
@@ -434,6 +437,37 @@ export class GraphState {
 	 * Doing that inline put the same map/join in two places in `Graph.svelte` — a derivation
 	 * living in a component, which is the one thing this layer exists to prevent.
 	 */
+	/** Whether shading is on: a measure is named, and the active layout reads it (#164). */
+	get #shading(): boolean {
+		return Boolean(this.config.shadeBy) && appliesTo(this.layoutName, 'shadeBy')
+	}
+
+	#shaded(cluster: Cluster): boolean {
+		return this.#shading && cluster.shade !== undefined
+	}
+
+	/**
+	 * A box's paint as a style attribute: the shade ramp's step for its share when shading
+	 * (#164), else its group's colour. Custom properties, so a theme still has the last word.
+	 */
+	boxStyleAttr(cluster: Cluster): string {
+		if (!this.#shaded(cluster)) return this.groupStyleAttr(cluster.ramp ?? cluster.name)
+		return Object.entries(resolveShade(cluster.shade!, this.config.mode, this.config.preset))
+			.map(([property, value]) => `${property}:${value}`)
+			.join(';')
+	}
+
+	/** What a legend says about the shade: the measure and the ramp's two ends, or null. */
+	get shadeLegend(): { measure: string; low: string; high: string } | null {
+		if (!this.#shading) return null
+		const { mode, preset } = this.config
+		return {
+			measure: this.config.shadeBy!,
+			low: resolveShade(0, mode, preset)['--group-fill'],
+			high: resolveShade(1, mode, preset)['--group-fill']
+		}
+	}
+
 	groupStyleAttr(group: string | undefined): string {
 		return Object.entries(this.groupStyle(group))
 			.map(([property, value]) => `${property}:${value}`)
@@ -551,6 +585,8 @@ export class GraphState {
 	boxAttrs(cluster: Cluster): Record<string, string | null | undefined> {
 		return {
 			...this.#boxIntent(cluster),
+			// #164: painted from the shade ramp rather than its group's colour.
+			'data-graph-shaded': flag(this.#shaded(cluster)),
 			'data-cluster-depth': String(cluster.depth ?? 0),
 			// polymetric (#168): the channels a box could not show — missing data, or past the cap.
 			'data-graph-missing': cluster.missing?.join(' '),

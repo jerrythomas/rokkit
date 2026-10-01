@@ -14,6 +14,7 @@
 	import DiagramFrame from './DiagramFrame.svelte'
 	import DepthControl from '../controls/DepthControl.svelte'
 	import DrillBar from '../controls/DrillBar.svelte'
+	import MeasureControl from '../controls/MeasureControl.svelte'
 	import ZoomControl from '../controls/ZoomControl.svelte'
 	import { GraphState } from '../GraphState.svelte.js'
 	import type { GraphFields, GraphNode } from '../types.js'
@@ -31,6 +32,8 @@
 		fields?: GraphFields
 		/** What area encodes. A `measures` key, or `weight`, or `degree`. */
 		sizeBy?: string
+		/** The measure — a 0..1 share — each box is shaded by (#164). Bindable; the picker moves it. */
+		shadeBy?: string
 		/** How many levels below the focus to materialise. */
 		levels?: number
 		/** The subtree to render as the whole canvas. `[]` is the root. Drilling, not zooming. */
@@ -60,6 +63,7 @@
 		edges = [],
 		fields = {},
 		sizeBy = 'weight',
+		shadeBy = $bindable(undefined),
 		levels = $bindable(2),
 		focusPath = $bindable([]),
 		controls = false,
@@ -83,6 +87,7 @@
 		fields,
 		layout: 'sunburst',
 		sizeBy,
+		shadeBy,
 		levels,
 		focusPath,
 		value,
@@ -135,12 +140,13 @@
 	<DrillBar state={graph} />
 	{#if controls}
 		<DepthControl {levels} max={maxLevels} onchange={(v) => (levels = v)} />
+		<MeasureControl channel="color" value={shadeBy} options={graph.measureKeys} allowNone onchange={(v) => (shadeBy = v)} />
 		<ZoomControl {zoom} onchange={(v) => (zoom = v)} />
 	{/if}
 {/snippet}
 
 {#snippet legendBar()}
-	<GraphLegend state={graph} groups />
+	<GraphLegend state={graph} groups shade />
 {/snippet}
 
 <DiagramFrame

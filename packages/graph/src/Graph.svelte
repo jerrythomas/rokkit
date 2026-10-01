@@ -207,7 +207,7 @@
 							<path
 								data-graph-wedge
 								{...graph.boxAttrs(cluster)}
-								style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+								style={graph.boxStyleAttr(cluster)}
 								d={graph.wedgePath(cluster)}
 								role="button"
 								tabindex={0}><title>{graph.caption(cluster)}</title></path
@@ -216,7 +216,7 @@
 							<path
 								data-graph-wedge
 								{...graph.boxAttrs(cluster)}
-								style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+								style={graph.boxStyleAttr(cluster)}
 								d={graph.wedgePath(cluster)}><title>{graph.caption(cluster)}</title></path
 							>
 						{/if}
@@ -241,7 +241,7 @@
 						style:top="{cluster.y}px"
 						style:width="{cluster.w}px"
 						style:height="{cluster.h}px"
-						style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+						style={graph.boxStyleAttr(cluster)}
 						style:--shade={cluster.shade}
 					>
 						<span data-graph-cluster-label>{graph.caption(cluster)}</span>
@@ -254,7 +254,7 @@
 						style:top="{cluster.y}px"
 						style:width="{cluster.w}px"
 						style:height="{cluster.h}px"
-						style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+						style={graph.boxStyleAttr(cluster)}
 					>
 						<span data-graph-cluster-label>{graph.caption(cluster)}</span>
 					</div>

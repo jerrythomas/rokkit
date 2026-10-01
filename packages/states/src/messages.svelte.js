@@ -85,6 +85,7 @@ const defaultMessages = {
 		width: 'Width',
 		height: 'Height',
 		shade: 'Shade',
+		shadeScale: 'none → all',
 		measureNone: 'none',
 		// Controls
 		detailLevel: 'Detail level',
