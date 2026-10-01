@@ -10525,14 +10525,14 @@ what needs no input.
   points at rokkit.sensei-hq.com. The user stopped me from re-implementing bumpp's regex to
   "prove" the bump. Releases are `bun run bump`, and the memory is updated.
 - **#164 (shade channel):**
-  - `afcd5f4e8`: `model/share.ts` (size-weighted roll-up); `world` / `sunburst` set `Cluster.shade`.
-  - `fe2d2fc31`: the preset ramp and `resolveShade`, with the label measured by auto on-color;
+  - `cd6342131`: `model/share.ts` (size-weighted roll-up); `world` / `sunburst` set `Cluster.shade`.
+  - `157019a7a`: the preset ramp and `resolveShade`, with the label measured by auto on-color;
     every step clears 4.5:1 in both modes.
-  - `b4cbff9ff`: a real bug the acceptance test exposed. `GraphConfig.update` re-normalised the
+  - `30b80b26e`: a real bug the acceptance test exposed. `GraphConfig.update` re-normalised the
     model on EVERY update, because the deep proxy re-wraps the same array. It now assigns
     changed inputs only.
-  - `04a87a6a2`: `Treemap` / `Sunburst` `shadeBy`, a picker, the legend row, `data-graph-shaded`.
-  - `9b3c8f1f5`: theme CSS. `fd5d6e8f8`: the "Treemap, shaded by tests" demo, plus the explorer
+  - `c350b9766`: `Treemap` / `Sunburst` `shadeBy`, a picker, the legend row, `data-graph-shaded`.
+  - `fdf0187d2`: theme CSS. `296c19772`: the "Treemap, shaded by tests" demo, plus the explorer
     carrying `shadeBy`.
 
 **Environment incident:** e2e runs share port 4173 with dbd's `vite preview`, and Playwright
