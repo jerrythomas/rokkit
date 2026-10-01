@@ -38,6 +38,7 @@ export type GraphConfigValues = {
 	widthBy: string | undefined
 	heightBy: string | undefined
 	colorBy: string | undefined
+	above: string | undefined
 }
 
 type Key = keyof GraphConfigValues
@@ -112,7 +113,8 @@ export const CONFIG_FIELDS: readonly Field[] = Object.freeze([
 	{ key: 'layerLabels', raw: true },
 	{ key: 'widthBy', raw: true },
 	{ key: 'heightBy', raw: true },
-	{ key: 'colorBy', raw: true }
+	{ key: 'colorBy', raw: true },
+	{ key: 'above', raw: true }
 ])
 
 function resolve(config: GraphStateConfig): GraphConfigValues {
@@ -293,5 +295,8 @@ export class GraphConfig {
 	}
 	get colorBy() {
 		return this.#v.colorBy
+	}
+	get above() {
+		return this.#v.above
 	}
 }

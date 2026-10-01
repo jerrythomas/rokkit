@@ -101,7 +101,10 @@ export type GraphStateConfig = {
 	onexpand?: (id: string, node: GraphNode) => void
 	/** The reader collapsed a group back into one node. */
 	oncollapse?: (id: string, node: GraphNode) => void
-	/** `layers` only — every edge, or only the ones that climb (#167). Defaults to `all`. */
+	/**
+	 * Every edge (the default), or only the ones the view is about: `violations` in `layers`
+	 * (#167), `hidden` in `arcs` (#169).
+	 */
 	showEdges?: ShowEdges
 	/** `layers` only — band names by layer index. */
 	layerLabels?: string[]
@@ -109,6 +112,8 @@ export type GraphStateConfig = {
 	widthBy?: string
 	heightBy?: string
 	colorBy?: string
+	/** `arcs` only — the relation drawn on the right of the axis (#169). */
+	above?: string
 }
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
@@ -192,6 +197,7 @@ export class GraphState {
 			widthBy: this.config.widthBy,
 			heightBy: this.config.heightBy,
 			colorBy: this.config.colorBy,
+			above: this.config.above,
 			edgeStyle: this.config.edgeStyle,
 			focus: this.config.focus ?? this.selection.value,
 			expanded: this.selection.expanded
@@ -464,9 +470,12 @@ export class GraphState {
 	}
 	/**
 	 * An edge's weight as 0..1 of the heaviest weighted edge, for stroke width — or undefined
-	 * for an edge with no weight, which draws at the theme's normal width.
+	 * for an edge with no weight, which draws at the theme's normal width. A layout's own
+	 * per-set `strength` wins.
 	 */
 	edgeWeight(edge: RoutedEdge): number | undefined {
+		// A layout that scales each set to its own heaviest (`arcs`) has already said.
+		if (edge.strength !== undefined) return edge.strength
 		if (edge.weight === undefined || this.#maxEdgeWeight <= 0) return undefined
 		return edge.weight / this.#maxEdgeWeight
 	}

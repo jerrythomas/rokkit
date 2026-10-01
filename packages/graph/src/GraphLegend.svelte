@@ -30,6 +30,13 @@
 		 * once are unreadable without a key.
 		 */
 		channels?: boolean
+		/**
+		 * The two sides of an arc diagram, left then right (#169) — which relation is which is
+		 * not something a reader can guess from the arcs.
+		 */
+		sides?: [string, string]
+		/** A key for the hidden-coupling stroke (#169). */
+		hidden?: boolean
 		icons?: Record<string, string>
 		/**
 		 * Fires with the entry a reader activated. Given one, entries become real buttons;
@@ -44,6 +51,8 @@
 		relations = false,
 		groups = false,
 		channels = false,
+		sides = undefined,
+		hidden = false,
 		icons: userIcons,
 		onpick
 	}: Props = $props()
@@ -58,7 +67,7 @@
 				]
 			: []
 	)
-	const shown = $derived(kinds || relations || groups || channelRows.length > 0)
+	const shown = $derived(kinds || relations || groups || channelRows.length > 0 || Boolean(sides) || hidden)
 
 	/** Underscores are the WIRE format (dbd sends `materialized_view`), not something to read. */
 	const readable = (value: string) => value.replace(/_/g, ' ')
@@ -122,6 +131,24 @@
 			{#each graph.groupsPresent as group (group)}
 				{@render row('group', group)}
 			{/each}
+		{/if}
+
+		{#if sides}
+			<span data-graph-legend-entry data-legend-side="below">
+				<span data-legend-label>← {sides[0]}</span>
+			</span>
+			<span data-graph-legend-entry data-legend-side="above">
+				<span data-legend-label>{sides[1]} →</span>
+			</span>
+		{/if}
+
+		{#if hidden}
+			<span data-graph-legend-entry data-legend-hidden>
+				<svg data-legend-swatch data-edge-hidden aria-hidden="true">
+					<line x1="2" y1="7" x2="26" y2="7" />
+				</svg>
+				<span data-legend-label>Hidden coupling</span>
+			</span>
 		{/if}
 
 		{#each channelRows as channel (channel.key)}

@@ -18,6 +18,7 @@ export { default as Neighborhood } from './diagrams/Neighborhood.svelte'
 export { default as DependencyMatrix } from './diagrams/DependencyMatrix.svelte'
 export { default as LayersDiagram } from './diagrams/LayersDiagram.svelte'
 export { default as PolymetricTree } from './diagrams/PolymetricTree.svelte'
+export { default as ArcDiagram } from './diagrams/ArcDiagram.svelte'
 
 // Controls, for composing your own arrangement over the bare canvas.
 export { default as DensityControl } from './controls/DensityControl.svelte'
@@ -27,6 +28,7 @@ export { default as DepthControl } from './controls/DepthControl.svelte'
 export { default as BundleControl } from './controls/BundleControl.svelte'
 export { default as ViolationsControl } from './controls/ViolationsControl.svelte'
 export { default as MeasureControl } from './controls/MeasureControl.svelte'
+export { default as HiddenControl } from './controls/HiddenControl.svelte'
 export { default as DrillBar } from './controls/DrillBar.svelte'
 export { ZOOM_MIN, ZOOM_MAX, ZOOM_STEP, clampZoom } from './controls/zoom.js'
 export { GraphState } from './GraphState.svelte.js'
@@ -43,6 +45,7 @@ export {
 	neighborhood,
 	points,
 	polymetric,
+	arcs,
 	radial,
 	structure,
 	sunburst,
