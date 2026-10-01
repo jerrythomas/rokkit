@@ -38,6 +38,7 @@ export type DiagramId =
 	| 'structure'
 	| 'treemap'
 	| 'lazy-treemap'
+	| 'treemap-tested'
 	| 'sunburst'
 	| 'neighborhood'
 	| 'matrix'
@@ -169,6 +170,17 @@ export const registry: Record<DiagramId, DiagramConfig> = {
 			ondrill: (path: string[]) => lazyCodebase.load(path),
 			ondrillup: (path: string[]) => lazyCodebase.load(path)
 		}
+	},
+	'treemap-tested': {
+		id: 'treemap-tested',
+		layout: 'world',
+		label: 'Treemap, shaded by tests',
+		group: 'Code',
+		component: Treemap as Component<Record<string, unknown>>,
+		dataset: 'codebase',
+		blurb:
+			'The same treemap, shaded by how much of each box sits in a file a spec names: darker is more tested. A box’s shade is weighted by what it holds, so one tested file does not light up a package of fifty. Pick another measure, or none, from the controls.',
+		props: { sizeBy: 'declarations', shadeBy: 'tested', levels: 2, focusPath: ['rokkit'] }
 	},
 	sunburst: {
 		id: 'sunburst',

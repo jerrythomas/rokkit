@@ -89,6 +89,7 @@ const meta: DemoMeta = {
 			mode: 'dynamic',
 			props: { diagram: 'lazy-treemap' }
 		},
+		{ id: 'treemap-tested', label: 'Treemap, shaded by tests', mode: 'dynamic', props: { diagram: 'treemap-tested' } },
 		{ id: 'sunburst', label: 'Sunburst', mode: 'dynamic', props: { diagram: 'sunburst' } },
 		{ id: 'matrix', label: 'Dependency matrix', mode: 'dynamic', props: { diagram: 'matrix' } },
 		{ id: 'coupling', label: 'Hidden coupling', mode: 'dynamic', props: { diagram: 'coupling' } },
@@ -269,6 +270,16 @@ const meta: DemoMeta = {
 				selector: '[data-graph-pending]',
 				desc: 'Present on the canvas (with aria-busy) while a drill’s level is loading — the old level stays, dimmed'
 			},
+			// Shade (#164)
+			{
+				selector: '[data-graph-shaded]',
+				desc: 'A containment box or wedge painted from the shade ramp by its share of `shadeBy` (0..1), its label colour measured against that step'
+			},
+			{
+				selector: '[data-legend-shade]',
+				desc: 'The legend row for the shade: the measure, beside the ramp from none to all'
+			},
+			{ selector: '[data-legend-shade-swatch]', desc: 'The ramp itself, low to high, as the key' },
 			// Arcs (#169)
 			{
 				selector: '[data-edge-hidden]',

@@ -53,7 +53,7 @@
 	}
 
 	/**
-	 * What the reader chose on the diagram's own controls — polymetric measures, an edge filter —
+	 * What the reader chose on the diagram's own controls — polymetric measures, a shade, an edge filter —
 	 * carried back like the drill path: update() fully re-applies, so the registry's opening
 	 * props would otherwise undo a choice the next time anything changed, a selection say.
 	 * Undefined where a diagram has no such control, and then they mean nothing.
@@ -63,6 +63,7 @@
 			widthBy: graph.config.widthBy,
 			heightBy: graph.config.heightBy,
 			colorBy: graph.config.colorBy,
+			shadeBy: graph.config.shadeBy,
 			showEdges: graph.config.showEdges
 		}))
 
