@@ -22,6 +22,7 @@ import codebase from './codebase.json'
 import architecture from '../chart/architecture.json'
 import type { GraphFields } from '@rokkit/graph'
 import { LazyCodebase } from './lazy-codebase.svelte'
+import { withCycleGroups } from './cycles'
 
 export type DatasetId =
 	| 'ecommerce'
@@ -31,6 +32,7 @@ export type DatasetId =
 	| 'codebase-lazy'
 	| 'components'
 	| 'cochange'
+	| 'cycles'
 
 /* ─── 1. dbd v2-shaped ───────────────────────────────────────────────────────
    `tables` holds tables (plus the two enums — dbd flags an enum COLUMN via `Column.en`
@@ -464,6 +466,9 @@ const hiddenCoupling = architecture.cochange
 		relation: 'co-change'
 	}))
 
+/** The same imports, with each import cycle sent as a collapsed group node (#166). */
+const componentCycles = withCycleGroups(componentNodes, componentImports)
+
 export const componentFields: GraphFields = {
 	id: 'id',
 	label: 'label',
@@ -528,6 +533,13 @@ export const datasets = {
 		label: 'This codebase, by component',
 		nodes: componentNodes as unknown[],
 		edges: componentImports as unknown[],
+		fields: componentFields
+	},
+	cycles: {
+		id: 'cycles' as const,
+		label: 'This codebase — import cycles, condensed',
+		nodes: componentCycles.nodes as unknown[],
+		edges: componentCycles.edges as unknown[],
 		fields: componentFields
 	},
 	cochange: {

@@ -91,7 +91,8 @@ const meta: DemoMeta = {
 		},
 		{ id: 'sunburst', label: 'Sunburst', mode: 'dynamic', props: { diagram: 'sunburst' } },
 		{ id: 'matrix', label: 'Dependency matrix', mode: 'dynamic', props: { diagram: 'matrix' } },
-		{ id: 'coupling', label: 'Hidden coupling', mode: 'dynamic', props: { diagram: 'coupling' } }
+		{ id: 'coupling', label: 'Hidden coupling', mode: 'dynamic', props: { diagram: 'coupling' } },
+		{ id: 'cycles', label: 'Import cycles', mode: 'dynamic', props: { diagram: 'cycles' } }
 	],
 	api: {
 		props: [
@@ -215,6 +216,16 @@ const meta: DemoMeta = {
 				desc: 'The reader opened a box. `node` is the declared node at the path, null for a synthesised container. Return a promise while you load that level: the canvas shows it pending, and a rejection returns to the previous level. Not a selection — onselect is not called'
 			},
 			{
+				name: 'onexpand',
+				type: '(id: string, node: GraphNode) => void',
+				desc: 'The reader expanded a group node (#166). A group is a node with `members` (ids); with the members in `nodes` they appear at once, edges among them included. A host that sends only the group can load them here'
+			},
+			{
+				name: 'oncollapse',
+				type: '(id: string, node: GraphNode) => void',
+				desc: 'The reader collapsed a group back into one node; its members’ edges aggregate onto it again'
+			},
+			{
 				name: 'ondrillup',
 				type: '(path: string[]) => void | Promise<void>',
 				desc: 'The reader climbed out to `path`. Answer from what you already hold (no refetch) or return a promise, same contract as ondrill'
@@ -237,6 +248,35 @@ const meta: DemoMeta = {
 			{
 				selector: '[data-graph-pending]',
 				desc: 'Present on the canvas (with aria-busy) while a drill’s level is loading — the old level stays, dimmed'
+			},
+			// Groups (#166)
+			{
+				selector: '[data-graph-group]',
+				desc: 'A group node — one that stands for `members` (a cycle the host condensed)'
+			},
+			{
+				selector: '[data-graph-collapsed]',
+				desc: 'A collapsed group: drawn as a stack, its members hidden, their edges rerouted to it'
+			},
+			{
+				selector: '[data-graph-member-of]',
+				desc: 'A member of an expanded group; the value is the group id. Double-click folds the group back'
+			},
+			{
+				selector: '[data-graph-group-toggle]',
+				desc: 'The inline "Expand · N" control on a collapsed group (role="button", Enter / Space)'
+			},
+			{
+				selector: '[data-graph-group-action]',
+				desc: 'Expand / Collapse in the drill bar for the selected group or member — the keyboard route'
+			},
+			{
+				selector: '[data-edge-weakest]',
+				desc: 'The cheapest link to cut in a cycle — the edge flagged `weakest` by the host'
+			},
+			{
+				selector: '[data-edge-count]',
+				desc: 'How many edges a condensed edge stands for, when a collapsed group aggregated several'
 			},
 			// Drilling (#165)
 			{

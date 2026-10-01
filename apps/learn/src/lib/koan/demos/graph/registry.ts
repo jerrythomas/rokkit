@@ -38,6 +38,7 @@ export type DiagramId =
 	| 'neighborhood'
 	| 'matrix'
 	| 'coupling'
+	| 'cycles'
 
 /** What question the diagram answers. Groups the picker, nothing more. */
 export type DiagramGroup = 'Schema' | 'Code'
@@ -198,6 +199,17 @@ export const registry: Record<DiagramId, DiagramConfig> = {
 		blurb:
 			'Components packed by package, sized by lines of code, with their imports — and, dotted over them, the pairs that change in the same commit but share no import, thicker the more often. The layout never sees those, so they cross it: that is the coupling the import graph hides.',
 		props: { layout: 'points', sizeBy: 'weight' }
+	},
+	cycles: {
+		id: 'cycles',
+		layout: 'flow',
+		label: 'Import cycles',
+		group: 'Code',
+		component: DependencyDiagram as Component<Record<string, unknown>>,
+		dataset: 'cycles',
+		blurb:
+			'Each group of components that import each other is collapsed into one node, so what remains reads as a hierarchy. Expand one to see the cycle; the dashed red edge is the weakest link, the cheapest one to cut.',
+		props: { density: 'names' }
 	}
 }
 
