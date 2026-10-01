@@ -799,6 +799,38 @@
   cursor: pointer;
 }
 
+/* ─── groups (issue 166) ─────────────────────────────────────────────────────── */
+
+/* A collapsed group stands for several nodes, so it reads as a stack, not as one more card:
+   a double rule. Shape only — each style colours it. */
+[data-graph-node][data-graph-collapsed] {
+  border-style: double;
+  border-width: 3px;
+}
+
+/* The inline "Expand · N" control sits in the card's control row, like "+3 more". */
+[data-graph-group-toggle] {
+  display: flex;
+  align-items: center;
+  height: var(--graph-more-h);
+  padding: 0 0.5rem;
+  font-size: 0.65rem;
+  font-family: var(--font-mono, monospace);
+  cursor: pointer;
+}
+
+/* A dot has no furniture; it expands by double-click or from the drill bar. */
+[data-graph-node-shape='dot'] [data-graph-group-toggle] {
+  display: none;
+}
+
+/* The cheapest link to cut in a cycle — the whole actionable output of a cycles view — is
+   dashed and heavier, whatever its weight. Each style strokes it in the danger colour. */
+[data-graph-edge][data-edge-weakest] path {
+  stroke-dasharray: 6 3;
+  stroke-width: calc(2px + var(--edge-weight, 0) * 2.75px);
+}
+
 /* ─── drilling (issue 165) ─────────────────────────────────────────────────── */
 
 /* A container that can be opened takes the pointer the way a leaf does — clusters are

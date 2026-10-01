@@ -355,3 +355,31 @@ describe('graph theme CSS — a drillable container never covers its own childre
 		for (const sel of selectors) expect(sel).toMatch(/:not\(\[data-graph-drillable\]\)/)
 	})
 })
+
+describe('graph theme CSS — groups and the weakest edge (#166)', () => {
+	it('gives a collapsed group card a distinct shape in base, without colour', () => {
+		const rules = rulesFor('base/graph.css', '[data-graph-collapsed]')
+		expect(rules.some((r) => /border-style:\s*double/.test(r))).toBe(true)
+		for (const rule of rules) expect(rule, rule).not.toMatch(/(^|[\s;{])(color|background(-color)?|border-color)\s*:/)
+	})
+
+	it('lays out the inline expand control in base', () => {
+		expect(rulesFor('base/graph.css', '[data-graph-group-toggle]').length).toBeGreaterThan(0)
+	})
+
+	it('dashes and thickens the weakest edge in base', () => {
+		const rules = rulesFor('base/graph.css', '[data-edge-weakest]')
+		expect(rules.some((r) => /stroke-dasharray/.test(r))).toBe(true)
+		expect(rules.some((r) => /stroke-width/.test(r))).toBe(true)
+	})
+
+	it.each(STYLES)('%s strokes the weakest edge in the danger colour — the link to cut', (style) => {
+		const rules = rulesFor(`${style}/graph.css`, '[data-edge-weakest]')
+		expect(rules.some((r) => /stroke:\s*var\(--danger\)/.test(r)), style).toBe(true)
+	})
+
+	it.each(STYLES)('%s colours the inline expand control', (style) => {
+		const rules = rulesFor(`${style}/graph.css`, '[data-graph-group-toggle]')
+		expect(rules.some((r) => /background-color:/.test(r)), style).toBe(true)
+	})
+})

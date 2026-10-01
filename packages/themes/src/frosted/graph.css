@@ -506,3 +506,18 @@
   background-color: var(--error-soft);
   color: var(--ink);
 }
+
+/* ─── groups (#166) ─── */
+[data-style='frosted'] [data-graph-node][data-graph-collapsed] {
+  border-color: var(--paper-edge);
+}
+
+[data-style='frosted'] [data-graph-group-toggle] {
+  background-color: var(--paper-soft);
+  color: var(--ink);
+}
+
+/* The link to cut. A stroke, not text, so the status colour is legible here at its 500. */
+[data-style='frosted'] [data-graph-edge][data-edge-weakest] path {
+  stroke: var(--danger);
+}
