@@ -434,7 +434,9 @@
 					data-graph-member-of={graph.groupOf(key) ?? undefined}
 					data-label-side={card.labelSide}
 					style:--label-angle={card.labelAngle === undefined ? undefined : `${card.labelAngle}deg`}
-					data-node-headonly={card.vis.length === 0 && card.more <= 0 ? '' : undefined}
+					data-node-headonly={card.vis.length === 0 && card.more <= 0 && !graph.isGroup(key)
+						? ''
+						: undefined}
 					style:left="{card.x}px"
 					style:top="{card.y}px"
 					style:width="{card.w}px"

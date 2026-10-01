@@ -42,6 +42,15 @@ function selectedRows(
 	return node.rows
 }
 
+/**
+ * Head, the shown rows, and a control row when there is something to control: hidden rows
+ * ("+3 more"), or a group's "Expand" (#166). Bottom padding only under content.
+ */
+function heightOf(node: GraphNode, shown: number, more: number): number {
+	const controlRow = more > 0 || (node.members?.length ?? 0) > 0
+	return HEAD_H + shown * ROW_H + (controlRow ? MORE_H : 0) + (shown || controlRow ? PAD_B : 0)
+}
+
 /** Build a card per node. Height is derived from row count — nothing is measured. */
 export function buildCards(
 	nodes: GraphNode[],
@@ -53,10 +62,7 @@ export function buildCards(
 	for (const node of nodes) {
 		const vis = visibleRows(node, density, options)
 		const more = node.rows.length - vis.length
-		const h =
-			HEAD_H + vis.length * ROW_H + (more > 0 ? MORE_H : 0) + (vis.length || more > 0 ? PAD_B : 0)
-
-		cards[node.id] = { node, vis, more, w: CARD_W, h, x: 0, y: 0 }
+		cards[node.id] = { node, vis, more, w: CARD_W, h: heightOf(node, vis.length, more), x: 0, y: 0 }
 	}
 
 	return cards

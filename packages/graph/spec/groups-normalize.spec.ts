@@ -48,3 +48,21 @@ describe('normalizeGraph — groups', () => {
 		expect(m.edges[1]).not.toHaveProperty('weakest')
 	})
 })
+
+describe('a group card leaves room for its expand control', () => {
+	it('is the head plus one control row, where a rowless card is the head alone', async () => {
+		const { buildCards } = await import('../src/layout/cards.js')
+		const { HEAD_H, MORE_H, PAD_B } = await import('../src/layout/constants.js')
+		const m = normalizeGraph(
+			[
+				{ id: 'g', name: 'G', members: ['a'] },
+				{ id: 'x', name: 'X' }
+			],
+			[],
+			FIELDS
+		)
+		const cards = buildCards(m.nodes, 'keys')
+		expect(cards.g.h).toBe(HEAD_H + MORE_H + PAD_B)
+		expect(cards.x.h).toBe(HEAD_H)
+	})
+})
