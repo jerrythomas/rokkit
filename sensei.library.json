@@ -2,9 +2,9 @@
   "library": "rokkit",
   "ecosystem": "npm",
   "version": ">=1.3",
-  "documents": "1.8.1",
+  "documents": "1.8.2",
   "repo": "https://github.com/jerrythomas/rokkit",
-  "ref": "v1.8.1",
+  "ref": "v1.8.2",
   "site": "https://rokkit.sensei-hq.com",
   "packages": [
     "@rokkit/actions",
