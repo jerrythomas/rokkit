@@ -58,6 +58,11 @@ don't restate it.
   hardcoded `font-family:` or arbitrary `font-[...]` in component markup; map it to the right class.
 - Faces belong in config, not per-component. If a needed face isn't declared, the fix is to add it
   to `typography:` (a styling-config change — hand off to the styles review), not to inline it.
+- Heading LEVELS come from `[data-heading='1'..'4']` rules in `@rokkit/themes` (face, size,
+  weight, line-height and tracking together): a title takes `data-heading="2"`, and prose under
+  `data-prose` gets its `h1`–`h4` styled. Flag a hand-built heading (`text-2xl font-semibold`
+  on a title, or a per-component `font-size` for a heading) and map it to `data-heading`.
+  There are no `--text-*` scale tokens — a `var(--text-…)` read is a bug.
 
 ## Procedure
 
@@ -97,7 +102,7 @@ don't have. A piped/`| tail` exit status reports the pipe, not the command: read
   tier · the simpler rewrite (when demotable).
 - **Custom icons** — findings: unloaded collections, snippet-for-an-icon, inline SVG → `i-*` class.
 - **Typography** — hardcoded `font-family`/`font-[...]` findings → `font-heading/body/mono` (or a
-  `typography:` config addition to hand off).
+  `typography:` config addition to hand off); hand-built headings → `data-heading`.
 - **Contract hygiene** — off-contract usage (wrong data prop, manual focus, `onclick` on `[data-path]`).
 - **Verification evidence** — the pasted build output + Playwright snapshot summary (light/dark).
 - **### Verdict PASS/FAIL** — PASS only when each usage is at the simplest tier that works, icons and
