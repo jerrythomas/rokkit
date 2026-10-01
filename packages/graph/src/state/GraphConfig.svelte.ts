@@ -31,6 +31,8 @@ export type GraphConfigValues = {
 	ondrill: GraphStateConfig['ondrill']
 	ondrillup: GraphStateConfig['ondrillup']
 	onfocuspath: GraphStateConfig['onfocuspath']
+	onexpand: GraphStateConfig['onexpand']
+	oncollapse: GraphStateConfig['oncollapse']
 }
 
 type Key = keyof GraphConfigValues
@@ -98,7 +100,9 @@ export const CONFIG_FIELDS: readonly Field[] = Object.freeze([
 	{ key: 'onselect', raw: true },
 	{ key: 'ondrill', raw: true },
 	{ key: 'ondrillup', raw: true },
-	{ key: 'onfocuspath', raw: true }
+	{ key: 'onfocuspath', raw: true },
+	{ key: 'onexpand', raw: true },
+	{ key: 'oncollapse', raw: true }
 ])
 
 function resolve(config: GraphStateConfig): GraphConfigValues {
@@ -252,5 +256,11 @@ export class GraphConfig {
 	}
 	get onfocuspath() {
 		return this.#v.onfocuspath
+	}
+	get onexpand() {
+		return this.#v.onexpand
+	}
+	get oncollapse() {
+		return this.#v.oncollapse
 	}
 }

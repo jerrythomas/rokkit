@@ -26,9 +26,12 @@ import { contentExtent } from './layout/extent.js'
 import { GraphConfig } from './state/GraphConfig.svelte.js'
 import { GraphSelection } from './state/GraphSelection.svelte.js'
 import { GraphDrill } from './state/GraphDrill.svelte.js'
+import { GraphGroups } from './state/GraphGroups.svelte.js'
+import type { GroupAction } from './state/GraphGroups.svelte.js'
+import { condense } from './model/condense.js'
 import type { Breadcrumb } from './state/GraphDrill.svelte.js'
 
-export type { Relationship, EntityRow, Breadcrumb }
+export type { Relationship, EntityRow, Breadcrumb, GroupAction }
 
 export type GraphStateConfig = {
 	nodes?: unknown[]
@@ -89,6 +92,13 @@ export type GraphStateConfig = {
 	 * For a component that owns a bindable `focusPath` prop, so its next `update()` agrees.
 	 */
 	onfocuspath?: (path: string[]) => void
+	/**
+	 * The reader expanded a group (#166). With its members already in `nodes` they appear at
+	 * once; a host that sends only the group can load them in answer.
+	 */
+	onexpand?: (id: string, node: GraphNode) => void
+	/** The reader collapsed a group back into one node. */
+	oncollapse?: (id: string, node: GraphNode) => void
 }
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
@@ -137,7 +147,17 @@ export class GraphState {
 		onselect: () => this.config.onselect
 	})
 
-	#model = $derived(normalizeGraph(this.config.nodes, this.config.edges, this.config.fields))
+	/** The model as normalised — every group AND every member. */
+	#canonical = $derived(normalizeGraph(this.config.nodes, this.config.edges, this.config.fields))
+
+	/** Which groups are collapsed (#166). */
+	readonly groups: GraphGroups = new GraphGroups({
+		model: () => this.#canonical,
+		config: this.config
+	})
+
+	/** What is drawn: the canonical model with each collapsed group standing in for its members. */
+	#model = $derived(condense(this.#canonical, this.groups.collapsed))
 
 	#layoutFn = $derived(
 		typeof this.config.layout === 'function' ? this.config.layout : (layouts[this.config.layout] ?? layouts.cluster)
@@ -244,6 +264,37 @@ export class GraphState {
 		return this.selection.isExpanded(id)
 	}
 
+	// ─── groups (#166) — see GraphGroups ────────────────────────────────────────
+	isGroup(id: string): boolean {
+		return this.groups.isGroup(id)
+	}
+	isCollapsed(id: string): boolean {
+		return this.groups.isCollapsed(id)
+	}
+	memberCount(id: string): number {
+		return this.groups.memberCount(id)
+	}
+	groupOf(id: string): string | null {
+		return this.groups.groupOf(id)
+	}
+	/**
+	 * Expand or collapse a group. Collapsing one whose member is selected moves the selection to
+	 * the group: the thing being looked at is now inside it, and a selection naming a hidden node
+	 * would leave the entity panel empty for no visible reason.
+	 */
+	toggleGroup(id: string): boolean {
+		const collapsing = this.groups.isGroup(id) && !this.groups.isCollapsed(id)
+		const selected = this.value
+		const holdsSelection = collapsing && selected !== null && this.groups.groupOf(selected) === id
+		if (!this.groups.toggle(id)) return false
+		if (holdsSelection) this.select(id)
+		return true
+	}
+	/** The selection's group action — what a drill bar offers. */
+	get groupAction(): GroupAction | null {
+		return this.groups.actionFor(this.value)
+	}
+
 	// ─── drilling (#165) — see GraphDrill ───────────────────────────────────────
 	get drillPath(): string[] {
 		return this.drill.path
@@ -285,7 +336,8 @@ export class GraphState {
 			this.drillPath.length > 0 ||
 			this.pending ||
 			this.drillError !== null ||
-			this.drillTarget !== null
+			this.drillTarget !== null ||
+			this.groupAction !== null
 		)
 	}
 
