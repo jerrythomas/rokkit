@@ -34,6 +34,8 @@
 		focusPath = $bindable([]),
 		ondrill = undefined,
 		ondrillup = undefined,
+		onexpand = undefined,
+		oncollapse = undefined,
 		icons: userIcons = undefined,
 		class: className = ''
 	}: GraphProps = $props()
@@ -62,6 +64,8 @@
 		focusPath,
 		ondrill,
 		ondrillup,
+		onexpand,
+		oncollapse,
 		// Drilling moves focusPath inside the state; keep the bindable prop in step, or the next
 		// update() would put the old value back.
 		onfocuspath: (path) => (focusPath = path)
@@ -394,6 +398,8 @@
 						data-edge-to={edge.toKey}
 						data-edge-state={graph.edgeState(edge)}
 						data-edge-overlay={edge.overlay ? '' : undefined}
+						data-edge-weakest={edge.weakest ? '' : undefined}
+						data-edge-count={edge.count}
 						style:--edge-weight={graph.edgeWeight(edge)}
 					>
 						<path d={graph.edgePath(edge)} />
@@ -423,6 +429,9 @@
 					data-node-kind={card.node.kind}
 					data-node-group={card.node.group}
 					data-node-state={graph.nodeState(key)}
+					data-graph-group={graph.isGroup(key) ? '' : undefined}
+					data-graph-collapsed={graph.isCollapsed(key) ? '' : undefined}
+					data-graph-member-of={graph.groupOf(key) ?? undefined}
 					data-label-side={card.labelSide}
 					style:--label-angle={card.labelAngle === undefined ? undefined : `${card.labelAngle}deg`}
 					data-node-headonly={card.vis.length === 0 && card.more <= 0 ? '' : undefined}
@@ -435,6 +444,11 @@
 						event.stopPropagation()
 						graph.select(key)
 					}}
+					ondblclick={(event) => {
+						// A group opens; a member of an open group folds it back. Neither is a selection.
+						event.stopPropagation()
+						graph.toggleGroup(graph.isGroup(key) ? key : (graph.groupOf(key) ?? key))
+					}}
 				>
 					<span data-graph-node-head>
 						<span data-graph-node-icon class={icons[card.node.kind ?? ''] ?? icons.fallback}></span>
@@ -446,7 +460,10 @@
 						     read. -->
 							<span data-graph-node-kind>{card.node.kind.replace(/_/g, ' ')}</span>
 						{/if}
-						<span data-graph-node-count>{card.node.rows.length}</span>
+						<!-- A group counts what it stands for; a table counts its rows. -->
+						<span data-graph-node-count
+							>{graph.isGroup(key) ? graph.memberCount(key) : card.node.rows.length}</span
+						>
 					</span>
 					{#each card.vis as row (row.name)}
 						<span data-graph-row data-graph-row-key={row.badges.length > 0 ? '' : undefined}>
@@ -459,6 +476,26 @@
 							<span data-graph-row-type>{row.type}</span>
 						</span>
 					{/each}
+					{#if graph.isCollapsed(key)}
+						<!-- The way in, as a real control inside the card — the same pattern as "+3 more":
+						     the card's own click still selects, this one expands. -->
+						<span
+							role="button"
+							tabindex="0"
+							data-graph-group-toggle
+							aria-label="Expand {card.node.label}"
+							onclick={(event) => {
+								event.stopPropagation()
+								graph.toggleGroup(key)
+							}}
+							onkeydown={(event) => {
+								if (event.key !== 'Enter' && event.key !== ' ') return
+								event.preventDefault()
+								event.stopPropagation()
+								graph.toggleGroup(key)
+							}}>Expand · {graph.memberCount(key)}</span
+						>
+					{/if}
 					{#if graph.moreLabel(key)}
 						<!-- A real control. "+3 more" that does nothing is a statement dressed as an
 					     affordance; this expands just this card. -->

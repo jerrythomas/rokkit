@@ -12,11 +12,12 @@
 	import GraphLegend from '../GraphLegend.svelte'
 	import DiagramFrame from './DiagramFrame.svelte'
 	import DepthControl from '../controls/DepthControl.svelte'
+	import DrillBar from '../controls/DrillBar.svelte'
 	import EdgeStyleControl from '../controls/EdgeStyleControl.svelte'
 	import ZoomControl from '../controls/ZoomControl.svelte'
 	import { GraphState } from '../GraphState.svelte.js'
 	import type { EdgeStyle } from '../layout/types.js'
-	import type { GraphFields } from '../types.js'
+	import type { GraphFields, GraphNode } from '../types.js'
 	import type { GraphPreset } from '../preset.js'
 
 	type Props = {
@@ -43,6 +44,10 @@
 		arrows?: boolean
 		label?: string
 		onselect?: (id: string | null) => void
+		/** The reader expanded a group node (#166) — with its members in `nodes`, they appear at once. */
+		onexpand?: (id: string, node: GraphNode) => void
+		/** The reader collapsed a group back into one node. */
+		oncollapse?: (id: string, node: GraphNode) => void
 		class?: string
 	}
 
@@ -63,6 +68,8 @@
 		arrows = true,
 		label = undefined,
 		onselect = undefined,
+		onexpand = undefined,
+		oncollapse = undefined,
 		class: className = ''
 	}: Props = $props()
 
@@ -80,7 +87,9 @@
 		preset,
 		mode,
 		label,
-		onselect
+		onselect,
+		onexpand,
+		oncollapse
 	})
 
 	// svelte-ignore state_referenced_locally
@@ -107,9 +116,12 @@
      inside is always defined, so the frame would render an empty control bar over
      every diagram that asked for none. -->
 {#snippet controlBar()}
-	<DepthControl levels={depth} max={maxDepth} onchange={(v) => (depth = v)} />
-	<EdgeStyleControl {edgeStyle} onchange={(v) => (edgeStyle = v)} />
-	<ZoomControl {zoom} onchange={(v) => (zoom = v)} />
+	<DrillBar state={graph} />
+	{#if controls}
+		<DepthControl levels={depth} max={maxDepth} onchange={(v) => (depth = v)} />
+		<EdgeStyleControl {edgeStyle} onchange={(v) => (edgeStyle = v)} />
+		<ZoomControl {zoom} onchange={(v) => (zoom = v)} />
+	{/if}
 {/snippet}
 
 {#snippet legendBar()}
@@ -118,7 +130,7 @@
 
 <DiagramFrame
 	class={className}
-	overlay={controls ? controlBar : undefined}
+	overlay={controls || graph.showsDrillBar ? controlBar : undefined}
 	footer={legend ? legendBar : undefined}
 >
 	{#snippet canvas()}

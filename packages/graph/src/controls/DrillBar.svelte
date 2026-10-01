@@ -3,8 +3,9 @@
 	 * Where the reader has drilled to, and the way back (#165).
 	 *
 	 * Breadcrumbs from the root to the current level (each an ancestor to climb to), a status
-	 * while the host loads a level, the error when a load fails, and "Open" for the selected box
-	 * when it can be drilled — the keyboard route into a leaf, since Enter on a leaf selects it.
+	 * while the host loads a level, the error when a load fails, "Open" for the selected box
+	 * when it can be drilled — the keyboard route into a leaf, since Enter on a leaf selects it —
+	 * and Expand / Collapse for the selected group or group member (#166).
 	 * Renders nothing when there is nothing to show. Reads and calls the state; computes nothing.
 	 */
 	import type { GraphState } from '../GraphState.svelte.js'
@@ -37,6 +38,15 @@
 				</li>
 			{/each}
 		</ol>
+		{#if graph.groupAction}
+			<!-- The keyboard route through a group: Enter selects a node, then this opens or folds it. -->
+			<button
+				type="button"
+				data-graph-group-action={graph.groupAction.kind}
+				onclick={() => graph.groupAction && graph.toggleGroup(graph.groupAction.group)}
+				>{graph.groupAction.kind === 'expand' ? 'Expand' : 'Collapse'} {graph.groupAction.label}</button
+			>
+		{/if}
 		{#if graph.drillTarget}
 			<button
 				type="button"

@@ -200,6 +200,10 @@ export type GraphProps = {
 	ondrill?: (path: string[], node: GraphNode | null) => void | Promise<void>
 	/** The reader drilled out — see `GraphStateConfig.ondrillup`. */
 	ondrillup?: (path: string[]) => void | Promise<void>
+	/** The reader expanded a group — see `GraphStateConfig.onexpand`. */
+	onexpand?: (id: string, node: GraphNode) => void
+	/** The reader collapsed a group — see `GraphStateConfig.oncollapse`. */
+	oncollapse?: (id: string, node: GraphNode) => void
 	/** Icon class per node kind and row badge, merged over the built-in map. */
 	icons?: Record<string, string>
 	class?: string
