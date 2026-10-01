@@ -526,3 +526,46 @@
 [data-style='minimal'] [data-graph-edge][data-edge-conformance='up'] path {
   stroke: var(--danger);
 }
+
+/* ─── polymetric (#168) — shade is ink into paper; a missing shade is hatched, never blank ─── */
+[data-style='minimal'] [data-graph-layout='polymetric'] [data-graph-cluster][data-graph-node-id] {
+  background-color: color-mix(in oklch, var(--ink) calc(var(--shade, 0) * 85%), var(--paper-soft));
+  border-color: var(--ink-mute);
+}
+
+[data-style='minimal']
+  [data-graph-layout='polymetric']
+  [data-graph-cluster][data-graph-node-id]
+  > [data-graph-cluster-label] {
+  color: var(--ink-mute);
+}
+
+[data-style='minimal']
+  [data-graph-layout='polymetric']
+  [data-graph-cluster][data-graph-node-id]:hover
+  > [data-graph-cluster-label],
+[data-style='minimal']
+  [data-graph-layout='polymetric']
+  [data-graph-cluster][data-graph-node-id]:focus-visible
+  > [data-graph-cluster-label] {
+  background-color: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--paper-edge);
+}
+
+[data-style='minimal'] [data-graph-layout='polymetric'] [data-graph-missing~='color'] {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0 3px,
+    color-mix(in oklch, var(--ink-mute) 45%, transparent) 3px 4px
+  );
+}
+
+[data-style='minimal'] [data-legend-channel-swatch] {
+  border-color: var(--ink-mute);
+  background-color: var(--paper-soft);
+}
+
+[data-style='minimal'] [data-legend-channel-swatch='color'] {
+  background-image: linear-gradient(to right, var(--paper-soft), color-mix(in oklch, var(--ink) 85%, var(--paper-soft)));
+}

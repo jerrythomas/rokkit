@@ -850,6 +850,90 @@
   stroke-width: calc(2.25px + var(--edge-weight, 0) * 2.75px);
 }
 
+/* ─── polymetric (issue 168) ────────────────────────────────────────────────── */
+
+/* A leaf's box IS its measures — width, height, shade — so its name cannot live inside it: a
+   10px-wide box holds no text. The label hangs below, where the row gap leaves room, and is
+   clipped to the box plus the gap so neighbours never interleave; hover shows it whole. */
+[data-graph-layout='polymetric'] [data-graph-cluster][data-graph-node-id] {
+  pointer-events: auto;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+[data-graph-layout='polymetric'] [data-graph-cluster][data-graph-node-id] > [data-graph-cluster-label] {
+  top: 100%;
+  left: 0;
+  margin-top: 2px;
+  max-width: calc(100% + 18px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.65rem;
+}
+
+[data-graph-layout='polymetric'] [data-graph-cluster][data-graph-node-id]:hover,
+[data-graph-layout='polymetric'] [data-graph-cluster][data-graph-node-id]:focus-visible {
+  z-index: 3;
+}
+
+[data-graph-layout='polymetric']
+  [data-graph-cluster][data-graph-node-id]:hover
+  > [data-graph-cluster-label],
+[data-graph-layout='polymetric']
+  [data-graph-cluster][data-graph-node-id]:focus-visible
+  > [data-graph-cluster-label] {
+  max-width: none;
+  width: max-content;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+/* A measure the data does not have draws at the minimum, so it must not pass for a zero:
+   the box is dashed. Each style also hatches a missing shade. */
+[data-graph-layout='polymetric'] [data-graph-missing] {
+  border-style: dashed;
+}
+
+/* Past the 95th-percentile cap, a box is drawn at the maximum — and says so with a heavy edge
+   on the side that was cut short. */
+[data-graph-layout='polymetric'] [data-graph-clamped~='width'] {
+  border-right-width: 3px;
+}
+
+[data-graph-layout='polymetric'] [data-graph-clamped~='height'] {
+  border-bottom-width: 3px;
+}
+
+/* The legend's channel keys are the shapes they stand for: a wide bar, a tall bar, a ramp. */
+[data-legend-channel-swatch] {
+  display: inline-block;
+  flex: none;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 1px;
+}
+
+[data-legend-channel-swatch='width'] {
+  width: 18px;
+  height: 6px;
+}
+
+[data-legend-channel-swatch='height'] {
+  width: 6px;
+  height: 14px;
+}
+
+[data-legend-channel-swatch='color'] {
+  width: 18px;
+  height: 10px;
+}
+
+[data-legend-measure] {
+  font-weight: 600;
+}
+
 /* ─── drilling (issue 165) ─────────────────────────────────────────────────── */
 
 /* A container that can be opened takes the pointer the way a leaf does — clusters are

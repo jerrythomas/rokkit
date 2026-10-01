@@ -400,3 +400,34 @@ describe('graph theme CSS — layers (#167)', () => {
 		expect(rules.some((r) => /stroke:\s*var\(--danger\)/.test(r)), style).toBe(true)
 	})
 })
+
+describe('graph theme CSS — polymetric (#168)', () => {
+	it('sets a polymetric leaf’s label below its box, on paper, in base', () => {
+		const rules = rulesFor('base/graph.css', "[data-graph-layout='polymetric']")
+		expect(rules.some((r) => /top:\s*100%/.test(r))).toBe(true)
+	})
+
+	it('lets a polymetric leaf take the pointer — it is a node, not scenery', () => {
+		const rules = rulesFor('base/graph.css', "[data-graph-layout='polymetric'] [data-graph-cluster][data-graph-node-id]")
+		expect(rules.some((r) => /pointer-events:\s*auto/.test(r))).toBe(true)
+	})
+
+	it('draws each legend channel swatch as the shape it encodes, in base', () => {
+		for (const channel of ['width', 'height', 'color']) {
+			expect(rulesFor('base/graph.css', `[data-legend-channel-swatch='${channel}']`).length, channel).toBeGreaterThan(0)
+		}
+	})
+
+	it('marks a missing measure and a clamped channel by shape, in base', () => {
+		expect(rulesFor('base/graph.css', '[data-graph-missing]').some((r) => /border-style:\s*dashed/.test(r))).toBe(true)
+		expect(rulesFor('base/graph.css', "[data-graph-clamped~='width']").some((r) => /border-right/.test(r))).toBe(true)
+		expect(rulesFor('base/graph.css', "[data-graph-clamped~='height']").some((r) => /border-bottom/.test(r))).toBe(true)
+	})
+
+	it.each(STYLES)('%s tints a leaf by --shade, and hatches a missing shade so it never reads as zero', (style) => {
+		const shaded = rulesFor(`${style}/graph.css`, "[data-graph-layout='polymetric']")
+		expect(shaded.some((r) => /var\(--shade/.test(r) && /color-mix/.test(r)), style).toBe(true)
+		expect(rulesFor(`${style}/graph.css`, "[data-graph-missing~='color']").some((r) => /background-image/.test(r)), style).toBe(true)
+		expect(rulesFor(`${style}/graph.css`, '[data-legend-channel-swatch]').length, style).toBeGreaterThan(0)
+	})
+})
