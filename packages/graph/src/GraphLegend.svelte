@@ -25,6 +25,11 @@
 		relations?: boolean
 		/** Group names present, each with its ramp colour. */
 		groups?: boolean
+		/**
+		 * Which measure each channel of a polymetric view carries (#168) — three encodings at
+		 * once are unreadable without a key.
+		 */
+		channels?: boolean
 		icons?: Record<string, string>
 		/**
 		 * Fires with the entry a reader activated. Given one, entries become real buttons;
@@ -38,12 +43,22 @@
 		kinds = false,
 		relations = false,
 		groups = false,
+		channels = false,
 		icons: userIcons,
 		onpick
 	}: Props = $props()
 
 	const icons = $derived<Record<string, string>>({ ...DEFAULT_ICONS, ...userIcons })
-	const shown = $derived(kinds || relations || groups)
+	const channelRows = $derived(
+		channels && graph.channels
+			? [
+					{ key: 'width', label: 'Width', scale: graph.channels.width },
+					{ key: 'height', label: 'Height', scale: graph.channels.height },
+					...(graph.channels.color ? [{ key: 'color', label: 'Shade', scale: graph.channels.color }] : [])
+				]
+			: []
+	)
+	const shown = $derived(kinds || relations || groups || channelRows.length > 0)
 
 	/** Underscores are the WIRE format (dbd sends `materialized_view`), not something to read. */
 	const readable = (value: string) => value.replace(/_/g, ' ')
@@ -108,5 +123,15 @@
 				{@render row('group', group)}
 			{/each}
 		{/if}
+
+		{#each channelRows as channel (channel.key)}
+			<!-- The cap is what the full extent of the channel stands for: past it, a box clamps. -->
+			<span data-graph-legend-entry data-legend-channel={channel.key}>
+				<span data-legend-swatch data-legend-channel-swatch={channel.key} aria-hidden="true"></span>
+				<span data-legend-label>{channel.label}</span>
+				<span data-legend-measure>{readable(channel.scale.measure)}</span>
+				<span data-legend-cap>full at {channel.scale.cap}</span>
+			</span>
+		{/each}
 	</div>
 {/if}

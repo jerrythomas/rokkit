@@ -333,6 +333,7 @@
 						style:width="{cluster.w}px"
 						style:height="{cluster.h}px"
 						style={graph.groupStyleAttr(cluster.ramp ?? cluster.name)}
+						style:--shade={cluster.shade}
 						onclick={(event) => {
 							event.stopPropagation()
 							graph.select(cluster.nodeId!)

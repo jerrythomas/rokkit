@@ -35,6 +35,9 @@ export type GraphConfigValues = {
 	oncollapse: GraphStateConfig['oncollapse']
 	showEdges: 'all' | 'violations'
 	layerLabels: string[] | undefined
+	widthBy: string | undefined
+	heightBy: string | undefined
+	colorBy: string | undefined
 }
 
 type Key = keyof GraphConfigValues
@@ -106,7 +109,10 @@ export const CONFIG_FIELDS: readonly Field[] = Object.freeze([
 	{ key: 'onexpand', raw: true },
 	{ key: 'oncollapse', raw: true },
 	{ key: 'showEdges', fallback: () => 'all' },
-	{ key: 'layerLabels', raw: true }
+	{ key: 'layerLabels', raw: true },
+	{ key: 'widthBy', raw: true },
+	{ key: 'heightBy', raw: true },
+	{ key: 'colorBy', raw: true }
 ])
 
 function resolve(config: GraphStateConfig): GraphConfigValues {
@@ -278,5 +284,14 @@ export class GraphConfig {
 	}
 	get layerLabels() {
 		return this.#v.layerLabels
+	}
+	get widthBy() {
+		return this.#v.widthBy
+	}
+	get heightBy() {
+		return this.#v.heightBy
+	}
+	get colorBy() {
+		return this.#v.colorBy
 	}
 }

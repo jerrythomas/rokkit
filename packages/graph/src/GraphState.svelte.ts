@@ -16,7 +16,8 @@ import type {
 	LayoutFn,
 	NodeAxis,
 	RoutedEdge,
-	Size
+	Size,
+	LayoutResult
 } from './layout/types.js'
 import type { GraphEdge, GraphFields, GraphModel, GraphNode } from './types.js'
 import type { Relationship } from './model/relationships.js'
@@ -103,6 +104,10 @@ export type GraphStateConfig = {
 	showEdges?: 'all' | 'violations'
 	/** `layers` only — band names by layer index. */
 	layerLabels?: string[]
+	/** `polymetric` only — the measures box width, height and shade encode (#168). */
+	widthBy?: string
+	heightBy?: string
+	colorBy?: string
 }
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
@@ -183,6 +188,9 @@ export class GraphState {
 			bundleTension: this.config.bundleTension,
 			showEdges: this.config.showEdges,
 			layerLabels: this.config.layerLabels,
+			widthBy: this.config.widthBy,
+			heightBy: this.config.heightBy,
+			colorBy: this.config.colorBy,
 			edgeStyle: this.config.edgeStyle,
 			focus: this.config.focus ?? this.selection.value,
 			expanded: this.selection.expanded
@@ -528,6 +536,9 @@ export class GraphState {
 	boxAttrs(cluster: Cluster): Record<string, string | null | undefined> {
 		return {
 			'data-cluster-depth': String(cluster.depth ?? 0),
+			// polymetric (#168): the channels a box could not show — missing data, or past the cap.
+			'data-graph-missing': cluster.missing?.join(' '),
+			'data-graph-clamped': cluster.clamped?.join(' '),
 			'data-node-group': cluster.name,
 			'data-graph-node-id': cluster.nodeId,
 			'data-node-kind': cluster.kind,
@@ -549,6 +560,23 @@ export class GraphState {
 		// A pathless box (an orphan node at the root, or a group box) keeps the label key.
 		if (cluster.path && cluster.path.length > 0) return `path:${cluster.path.join('/')}`
 		return `${cluster.depth ?? 0}:${cluster.parent ?? ''}:${cluster.name}`
+	}
+
+	/** `polymetric` — which measure is on which channel, and each one's cap; for the legend. */
+	get channels(): LayoutResult['channels'] {
+		return this.#result.channels
+	}
+
+	/**
+	 * Every measure a channel could bind: the keys in the nodes' `measures`, plus `weight` and
+	 * `degree`, which every node has an answer for. Sorted, so a picker does not reshuffle.
+	 */
+	get measureKeys(): string[] {
+		return unique([
+			'degree',
+			'weight',
+			...this.#canonical.nodes.flatMap((node) => Object.keys(node.measures ?? {}))
+		])
 	}
 
 	get groupBy(): NodeAxis {
