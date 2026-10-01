@@ -67,6 +67,11 @@ export type GraphNode = {
 	members?: string[]
 	/** Whether a group starts collapsed. A node with `members` and no flag is collapsed. */
 	collapsed?: boolean
+	/**
+	 * The layer the HOST assigned (#167) — 0 at the top, foundations at the bottom. rokkit
+	 * computes no depth; the `layers` layout ranks by this.
+	 */
+	layer?: number
 	rows: GraphRow[]
 	note?: string
 	/** Source fields the map did not claim, passed through untouched. */
@@ -127,7 +132,15 @@ export type GraphEdge = {
 	weakest?: boolean
 	/** How many model edges this one stands for, when it aggregates a collapsed group's edges. */
 	count?: number
+	/**
+	 * How the edge sits against the layering (#167): `down` one layer (conformant), `skip` more
+	 * than one down (legal, worth seeing), `up` climbing (the violation), `level` within a layer.
+	 * The host says; when it does not, the `layers` layout derives it from the layers.
+	 */
+	conformance?: Conformance
 }
+
+export type Conformance = 'down' | 'skip' | 'up' | 'level'
 
 export type GraphModel = {
 	nodes: GraphNode[]
@@ -267,6 +280,10 @@ export type GraphFields = {
 	collapsed?: string
 	/** Path to a truthy flag marking the weakest edge of a cycle — see `GraphEdge.weakest`. */
 	weakest?: string
+	/** Path to a node's host-assigned layer — see `GraphNode.layer`. */
+	layer?: string
+	/** Path to an edge's conformance to the layering — see `GraphEdge.conformance`. */
+	conformance?: string
 	/** Path to an edge's strength — see `GraphEdge.weight`. */
 	edgeWeight?: string
 	cardinality?: string

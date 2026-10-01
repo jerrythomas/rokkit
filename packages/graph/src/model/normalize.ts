@@ -6,8 +6,7 @@ import type {
 	GraphModel,
 	GraphNode,
 	GraphRow,
-	RowBadge
-} from '../types.js'
+	RowBadge, Conformance } from '../types.js'
 
 const BADGE_ORDER: RowBadge[] = ['pk', 'fk', 'uq', 'nn']
 
@@ -90,7 +89,8 @@ const CLAIMED_NODE_KEYS = [
 	'rows',
 	'note',
 	'members',
-	'collapsed'
+	'collapsed',
+	'layer'
 ] as const
 
 function buildMeta(source: unknown, fields: GraphFields): Record<string, unknown> {
@@ -125,17 +125,22 @@ function buildNode(source: unknown, fields: GraphFields): GraphNode {
 		measures: measures(pick(source, fields.measures, 'measures')),
 		rows: buildRows(source, fields),
 		note: str(pick(source, fields.note, 'note')),
-		...groupExtras(source, fields),
+		...nodeExtras(source, fields),
 		meta: buildMeta(source, fields)
 	}
 }
 
 /**
- * `members` and `collapsed`, added only when present — like the edge extras, so every node a
- * consumer already has stays key-for-key identical.
+ * `members` / `collapsed` (#166) and `layer` (#167), added only when present — like the edge
+ * extras, so every node a consumer already has stays key-for-key identical.
  */
-function groupExtras(source: unknown, fields: GraphFields): Pick<GraphNode, 'members' | 'collapsed'> {
-	const extras: Pick<GraphNode, 'members' | 'collapsed'> = {}
+function nodeExtras(
+	source: unknown,
+	fields: GraphFields
+): Pick<GraphNode, 'members' | 'collapsed' | 'layer'> {
+	const extras: Pick<GraphNode, 'members' | 'collapsed' | 'layer'> = {}
+	const layer = num(pick(source, fields.layer, 'layer'))
+	if (layer !== undefined) extras.layer = layer
 	const members = pick(source, fields.members, 'members')
 	if (Array.isArray(members)) extras.members = members.map(String)
 	const collapsed = pick(source, fields.collapsed, 'collapsed')
@@ -305,8 +310,16 @@ function buildEdge(
  * `overlay` and `weight`, added only when present so every edge a v1 consumer already has
  * stays key-for-key identical — `toEqual` on an edge is a contract downstream specs rely on.
  */
-function edgeExtras(source: unknown, fields: GraphFields): Pick<GraphEdge, 'overlay' | 'weight' | 'weakest'> {
-	const extras: Pick<GraphEdge, 'overlay' | 'weight' | 'weakest'> = {}
+const CONFORMANCE = new Set<Conformance>(['down', 'skip', 'up', 'level'])
+
+function edgeExtras(
+	source: unknown,
+	fields: GraphFields
+): Pick<GraphEdge, 'overlay' | 'weight' | 'weakest' | 'conformance'> {
+	const extras: Pick<GraphEdge, 'overlay' | 'weight' | 'weakest' | 'conformance'> = {}
+	// Only the vocabulary — an unknown word would be a style hook no theme knows.
+	const conformance = str(pick(source, fields.conformance, 'conformance'))
+	if (conformance && CONFORMANCE.has(conformance as Conformance)) extras.conformance = conformance as Conformance
 	if (pick(source, fields.overlay, 'overlay')) extras.overlay = true
 	if (pick(source, fields.weakest, 'weakest')) extras.weakest = true
 	const weight = num(pick(source, fields.edgeWeight, 'weight'))
