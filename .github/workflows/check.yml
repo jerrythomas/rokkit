@@ -27,7 +27,7 @@ jobs:
         # date-fns before the workspace is fully linked and fails. It is a race,
         # so it fails intermittently rather than always — this job happened to
         # survive it while Coverage did not.
-        run: bun install --ignore-scripts
+        run: bun install --frozen-lockfile --ignore-scripts
       - name: Build theme CSS
         # @rokkit/themes is the ONLY package with a `prepare` script, so it is the
         # only thing --ignore-scripts skips. apps/learn imports its dist, and
@@ -58,7 +58,7 @@ jobs:
           node-version: 24.x
       - name: Install dependencies
         # --ignore-scripts: see the check job.
-        run: bun install --ignore-scripts
+        run: bun install --frozen-lockfile --ignore-scripts
       - name: Install Chromium
         run: bunx playwright install --with-deps chromium
       - name: Browser specs

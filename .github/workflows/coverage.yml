@@ -29,7 +29,7 @@ jobs:
         # date-fns before the workspace is fully linked. That is what broke this
         # job at v1.4.1 — the failure is a race, so it had passed for weeks
         # beforehand on the same bun version.
-        run: bun install --ignore-scripts
+        run: bun install --frozen-lockfile --ignore-scripts
       - name: Build theme CSS
         # @rokkit/themes is the ONLY package with a `prepare` script, so it is the
         # only thing --ignore-scripts skips. Run it explicitly now that

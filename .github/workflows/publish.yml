@@ -36,7 +36,7 @@ jobs:
         # which runs build.mjs → imports @rokkit/core → date-fns and fails mid-install
         # on newer bun). The publish step builds each package via `prepublishOnly`
         # after install completes (deps fully linked), so no build is needed here.
-        run: bun install --ignore-scripts
+        run: bun install --frozen-lockfile --ignore-scripts
 
       - name: Publish packages
         env:
