@@ -27,7 +27,7 @@
   },
   "files": ["src", "dist/**/*.d.ts", "README.md", "LICENSE"],
   "dependencies": {
-    "dompurify": "^3.4.13"
+    "dompurify": "^3.4.16"
   },
   "peerDependencies": {
     "@rokkit/chart": "workspace:*",
