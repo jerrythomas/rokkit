@@ -9,7 +9,7 @@
 	const { markdown }: Props = $props()
 </script>
 
-<article class="guide-page">
+<article class="guide-page" data-prose>
 	<MarkdownRenderer {markdown} plugins={BLOCK_PLUGINS} />
 </article>
 
@@ -18,20 +18,18 @@
 		max-width: 760px;
 		padding: 8px 4px;
 	}
+	/* Size, weight, leading and tracking come from the `[data-heading]` rules in
+	   @rokkit/themes (base/heading.css) through `data-prose` — the guides' scale IS their
+	   default. Only the page's own colour and rhythm stay here. */
 	.guide-page :global(h1) {
-		font: 700 28px/1.2 var(--font-display);
 		color: var(--ink);
 		margin: 0 0 14px;
-		letter-spacing: -0.02em;
 	}
 	.guide-page :global(h2) {
-		font: 600 18px/1.3 var(--font-display);
 		color: var(--ink);
 		margin: 24px 0 10px;
-		letter-spacing: -0.01em;
 	}
 	.guide-page :global(h3) {
-		font: 600 14.5px var(--font-display);
 		color: var(--ink);
 		margin: 18px 0 8px;
 	}

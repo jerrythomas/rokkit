@@ -1,0 +1,46 @@
+/**
+ * Heading levels — the `[data-heading]` hook (#152).
+ *
+ * A level is several properties at once (size, weight, line-height, tracking, face), so it is
+ * a rule, not a set of one-property tokens. Anything that should read as a level takes it by
+ * attribute — `<span data-heading="3">` on a card or dialog title — and headings inside prose
+ * (`[data-prose]`, e.g. a rendered guide) take the same rule by element. A style or a user
+ * overrides with the same selector, as with every state attribute.
+ *
+ * The defaults ARE the guides' scale, so moving the guides onto this hook changed nothing on
+ * screen. Typography only — colour belongs to each style.
+ *
+ * Plain selectors, not `:where()`: the app's reset sets `h1…h6 { font-size: inherit }` at
+ * element specificity, which a zero-specificity rule would lose to. An override with the same
+ * selector, loaded later, still wins.
+ */
+
+[data-heading='1'], [data-prose] h1 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+[data-heading='2'], [data-prose] h2 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+[data-heading='3'], [data-prose] h3 {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+[data-heading='4'], [data-prose] h4 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}

@@ -6,6 +6,7 @@
  */
 
 @import './typography.css';
+@import './heading.css';
 @import './density.css';
 @import './radius.css';
 @import './layout.css';
