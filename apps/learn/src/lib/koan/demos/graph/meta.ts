@@ -100,7 +100,9 @@ const meta: DemoMeta = {
 			mode: 'dynamic',
 			props: { diagram: 'layers-sample' }
 		},
-		{ id: 'polymetric', label: 'Polymetric view', mode: 'dynamic', props: { diagram: 'polymetric' } }
+		{ id: 'polymetric', label: 'Polymetric view', mode: 'dynamic', props: { diagram: 'polymetric' } },
+		{ id: 'arcs', label: 'Imports vs shared commits', mode: 'dynamic', props: { diagram: 'arcs' } },
+		{ id: 'arcs-sample', label: 'Arcs, #169’s sample', mode: 'dynamic', props: { diagram: 'arcs-sample' } }
 	],
 	api: {
 		props: [
@@ -267,6 +269,21 @@ const meta: DemoMeta = {
 				selector: '[data-graph-pending]',
 				desc: 'Present on the canvas (with aria-busy) while a drill’s level is loading — the old level stays, dimmed'
 			},
+			// Arcs (#169)
+			{
+				selector: '[data-edge-hidden]',
+				desc: 'Coupling nothing in the code explains — a pair the host flagged `hidden`. Heavier, in the danger colour'
+			},
+			{
+				selector: '[data-edge-side]',
+				desc: 'Which side of the arc diagram’s axis an arc is on: `below` (left — imports) or `above` (right — shared commits)'
+			},
+			{
+				selector: '[data-graph-hidden-only]',
+				desc: 'The ArcDiagram toggle between every pair and only the hidden ones (aria-pressed when filtering)'
+			},
+			{ selector: '[data-legend-side]', desc: 'An arc-diagram legend row naming one side: `below` (left) or `above` (right)' },
+			{ selector: '[data-legend-hidden]', desc: 'The legend row for the hidden-coupling stroke' },
 			// Polymetric (#168)
 			{
 				selector: '[data-graph-missing]',

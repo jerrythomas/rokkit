@@ -38,6 +38,8 @@ export type DatasetId =
 	| 'layers'
 	| 'layers-sample'
 	| 'polymetric'
+	| 'arcs'
+	| 'arcs-sample'
 
 /* ─── 1. dbd v2-shaped ───────────────────────────────────────────────────────
    `tables` holds tables (plus the two enums — dbd flags an enum COLUMN via `Column.en`
@@ -471,6 +473,37 @@ const hiddenCoupling = architecture.cochange
 		relation: 'co-change'
 	}))
 
+/**
+ * Every co-change pair (#169), with `hidden` where no import joins the two — the host's flag,
+ * which the arc diagram only styles. The metrics script already recorded `imported`.
+ */
+const allCoChange = architecture.cochange.map((e) => ({
+	source: e.source,
+	target: e.target,
+	weight: e.count,
+	overlay: true,
+	relation: 'co-change',
+	...(e.imported ? {} : { hidden: true })
+}))
+
+/** #169's own sample, verbatim: `items` and `relations`, the relation named by `set`. */
+const arcsSample = {
+	nodes: [
+		{ id: 'file:resolve', name: 'resolve.rs', group: 'indexer' },
+		{ id: 'file:walk', name: 'walk.rs', group: 'indexer' },
+		{ id: 'file:fqn', name: 'fqn.rs', group: 'indexer' },
+		{ id: 'file:persist', name: 'persist.rs', group: 'db' }
+	],
+	edges: [
+		{ set: 'imports', source: 'file:resolve', target: 'file:fqn', weight: 3 },
+		{ set: 'imports', source: 'file:walk', target: 'file:fqn', weight: 1 },
+		{ set: 'cochange', source: 'file:resolve', target: 'file:walk', weight: 18 },
+		{ set: 'cochange', source: 'file:resolve', target: 'file:persist', weight: 11, hidden: true },
+		{ set: 'cochange', source: 'file:resolve', target: 'file:fqn', weight: 9 }
+	],
+	fields: { id: 'id', label: 'name', group: 'group', relation: 'set' } as GraphFields
+}
+
 /** The same components, each in its package's INTENDED layer (#167) — assigned by the host. */
 const componentLayers = componentNodes.map((n) => ({ ...n, layer: layerOfComponent(n.id) }))
 
@@ -580,6 +613,20 @@ export const datasets = {
 		nodes: componentLayers as unknown[],
 		edges: componentImports as unknown[],
 		fields: componentFields
+	},
+	arcs: {
+		id: 'arcs' as const,
+		label: 'This codebase — imports against shared commits',
+		nodes: componentNodes as unknown[],
+		edges: [...componentImports, ...allCoChange] as unknown[],
+		fields: componentFields
+	},
+	'arcs-sample': {
+		id: 'arcs-sample' as const,
+		label: '#169 sample — four files, one hidden pair',
+		nodes: arcsSample.nodes as unknown[],
+		edges: arcsSample.edges as unknown[],
+		fields: arcsSample.fields
 	},
 	polymetric: {
 		id: 'polymetric' as const,

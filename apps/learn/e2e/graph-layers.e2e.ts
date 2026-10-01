@@ -25,6 +25,15 @@ test.describe('graph layers', () => {
 		await expect(page.locator('[data-graph-edge]')).toHaveCount(5)
 	})
 
+	test('“Violations only” survives selecting a node — the explorer carries it back', async ({ page }) => {
+		await page.goto('/app/graph?variant=layers-sample')
+		await page.locator('[data-graph-violations]').click()
+		await expect(page.locator('[data-graph-edge]')).toHaveCount(1)
+		await page.locator('[data-graph-node]').first().click()
+		await expect(page.locator('[data-graph-node]').first()).toHaveAttribute('data-node-state', 'selected')
+		await expect(page.locator('[data-graph-edge]')).toHaveCount(1)
+	})
+
 	test('rokkit’s own components keep their layers — no import climbs', async ({ page }) => {
 		await page.goto('/app/graph?variant=layers')
 		await expect(page.locator('[data-graph-layout="layers"] [data-graph-cluster]')).toHaveCount(6)

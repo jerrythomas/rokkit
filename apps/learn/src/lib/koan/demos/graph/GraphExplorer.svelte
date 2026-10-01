@@ -53,15 +53,17 @@
 	}
 
 	/**
-	 * The polymetric channels the reader picked, carried back like the drill path: update()
-	 * fully re-applies, so the registry's opening measures would otherwise undo a pick the next
-	 * time anything changed. Undefined for every other diagram, where they mean nothing.
+	 * What the reader chose on the diagram's own controls — polymetric measures, an edge filter —
+	 * carried back like the drill path: update() fully re-applies, so the registry's opening
+	 * props would otherwise undo a choice the next time anything changed, a selection say.
+	 * Undefined where a diagram has no such control, and then they mean nothing.
 	 */
-	const pickedChannels = () =>
+	const readerChoices = () =>
 		untrack(() => ({
 			widthBy: graph.config.widthBy,
 			heightBy: graph.config.heightBy,
-			colorBy: graph.config.colorBy
+			colorBy: graph.config.colorBy,
+			showEdges: graph.config.showEdges
 		}))
 
 	$effect(() => {
@@ -75,7 +77,7 @@
 			// compares the two so they cannot drift.
 			layout: config.layout,
 			...config.props,
-			...(fresh ? {} : pickedChannels()),
+			...(fresh ? {} : readerChoices()),
 			// The drill path, carried back like `value` below: update() fully re-applies, so the
 			// registry's OPENING path spread above would snap a drilled diagram back to its start
 			// whenever anything else changed — selecting a box, say. The state holds where the

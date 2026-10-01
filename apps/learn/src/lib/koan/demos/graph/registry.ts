@@ -1,5 +1,6 @@
 import type { Component } from 'svelte'
 import {
+	ArcDiagram,
 	CallTree,
 	DependencyDiagram,
 	LayersDiagram,
@@ -45,6 +46,8 @@ export type DiagramId =
 	| 'layers'
 	| 'layers-sample'
 	| 'polymetric'
+	| 'arcs'
+	| 'arcs-sample'
 
 /** What question the diagram answers. Groups the picker, nothing more. */
 export type DiagramGroup = 'Schema' | 'Code'
@@ -249,6 +252,28 @@ export const registry: Record<DiagramId, DiagramConfig> = {
 		blurb:
 			'@rokkit/core’s folders and files, each file a box: as wide as it has declarations, as tall as it has lines, as dark as it has changed. Narrow-tall-dark is a long file that keeps changing — the one to split. Swap the measures from the controls.',
 		props: { widthBy: 'declarations', heightBy: 'loc', colorBy: 'churn' }
+	},
+	arcs: {
+		id: 'arcs',
+		layout: 'arcs',
+		label: 'Imports vs shared commits',
+		group: 'Code',
+		component: ArcDiagram as Component<Record<string, unknown>>,
+		dataset: 'arcs',
+		blurb:
+			'rokkit’s components on one axis: imports arc to the left, pairs that change in the same commits to the right. A red arc has no import beside it — coupling the code does not declare. “Hidden only” leaves just those.',
+		props: {}
+	},
+	'arcs-sample': {
+		id: 'arcs-sample',
+		layout: 'arcs',
+		label: 'Arcs, #169’s sample',
+		group: 'Code',
+		component: ArcDiagram as Component<Record<string, unknown>>,
+		dataset: 'arcs-sample',
+		blurb:
+			'The sample from #169, sent as-is: four files, the relation named by `set`. resolve.rs and persist.rs change together and nothing imports either from the other — the red arc.',
+		props: { above: 'cochange' }
 	}
 }
 
