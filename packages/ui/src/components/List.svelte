@@ -25,6 +25,7 @@
 	 *   data-list-group        — theme hook for group headers
 	 *   data-list-group-icon   — icon span inside group headers
 	 *   data-active            — highlights current value match
+	 *   data-selected          — "true" on every row in the selection, multiselect only
 	 *   data-disabled          — disabled state
 	 */
 	import type { ProxyItem } from '@rokkit/states'
@@ -38,12 +39,15 @@
 		items = [],
 		fields = {},
 		value = $bindable(),
+		multiselect = false,
+		values = $bindable([]),
 		size = 'md',
 		disabled = false,
 		collapsible = false,
 		label = messages.list.label,
 		icons: userIcons = {} as ListStateIcons,
 		onselect,
+		onchange,
 		class: className = '',
 		itemContent,
 		groupContent,
@@ -92,11 +96,29 @@
 		onselect?.(next, proxy)
 	}
 
+	/**
+	 * The outbound half of `values` (multiselect). The wrapper reports the set only when it
+	 * actually changed, so this writes and notifies once per real change. As with `value`,
+	 * the write lands before the callback, so a consumer reading the bound set inside
+	 * `onchange` sees the new one.
+	 */
+	function handleSelectionChange(next: unknown[]) {
+		values = next
+		onchange?.(next)
+	}
+
 	// Single source of truth.
 	// Navigator calls wrapper[action](path) → focusedKey / proxy.expanded updates →
 	// flatView $derived re-computes → Svelte re-renders the changed nodes.
 	const proxyTree = $derived(new ProxyTree(items, fields))
-	const wrapper = $derived(new Wrapper(proxyTree, { onselect: handleSelect, collapsible }))
+	const wrapper = $derived(
+		new Wrapper(proxyTree, {
+			onselect: handleSelect,
+			onselectionchange: handleSelectionChange,
+			collapsible,
+			multiselect
+		})
+	)
 
 	let listRef = $state<HTMLElement | null>(null)
 
@@ -150,6 +172,12 @@
 	$effect(() => {
 		wrapper.moveToValue(value)
 	})
+
+	// The inbound half of `values`. moveToValues does not report back, so an outbound change
+	// re-syncs to the set it already holds and settles.
+	$effect(() => {
+		if (multiselect) wrapper.moveToValues(values)
+	})
 </script>
 
 {#snippet collapsibleIcon(proxy: ProxyItem)}
@@ -174,6 +202,7 @@
 	{#each wrapper.flatView as node (node.key)}
 		{@const proxy = node.proxy}
 		{@const isActive = proxy.value === value}
+		{@const isSelected = multiselect && wrapper.selectedKeys.has(node.key)}
 		{@const content = resolveSnippet(
 			snippetBag,
 			proxy,
@@ -245,6 +274,8 @@
 				data-path={node.key}
 				data-level={node.level}
 				data-active={isActive || undefined}
+				data-selected={isSelected ? 'true' : undefined}
+				aria-pressed={multiselect ? isSelected : undefined}
 				data-disabled={proxy.disabled || undefined}
 				disabled={proxy.disabled || disabled}
 			>

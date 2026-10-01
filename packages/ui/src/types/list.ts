@@ -106,6 +106,15 @@ export interface ListProps extends ItemSnippets {
 	/** Selected value (bindable) — matched against each item's value field */
 	value?: unknown
 
+	/**
+	 * Let the reader select several rows: a click selects one, ctrl/⌘-click toggles,
+	 * shift-click extends a range. Off by default.
+	 */
+	multiselect?: boolean
+
+	/** The selected values when `multiselect` (bindable) — matched by identity */
+	values?: unknown[]
+
 	/** Size variant */
 	size?: string
 
@@ -123,6 +132,9 @@ export interface ListProps extends ItemSnippets {
 
 	/** Called when an item is selected, with the item's `ProxyItem` */
 	onselect?: (value: unknown, proxy: ProxyItem) => void
+
+	/** Called with the new set whenever a multiselect selection changes */
+	onchange?: (values: unknown[]) => void
 
 	/** Additional CSS classes */
 	class?: string

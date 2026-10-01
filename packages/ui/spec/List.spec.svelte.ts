@@ -3,6 +3,7 @@ import { render, fireEvent } from '@testing-library/svelte'
 import { flushSync } from 'svelte'
 import List from '../src/components/List.svelte'
 import ListSnippetTest from './ListSnippetTest.svelte'
+import ListMultiBindingTest from './ListMultiBindingTest.svelte'
 
 const flatItems = [
 	{ label: 'Dashboard', value: 'dashboard', icon: 'mdi:home' },
@@ -432,5 +433,85 @@ describe('List', () => {
 			expect(leaves.some((t) => t?.includes('Item: Regular Item'))).toBe(true)
 			expect(leaves.some((t) => t?.includes('Item: Pinned Item'))).toBe(false)
 		})
+	})
+})
+
+
+// ─── multi-select (#153: the dead [data-selected] rules become live) ─────────
+
+describe('List — multiselect', () => {
+	const rows = (c: HTMLElement) => [...c.querySelectorAll<HTMLElement>('[data-list-item]')]
+	const selectedLabels = (c: HTMLElement) =>
+		rows(c)
+			.filter((r) => r.getAttribute('data-selected') === 'true')
+			.map((r) => r.textContent?.trim())
+
+	it('marks nothing selected, and emits no data-selected at all, without multiselect', async () => {
+		const { container } = render(List, { items: flatItems })
+		await fireEvent.click(rows(container)[0])
+		expect(container.querySelector('[data-selected]')).toBeNull()
+	})
+
+	it('a click selects one row, ctrl/⌘-click toggles more in, shift-click extends a range', async () => {
+		const { container } = render(List, { items: flatItems, multiselect: true })
+		await fireEvent.click(rows(container)[0])
+		expect(selectedLabels(container)).toEqual(['Dashboard'])
+		await fireEvent.click(rows(container)[2], { ctrlKey: true })
+		expect(selectedLabels(container)).toEqual(['Dashboard', 'Profile'])
+		await fireEvent.click(rows(container)[2], { metaKey: true })
+		expect(selectedLabels(container)).toEqual(['Dashboard'])
+		// The ctrl/⌘-click moved the range anchor to Profile, as a file list does, so a
+		// shift-click on Dashboard spans the whole list from there.
+		await fireEvent.click(rows(container)[0], { shiftKey: true })
+		expect(selectedLabels(container)).toEqual(['Dashboard', 'Settings', 'Profile'])
+		await fireEvent.click(rows(container)[1])
+		expect(selectedLabels(container)).toEqual(['Settings'])
+	})
+
+	it('says so to assistive tech with aria-pressed', async () => {
+		const { container } = render(List, { items: flatItems, multiselect: true })
+		await fireEvent.click(rows(container)[1])
+		expect(rows(container).map((r) => r.getAttribute('aria-pressed'))).toEqual(['false', 'true', 'false'])
+	})
+
+	it('writes the set to a bound values, and reports each change once', async () => {
+		const { container } = render(ListMultiBindingTest, { items: flatItems })
+		await fireEvent.click(rows(container)[0])
+		await fireEvent.click(rows(container)[2], { ctrlKey: true })
+		await fireEvent.click(rows(container)[2], { ctrlKey: true })
+		expect(container.querySelector('[data-bound-values]')?.textContent).toBe('dashboard')
+		expect(container.querySelector('[data-change-log]')?.textContent).toBe('dashboard|dashboard,profile|dashboard')
+	})
+
+	it('follows a values set from outside, without echoing it back as a change', async () => {
+		const { container } = render(ListMultiBindingTest, { items: flatItems, initial: ['settings'] })
+		expect(selectedLabels(container)).toEqual(['Settings'])
+		await fireEvent.click(container.querySelector<HTMLElement>('[data-set-outside]')!)
+		flushSync()
+		expect(selectedLabels(container)).toEqual(['Profile'])
+		expect(container.querySelector('[data-change-log]')?.textContent).toBe('')
+	})
+
+	it('extends from the keyboard: Space selects, ctrl+Space toggles, shift+Space ranges', async () => {
+		const { container } = render(List, { items: flatItems, multiselect: true })
+		const nav = container.querySelector<HTMLElement>('[data-list]')!
+		await fireEvent.keyDown(nav, { key: 'ArrowDown' })
+		await fireEvent.keyDown(nav, { key: ' ' })
+		expect(selectedLabels(container)).toEqual(['Dashboard'])
+		await fireEvent.keyDown(nav, { key: 'ArrowDown' })
+		await fireEvent.keyDown(nav, { key: 'ArrowDown' })
+		await fireEvent.keyDown(nav, { key: ' ', ctrlKey: true })
+		expect(selectedLabels(container)).toEqual(['Dashboard', 'Profile'])
+		await fireEvent.keyDown(nav, { key: 'ArrowUp' })
+		await fireEvent.keyDown(nav, { key: ' ', shiftKey: true })
+		expect(selectedLabels(container)).toEqual(['Settings', 'Profile'])
+	})
+
+	it('never selects a group header', async () => {
+		const { container } = render(List, { items: groupedItems, multiselect: true })
+		await fireEvent.click(rows(container)[0])
+		await fireEvent.click(rows(container)[3], { shiftKey: true })
+		expect(selectedLabels(container)).toEqual(['Dashboard', 'Reports', 'Settings', 'Profile'])
+		expect(container.querySelector('[data-list-group][data-selected]')).toBeNull()
 	})
 })
