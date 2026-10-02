@@ -42,7 +42,7 @@ const ask = (options: Interpretation[] = []): Interpretation => ({
 	...(options.length ? { options } : {})
 })
 
-const isRecord = (v: unknown) => typeof v === 'object' && v !== null && !Array.isArray(v)
+const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v)
 
 /** Any view takes rows; a form also takes the single record it edits. */
 const fits = (data: unknown, view: string) => Array.isArray(data) || (view === 'form' && isRecord(data))
@@ -56,6 +56,28 @@ function reshape(i: Interpretation): Interpretation {
 	const variant = i.view === 'chart' && variantOf('chart', i.variant) ? { variant: i.variant } : {}
 	const part = i.data === undefined ? {} : { data: i.data }
 	return { intent: 'reshape', view: i.view, ...variant, ...part, confidence: i.confidence }
+}
+
+/** Demos a show may hand data to: the views a dataset can take. */
+const DATA_DEMOS = new Set<string>(VIEWS)
+const MAX_ROWS = 200
+const MAX_FIELDS = 12
+
+const flat = (v: unknown) =>
+	!isRecord(v) || (Object.keys(v).length <= MAX_FIELDS && Object.values(v).every((x) => x === null || typeof x !== 'object'))
+
+/** Data a show can use — at most MAX_ROWS flat rows, or one flat record — else undefined. */
+function bounded(data: unknown): unknown {
+	if (Array.isArray(data)) return data.length > 0 && data.length <= MAX_ROWS && data.every(flat) ? data : undefined
+	return isRecord(data) && flat(data) ? data : undefined
+}
+
+/** A show keeps generated data only for a data demo, and only within bounds. */
+function withData(i: Interpretation): Interpretation {
+	if (i.intent !== 'show' || i.data === undefined) return i
+	const data = DATA_DEMOS.has(i.demo as string) ? bounded(i.data) : undefined
+	const { data: _, ...rest } = i
+	return data === undefined ? rest : { ...rest, data }
 }
 
 /** A modify that changes nothing is a question, not a no-op. */
@@ -73,7 +95,7 @@ function grounded(i: Interpretation, demo: string): Interpretation {
 
 /** Each intent's own requirement, given the demo it resolved to. */
 const CHECKS: Record<Interpretation['intent'], (i: Interpretation, screen: Screen | null) => Interpretation> = {
-	show: (i) => (demoById(i.demo) ? grounded(i, i.demo as string) : ask()),
+	show: (i) => (demoById(i.demo) ? withData(grounded(i, i.demo as string)) : ask()),
 	modify: (i, screen) => {
 		const demo = i.demo ?? screen?.demo
 		if (!demoById(demo)) return ask()

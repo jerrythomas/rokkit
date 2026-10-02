@@ -57,6 +57,48 @@ describe('a System One conversation', () => {
 	})
 })
 
+describe('an LLM-mode conversation', () => {
+	const flush = async () => {
+		await vi.runAllTimersAsync()
+	}
+	afterEach(() => {
+		llm.enabled = false
+		vi.unstubAllGlobals()
+	})
+
+	it('OpenRouter classifies on the server, and its reading is acted on', async () => {
+		const fetch = vi.fn().mockResolvedValue(
+			new Response(JSON.stringify({ interpretation: { intent: 'show', demo: 'chart', data: [{ q: 'Q1', v: 1 }, { q: 'Q2', v: 3 }], confidence: 0.9 } }))
+		)
+		vi.stubGlobal('fetch', fetch)
+		llm.enabled = true
+		llm.provider = 'openrouter'
+		submitText('Generate a Q3 sales scenario and chart it')
+		await flush()
+		expect(JSON.parse(fetch.mock.calls[0][1].body)).toMatchObject({ backend: 'openrouter', model: llm.openRouterModel })
+		expect(screen()).toMatchObject({ demo: 'chart', props: { x: 'q', y: 'v' } })
+	})
+
+	it('says so when OpenRouter fails, and answers locally', async () => {
+		vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{}', { status: 429 })))
+		llm.enabled = true
+		llm.provider = 'openrouter'
+		submitText('something with nested folders')
+		await flush()
+		expect(lastReply()[0]).toMatchObject({ kind: 'prose', text: expect.stringMatching(/OpenRouter didn’t answer.*rate-limited/) })
+		expect(screen()?.demo).toBe('tree')
+	})
+
+	it('falls back with a note when Web-LLM cannot run in this browser', async () => {
+		llm.enabled = true
+		llm.provider = 'webllm'
+		submitText('something with nested folders')
+		await flush()
+		expect(lastReply()[0]).toMatchObject({ kind: 'prose', text: expect.stringMatching(/Web-LLM didn’t answer/) })
+		expect(screen()?.demo).toBe('tree')
+	})
+})
+
 describe('a simulated conversation', () => {
 	it('follows up on the table it showed: striped, then charted — the same rows throughout', () => {
 		say('show me a sortable table')

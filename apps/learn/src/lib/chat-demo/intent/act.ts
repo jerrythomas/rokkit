@@ -94,10 +94,18 @@ function part(i: Interpretation): Block[] {
 	return onScreen(`${labelOf(i.data)}, as a ${i.view}.`, next)
 }
 
+/** A show that brought its own data — generated rows — goes through the same inference as pasted data. */
+function withOwnData(i: Interpretation): Block[] {
+	const next = reshaped(i.data, i.demo as View)
+	if (!next) return onScreen(`${titleOf(i.demo)} — ${demoById(i.demo)?.description ?? ''}`, shown({ ...i, data: undefined }))
+	if (i.variant) next.variant = i.variant
+	return onScreen(`${titleOf(i.demo)} of the data.`, next)
+}
+
 type Handler = (i: Interpretation, screen: Screen | null) => Block[]
 
 const INTENTS: Record<Interpretation['intent'], Handler> = {
-	show: (i) => onScreen(`${titleOf(i.demo)} — ${demoById(i.demo)?.description ?? ''}`, shown(i)),
+	show: (i) => (i.data === undefined ? onScreen(`${titleOf(i.demo)} — ${demoById(i.demo)?.description ?? ''}`, shown(i)) : withOwnData(i)),
 	modify: (i, screen) => onScreen(describeChange(i, (screen as Screen).demo), modified(i, screen as Screen)),
 	reshape: (i, screen) => {
 		if (i.data !== undefined) return part(i)

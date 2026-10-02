@@ -14,14 +14,14 @@ import { tryParse } from './infer'
 import { act } from './intent/act'
 import { demoById } from './intent/demos'
 import { interpretLocally } from './intent/local'
-import { interpretWith } from './intent/interpret'
+import { interpretWith, type Backend } from './intent/interpret'
 import { MAX_RECENT } from './intent/interpret-request'
 import { pastedBlocks } from './intent/pasted'
 import { screenFrom } from './intent/screen'
 import type { Interpretation, Screen } from './intent/types'
 import { validate } from './intent/validate'
 import { curatedOpenRouterModel } from './models'
-import { routeViaLLM, llm, type LLMProvider } from './llm.svelte'
+import { completeWithWebLLM, llm, type LLMProvider } from './llm.svelte'
 import {
 	startNew,
 	appendUser as sharedAppendUser,
@@ -132,31 +132,30 @@ function thinkThenBlocks(blocks: Block[]): void {
 	}, 350)
 }
 
+/** Who interprets now: the LLM provider when one is enabled, else the local or System One reader. */
+const backendNow = (): Backend => (llm.enabled ? llm.provider : llm.interpreter)
+
 export function submitQuery(query: string): void {
 	const text = query.trim()
 	if (!text) return
 	pushUser(text)
-	if (llm.enabled) {
-		_thinking = true
-		routeViaLLM(text)
-			.then((blocks) => {
-				pushAssistant(blocks)
-			})
-			.finally(() => {
-				_thinking = false
-			})
+	const backend = backendNow()
+	if (backend === 'local') {
+		thinkThenBlocks(reply(interpretLocally(text, currentScreen())))
 		return
 	}
-	if (llm.interpreter === 'systemone') {
-		_thinking = true
-		interpretWith('systemone', text, { screen: currentScreen(), recent: recentMessages() })
-			.then((reading) => pushAssistant(reply(reading)))
-			.finally(() => {
-				_thinking = false
-			})
-		return
-	}
-	thinkThenBlocks(reply(interpretLocally(text, currentScreen())))
+	_thinking = true
+	interpretWith(backend, text, {
+		screen: currentScreen(),
+		recent: recentMessages(),
+		model: llm.openRouterModel,
+		complete: backend === 'webllm' ? completeWithWebLLM : undefined
+	})
+		// A fallback says why it happened, ahead of the reply it stood in for.
+		.then(({ reading, note }) => pushAssistant([...(note ? [{ kind: 'prose' as const, text: note }] : []), ...reply(reading)]))
+		.finally(() => {
+			_thinking = false
+		})
 }
 
 /** What the user said before this message, for the server interpreter's context. */

@@ -9,7 +9,7 @@ import adapterCloudflare from '@sveltejs/adapter-cloudflare'
 //     it at build time) avoids the frozen-lockfile auto-install failure.
 //   - Everywhere else (local, Vercel, CI) adapter-auto picks the right target.
 //     The site is NOT fully static — it has a server endpoint
-//     (api/llm/openrouter) and SSR routes — so it ships as a Worker, not a
+//     (api/chat/interpret) and SSR routes — so it ships as a Worker, not a
 //     prerendered bundle. Per-section prerender (guides/+layout.ts) still works.
 const onCloudflare = Boolean(process.env.CF_PAGES) || Boolean(process.env.WORKERS_CI)
 const adapter = onCloudflare ? adapterCloudflare() : adapterAuto()

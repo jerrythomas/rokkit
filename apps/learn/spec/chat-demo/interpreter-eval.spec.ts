@@ -3,9 +3,12 @@
  * 20/22). It needs a running app with OLLAMA_URL, so it runs only when CHAT_EVAL_URL is set:
  *
  *   OLLAMA_URL=http://localhost:11434 bunx vite dev --port 5199   (in apps/learn)
- *   CHAT_EVAL_URL=http://localhost:5199 bunx vitest run --project learn apps/learn/spec/chat-demo/interpreter-eval.spec.ts
+ *   CHAT_EVAL_URL=http://localhost:5199 CHAT_EVAL_OUT=/tmp/eval.txt bunx vitest run --project learn apps/learn/spec/chat-demo/interpreter-eval.spec.ts
+ *
+ * CHAT_EVAL_BACKEND=openrouter measures OpenRouter instead (needs OPENROUTER_API_KEY).
  */
 import { it, expect } from 'vitest'
+import { appendFileSync } from 'node:fs'
 import { interpretLocally } from '../../src/lib/chat-demo/intent/local'
 import { validate } from '../../src/lib/chat-demo/intent/validate'
 import { interpretWith } from '../../src/lib/chat-demo/intent/interpret'
@@ -42,6 +45,8 @@ const cases: [string, Screen | null, Want][] = [
 ]
 const summary = (s: Screen | null) => (s ? { demo: s.demo, variant: s.variant, props: s.props } : null)
 const BASE = process.env.CHAT_EVAL_URL
+/** Which server backend to measure: systemone (default) or openrouter. */
+const BACKEND = (process.env.CHAT_EVAL_BACKEND ?? 'systemone') as 'systemone' | 'openrouter'
 
 it.skipIf(!BASE)('the hybrid scores at least the local interpreter', async () => {
 	const rows: string[] = []
@@ -49,7 +54,7 @@ it.skipIf(!BASE)('the hybrid scores at least the local interpreter', async () =>
 	for (const [m, screen, want] of cases) {
 		const l = validate(interpretLocally(m, screen), screen)
 		const t = Date.now()
-		const r = validate(await interpretWith('systemone', m, { screen, fetcher: ((u: string, init: RequestInit) => fetch(BASE + u, init)) as typeof fetch }), screen)
+		const r = validate((await interpretWith(BACKEND, m, { screen, fetcher: ((u: string, init: RequestInit) => fetch(BASE + u, init)) as typeof fetch })).reading, screen)
 		ms += Date.now() - t
 		const [lo, so] = [want(l), want(r)]
 		local += Number(lo)
@@ -57,6 +62,8 @@ it.skipIf(!BASE)('the hybrid scores at least the local interpreter', async () =>
 		const fmt = (i: Interpretation) => `${i.intent}${i.demo ? `:${  i.demo}` : ''}${i.variant ? `/${  i.variant}` : ''}${i.view ? `>${  i.view}` : ''}${i.props ? JSON.stringify(i.props) : ''}`
 		rows.push(`${lo ? 'OK ' : 'XX '} ${so ? 'OK ' : 'XX '} ${m.padEnd(36)} local=${fmt(l).padEnd(34)} hybrid=${fmt(r)}`)
 	}
-	console.log(`local ${local}/${cases.length}   hybrid ${s1}/${cases.length}   hybrid avg ${Math.round(ms / cases.length)}ms\n${rows.join('\n')}`)
+	const report = `${BACKEND}: local ${local}/${cases.length}   hybrid ${s1}/${cases.length}   hybrid avg ${Math.round(ms / cases.length)}ms\n${rows.join('\n')}\n`
+	// Vitest swallows console output here; CHAT_EVAL_OUT=<file> keeps the table.
+	if (process.env.CHAT_EVAL_OUT) appendFileSync(process.env.CHAT_EVAL_OUT, report)
 	expect(s1).toBeGreaterThanOrEqual(local)
 }, 300000)

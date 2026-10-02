@@ -4,13 +4,28 @@
  */
 import type { ScreenSummary } from './systemone'
 import { demoById } from './demos'
+import { OPENROUTER_MODELS, DEFAULT_OPENROUTER_MODEL } from '../models'
 
 export const MAX_MESSAGE = 2_000
 export const MAX_RECENT = 6
 const MAX_RECENT_LENGTH = 500
 const MAX_PROPS = 20
 
-export type InterpretBody = { message: string; screen: ScreenSummary | null; recent: string[] }
+export type ServerBackend = 'systemone' | 'openrouter'
+export type InterpretBody = { message: string; screen: ScreenSummary | null; recent: string[] } & (
+	| { backend: 'systemone' }
+	| { backend: 'openrouter'; model: string }
+)
+
+const MODELS = new Set(OPENROUTER_MODELS.map((m) => m.id))
+
+/** The backend to ask: System One unless OpenRouter is named, and then only a curated free model. */
+function backendOf(body: Record<string, unknown>): { backend: 'systemone' } | { backend: 'openrouter'; model: string } | string {
+	if (body.backend === undefined || body.backend === 'systemone') return { backend: 'systemone' }
+	if (body.backend !== 'openrouter') return '"backend" must be systemone or openrouter'
+	const model = body.model ?? DEFAULT_OPENROUTER_MODEL
+	return typeof model === 'string' && MODELS.has(model) ? { backend: 'openrouter', model } : '"model" must be one of the demo’s free models'
+}
 export type InterpretRequest = { body: InterpretBody } | { problem: string }
 
 const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v)
@@ -37,13 +52,22 @@ function recentOf(value: unknown): string[] | string {
 	return value.map((m: string) => m.slice(0, MAX_RECENT_LENGTH))
 }
 
+const messageOf = (body: Record<string, unknown>): string | { problem: string } => {
+	const message = typeof body.message === 'string' ? body.message.trim() : ''
+	return message && message.length <= MAX_MESSAGE ? message : { problem: `"message" must be 1–${MAX_MESSAGE} characters` }
+}
+
+/** A field's value, or the problem with it — each check below returns one or the other. */
+const failed = (v: unknown): v is string | { problem: string } => typeof v === 'string' || (isRecord(v) && 'problem' in v)
+const problemOf = (v: string | { problem: string }) => ({ problem: typeof v === 'string' ? v : v.problem })
+
 export function interpretRequest(body: unknown): InterpretRequest {
 	if (!isRecord(body)) return { problem: 'the body must be a JSON object' }
-	const message = typeof body.message === 'string' ? body.message.trim() : ''
-	if (!message || message.length > MAX_MESSAGE) return { problem: `"message" must be 1–${MAX_MESSAGE} characters` }
-	const screen = screenOf(body.screen)
-	if (typeof screen === 'string') return { problem: screen }
-	const recent = recentOf(body.recent)
-	if (typeof recent === 'string') return { problem: recent }
-	return { body: { message, screen, recent } }
+	const message = messageOf(body)
+	if (typeof message !== 'string') return message
+	const [screen, recent, backend] = [screenOf(body.screen), recentOf(body.recent), backendOf(body)]
+	for (const field of [screen, recent, backend]) if (failed(field)) return problemOf(field)
+	return {
+		body: { message, screen: screen as ScreenSummary | null, recent: recent as string[], ...(backend as { backend: 'systemone' }) }
+	}
 }

@@ -55,8 +55,8 @@ export const MODES: ModeCard[] = [
 		mode: 'openrouter',
 		label: 'OpenRouter',
 		icon: 'i-mdi:cloud-outline',
-		blurb: 'A hosted LLM builds live components from any prompt.',
-		capabilities: 'Any prompt → live charts / tables / forms / lists. Needs network; the API key stays server-side. Pick a free model.',
+		blurb: 'A free hosted model reads your request — and can make up data to show.',
+		capabilities: 'A free model reads what you ask and picks the demo, its settings, or invented data to chart — then follow up as in Simulated. Needs network; the key stays server-side.',
 		examples: [
 			'Generate a Q3 sales scenario and chart it',
 			'Make a table of the top 5 EVs by range'
@@ -69,7 +69,7 @@ export const MODES: ModeCard[] = [
 		label: 'Web LLM',
 		icon: 'i-mdi:laptop',
 		blurb: 'A model runs in your browser — fully private.',
-		capabilities: 'Same generation as OpenRouter, but the model runs locally via WebGPU. One-time ~0.7–2 GB download, then offline.',
+		capabilities: 'Reads your request like OpenRouter, but the model runs in your browser via WebGPU. One-time ~0.7–2 GB download, then offline.',
 		examples: [
 			'Invent a startup’s monthly burn and plot it',
 			'Build a newsletter signup form'

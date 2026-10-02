@@ -7,11 +7,11 @@
  * a slightly different starting set every time without losing the sense that
  * these four categories are what the demo is for.
  *
- * Every prompt is written so it works across all three modes:
+ * Every prompt is written so it works across the modes:
  *   - Simulated: the local interpreter opens the demo each card names
  *     (spec/chat-demo/intent/starters.spec.ts holds every prompt to it).
- *   - OpenRouter / Web-LLM: the system prompt in llm.svelte.ts routes any of
- *     these into the matching fence type (```plot / ```table / ```form / ```list).
+ *   - System One, OpenRouter, Web-LLM: the same prompts, read by the hybrid
+ *     interpreter (intent/interpret.ts); an LLM may also bring data to show.
  */
 export interface StarterHint {
 	kind: 'chart' | 'table' | 'form' | 'list'
