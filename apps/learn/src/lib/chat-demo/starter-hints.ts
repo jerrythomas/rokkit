@@ -8,8 +8,8 @@
  * these four categories are what the demo is for.
  *
  * Every prompt is written so it works across all three modes:
- *   - Simulated: matches the scripted router's keywords (bar/line/grouped
- *     bar, sortable table, sign-up form, grouped list, …).
+ *   - Simulated: the local interpreter opens the demo each card names
+ *     (spec/chat-demo/intent/starters.spec.ts holds every prompt to it).
  *   - OpenRouter / Web-LLM: the system prompt in llm.svelte.ts routes any of
  *     these into the matching fence type (```plot / ```table / ```form / ```list).
  */
@@ -20,7 +20,7 @@ export interface StarterHint {
 	prompt: string
 }
 
-const HINTS_BY_KIND: Record<StarterHint['kind'], Omit<StarterHint, 'kind'>[]> = {
+export const HINTS_BY_KIND: Record<StarterHint['kind'], Omit<StarterHint, 'kind'>[]> = {
 	chart: [
 		{ label: 'Bar chart', icon: 'i-mdi:chart-bar', prompt: 'Show me a bar chart of quarterly revenue' },
 		{ label: 'Grouped bar', icon: 'i-mdi:chart-bar', prompt: 'Show a grouped bar chart of revenue by product' },

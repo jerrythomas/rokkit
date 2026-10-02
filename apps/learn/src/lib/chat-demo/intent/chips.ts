@@ -39,10 +39,14 @@ const PROP_CHIPS: Partial<Record<DemoPropSchema['type'], (name: string, s: DemoP
 			: []
 }
 
+const effect = (props: Record<string, unknown> | undefined) => JSON.stringify(props ?? null)
+
+/** Prop chips, minus any that would do exactly what a variant chip does. */
 function propChips(screen: Screen): SuggestionItem[] {
-	return Object.entries(propSchemaOf(screen.demo)).flatMap(
-		([name, schema]) => PROP_CHIPS[schema.type]?.(name, schema, screen.props[name], screen.demo) ?? []
-	)
+	const variants = new Set(variantsOf(screen.demo).filter((v) => v.props).map((v) => effect(v.props)))
+	return Object.entries(propSchemaOf(screen.demo))
+		.flatMap(([name, schema]) => PROP_CHIPS[schema.type]?.(name, schema, screen.props[name], screen.demo) ?? [])
+		.filter((c) => !(c.action?.kind === 'intent' && variants.has(effect(c.action.interpretation.props))))
 }
 
 /** Rows can be a table or a chart; any array can be a list. */

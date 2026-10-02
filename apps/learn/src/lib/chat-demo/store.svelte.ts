@@ -8,10 +8,16 @@
  * shape (turns[], thinking) as getters over the shared store so callers
  * don't need to know about the underlying schema.
  */
-import type { ChatTurn, Block, ComponentBlock, SuggestionAction } from './types'
+import type { ChatTurn, Block, DemoBlock, SuggestionAction } from './types'
 import type { ChatMode } from './modes'
-import { routeQuery, routeData } from './router'
 import { tryParse } from './infer'
+import { act } from './intent/act'
+import { demoById } from './intent/demos'
+import { interpretLocally } from './intent/local'
+import { pastedBlocks } from './intent/pasted'
+import { screenFrom } from './intent/screen'
+import type { Interpretation } from './intent/types'
+import { validate } from './intent/validate'
 import { curatedOpenRouterModel } from './models'
 import { routeViaLLM, llm, type LLMProvider } from './llm.svelte'
 import {
@@ -98,14 +104,6 @@ function pushUser(text: string): void {
 	sharedAppendUser(text)
 }
 
-// Known component tools; anything not listed keeps the query-derived title.
-const COMPONENT_TITLES: Record<string, string> = {
-	mount_bar_chart: 'Bar chart',
-	mount_table: 'Products table',
-	mount_form: 'Form',
-	mount_list: 'List'
-}
-
 function pushAssistant(blocks: Block[]): void {
 	const conv = getCurrentConversation()
 	// A ternary, not `x && …`, because the two gates disagree on the guard form:
@@ -115,12 +113,11 @@ function pushAssistant(blocks: Block[]): void {
 	const firstAssistant = conv ? !conv.turns.some((t) => t.kind === 'assistant') : false
 	const stamp = currentProviderStamp()
 	sharedAppendAssistant({ kind: 'blocks', blocks, ...stamp })
-	// A+B titling: if the opening response is exactly one known component, prefer its type.
-	if (firstAssistant && blocks.length === 1 && blocks[0].kind === 'component') {
-		const label = COMPONENT_TITLES[(blocks[0] as ComponentBlock).tool]
-		const id = getCurrentId()
-		if (label && id) renameConversation(id, label)
-	}
+	// If the opening reply puts a demo on screen, title the conversation after it.
+	const shown = blocks.find((b): b is DemoBlock => b.kind === 'demo')
+	const label = shown ? demoById(shown.demo)?.title : undefined
+	const id = getCurrentId()
+	if (firstAssistant && label && id) renameConversation(id, label)
 }
 
 function thinkThenBlocks(blocks: Block[]): void {
@@ -146,7 +143,13 @@ export function submitQuery(query: string): void {
 			})
 		return
 	}
-	thinkThenBlocks(routeQuery(text))
+	thinkThenBlocks(reply(interpretLocally(text, screenFrom(conversation.turns))))
+}
+
+/** Validate a reading against what is on screen, then act on it. */
+function reply(reading: Interpretation): Block[] {
+	const screen = screenFrom(conversation.turns)
+	return act(validate(reading, screen), screen)
 }
 
 /**
@@ -163,7 +166,7 @@ export function submitData(args: {
 	const { source, text, parsed, query } = args
 	const summary = summariseUpload(source, text, parsed, query)
 	pushUser(summary)
-	thinkThenBlocks(routeData(source, parsed, query))
+	thinkThenBlocks(pastedBlocks(source, parsed, query))
 }
 
 /**
@@ -211,18 +214,6 @@ function exportBlocks(data: unknown): Block[] {
 	]
 }
 
-/**
- * Dispatch a data-aware suggestion. Reshapes existing data through the
- * inference pipeline with a forced shape, or remounts a component with
- * different props. No re-parsing, no second paste — the user's data lives
- * inside the action.
- */
-/** Re-render the same tool with different props. */
-const propsBlocks = (action: Extract<SuggestionAction, { kind: 'props' }>): Block[] => [
-	{ kind: 'prose', text: `Re-rendered with new props for ${action.tool}.` },
-	{ kind: 'component', tool: action.tool, props: action.props, caption: action.caption }
-]
-
 /** Flip the active provider and say what that means for the user. */
 function switchProviderBlocks(
 	action: Extract<SuggestionAction, { kind: 'switch-provider' }>
@@ -241,23 +232,22 @@ function switchProviderBlocks(
 
 export function submitAction(item: { label?: string; action: SuggestionAction }): void {
 	const { action, label } = item
-	pushUser(label ? `[suggestion] ${label}` : '[suggestion]')
+	// The chip's text reads as what the user said.
+	pushUser(label ?? 'Suggestion')
 
 	// An unrecognised kind is a no-op on purpose: the user turn is already
 	// recorded, so a future action type degrades to "nothing happened" rather
 	// than throwing mid-conversation.
-	if (action.kind === 'reshape') {
-		thinkThenBlocks(routeData(action.source, action.data, label, action.force))
-	} else if (action.kind === 'props') {
-		thinkThenBlocks(propsBlocks(action))
+	if (action.kind === 'intent') {
+		thinkThenBlocks(reply(action.interpretation))
 	} else if (action.kind === 'switch-provider') {
 		thinkThenBlocks(switchProviderBlocks(action))
 	}
 }
 
 /**
- * Try to parse a free-form text submission. If it parses as JSON or CSV,
- * route through the data pipeline; otherwise fall back to keyword routing.
+ * Try to parse a free-form text submission. If it parses as JSON or CSV it is
+ * data; otherwise it is a message for the interpreter.
  */
 export function submitText(text: string): void {
 	const trimmed = text.trim()

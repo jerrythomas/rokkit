@@ -79,14 +79,11 @@ export type ErrorBlock = {
 }
 
 /**
- * A suggestion can either (a) be plain text that gets submitted as a new query,
- * or (b) carry a structured action that re-routes the existing data through
- * the inference pipeline with a forced shape. The latter avoids the user
- * pasting data in twice.
+ * A suggestion is either plain text submitted as a new message, or an action:
+ * an `intent` the chat acts on directly (it is never matched again as text),
+ * or a provider switch.
  */
 export type SuggestionAction =
-	| { kind: 'reshape'; source: 'json' | 'csv'; data: unknown; force: 'table' | 'chart' | 'record' | 'list'; caption?: string }
-	| { kind: 'props'; tool: string; props: Record<string, unknown>; caption?: string }
 	| { kind: 'switch-provider'; provider: 'openrouter' | 'webllm' }
 	| { kind: 'intent'; interpretation: Interpretation }
 

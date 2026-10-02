@@ -16,10 +16,16 @@ const suggest = (items: ReturnType<typeof chipsFor>, intro = 'Try'): Block => ({
 /** The reply for a new screen: what it is, the screen itself, what to try next. */
 const onScreen = (text: string, screen: Screen): Block[] => [prose(text), demoBlock(screen), suggest(chipsFor(screen))]
 
+const inWords = (value: unknown) => (value === true ? 'on' : value === false ? 'off' : String(value))
+
+/** "Updated — striped rows." A prop the variant already sets is not said twice. */
 function describeChange(i: Interpretation, demo: string): string {
-	const parts = Object.entries(i.props ?? {}).map(([k, v]) => `${k}: ${String(v)}`)
 	const variant = variantOf(demo, i.variant)
-	if (variant) parts.unshift(variant.label)
+	const covered = variant?.props ?? {}
+	const parts = Object.entries(i.props ?? {})
+		.filter(([name, value]) => covered[name] !== value)
+		.map(([name, value]) => `${name}: ${inWords(value)}`)
+	if (variant) parts.unshift(variant.label.toLowerCase())
 	return `Updated — ${parts.join(', ')}.`
 }
 
@@ -84,14 +90,17 @@ function modified(i: Interpretation, now: Screen): Screen {
 type Handler = (i: Interpretation, screen: Screen | null) => Block[]
 
 const INTENTS: Record<Interpretation['intent'], Handler> = {
-	show: (i) => onScreen(`**${titleOf(i.demo)}** — ${demoById(i.demo)?.description ?? ''}`, shown(i)),
+	show: (i) => onScreen(`${titleOf(i.demo)} — ${demoById(i.demo)?.description ?? ''}`, shown(i)),
 	modify: (i, screen) => onScreen(describeChange(i, (screen as Screen).demo), modified(i, screen as Screen)),
 	reshape: (i, screen) => {
 		const data = dataOf(screen as Screen)
 		const next = reshaped(data, i.view as View)
 		if (!next) return [prose(`That data can’t be shown as a ${i.view}.`)]
+		if (i.variant) next.variant = i.variant
 		const count = Array.isArray(data) ? `${data.length} rows` : 'data'
-		return onScreen(`The same ${count}, as a ${i.view}.`, next)
+		// Pasted data has no demo of its own: it is "your" data, not "the same".
+		const whose = demoById((screen as Screen).demo) ? 'The same' : 'Your'
+		return onScreen(`${whose} ${count}, as a ${i.view}.`, next)
 	},
 	explain: (i, screen) => {
 		const demo = i.demo as string

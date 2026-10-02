@@ -65,10 +65,12 @@ const CHECKS: Record<Interpretation['intent'], (i: Interpretation, screen: Scree
 		if (screen?.demo !== demo) return CHECKS.show({ ...i, intent: 'show', demo }, screen)
 		return changes(grounded(i, demo as string))
 	},
-	reshape: (i, screen) =>
-		screen && i.view && VIEWS.includes(i.view) && Array.isArray(dataOf(screen))
-			? { intent: 'reshape', view: i.view, confidence: i.confidence }
-			: ask(),
+	reshape: (i, screen) => {
+		if (!screen || !i.view || !VIEWS.includes(i.view) || !Array.isArray(dataOf(screen))) return ask()
+		// Into a chart, a chart kind may come along ("as a pie chart").
+		const variant = i.view === 'chart' && variantOf('chart', i.variant) ? { variant: i.variant } : {}
+		return { intent: 'reshape', view: i.view, ...variant, confidence: i.confidence }
+	},
 	explain: (i, screen) => {
 		const demo = i.demo ?? screen?.demo
 		return demoById(demo) ? { intent: 'explain', demo, topic: i.topic ?? '', confidence: i.confidence } : ask()
@@ -77,15 +79,22 @@ const CHECKS: Record<Interpretation['intent'], (i: Interpretation, screen: Scree
 }
 
 function options(list: Interpretation[] | undefined, screen: Screen | null): Interpretation[] {
+	const seen = new Set<string>()
 	return (list ?? [])
-		.map((o) => validate({ ...o, confidence: 1 }, screen))
-		.filter((o) => o.intent !== 'clarify')
+		.map((o) => validate({ ...o, confidence: 1, options: undefined }, screen))
+		.filter((o) => {
+			const key = JSON.stringify([o.intent, o.demo, o.variant, o.props, o.view])
+			if (o.intent === 'clarify' || seen.has(key)) return false
+			seen.add(key)
+			return true
+		})
 		.slice(0, MAX_OPTIONS)
 }
 
 export function validate(i: Interpretation, screen: Screen | null): Interpretation {
 	const check = CHECKS[i.intent]
 	if (!check) return ask()
-	if (i.intent !== 'clarify' && i.confidence < CLARIFY_BELOW) return ask(options([i], screen))
+	// The reading and its runners-up become the choices offered back.
+	if (i.intent !== 'clarify' && i.confidence < CLARIFY_BELOW) return ask(options([i, ...(i.options ?? [])], screen))
 	return check(i, screen)
 }

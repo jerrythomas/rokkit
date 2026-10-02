@@ -1,0 +1,73 @@
+/* Simulated mode end to end through the store: each turn reads what is on screen, so a
+ * follow-up acts on the conversation so far — the thing the regex routes could not do (a
+ * chip's text went back through the same regexes and showed the same canned reply).
+ */
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { clearAll } from '../../src/lib/koan/conversations.svelte'
+import { conversation, resetConversation, submitAction, submitText } from '../../src/lib/chat-demo/store.svelte'
+import { llm } from '../../src/lib/chat-demo/llm.svelte'
+import type { DemoBlock, SuggestionItem } from '../../src/lib/chat-demo/types'
+
+const say = (text: string) => {
+	submitText(text)
+	vi.runAllTimers()
+}
+const lastReply = () => {
+	const turn = conversation.turns.at(-1)
+	return turn?.role === 'assistant' ? turn.blocks : []
+}
+const screen = () => lastReply().find((b): b is DemoBlock => b.kind === 'demo')
+const chips = (): SuggestionItem[] => lastReply().flatMap((b) => (b.kind === 'suggestions' ? b.items : []))
+
+beforeEach(() => {
+	vi.useFakeTimers()
+	clearAll()
+	resetConversation()
+	llm.enabled = false
+})
+afterEach(() => vi.useRealTimers())
+
+describe('a simulated conversation', () => {
+	it('follows up on the table it showed: striped, then charted — the same rows throughout', () => {
+		say('show me a sortable table')
+		const rows = screen()?.data
+		expect(screen()).toMatchObject({ demo: 'table' })
+
+		say('make the rows striped')
+		expect(screen()).toMatchObject({ demo: 'table', props: { striped: true }, data: rows })
+
+		say('show the same data as a bar chart')
+		expect(screen()).toMatchObject({ demo: 'chart', data: rows })
+	})
+
+	it('answers a how-to about what is on screen without replacing it', () => {
+		say('show me a sortable table')
+		say('how do I sort the columns?')
+		expect(lastReply().some((b) => b.kind === 'markdown')).toBe(true)
+		expect(screen()).toBeUndefined()
+		say('make the rows striped')
+		expect(screen()).toMatchObject({ demo: 'table', props: { striped: true } })
+	})
+
+	it('runs a chip’s intent directly', () => {
+		say('show me tabs')
+		const vertical = chips().find((c) => c.action?.kind === 'intent' && c.action.interpretation.variant === 'vertical')
+		expect(vertical).toBeTruthy()
+		submitAction({ label: vertical?.label, action: vertical!.action! })
+		vi.runAllTimers()
+		expect(screen()).toMatchObject({ demo: 'tabs', variant: 'vertical', props: { orientation: 'vertical' } })
+	})
+
+	it('follows up on pasted data like any other screen', () => {
+		say(JSON.stringify([{ name: 'a', qty: 1, cost: 2, tax: 3, sku: 'x' }]))
+		expect(screen()).toMatchObject({ demo: 'table' })
+		say('make the rows striped')
+		expect(screen()).toMatchObject({ demo: 'table', props: { striped: true } })
+	})
+
+	it('asks back instead of guessing', () => {
+		say('hmm')
+		expect(screen()).toBeUndefined()
+		expect(chips().length).toBeGreaterThan(0)
+	})
+})

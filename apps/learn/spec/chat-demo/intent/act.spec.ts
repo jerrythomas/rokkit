@@ -47,6 +47,13 @@ describe('act — modify', () => {
 		})
 	})
 
+	it('says what changed once, in words', () => {
+		const [line] = act(sure({ intent: 'modify', demo: 'table', variant: 'striped', props: { striped: true } }), { demo: 'table', props: {} })
+		expect(line).toEqual({ kind: 'prose', text: 'Updated — striped rows.' })
+		const [off] = act(sure({ intent: 'modify', demo: 'table', props: { striped: false } }), { demo: 'table', props: {} })
+		expect(off).toEqual({ kind: 'prose', text: 'Updated — striped: off.' })
+	})
+
 	it('merges onto the props already set', () => {
 		const screen: Screen = { demo: 'tabs', props: { orientation: 'vertical' } }
 		expect(demoOf(act(sure({ intent: 'modify', demo: 'tabs', props: { align: 'end' } }), screen))?.props).toEqual({

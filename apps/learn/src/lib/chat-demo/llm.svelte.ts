@@ -76,7 +76,7 @@ export const llm = $state<{
 
 /**
  * Point the engine at a route mode + optional model. Simulated disables the
- * LLM (scripted router); openrouter/webllm enable it and set the model
+ * LLM (the local interpreter answers); openrouter/webllm enable it and set the model
  * (falling back to the mode default). Called by the /chat/[mode] page.
  */
 export function setEngine(mode: 'simulated' | 'openrouter' | 'webllm', model?: string): void {

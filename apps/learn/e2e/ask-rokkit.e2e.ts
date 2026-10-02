@@ -24,7 +24,7 @@ test('entering Simulated via an example chip yields a response', async ({ page }
 	const simCard = page.locator('[data-mode-card]', { hasText: 'Simulated' })
 	await simCard.locator('[data-mode-examples] button').first().click()
 	await expect(page).toHaveURL(/\/chat\/simulated/)
-	// The scripted router responds synchronously; the first block rendered is a
+	// The local interpreter answers at once; the first block rendered is a
 	// prose block ([data-block-kind="prose"]) which appears before the chart.
 	await expect(page.locator('[data-block-kind]').first()).toBeVisible({ timeout: 8000 })
 })

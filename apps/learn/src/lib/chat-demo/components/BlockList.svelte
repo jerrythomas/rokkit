@@ -3,6 +3,7 @@
 	import { CodeBlock, MarkdownRenderer } from '@rokkit/ui'
 	import { BLOCK_PLUGINS } from '$lib/koan/block-plugins'
 	import InlineComponent from './InlineComponent.svelte'
+	import DemoBlock from './DemoBlock.svelte'
 	import { submitAction, submitText } from '../store.svelte'
 
 	let root = $state<HTMLElement | null>(null)
@@ -37,8 +38,8 @@
 	const visibleBlocks = $derived(blocks)
 
 	function handleSuggestion(item: SuggestionItem) {
-		// Data-aware action takes precedence; the text query is a fallback for
-		// when there's no action (or for the future LLM path).
+		// A chip's action (an intent, a provider switch) takes precedence; the
+		// text is the fallback for chips without one (the LLM path).
 		if (item.action) {
 			submitAction({ label: item.label, action: item.action })
 			return
@@ -63,6 +64,8 @@
 			/>
 		{:else if block.kind === 'component'}
 			<InlineComponent tool={block.tool} props={block.props} caption={block.caption} />
+		{:else if block.kind === 'demo'}
+			<DemoBlock {block} />
 		{:else if block.kind === 'error'}
 			<div data-block data-block-kind="error">
 				<div data-block-error-head>

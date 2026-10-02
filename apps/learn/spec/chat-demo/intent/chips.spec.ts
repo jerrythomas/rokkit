@@ -26,6 +26,15 @@ describe('chipsFor', () => {
 		expect(chips).not.toContainEqual(expect.objectContaining({ props: { lineStyle: 'solid' } }))
 	})
 
+	it('does not offer a prop change that a variant already offers', () => {
+		const labels = chipsFor({ demo: 'table', props: {} }).map((c) => c.label)
+		expect(labels).toContain('Striped rows')
+		expect(labels).not.toContain('Striped: on')
+		const tabsLabels = chipsFor({ demo: 'tabs', props: {} }).map((c) => c.label)
+		expect(tabsLabels).toContain('Vertical orientation')
+		expect(tabsLabels).not.toContain('Orientation: vertical')
+	})
+
 	it('offers other views of data, but not the view on screen', () => {
 		const chips = intents(chipsFor({ demo: 'table', props: {}, data: [{ a: 'x', b: 1 }] }))
 		expect(chips).toContainEqual(expect.objectContaining({ intent: 'reshape', view: 'chart' }))

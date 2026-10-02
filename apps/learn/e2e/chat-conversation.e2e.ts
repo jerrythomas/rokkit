@@ -1,0 +1,52 @@
+import { test, expect, type Page } from '@playwright/test'
+import { gotoHydrated } from './helpers'
+
+/**
+ * Simulated mode holds a conversation: each turn reads what is on screen, so follow-ups —
+ * typed or clicked — act on it instead of replaying a canned reply.
+ */
+const say = async (page: Page, text: string) => {
+	const box = page.locator('[data-chat-composer] textarea')
+	await box.fill(text)
+	await box.press('Enter')
+}
+/** The demo block of the latest reply that has one. */
+const lastDemo = (page: Page) => page.locator('[data-block-kind="demo"]').last()
+
+test('a table, striped on request, then charted from the same rows', async ({ page }) => {
+	await gotoHydrated(page, '/chat/simulated')
+
+	await say(page, 'show me a sortable table')
+	await expect(lastDemo(page)).toHaveAttribute('data-demo', 'table')
+	await expect(lastDemo(page).locator('table')).toContainText('Laptop')
+
+	await say(page, 'make the rows striped')
+	await expect(page.locator('[data-block-kind="demo"]')).toHaveCount(2)
+	await expect(lastDemo(page).locator('table')).toHaveAttribute('data-table-striped', 'true')
+
+	await page.locator('[data-block-suggestion]', { hasText: 'As a chart' }).last().click()
+	await expect(lastDemo(page)).toHaveAttribute('data-demo', 'chart')
+	await expect(lastDemo(page).locator('svg').first()).toBeVisible()
+})
+
+test('a demo outside the old scripted routes mounts live, and its chips change it', async ({ page }) => {
+	await gotoHydrated(page, '/chat/simulated')
+	await say(page, 'show me tabs')
+	await expect(lastDemo(page)).toHaveAttribute('data-demo', 'tabs')
+	await expect(lastDemo(page).locator('[data-demo-live]')).toBeVisible()
+
+	await page.locator('[data-block-suggestion]', { hasText: 'Vertical orientation' }).last().click()
+	await expect(lastDemo(page)).toHaveAttribute('data-variant', 'vertical')
+})
+
+test('a how-to is answered from the docs, and a vague message is asked back', async ({ page }) => {
+	await gotoHydrated(page, '/chat/simulated')
+	await say(page, 'show me a sortable table')
+	await expect(lastDemo(page)).toHaveAttribute('data-demo', 'table')
+
+	await say(page, 'how do I sort the columns?')
+	await expect(page.locator('[data-block-kind="markdown"]').last()).toContainText('Sorting')
+
+	await say(page, 'hmm')
+	await expect(page.locator('[data-block-kind="prose"]').last()).toContainText('not sure')
+})

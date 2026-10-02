@@ -28,8 +28,8 @@ export const MODES: ModeCard[] = [
 		mode: 'simulated',
 		label: 'Simulated',
 		icon: 'i-mdi:script-text-outline',
-		blurb: 'Instant canned demos — no AI, works offline.',
-		capabilities: 'A fixed set of chart, table, form and list examples rendered from scripted data.',
+		blurb: 'Instant and offline — follows up on whatever is on screen.',
+		capabilities: 'Shows any demo in the catalogue, then changes it, re-charts its data or explains it from the docs as you follow up. No AI, works offline.',
 		examples: [
 			'Show me a bar chart of quarterly revenue',
 			'Show me a sortable table of products',
