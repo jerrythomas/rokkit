@@ -10770,3 +10770,23 @@ free-form compositions.
   - First e2e that types into the `/app` composer: ⌘/Ctrl+Enter sends there, and plain Enter
     picks the top landing suggestion, which is how a naive test passed by accident.
 - **Gates:** 8,561 unit tests, 185 e2e, lint 0/0, svelte-check 0 errors.
+
+## 2026-10-02 (7) — v1.9.0 released
+
+- **Checklist.**
+  - Full suite (8,609 unit, 198 e2e), lint and types were green.
+  - Docs synced: the graphs guide and graph demo docs still said "the focused node centred",
+    corrected in fbad9a872. The llms docs, skills and agents copy into the site at build.
+  - Release notes come from changelogithub; there is no CHANGELOG file.
+- **`bun run bump minor --yes`.** `check` passed, then 70730a804 tagged v1.9.0. `bun.lock`
+  moved to 1.9.0 with the versions.
+- **publish.yml.** The lockfile pre-flight passed, all 15 packages published, and the registry
+  served all 15 within ~100 s, with `latest` = 1.9.0.
+- **Shipped artifact.** `/tmp/rokkit-verify-graph` installs @rokkit/graph@1.9.0. The #170 repro
+  (`centre.test.js`) fails on 1.8.2 and passes on 1.9.0. The 1.8.1 label repro still passes,
+  and the sibling pins are 1.9.0.
+- **Merge to main.** 64bfa57db; main CI is green. The learn site redeployed:
+  `/api/chat/interpret` is live, `/api/llm/openrouter` returns 404, and simulated chat was
+  smoke-tested live.
+- **Finding.** The live Worker has no `OPENROUTER_API_KEY`, so OpenRouter mode falls back to the
+  local reader with a note. Setting the secret is the owner's call.
