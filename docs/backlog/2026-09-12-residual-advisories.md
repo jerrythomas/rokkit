@@ -1,7 +1,7 @@
 # Residual advisories after the rokkit#156 sweep
 
 **Raised:** 2026-09-12, closing out the rokkit#156 dependency sweep.
-**Status:** open — one advisory left, blocked on a bun limitation rather than on effort.
+**Status:** CLOSED — `yaml` patched in `97cc8b644` (bun audit 2 → 0). Later advisories are handled as they appear: `brace-expansion` and `dompurify` (`fc2bc36b1`, 2026-10-01), `devalue` 5.9.4 (2026-10-02).
 
 `bun audit` went from **28 vulnerable packages to 1** over four commits. This
 records the one that is left, why the obvious fix does not work, and two findings
