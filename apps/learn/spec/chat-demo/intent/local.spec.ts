@@ -41,6 +41,11 @@ describe('modify — the screen demo’s schema picks the change', () => {
 		expect(read('remove the stripes', table)).toMatchObject({ intent: 'modify', props: { striped: false } })
 	})
 
+	it('does not switch on a variant the message turns off', () => {
+		expect(read('remove the stripes', table).variant).toBeUndefined()
+		expect(read('disable striped', table).variant).toBeUndefined()
+	})
+
 	it('sets an enum prop from one of its options', () => {
 		expect(read('make it vertical', tabs)).toMatchObject({ intent: 'modify', props: { orientation: 'vertical' } })
 	})

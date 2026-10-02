@@ -105,7 +105,8 @@ function namesAnother(text: string, screen: Screen): boolean {
 /** A change to the screen demo: a variant or chart kind it names, and props it sets. */
 function changeSaid(text: string, demo: string): Interpretation | null {
 	const props = propsSaid(text, demo)
-	const variant = variantSaid(text, demo) ?? (demo === 'chart' ? chartKind(text) : undefined)
+	// "remove the stripes" turns a prop off; it must not switch on the variant named after it.
+	const variant = NEGATE.test(text) ? undefined : (variantSaid(text, demo) ?? (demo === 'chart' ? chartKind(text) : undefined))
 	if (!variant && Object.keys(props).length === 0) return null
 	return { intent: 'modify', demo, ...(variant ? { variant } : {}), props, confidence: 0.9 }
 }

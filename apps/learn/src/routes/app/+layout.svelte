@@ -23,8 +23,7 @@
 	import { vibe } from '@rokkit/states'
 	import { shortcuts } from '@rokkit/actions'
 	import { koan } from '$lib/koan/store.svelte'
-	import { runMatch } from '$lib/koan/match.svelte'
-	import { parseTweakIntent } from '$lib/koan/tweak-parser'
+	import { shellAction, type ShellAction } from '$lib/koan/shell-intent'
 	import { findById, DEMO_ROUTE as CATALOG_DEMO_ROUTE } from '$lib/koan/catalog'
 	import CatalogGrid from '$lib/koan/components/CatalogGrid.svelte'
 	import APIPanel from '$lib/koan/components/APIPanel.svelte'
@@ -97,55 +96,6 @@
 		| 'dropdown' | 'progress' | 'upload-progress' | 'upload-target'
 		| 'button-group' | 'tooltip' | 'code-group' | 'effects' | 'lock-mode' | 'chat'
 	const DEMO_ROUTE = CATALOG_DEMO_ROUTE as Record<DemoKind, string>
-
-	/**
-	 * Demo ids that are also canvas kinds, i.e. map 1:1. Anything else — including
-	 * no match at all — falls back to `tabs`, the generic component surface.
-	 */
-	const DEMO_KINDS = new Set<DemoKind>([
-		'theme-wizard', 'table', 'tree', 'multi-select', 'list', 'toasts',
-		'form', 'select', 'chart', 'sparkline', 'graph', 'combo', 'date-picker', 'stepper'
-	])
-
-	function pickDemoKind(query: string): DemoKind {
-		const top = runMatch(query)[0]?.id as DemoKind | undefined
-		return top && DEMO_KINDS.has(top) ? top : 'tabs'
-	}
-
-	function submitQuery(value: string) {
-		const trimmed = value.trim()
-		if (!trimmed) return
-
-		// Chat-driven prop tweak short-circuit. When the user is already
-		// on a demo (response phase) and the input parses as a tweak
-		// intent against the active demo's schema, apply it directly —
-		// no thinking phase, no goto. The setTweak helper writes the
-		// in-memory state and persists a TweakTurn so the canvas restores
-		// to the same values on reload.
-		if (shell.phase === 'response' && shell.demoType && propsSchema) {
-			const intent = parseTweakIntent(trimmed, propsSchema)
-			if (intent) {
-				setTweak(intent.name, intent.value)
-				shell.composerValue = ''
-				return
-			}
-		}
-
-		koan.query = trimmed
-		shell.lastQuery = trimmed
-		shell.composerValue = ''
-		shell.phase = 'thinking'
-		shell.demoType = null
-		shell.demoVariant = null
-
-		startNew('app', trimmed)
-
-		const nextKind = pickDemoKind(trimmed)
-		if (thinkingTimer) clearTimeout(thinkingTimer)
-		thinkingTimer = setTimeout(() => {
-			goto(DEMO_ROUTE[nextKind])
-		}, 1500)
-	}
 
 	function startNewConversation() {
 		if (thinkingTimer) {
@@ -408,11 +358,82 @@
 	// snippets, `api` swaps to the reference panel. Reset to `live`
 	// when the demo changes so view state doesn't bleed across demos.
 	let canvasView = $state<'live' | 'code' | 'api' | 'docs'>('live')
+	/** Set by a how-to on another demo: the view to open once that demo mounts. */
+	let pendingView: 'docs' | null = null
 	$effect(() => {
 		void shell.demoType
 		tweaksOpen = false
-		canvasView = 'live'
+		// A how-to asked from another demo opens this one on its docs, once.
+		canvasView = shell.demoType && pendingView ? pendingView : 'live'
+		if (shell.demoType) pendingView = null
 	})
+
+	/** The demo on the canvas, as the interpreter reads it: id, variant, current props. */
+	function canvasScreen() {
+		if (shell.phase !== 'response' || !shell.demoType) return null
+		const variant = shell.demoVariant ? { variant: shell.demoVariant } : {}
+		return { demo: shell.demoType as string, ...variant, props: { ...variantProps, ...tweakProps } }
+	}
+
+	/** Open a demo (route) through the thinking beat, starting a new conversation. */
+	function openDemo(trimmed: string, href: string) {
+		koan.query = trimmed
+		shell.lastQuery = trimmed
+		shell.composerValue = ''
+		shell.phase = 'thinking'
+		shell.demoType = null
+		shell.demoVariant = null
+		startNew('app', trimmed)
+		if (thinkingTimer) clearTimeout(thinkingTimer)
+		thinkingTimer = setTimeout(() => goto(href), 1500)
+	}
+
+	/** What each shell action does; `here` is the canvas demo's route, if any. */
+	const SHELL_ACTIONS: { [K in ShellAction['kind']]: (said: string, action: Extract<ShellAction, { kind: K }>, here: string | null) => void } = {
+		tweak: (_, { props }) => {
+			for (const [name, v] of Object.entries(props)) setTweak(name, v)
+			shell.composerValue = ''
+		},
+		// Back to the landing with the message kept, where its closest demos are suggested.
+		ask: (said) => {
+			shell.composerValue = said
+			goto('/app')
+		},
+		docs: (said, { href }, here) => {
+			if (here !== href) {
+				pendingView = 'docs'
+				openDemo(said, href)
+				return
+			}
+			canvasView = 'docs'
+			shell.composerValue = ''
+		},
+		goto: (said, { href }, here) => {
+			if (!here || href.split('?')[0] !== here) {
+				openDemo(said, href)
+				return
+			}
+			// A variant of the demo on the canvas: switch in place, as a variant chip does.
+			shell.composerValue = ''
+			goto(href)
+		}
+	}
+
+	/**
+	 * A message, read by the chat's local interpreter against the canvas (`shellAction`): a
+	 * show opens any catalogue demo or variant, a modify sets props in place (persisted as
+	 * TweakTurns, no goto), a how-to opens the demo's docs, and a message it cannot place goes
+	 * back to the landing with the closest demos suggested — it no longer opens Tabs.
+	 */
+	function submitQuery(value: string) {
+		const said = value.trim()
+		if (!said) return
+		const canvas = canvasScreen()
+		const action = shellAction(said, canvas)
+		const here = canvas ? DEMO_ROUTE[canvas.demo as DemoKind] : null
+		;(SHELL_ACTIONS[action.kind] as (s: string, a: ShellAction, h: string | null) => void)(said, action, here)
+	}
+
 
 	// Hydrate `tweaksByDemo` from any persisted TweakTurn rows on the
 	// current conversation. Runs when the active demo or conversation
