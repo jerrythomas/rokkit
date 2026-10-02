@@ -4,7 +4,7 @@
  */
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { clearAll } from '../../src/lib/koan/conversations.svelte'
-import { conversation, noteSelection, resetConversation, submitAction, submitText } from '../../src/lib/chat-demo/store.svelte'
+import { adjustScreen, conversation, isScreen, noteSelection, resetConversation, submitAction, submitText } from '../../src/lib/chat-demo/store.svelte'
 import { llm } from '../../src/lib/chat-demo/llm.svelte'
 import type { DemoBlock, SuggestionItem } from '../../src/lib/chat-demo/types'
 
@@ -81,6 +81,24 @@ describe('a simulated conversation', () => {
 		noteSelection(table, (table.data as Record<string, unknown>[])[0])
 		say('edit this row')
 		expect(screen()?.demo).not.toBe('form')
+	})
+
+	it('adjusts the demo on screen in place: no new turn, and the next turn sees it', () => {
+		say('show me tabs')
+		const turns = conversation.turns.length
+		adjustScreen({ orientation: 'vertical' })
+		expect(conversation.turns.length).toBe(turns)
+		expect(screen()?.props).toMatchObject({ orientation: 'vertical' })
+		say('align it to the end')
+		expect(screen()?.props).toMatchObject({ orientation: 'vertical', align: 'end' })
+	})
+
+	it('knows which demo block is the screen', () => {
+		say('show me a sortable table')
+		const table = screen()!
+		expect(isScreen(table)).toBe(true)
+		say('show me tabs')
+		expect(isScreen(table)).toBe(false)
 	})
 
 	it('asks back instead of guessing', () => {

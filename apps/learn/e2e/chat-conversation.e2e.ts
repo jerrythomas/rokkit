@@ -68,3 +68,17 @@ test('what the user selects feeds the chat: a chip for it, and "edit this row"',
 	await expect(lastDemo(page)).toHaveAttribute('data-demo', 'form')
 	await expect(lastDemo(page).locator('input').first()).toHaveValue('Monitor')
 })
+
+test('the demo on screen has live controls that change it in place', async ({ page }) => {
+	await gotoHydrated(page, '/chat/simulated')
+	await say(page, 'show me a sortable table')
+	const controls = lastDemo(page).locator('[data-demo-adjust]')
+	await controls.locator('summary').click()
+	await controls.getByRole('switch').first().click()
+	await expect(lastDemo(page).locator('table')).toHaveAttribute('data-table-striped', 'true')
+	await expect(page.locator('[data-block-kind="demo"]')).toHaveCount(1)
+
+	// Only the screen has controls: an older demo block does not.
+	await say(page, 'show me tabs')
+	await expect(page.locator('[data-block-kind="demo"]').first().locator('[data-demo-adjust]')).toHaveCount(0)
+})

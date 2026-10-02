@@ -8,7 +8,9 @@
 	import { BLOCK_PLUGINS } from '$lib/koan/block-plugins'
 	import type { DemoBlock } from '../types'
 	import { renderPlan } from '../intent/render-plan'
-	import { demoById, hrefOf, variantOf } from '../intent/demos'
+	import { demoById, hrefOf, propSchemaOf, variantOf } from '../intent/demos'
+	import { adjustScreen, isScreen } from '../store.svelte'
+	import Tweaks from '$lib/koan/components/Tweaks.svelte'
 	import InlineComponent from './InlineComponent.svelte'
 
 	const { block, onselect }: { block: DemoBlock; onselect?: (item: unknown) => void } = $props()
@@ -18,6 +20,10 @@
 	const title = $derived(meta?.title ?? block.demo)
 	const variantLabel = $derived(variantOf(block.demo, block.variant)?.label)
 	const live = $derived<Promise<{ default: Component }> | null>(plan.kind === 'live' && meta ? meta.load() : null)
+	const schema = $derived(propSchemaOf(block.demo))
+	/** Live controls only on the demo that is the screen: history stays as it was said. */
+	const adjustable = $derived(Object.keys(schema).length > 0 && isScreen(block))
+	const defaults = $derived(Object.fromEntries(Object.entries(schema).map(([name, s]) => [name, s.default])))
 	const plot = $derived(plan.kind === 'plot' ? `\`\`\`plot\n${JSON.stringify(plan.spec)}\n\`\`\`` : '')
 </script>
 
@@ -40,6 +46,12 @@
 			<span data-demo-card-icon aria-hidden="true">{meta?.icon}</span>
 			<p>{meta?.description}</p>
 		</div>
+	{/if}
+	{#if adjustable}
+		<details data-demo-adjust>
+			<summary>Adjust</summary>
+			<Tweaks {schema} values={block.props} onchange={(name, value) => adjustScreen({ [name]: value })} onreset={() => adjustScreen(defaults)} />
+		</details>
 	{/if}
 	<figcaption data-demo-caption>
 		<span>{title}{#if variantLabel} · {variantLabel}{/if}</span>
@@ -107,6 +119,19 @@
 
 	[data-demo-open]:hover {
 		color: var(--ink);
+	}
+
+	[data-demo-adjust] {
+		border: 1px solid var(--paper-edge);
+		border-radius: 8px;
+		padding: 6px 10px;
+		background: var(--paper);
+	}
+
+	[data-demo-adjust] summary {
+		cursor: pointer;
+		font: 500 12px var(--font-ui);
+		color: var(--ink-mute);
 	}
 
 	[data-demo-error] {

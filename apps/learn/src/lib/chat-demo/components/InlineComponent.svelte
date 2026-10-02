@@ -264,12 +264,14 @@
 </figure>
 
 <style>
+	/* On paper, not paper-soft: a striped table paints its even rows paper-soft, which would
+	   vanish into a paper-soft frame. */
 	.inline-mount {
 		margin: 0;
 		padding: 8px 10px;
 		border: 1px solid var(--paper-edge);
 		border-radius: 8px;
-		background: var(--paper-soft);
+		background: var(--paper);
 	}
 
 	.inline-footer {

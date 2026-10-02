@@ -28,6 +28,7 @@ import {
 	getCurrentId,
 	setCurrentId,
 	renameConversation,
+	updateLastAssistantBlocks,
 	type ChatProvider,
 	type Turn
 } from '$lib/koan/conversations.svelte'
@@ -161,6 +162,25 @@ const keyOf = (b: Screen | DemoBlock) => JSON.stringify([b.demo, b.variant ?? nu
 
 export function noteSelection(block: DemoBlock, value: unknown): void {
 	selection = { key: keyOf(block), value }
+}
+
+/** True for the demo block that is the screen — the one live controls may adjust. */
+export function isScreen(block: DemoBlock): boolean {
+	const screen = screenFrom(conversation.turns)
+	return screen !== null && keyOf(screen) === keyOf(block)
+}
+
+/**
+ * Change the demo on screen in place — from its live controls — without adding a turn. The
+ * change is saved into its block, so the next turn's screen already has it.
+ */
+export function adjustScreen(props: Record<string, unknown>): void {
+	updateLastAssistantBlocks((blocks) => {
+		const at = (blocks as Block[]).findLastIndex((b) => b.kind === 'demo')
+		if (at < 0) return null
+		const block = blocks[at] as DemoBlock
+		return blocks.map((b, i) => (i === at ? { ...block, props: { ...block.props, ...props } } : b))
+	})
 }
 
 /** The screen, with the user's selection in it when it was made there. */
