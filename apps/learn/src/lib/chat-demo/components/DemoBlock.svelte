@@ -8,7 +8,7 @@
 	import { BLOCK_PLUGINS } from '$lib/koan/block-plugins'
 	import type { DemoBlock } from '../types'
 	import { renderPlan } from '../intent/render-plan'
-	import { demoById, hrefOf, propSchemaOf, variantOf } from '../intent/demos'
+	import { changingVariants, demoById, hrefOf, propSchemaOf, variantOf } from '../intent/demos'
 	import { adjustScreen, isScreen } from '../store.svelte'
 	import Tweaks from '$lib/koan/components/Tweaks.svelte'
 	import InlineComponent from './InlineComponent.svelte'
@@ -19,6 +19,8 @@
 	const meta = $derived(demoById(block.demo))
 	const title = $derived(meta?.title ?? block.demo)
 	const variantLabel = $derived(variantOf(block.demo, block.variant)?.label)
+	/** A variant only the full demo page builds: the caption says so, and the link opens it. */
+	const onPageOnly = $derived(Boolean(block.variant) && !changingVariants(block.demo).some((v) => v.id === block.variant))
 	const live = $derived<Promise<{ default: Component }> | null>(plan.kind === 'live' && meta ? meta.load() : null)
 	const schema = $derived(propSchemaOf(block.demo))
 	/** Live controls only on the demo that is the screen: history stays as it was said. */
@@ -54,8 +56,8 @@
 		</details>
 	{/if}
 	<figcaption data-demo-caption>
-		<span>{title}{#if variantLabel} · {variantLabel}{/if}</span>
-		<a href={hrefOf(block.demo)} data-demo-open>Open the full demo</a>
+		<span>{title}{#if variantLabel} · {variantLabel}{#if onPageOnly} (on the full demo){/if}{/if}</span>
+		<a href={hrefOf(block.demo, block.variant)} data-demo-open>Open the full demo</a>
 	</figcaption>
 </figure>
 

@@ -5,7 +5,7 @@
 import type { DemoPropSchema } from '$lib/koan/types'
 import type { SuggestionItem } from '../types'
 import type { Interpretation, Screen, View } from './types'
-import { dataOf, demoById, propSchemaOf, variantsOf } from './demos'
+import { changingVariants, dataOf, demoById, propSchemaOf, variantsOf } from './demos'
 
 const MAX_CHIPS = 8
 const MAX_ENUM_CHIPS = 3
@@ -19,7 +19,7 @@ export const chip = (label: string, interpretation: Omit<Interpretation, 'confid
 const humanise = (name: string) => name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (c) => c.toUpperCase())
 
 function variantChips(screen: Screen): SuggestionItem[] {
-	return variantsOf(screen.demo)
+	return changingVariants(screen.demo)
 		.filter((v) => v.id !== screen.variant)
 		.map((v) => chip(v.label, { intent: 'modify', demo: screen.demo, variant: v.id }))
 }

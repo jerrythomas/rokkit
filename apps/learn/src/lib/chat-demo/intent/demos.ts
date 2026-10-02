@@ -58,6 +58,13 @@ export const SAMPLES: Record<string, { tool: string; data: unknown; props: Recor
  */
 export const CANVAS_ONLY = new Set(['combo', 'multi-select', 'stepper', 'date-picker', 'select', 'tree', 'tree-table'])
 
+/**
+ * Live demos whose component takes no props: the chat can show them, but not change them, so
+ * it offers no prop or variant changes for them. spec/chat-demo/intent/live-props.spec.ts reads
+ * every live demo's source and fails if this drifts from which components declare `$props()`.
+ */
+export const FIXED_LIVE = new Set(['toggle', 'pill', 'swatch', 'toasts', 'chat', 'theme-wizard'])
+
 /** Props the chat can change beyond a demo's own schema. */
 const EXTRA_PROPS: Record<string, Record<string, DemoPropSchema>> = {
 	chart: { stack: { type: 'boolean', default: false, label: 'Stacked', desc: 'Stack the series' } }
@@ -74,10 +81,17 @@ export function variantsOf(id: string): DemoVariant[] {
 export const variantOf = (id: string, variant: string | undefined): DemoVariant | undefined =>
 	variant ? variantsOf(id).find((v) => v.id === variant) : undefined
 
-export const propSchemaOf = (id: string): Record<string, DemoPropSchema> => ({
-	...demoById(id)?.props,
-	...EXTRA_PROPS[id]
-})
+/** The props the chat can change on a demo — none on one whose component ignores them. */
+export const propSchemaOf = (id: string): Record<string, DemoPropSchema> =>
+	FIXED_LIVE.has(id) ? {} : { ...demoById(id)?.props, ...EXTRA_PROPS[id] }
+
+/**
+ * The variants that change something in the chat: a chart kind, or a variant that carries
+ * props. A variant without props is built by its /app page's own code, so the chat can only
+ * link to it.
+ */
+export const changingVariants = (id: string): DemoVariant[] =>
+	FIXED_LIVE.has(id) ? [] : variantsOf(id).filter((v) => id === 'chart' || v.props)
 
 /** A dataset the demo can be reshaped from: its own on screen, or its sample. */
 export function dataOf(screen: { demo: string; data?: unknown; variant?: string }): unknown {
@@ -86,7 +100,8 @@ export function dataOf(screen: { demo: string; data?: unknown; variant?: string 
 	return SAMPLES[screen.demo]?.data
 }
 
-export const hrefOf = (id: string): string => routeFor(id) ?? `/app/${id}`
+export const hrefOf = (id: string, variant?: string): string =>
+	`${routeFor(id) ?? `/app/${id}`}${variant ? `?variant=${encodeURIComponent(variant)}` : ''}`
 
 /** A few demos to offer when the chat has nothing better to suggest. */
 export const STARTERS = ['table', 'chart', 'form', 'tabs', 'list'] as const

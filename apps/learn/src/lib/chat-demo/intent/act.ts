@@ -6,7 +6,7 @@ import type { Block, DemoBlock } from '../types'
 import { inferShape, schemaFromRecord } from '../infer'
 import type { Interpretation, Screen, View } from './types'
 import { chip, chipsFor, labelOf } from './chips'
-import { STARTERS, dataOf, demoById, variantOf } from './demos'
+import { STARTERS, changingVariants, dataOf, demoById, variantOf } from './demos'
 import { bestSection } from './docs'
 
 const demoBlock = (screen: Screen): DemoBlock => ({ kind: 'demo', ...screen })
@@ -29,6 +29,17 @@ function describeChange(i: Interpretation, demo: string): string {
 	return `Updated — ${parts.join(', ')}.`
 }
 
+const titleOf = (demo: string | undefined) => demoById(demo)?.title ?? demo ?? ''
+
+/** A variant only its /app page builds: the chat says where it is instead of claiming a change. */
+const builtOnPage = (demo: string, variant?: string) =>
+	Boolean(variant) && !changingVariants(demo).some((v) => v.id === variant)
+
+const changeLine = (i: Interpretation, demo: string) =>
+	builtOnPage(demo, i.variant) && !Object.keys(i.props ?? {}).length
+		? `“${variantOf(demo, i.variant)?.label}” is built on the full ${titleOf(demo)} demo page — open it below.`
+		: describeChange(i, demo)
+
 /** How a dataset becomes each view, via the same shape inference pasted data goes through. */
 const FORCE = { table: 'table', chart: 'chart', list: 'list', form: 'record' } as const
 
@@ -44,8 +55,6 @@ function reshaped(data: unknown, view: View): Screen | null {
 		return { demo: 'list', props: {}, data: inf.items.map((it) => (typeof it === 'object' && it !== null ? it : { label: String(it) })) }
 	return null
 }
-
-const titleOf = (demo: string | undefined) => demoById(demo)?.title ?? demo ?? ''
 
 /** A clarify option's chip text, by what the option would do. */
 const LABELS: Record<Interpretation['intent'], (o: Interpretation) => string> = {
@@ -106,7 +115,7 @@ type Handler = (i: Interpretation, screen: Screen | null) => Block[]
 
 const INTENTS: Record<Interpretation['intent'], Handler> = {
 	show: (i) => (i.data === undefined ? onScreen(`${titleOf(i.demo)} — ${demoById(i.demo)?.description ?? ''}`, shown(i)) : withOwnData(i)),
-	modify: (i, screen) => onScreen(describeChange(i, (screen as Screen).demo), modified(i, screen as Screen)),
+	modify: (i, screen) => onScreen(changeLine(i, (screen as Screen).demo), modified(i, screen as Screen)),
 	reshape: (i, screen) => {
 		if (i.data !== undefined) return part(i)
 		const data = dataOf(screen as Screen)

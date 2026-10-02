@@ -8,16 +8,28 @@
 
 	// Typed with the narrow Tabs unions so the bound form values flow straight
 	// into <Tabs> without widening to `string`.
-	let layout = $state<{
+	type Layout = {
 		orientation: 'horizontal' | 'vertical'
 		position: 'before' | 'after'
 		align: 'start' | 'center' | 'end'
 		disabled: boolean
-	}>({
+	}
+
+	// A host (the chat, a variant) may set the layout; the editor below still edits it after.
+	const { orientation, position, align, disabled }: Partial<Layout> = $props()
+
+	let layout = $state<Layout>({
 		orientation: 'horizontal',
 		position: 'before',
 		align: 'start',
 		disabled: false
+	})
+
+	$effect(() => {
+		if (orientation) layout.orientation = orientation
+		if (position) layout.position = position
+		if (align) layout.align = align
+		if (disabled !== undefined) layout.disabled = disabled
 	})
 
 	let mapping = $state({
