@@ -167,6 +167,7 @@ export default defineConfig({
 						// doesn't load the sveltekit() plugin, so we alias it to
 						// a stub that exports the four expected fields.
 						'$app/environment': path.resolve('./apps/learn/spec/stubs/app-environment.ts'),
+						'$env/dynamic/private': path.resolve('./apps/learn/spec/stubs/env-dynamic-private.ts'),
 						$app: path.resolve('./apps/learn/src/app')
 					}
 				}

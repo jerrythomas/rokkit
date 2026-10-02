@@ -1,17 +1,17 @@
 import { error, json } from '@sveltejs/kit'
 import { env } from '$env/dynamic/private'
 import type { RequestHandler } from './$types'
+import { upstreamRequest } from '$lib/chat-demo/openrouter-request'
 
 /**
  * Proxy to OpenRouter's chat completions API.
  *
  * The OPENROUTER_API_KEY env var stays server-side (demo/.env.local) — the
- * browser never sees it. The client POSTs the same body shape OpenRouter
- * expects; we add the auth header + standard referrer fields and forward.
- *
- * Default model is meta-llama/llama-3.2-3b-instruct:free (Llama 3.2 3B,
- * free tier) which is a reasonable balance of speed + tool-calling
- * fidelity. Callers can override `model` in the request body.
+ * browser never sees it. Because the key is ours, this is not an open proxy:
+ * `upstreamRequest` rebuilds the body from the fields the demo sends (one of
+ * its curated free models, a short conversation, temperature, JSON mode) and
+ * anything else is answered 400 before OpenRouter is called. We add the auth
+ * header + standard referrer fields and forward.
  */
 export const POST: RequestHandler = async ({ request, fetch, url }) => {
 	const key = env.OPENROUTER_API_KEY
@@ -19,12 +19,14 @@ export const POST: RequestHandler = async ({ request, fetch, url }) => {
 		throw error(503, 'OPENROUTER_API_KEY not set on server')
 	}
 
-	let body: Record<string, unknown>
+	let raw: unknown
 	try {
-		body = await request.json()
+		raw = await request.json()
 	} catch {
 		throw error(400, 'Invalid JSON body')
 	}
+	const upstreamBody = upstreamRequest(raw)
+	if ('problem' in upstreamBody) throw error(400, `Invalid request body: ${upstreamBody.problem}`)
 
 	const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
 		method: 'POST',
@@ -35,7 +37,7 @@ export const POST: RequestHandler = async ({ request, fetch, url }) => {
 			'HTTP-Referer': url.origin,
 			'X-Title': 'Rokkit Chat Demo'
 		},
-		body: JSON.stringify(body)
+		body: JSON.stringify(upstreamBody.body)
 	})
 
 	if (!upstream.ok) {

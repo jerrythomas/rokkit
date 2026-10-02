@@ -10661,3 +10661,22 @@ only the cards.
   assertion; the centring specs now run under `centre: 'focus'`.
 
 Gates: 1,219 graph unit, 84 graph e2e, lint 0/0.
+
+## 2026-10-02 (2) — OpenRouter proxy forwards only what the demo sends (PR #158)
+
+PR #158 (automated, OrbisAI) validated the message shape but still forwarded the whole body,
+so the endpoint stayed an open proxy for our key: any paid model, any `max_tokens`. Its
+prototype-pollution premise doesn't hold, because `JSON.parse` makes `__proto__` an own key.
+
+- `$lib/chat-demo/openrouter-request.ts` `upstreamRequest(body)` rebuilds the body from
+  `model` (must be in `OPENROUTER_MODELS`, defaults to the first), `messages` (1–8,
+  system|user|assistant, string content ≤ 16,000 chars), `temperature` (0–2) and
+  `response_format` (json_object only). Everything else is dropped; a bad value is a 400 before
+  OpenRouter is called.
+- `OPENROUTER_MODELS` moved to the plain `models.ts` so the server can import it; `llm.svelte.ts`
+  re-exports it.
+- The root vitest `learn` project gains a `$env/dynamic/private` stub alias, like
+  `$app/environment`.
+- Checked live on a dev server: a paid model and a `tool` role get 400. The demo body goes
+  through, but OpenRouter answered 404: 6 of the 7 curated `:free` models have rotated out
+  (only `google/gemma-4-26b-a4b-it:free` remains). The list needs refreshing.
