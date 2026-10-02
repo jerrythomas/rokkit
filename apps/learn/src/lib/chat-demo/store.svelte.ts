@@ -14,6 +14,8 @@ import { tryParse } from './infer'
 import { act } from './intent/act'
 import { demoById } from './intent/demos'
 import { interpretLocally } from './intent/local'
+import { interpretWith } from './intent/interpret'
+import { MAX_RECENT } from './intent/interpret-request'
 import { pastedBlocks } from './intent/pasted'
 import { screenFrom } from './intent/screen'
 import type { Interpretation, Screen } from './intent/types'
@@ -90,9 +92,10 @@ const PROVIDER_TO_MODE: Record<LLMProvider, ChatMode> = {
 	webllm: 'webllm'
 }
 
-/** Active route mode from engine state (scripted engine → 'simulated'). */
+/** Active route mode from engine state (no LLM → simulated, or System One on the server). */
 function currentMode(): ChatMode {
-	return llm.enabled ? PROVIDER_TO_MODE[llm.provider] : 'simulated'
+	if (llm.enabled) return PROVIDER_TO_MODE[llm.provider]
+	return llm.interpreter === 'systemone' ? 'systemone' : 'simulated'
 }
 
 /** Create the chat conversation lazily, or append a user turn if one exists. */
@@ -144,7 +147,22 @@ export function submitQuery(query: string): void {
 			})
 		return
 	}
+	if (llm.interpreter === 'systemone') {
+		_thinking = true
+		interpretWith('systemone', text, { screen: currentScreen(), recent: recentMessages() })
+			.then((reading) => pushAssistant(reply(reading)))
+			.finally(() => {
+				_thinking = false
+			})
+		return
+	}
 	thinkThenBlocks(reply(interpretLocally(text, currentScreen())))
+}
+
+/** What the user said before this message, for the server interpreter's context. */
+function recentMessages(): string[] {
+	const said = conversation.turns.flatMap((t) => (t.role === 'user' ? [t.text] : []))
+	return said.slice(0, -1).slice(-MAX_RECENT)
 }
 
 /** Validate a reading against what is on screen, then act on it. */

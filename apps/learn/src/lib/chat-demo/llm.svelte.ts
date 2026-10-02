@@ -16,6 +16,7 @@
 import type { Block } from './types'
 import { buildSystemPrompt, parseCompletion } from './parse'
 import { DEFAULT_OPENROUTER_MODEL, curatedOpenRouterModel } from './models'
+import type { Backend } from './intent/interpret'
 
 export type LLMProvider = 'openrouter' | 'webllm'
 export type LLMStatus = 'uninitialized' | 'loading' | 'ready' | 'thinking' | 'error'
@@ -55,6 +56,8 @@ export const DEFAULT_WEBLLM_MODEL = WEBLLM_MODELS[1].id
 export const llm = $state<{
 	provider: LLMProvider
 	enabled: boolean
+	/** Who interprets a message when no LLM is enabled: the browser, or System One on the server. */
+	interpreter: Backend
 	openRouterModel: string
 	webllmModel: string
 	webllmStatus: LLMStatus
@@ -65,6 +68,7 @@ export const llm = $state<{
 }>({
 	provider: 'openrouter',
 	enabled: false,
+	interpreter: 'local',
 	openRouterModel: DEFAULT_OPENROUTER_MODEL,
 	webllmModel: DEFAULT_WEBLLM_MODEL,
 	webllmStatus: 'uninitialized',
@@ -79,8 +83,10 @@ export const llm = $state<{
  * LLM (the local interpreter answers); openrouter/webllm enable it and set the model
  * (falling back to the mode default). Called by the /chat/[mode] page.
  */
-export function setEngine(mode: 'simulated' | 'openrouter' | 'webllm', model?: string): void {
-	if (mode === 'simulated') {
+export function setEngine(mode: 'simulated' | 'systemone' | 'openrouter' | 'webllm', model?: string): void {
+	// Simulated and System One have no LLM; they differ only in who interprets a message.
+	llm.interpreter = mode === 'systemone' ? 'systemone' : 'local'
+	if (mode === 'simulated' || mode === 'systemone') {
 		llm.enabled = false
 		return
 	}

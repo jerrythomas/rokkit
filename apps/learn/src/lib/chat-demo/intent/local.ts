@@ -91,7 +91,7 @@ function searched(text: string): Interpretation {
 }
 
 /** Topic words for `explain`: the question without its cue and filler words. */
-const topicOf = (text: string) => [...stems(text.replace(EXPLAIN, ''))].join(' ')
+export const topicOf = (text: string) => [...stems(text.replace(EXPLAIN, ''))].join(' ')
 
 /** The data on screen can become that view (and is not already it). */
 const reshapeable = (screen: Screen, view: View) => view !== screen.demo && Array.isArray(dataOf(screen))
@@ -146,11 +146,19 @@ const READINGS: Reading[] = [
 	}
 ]
 
-export function interpretLocally(message: string, screen: Screen | null): Interpretation {
+/**
+ * A reading of a message the interpreter recognises outright — a named demo, a prop or variant
+ * word, a reshape or explain cue — or null when it would only be guessing from search.
+ */
+export function readDirectly(message: string, screen: Screen | null): Interpretation | null {
 	const text = message.trim()
 	for (const reading of READINGS) {
 		const found = reading(text, screen)
 		if (found) return found
 	}
-	return searched(text)
+	return null
+}
+
+export function interpretLocally(message: string, screen: Screen | null): Interpretation {
+	return readDirectly(message, screen) ?? searched(message.trim())
 }

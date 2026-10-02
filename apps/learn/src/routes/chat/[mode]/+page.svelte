@@ -606,7 +606,8 @@
 		flex-shrink: 0;
 	}
 
-	.conv-mode-badge[data-mode='simulated'] {
+	.conv-mode-badge[data-mode='simulated'],
+	.conv-mode-badge[data-mode='systemone'] {
 		color: var(--ink-mute);
 	}
 

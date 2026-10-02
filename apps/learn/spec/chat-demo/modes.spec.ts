@@ -1,10 +1,18 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { isChatMode, MODES, CHAT_MODES } from '../../src/lib/chat-demo/modes'
+import { isChatMode, MODES, CHAT_MODES, visibleModes } from '../../src/lib/chat-demo/modes'
 import { setEngine, llm, DEFAULT_OPENROUTER_MODEL, DEFAULT_WEBLLM_MODEL } from '../../src/lib/chat-demo/llm.svelte'
 
 describe('modes descriptor', () => {
-	it('CHAT_MODES lists the three engines', () => {
-		expect(CHAT_MODES).toEqual(['simulated', 'openrouter', 'webllm'])
+	it('CHAT_MODES lists the four engines', () => {
+		expect(CHAT_MODES).toEqual(['simulated', 'systemone', 'openrouter', 'webllm'])
+	})
+	it('shows a mode that needs a backend only when the server reports it', () => {
+		expect(visibleModes({ systemone: false }).map((m) => m.mode)).toEqual(['simulated', 'openrouter', 'webllm'])
+		expect(visibleModes({ systemone: true }).map((m) => m.mode)).toEqual(['simulated', 'systemone', 'openrouter', 'webllm'])
+	})
+	it('marks System One as needing the server backend', () => {
+		expect(MODES.find((m) => m.mode === 'systemone')?.needsBackend).toBe('systemone')
+		expect(MODES.filter((m) => m.needsBackend).map((m) => m.mode)).toEqual(['systemone'])
 	})
 	it('isChatMode guards valid/invalid', () => {
 		expect(isChatMode('simulated')).toBe(true)
@@ -28,9 +36,17 @@ describe('setEngine', () => {
 		llm.openRouterModel = DEFAULT_OPENROUTER_MODEL
 		llm.webllmModel = DEFAULT_WEBLLM_MODEL
 	})
-	it('simulated disables the LLM', () => {
+	it('simulated disables the LLM and answers with the local interpreter', () => {
 		setEngine('simulated')
 		expect(llm.enabled).toBe(false)
+		expect(llm.interpreter).toBe('local')
+	})
+	it('systemone has no LLM either, and interprets on the server', () => {
+		setEngine('systemone')
+		expect(llm.enabled).toBe(false)
+		expect(llm.interpreter).toBe('systemone')
+		setEngine('simulated')
+		expect(llm.interpreter).toBe('local')
 	})
 	it('openrouter enables + sets provider + model (default when omitted)', () => {
 		setEngine('openrouter')

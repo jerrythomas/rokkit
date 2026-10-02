@@ -24,8 +24,38 @@ beforeEach(() => {
 	clearAll()
 	resetConversation()
 	llm.enabled = false
+	llm.interpreter = 'local'
 })
 afterEach(() => vi.useRealTimers())
+
+describe('a System One conversation', () => {
+	const flush = async () => {
+		await vi.runAllTimersAsync()
+	}
+
+	it('asks the server only about what the local interpreter does not recognise', async () => {
+		const fetch = vi.fn().mockResolvedValue(
+			new Response(JSON.stringify({ interpretation: { intent: 'modify', demo: 'list', props: { size: 'lg' }, confidence: 0.9 } }))
+		)
+		vi.stubGlobal('fetch', fetch)
+		llm.interpreter = 'systemone'
+		try {
+			submitText('show me a list')
+			await flush()
+			expect(fetch).not.toHaveBeenCalled()
+			expect(screen()?.demo).toBe('list')
+
+			submitText('bigger rows please')
+			await flush()
+			expect(fetch).toHaveBeenCalledTimes(1)
+			expect(JSON.parse(fetch.mock.calls[0][1].body).recent).toEqual(['show me a list'])
+			expect(screen()).toMatchObject({ demo: 'list', props: { size: 'lg' } })
+		} finally {
+			llm.interpreter = 'local'
+			vi.unstubAllGlobals()
+		}
+	})
+})
 
 describe('a simulated conversation', () => {
 	it('follows up on the table it showed: striped, then charted — the same rows throughout', () => {

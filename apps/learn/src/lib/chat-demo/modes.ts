@@ -1,12 +1,13 @@
 /**
- * The three Ask Rokkit engines as a single descriptor — one source for the
- * picker cards, route validation, and route↔engine mapping. Model defaults
- * come from llm.svelte.ts; the actual inference lives there and in router.ts.
+ * The Ask Rokkit engines as a single descriptor — one source for the picker
+ * cards, route validation, and route↔engine mapping. Model defaults come from
+ * llm.svelte.ts; interpretation lives in intent/ (local and System One) and
+ * llm.svelte.ts (the LLM modes).
  */
 import { DEFAULT_OPENROUTER_MODEL, DEFAULT_WEBLLM_MODEL } from './llm.svelte'
 
-export type ChatMode = 'simulated' | 'openrouter' | 'webllm'
-export const CHAT_MODES: ChatMode[] = ['simulated', 'openrouter', 'webllm']
+export type ChatMode = 'simulated' | 'systemone' | 'openrouter' | 'webllm'
+export const CHAT_MODES: ChatMode[] = ['simulated', 'systemone', 'openrouter', 'webllm']
 
 export function isChatMode(x: unknown): x is ChatMode {
 	return typeof x === 'string' && (CHAT_MODES as string[]).includes(x)
@@ -21,6 +22,8 @@ export interface ModeCard {
 	examples: string[]
 	needsModel: boolean
 	defaultModel?: string
+	/** A server backend the mode needs; its card shows only when the server reports it. */
+	needsBackend?: 'systemone'
 }
 
 export const MODES: ModeCard[] = [
@@ -36,6 +39,17 @@ export const MODES: ModeCard[] = [
 			'Build a sign-up form'
 		],
 		needsModel: false
+	},
+	{
+		mode: 'systemone',
+		label: 'System One',
+		icon: 'i-mdi:brain',
+		blurb: 'A local classifier reads the follow-ups Simulated would ask back about.',
+		capabilities:
+			'Everything Simulated does, plus vague wording — “bigger rows”, “smaller” — read by a System One model on a local Ollama. Shown when the server has OLLAMA_URL.',
+		examples: ['Show me a sortable table', 'Something with nested folders'],
+		needsModel: false,
+		needsBackend: 'systemone'
 	},
 	{
 		mode: 'openrouter',
@@ -64,6 +78,14 @@ export const MODES: ModeCard[] = [
 		defaultModel: DEFAULT_WEBLLM_MODEL
 	}
 ]
+
+/** The server backends `GET /api/chat/interpret` reports. */
+export type Backends = { systemone: boolean }
+
+/** The cards to offer: a mode that needs a backend only when the server has it. */
+export function visibleModes(backends: Backends): ModeCard[] {
+	return MODES.filter((m) => !m.needsBackend || backends[m.needsBackend])
+}
 
 export function cardFor(mode: ChatMode): ModeCard {
 	return MODES.find((c) => c.mode === mode)!
