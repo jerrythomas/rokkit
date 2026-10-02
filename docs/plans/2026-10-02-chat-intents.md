@@ -8,6 +8,7 @@
 
 Order agreed with the owner: slices 1–2, then selection, then inline prop controls, then
 slices 3–4.
+
 **App:** `apps/learn` (chat demo `/chat/[mode]`, Koan catalogue)
 **Supersedes:** the regex `ROUTES` table in `lib/chat-demo/router.ts`, and the client-built LLM
 prompt (`prompt.ts`) and `/api/llm/openrouter` for chat turns.
@@ -35,12 +36,15 @@ Each turn has three parts, the same shape as the graph interactions (an intent f
 message + ChatSession state ──interpret──► Interpretation ──act (intents table)──► Block[] + next state
 ```
 
-### 1. `ChatSession`: conversation state (client, `$state` class)
+### 1. Conversation state: read back from the conversation (as built)
 
-- `screen`: the demo on screen (`{ demo, variant?, props, data? }`), or `null`.
-- `recent`: compact summaries of the last few turns, `{ said, intent, demo? }`.
-- `act(interpretation)` runs the intent and updates `screen`. Every chip carries a ready-made
-  `Interpretation`, so clicking one is `act`, and a chip is never text to re-match.
+- **The screen** (`{ demo, variant?, props, data?, selected? }`) is not stored separately. It is
+  the last `demo` block in the conversation (`screenFrom`), so a resumed chat knows what is
+  showing. The user's selection is added while its block is the screen.
+- **Every chip carries a ready-made `Interpretation`**, so clicking one goes straight to
+  `act`; a chip is never text to match again.
+- *Planned and not built:* a `ChatSession` class and a `recent` turn summary. Slice 3 sends
+  `recent` to the server interpreter, derived from the turns in the same way.
 
 ### 2. `Interpretation`: the only thing an interpreter returns
 
@@ -63,7 +67,7 @@ type Interpretation = {
 | --- | --- | --- |
 | `show` | inline component when `InlineComponent` supports the tool; otherwise a new `demo` block (title, description, link to `/app/<id>`), plus chips for its variants and props | `screen` = that demo |
 | `modify` | the demo on screen remounted with merged props | `screen.props` merged |
-| `reshape` | `screen.data` (or the demo's sample data) through `routeData(force: view)` | `screen` = new view |
+| `reshape` | `screen.data` (or the demo's sample, or the selected part) through `inferShape(force: view)` | `screen` = new view |
 | `explain` | the best-matching section of that demo's `docs.md` (MiniSearch over sections), as markdown: real docs, nothing generated | unchanged |
 | `clarify` | one line plus the `options` as chips | unchanged |
 
@@ -119,8 +123,9 @@ System One only when it is available.
 
 ## What is removed (superseded)
 
-- `ROUTES`, `FALLBACK` and `routeQuery` in `router.ts`. `routeData` and the shape inference
-  (`infer.ts`) stay, because `reshape` uses them.
+- `router.ts`, done in slice 2: `ROUTES`, `FALLBACK`, `routeQuery`, and also `routeData`, since
+  pasted data now goes through `pastedBlocks` and `act`. The shape inference (`infer.ts`) stays,
+  because `reshape` uses it.
 - The hand-written chips per route.
 - The chat's use of `prompt.ts`/`parse.ts` fences and `/api/llm/openrouter`, once slice 4 has
   moved every chat mode onto `/api/chat/interpret`. If nothing else calls the old endpoint,
