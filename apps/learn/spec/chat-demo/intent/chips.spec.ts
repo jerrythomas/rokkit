@@ -10,9 +10,20 @@ const intents = (items: ReturnType<typeof chipsFor>) =>
 
 describe('chipsFor', () => {
 	it('offers the screen demo’s other variants', () => {
-		const chips = intents(chipsFor({ demo: 'tabs', variant: 'vertical', props: { orientation: 'vertical' } }))
-		expect(chips).toContainEqual(expect.objectContaining({ intent: 'modify', variant: 'with-icons' }))
-		expect(chips).not.toContainEqual(expect.objectContaining({ variant: 'vertical' }))
+		const chips = intents(chipsFor({ demo: 'tree', variant: 'dotted-lines', props: { lineStyle: 'dotted' } }))
+		expect(chips).toContainEqual(expect.objectContaining({ intent: 'modify', variant: 'no-lines' }))
+		expect(chips).not.toContainEqual(expect.objectContaining({ variant: 'dotted-lines' }))
+	})
+
+	it('offers no variant that cannot change anything in the chat (it carries no props)', () => {
+		const labels = chipsFor({ demo: 'table', props: {} }).map((c) => c.label)
+		expect(labels).not.toContain('Custom field mapping')
+		expect(labels).toContain('Striped rows')
+	})
+
+	it('offers only "how does it work" for a demo whose component ignores props', () => {
+		const chips = intents(chipsFor({ demo: 'toggle', props: {} }))
+		expect(chips).toEqual([expect.objectContaining({ intent: 'explain', demo: 'toggle' })])
 	})
 
 	it('offers to flip a boolean prop', () => {

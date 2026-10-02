@@ -24,7 +24,7 @@ test('opens a demo the shell could not reach before', async ({ page }) => {
 test('sets a prop on the demo on the canvas, without leaving it', async ({ page }) => {
 	await gotoHydrated(page, '/app/tabs')
 	await say(page, 'align them to the end')
-	await expect(page.locator('[data-tabs][data-align="end"], [data-align="end"]').first()).toBeVisible()
+	await expect(page.locator('[data-tabs][data-align="end"]').first()).toBeVisible()
 	await expect(page).toHaveURL(/\/app\/tabs$/)
 })
 
@@ -42,4 +42,38 @@ test('a how-to opens the docs; an unplaceable message is asked back', async ({ p
 	await say(page, 'hmm')
 	await expect(page).toHaveURL(/\/app$/)
 	await expect(composer(page)).toHaveValue('hmm')
+})
+
+test('asking back shows the closest demos to pick from', async ({ page }) => {
+	await gotoHydrated(page, '/app/tabs')
+	await say(page, 'choose several options')
+	await expect(page).toHaveURL(/\/app$/)
+	// Pick by title: Select's description mentions MultiSelect.
+	const byTitle = (title: string) =>
+		page.locator('[data-composer-suggestion]').filter({ has: page.locator('[data-suggestion-title]', { hasText: new RegExp(`^${title}$`) }) })
+	await expect(byTitle('Select')).toBeVisible()
+	await expect(byTitle('Multi-Select')).toBeVisible()
+
+	await byTitle('Multi-Select').click()
+	await expect(page).toHaveURL(/\/app\/multiselect/, { timeout: 8000 })
+})
+
+test('a how-to about another demo opens that demo on its docs', async ({ page }) => {
+	await gotoHydrated(page, '/app/tabs')
+	await say(page, 'how does the tree work?')
+	await expect(page).toHaveURL(/\/app\/tree$/, { timeout: 8000 })
+	await expect(page.getByText('Docs · concepts')).toBeVisible()
+	await expect(page.getByText('Tree Select — design intent')).toBeVisible()
+})
+
+test('a prop set by message survives a reload', async ({ page }) => {
+	// Tweaks are saved into the conversation, so start one the way a user does.
+	await gotoHydrated(page, '/app')
+	await say(page, 'show me tabs')
+	await expect(page).toHaveURL(/\/app\/tabs$/, { timeout: 8000 })
+	await say(page, 'align them to the end')
+	await expect(page.locator('[data-tabs][data-align="end"]').first()).toBeVisible()
+	await page.reload()
+	await expect(page.locator('body')).toHaveAttribute('data-hydrated', 'true')
+	await expect(page.locator('[data-tabs][data-align="end"]').first()).toBeVisible()
 })

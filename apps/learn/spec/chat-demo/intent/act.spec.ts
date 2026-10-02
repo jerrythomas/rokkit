@@ -54,6 +54,12 @@ describe('act — modify', () => {
 		expect(off).toEqual({ kind: 'prose', text: 'Updated — striped: off.' })
 	})
 
+	it('says a variant built on the demo page is there, rather than claiming a change', () => {
+		const blocks = act(sure({ intent: 'modify', demo: 'tabs', variant: 'with-icons' }), { demo: 'tabs', props: {} })
+		expect(blocks[0]).toEqual({ kind: 'prose', text: '“With icons” is built on the full Tabs demo page — open it below.' })
+		expect(demoOf(blocks)?.variant).toBe('with-icons')
+	})
+
 	it('merges onto the props already set', () => {
 		const screen: Screen = { demo: 'tabs', props: { orientation: 'vertical' } }
 		expect(demoOf(act(sure({ intent: 'modify', demo: 'tabs', props: { align: 'end' } }), screen))?.props).toEqual({
