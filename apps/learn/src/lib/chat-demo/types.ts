@@ -6,6 +6,7 @@
  * LLM will produce — the mock router returns the same shape today so the UI
  * doesn't change when we swap in a real model.
  */
+import type { Interpretation } from './intent/types'
 
 export type ProseBlock = {
 	kind: 'prose'
@@ -29,6 +30,18 @@ export type CodeBlock = {
 	language: string
 	code: string
 	filename?: string
+}
+
+/**
+ * A catalogue demo on screen — what the conversation is about. Its fields ARE the screen
+ * state the next turn reads (`screenFrom`); `renderPlan` decides how the chat draws it.
+ */
+export type DemoBlock = {
+	kind: 'demo'
+	demo: string
+	variant?: string
+	props: Record<string, unknown>
+	data?: unknown
 }
 
 export type ComponentBlock = {
@@ -75,6 +88,7 @@ export type SuggestionAction =
 	| { kind: 'reshape'; source: 'json' | 'csv'; data: unknown; force: 'table' | 'chart' | 'record' | 'list'; caption?: string }
 	| { kind: 'props'; tool: string; props: Record<string, unknown>; caption?: string }
 	| { kind: 'switch-provider'; provider: 'openrouter' | 'webllm' }
+	| { kind: 'intent'; interpretation: Interpretation }
 
 export type SuggestionItem = {
 	label: string
@@ -93,6 +107,7 @@ export type Block =
 	| MarkdownBlock
 	| CodeBlock
 	| ComponentBlock
+	| DemoBlock
 	| SuggestionsBlock
 	| DataNoteBlock
 	| ErrorBlock
