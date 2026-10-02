@@ -82,3 +82,20 @@ test('the demo on screen has live controls that change it in place', async ({ pa
 	await say(page, 'show me tabs')
 	await expect(page.locator('[data-block-kind="demo"]').first().locator('[data-demo-adjust]')).toHaveCount(0)
 })
+
+test('a line chart of data with repeated x per series draws one point per x', async ({ page }) => {
+	await gotoHydrated(page, '/chat/simulated')
+	const rows = [
+		{ month: 'Jul', product: 'A', sales: 1 },
+		{ month: 'Jul', product: 'A', sales: 2 },
+		{ month: 'Aug', product: 'A', sales: 4 },
+		{ month: 'Aug', product: 'B', sales: 3 }
+	]
+	await say(page, JSON.stringify(rows))
+	await expect(lastDemo(page)).toHaveAttribute('data-demo', 'chart')
+
+	await say(page, 'as a line chart')
+	await expect(lastDemo(page)).toHaveAttribute('data-variant', 'line')
+	// The plot's footer counts the rows it drew: Jul/A summed into one, so three, not four.
+	await expect(lastDemo(page)).toContainText('rows [3]')
+})
