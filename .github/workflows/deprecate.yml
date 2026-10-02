@@ -1,0 +1,69 @@
+name: Deprecate a release
+
+# Mark one released version of every published @rokkit package as deprecated — run by hand,
+# e.g. for v1.8.1, which shipped with its siblings pinned to 1.8.0.
+#
+#   gh workflow run deprecate.yml -f version=1.8.1 -f message="… use 1.8.2 or later"
+#
+# Publishing uses npm trusted publishing (OIDC), whose identity can only publish; deprecating
+# needs a token. NPM_TOKEN is an npm granular access token with read/write on the @rokkit
+# packages. An empty message un-deprecates.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version to deprecate, e.g. 1.8.1'
+        required: true
+      message:
+        description: 'Shown to anyone installing it (empty un-deprecates)'
+        required: true
+        default: 'Deprecated - use a later release'
+
+permissions:
+  contents: read
+
+jobs:
+  deprecate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24.x
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Deprecate every published package at that version
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Inputs reach the script through env, never interpolated into it.
+          VERSION: ${{ inputs.version }}
+          MESSAGE: ${{ inputs.message }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "::error::NPM_TOKEN is not set — add an npm granular access token as a repo secret"
+            exit 1
+          fi
+          if ! printf '%s' "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
+            echo "::error::'$VERSION' is not a version"
+            exit 1
+          fi
+          failed=0
+          for dir in packages/*/; do
+            manifest="${dir}package.json"
+            [ -f "$manifest" ] || continue
+            node -e "process.exit(require('./${manifest}').private ? 0 : 1)" && continue
+            name=$(node -p "require('./${manifest}').name")
+            if ! npm view "${name}@${VERSION}" version >/dev/null 2>&1; then
+              echo "Skipping ${name}@${VERSION} — not published"
+              continue
+            fi
+            if npm deprecate "${name}@${VERSION}" "$MESSAGE"; then
+              echo "Deprecated ${name}@${VERSION}"
+            else
+              echo "::error::Could not deprecate ${name}@${VERSION}"
+              failed=1
+            fi
+          done
+          exit $failed
