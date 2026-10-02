@@ -1,7 +1,7 @@
 import { error, json } from '@sveltejs/kit'
 import { env } from '$env/dynamic/private'
 import type { RequestHandler } from './$types'
-import { upstreamRequest } from '$lib/chat-demo/openrouter-request'
+import { upstreamRequest, upstreamProblem } from '$lib/chat-demo/openrouter-request'
 
 /**
  * Proxy to OpenRouter's chat completions API.
@@ -41,8 +41,7 @@ export const POST: RequestHandler = async ({ request, fetch, url }) => {
 	})
 
 	if (!upstream.ok) {
-		const text = await upstream.text()
-		throw error(upstream.status, `OpenRouter ${upstream.status}: ${text.slice(0, 400)}`)
+		throw error(upstream.status, upstreamProblem(upstream.status, await upstream.text()))
 	}
 
 	const data = await upstream.json()

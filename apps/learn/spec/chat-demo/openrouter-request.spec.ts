@@ -3,7 +3,7 @@
  * max_tokens, tools — is refused or dropped before it reaches OpenRouter.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { upstreamRequest } from '../../src/lib/chat-demo/openrouter-request'
+import { upstreamRequest, upstreamProblem } from '../../src/lib/chat-demo/openrouter-request'
 import { OPENROUTER_MODELS, DEFAULT_OPENROUTER_MODEL } from '../../src/lib/chat-demo/models'
 
 vi.mock('$env/dynamic/private', () => ({ env: { OPENROUTER_API_KEY: 'test-key' } }))
@@ -71,6 +71,30 @@ describe('upstreamRequest', () => {
 	})
 })
 
+/* OpenRouter's error body names our account (`user_id`) and the provider's raw metadata; the
+ * browser gets OpenRouter's one-line message only.
+ */
+const OPENROUTER_404 = JSON.stringify({
+	error: { message: 'This model is unavailable for free.', code: 404, metadata: { raw: 'provider internals' } },
+	user_id: 'user_2quhocCfcTnSxee12HwFEdf4S2q'
+})
+
+describe('upstreamProblem', () => {
+	it('keeps OpenRouter’s message and nothing else', () => {
+		expect(upstreamProblem(404, OPENROUTER_404)).toBe('OpenRouter 404: This model is unavailable for free.')
+	})
+
+	it('says only the status when the body is not OpenRouter’s error JSON', () => {
+		expect(upstreamProblem(502, '<html>Bad gateway user_2quho</html>')).toBe('OpenRouter 502')
+		expect(upstreamProblem(500, JSON.stringify({ user_id: 'user_x' }))).toBe('OpenRouter 500')
+	})
+
+	it('caps a long message', () => {
+		const long = JSON.stringify({ error: { message: 'x'.repeat(1000) } })
+		expect(upstreamProblem(400, long).length).toBeLessThanOrEqual('OpenRouter 400: '.length + 200)
+	})
+})
+
 describe('POST /api/llm/openrouter', () => {
 	let fetch: ReturnType<typeof vi.fn>
 	beforeEach(() => {
@@ -87,6 +111,13 @@ describe('POST /api/llm/openrouter', () => {
 		await post({ messages, max_tokens: 99_999 })
 		const sent = JSON.parse(fetch.mock.calls[0][1].body)
 		expect(sent).toEqual({ model: DEFAULT_OPENROUTER_MODEL, messages })
+	})
+
+	it('passes on OpenRouter’s status without its account details', async () => {
+		fetch.mockResolvedValue(new Response(OPENROUTER_404, { status: 404 }))
+		const failure = await post({ messages }).catch((e) => e)
+		expect(failure).toMatchObject({ status: 404 })
+		expect(JSON.stringify(failure.body)).not.toMatch(/user_|provider internals/)
 	})
 
 	it('answers 400 and never calls OpenRouter for a paid model', async () => {

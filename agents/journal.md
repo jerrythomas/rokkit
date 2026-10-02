@@ -10691,3 +10691,6 @@ list is now the five free models whose `supported_parameters` include `response_
 - `curatedOpenRouterModel(id)` sends a model off the list to the default, for a stale `?model=`
   or a saved conversation that the server would now refuse. `setEngine` and the store's
   `adoptProvider` both use it.
+- The proxy had been echoing up to 400 characters of OpenRouter's raw error body, which
+  included the account's `user_id` and provider metadata. `upstreamProblem(status, text)` now
+  passes on only `error.message` (capped at 200 characters), or just the status.
