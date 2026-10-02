@@ -19,6 +19,8 @@ export type Interpretation = {
 	props?: Record<string, unknown>
 	/** For `reshape`. */
 	view?: View
+	/** For `reshape`: part of the screen's data — a selected row or item — instead of all of it. */
+	data?: unknown
 	/** For `explain`: what to look up in the demo's docs. */
 	topic?: string
 	/** 0–1. Below `CLARIFY_BELOW` the chat asks back instead of acting. */
@@ -35,4 +37,6 @@ export type Screen = {
 	variant?: string
 	props: Record<string, unknown>
 	data?: unknown
+	/** What the user last selected in it: a row, an item. */
+	selected?: unknown
 }

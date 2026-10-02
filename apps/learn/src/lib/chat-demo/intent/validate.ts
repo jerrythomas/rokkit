@@ -42,6 +42,22 @@ const ask = (options: Interpretation[] = []): Interpretation => ({
 	...(options.length ? { options } : {})
 })
 
+const isRecord = (v: unknown) => typeof v === 'object' && v !== null && !Array.isArray(v)
+
+/** Any view takes rows; a form also takes the single record it edits. */
+const fits = (data: unknown, view: string) => Array.isArray(data) || (view === 'form' && isRecord(data))
+
+/** The view is real and the data — the part asked for, else the screen's — can take it. */
+const reshapes = (i: Interpretation, screen: Screen) =>
+	Boolean(i.view && VIEWS.includes(i.view) && fits(i.data ?? dataOf(screen), i.view))
+
+/** A reshape keeps its view, a chart kind when it goes into a chart, and the part asked for. */
+function reshape(i: Interpretation): Interpretation {
+	const variant = i.view === 'chart' && variantOf('chart', i.variant) ? { variant: i.variant } : {}
+	const part = i.data === undefined ? {} : { data: i.data }
+	return { intent: 'reshape', view: i.view, ...variant, ...part, confidence: i.confidence }
+}
+
 /** A modify that changes nothing is a question, not a no-op. */
 const changes = (g: Interpretation): Interpretation => (g.variant || g.props ? g : ask())
 
@@ -65,12 +81,7 @@ const CHECKS: Record<Interpretation['intent'], (i: Interpretation, screen: Scree
 		if (screen?.demo !== demo) return CHECKS.show({ ...i, intent: 'show', demo }, screen)
 		return changes(grounded(i, demo as string))
 	},
-	reshape: (i, screen) => {
-		if (!screen || !i.view || !VIEWS.includes(i.view) || !Array.isArray(dataOf(screen))) return ask()
-		// Into a chart, a chart kind may come along ("as a pie chart").
-		const variant = i.view === 'chart' && variantOf('chart', i.variant) ? { variant: i.variant } : {}
-		return { intent: 'reshape', view: i.view, ...variant, confidence: i.confidence }
-	},
+	reshape: (i, screen) => (screen && reshapes(i, screen) ? reshape(i) : ask()),
 	explain: (i, screen) => {
 		const demo = i.demo ?? screen?.demo
 		return demoById(demo) ? { intent: 'explain', demo, topic: i.topic ?? '', confidence: i.confidence } : ask()

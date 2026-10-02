@@ -22,6 +22,9 @@ const overlap = (said: Set<string>, phrase: string) => {
 
 const EXPLAIN = /^(how|why|what|explain|describe|tell me)\b|\bhow (do|does|can|would|to)\b|\bwhat (is|are|does)\b/i
 const NEGATE = /\b(no|not|without|remove|hide|disable|drop|turn off|un\w+)\b/i
+/** "edit this row", "open the selected item" — a reference to what the user selected. */
+const SELECTION = /\b(this|that|the|selected)\s+(row|item|one|record|entry|group)\b|\b(edit|open) (this|that|it)\b|\bselected\b/i
+const OPENS = /\b(open|expand|inside|children)\b/i
 const REFERS = /\b(as|into|same|that|this|it|them|those)\b/i
 const VIEW_WORDS: [RegExp, View][] = [
 	[/\btables?\b/i, 'table'],
@@ -109,8 +112,18 @@ function changeSaid(text: string, demo: string): Interpretation | null {
 
 type Reading = (text: string, screen: Screen | null) => Interpretation | null
 
+/** A reference to the selection: open a group it names, else edit the selected record. */
+function aboutSelection(text: string, screen: Screen | null): Interpretation | null {
+	const item = screen?.selected
+	if (!item || typeof item !== 'object' || !SELECTION.test(text)) return null
+	const children = (item as { children?: unknown }).children
+	if (OPENS.test(text) && Array.isArray(children)) return { intent: 'reshape', view: 'list', data: children, confidence: 0.9 }
+	return { intent: 'reshape', view: 'form', data: item, confidence: 0.9 }
+}
+
 /** Tried in order; the first that recognises the message wins. */
 const READINGS: Reading[] = [
+	aboutSelection,
 	(text, screen) => {
 		if (!EXPLAIN.test(text)) return null
 		const demo = named(text) ?? screen?.demo

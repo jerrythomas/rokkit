@@ -11,7 +11,7 @@
 	import { demoById, hrefOf, variantOf } from '../intent/demos'
 	import InlineComponent from './InlineComponent.svelte'
 
-	const { block }: { block: DemoBlock } = $props()
+	const { block, onselect }: { block: DemoBlock; onselect?: (item: unknown) => void } = $props()
 
 	const plan = $derived(renderPlan(block))
 	const meta = $derived(demoById(block.demo))
@@ -23,7 +23,7 @@
 
 <figure data-block data-block-kind="demo" data-demo={block.demo} data-variant={block.variant}>
 	{#if plan.kind === 'inline'}
-		<InlineComponent tool={plan.tool} props={plan.props} />
+		<InlineComponent tool={plan.tool} props={plan.props} {onselect} />
 	{:else if plan.kind === 'plot'}
 		<MarkdownRenderer markdown={plot} plugins={BLOCK_PLUGINS} />
 	{:else if plan.kind === 'live' && live}

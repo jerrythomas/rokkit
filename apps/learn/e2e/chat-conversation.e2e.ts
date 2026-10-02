@@ -50,3 +50,21 @@ test('a how-to is answered from the docs, and a vague message is asked back', as
 	await say(page, 'hmm')
 	await expect(page.locator('[data-block-kind="prose"]').last()).toContainText('not sure')
 })
+
+test('what the user selects feeds the chat: a chip for it, and "edit this row"', async ({ page }) => {
+	await gotoHydrated(page, '/chat/simulated')
+	await say(page, 'show me a sortable table')
+	await lastDemo(page).locator('tbody tr', { hasText: 'Phone' }).click()
+
+	const edit = page.locator('[data-block-suggestion]', { hasText: 'Edit “Phone”' })
+	await expect(edit).toBeVisible()
+	await edit.click()
+	await expect(lastDemo(page)).toHaveAttribute('data-demo', 'form')
+	await expect(lastDemo(page).locator('input').first()).toHaveValue('Phone')
+
+	await say(page, 'show me a sortable table')
+	await lastDemo(page).locator('tbody tr', { hasText: 'Monitor' }).click()
+	await say(page, 'edit this row')
+	await expect(lastDemo(page)).toHaveAttribute('data-demo', 'form')
+	await expect(lastDemo(page).locator('input').first()).toHaveValue('Monitor')
+})

@@ -4,7 +4,7 @@
  */
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { clearAll } from '../../src/lib/koan/conversations.svelte'
-import { conversation, resetConversation, submitAction, submitText } from '../../src/lib/chat-demo/store.svelte'
+import { conversation, noteSelection, resetConversation, submitAction, submitText } from '../../src/lib/chat-demo/store.svelte'
 import { llm } from '../../src/lib/chat-demo/llm.svelte'
 import type { DemoBlock, SuggestionItem } from '../../src/lib/chat-demo/types'
 
@@ -63,6 +63,24 @@ describe('a simulated conversation', () => {
 		expect(screen()).toMatchObject({ demo: 'table' })
 		say('make the rows striped')
 		expect(screen()).toMatchObject({ demo: 'table', props: { striped: true } })
+	})
+
+	it('takes "edit this row" to mean the row the user selected in the table on screen', () => {
+		say('show me a sortable table')
+		const table = screen()!
+		const laptop = (table.data as Record<string, unknown>[])[0]
+		noteSelection(table, laptop)
+		say('edit this row')
+		expect(screen()).toMatchObject({ demo: 'form', data: laptop })
+	})
+
+	it('ignores a selection made in a demo that is no longer on screen', () => {
+		say('show me a sortable table')
+		const table = screen()!
+		say('show me tabs')
+		noteSelection(table, (table.data as Record<string, unknown>[])[0])
+		say('edit this row')
+		expect(screen()?.demo).not.toBe('form')
 	})
 
 	it('asks back instead of guessing', () => {

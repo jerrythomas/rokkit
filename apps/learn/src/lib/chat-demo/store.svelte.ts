@@ -16,7 +16,7 @@ import { demoById } from './intent/demos'
 import { interpretLocally } from './intent/local'
 import { pastedBlocks } from './intent/pasted'
 import { screenFrom } from './intent/screen'
-import type { Interpretation } from './intent/types'
+import type { Interpretation, Screen } from './intent/types'
 import { validate } from './intent/validate'
 import { curatedOpenRouterModel } from './models'
 import { routeViaLLM, llm, type LLMProvider } from './llm.svelte'
@@ -143,13 +143,31 @@ export function submitQuery(query: string): void {
 			})
 		return
 	}
-	thinkThenBlocks(reply(interpretLocally(text, screenFrom(conversation.turns))))
+	thinkThenBlocks(reply(interpretLocally(text, currentScreen())))
 }
 
 /** Validate a reading against what is on screen, then act on it. */
 function reply(reading: Interpretation): Block[] {
-	const screen = screenFrom(conversation.turns)
+	const screen = currentScreen()
 	return act(validate(reading, screen), screen)
+}
+
+/**
+ * What the user last selected in a demo — a row, an item — keyed by that demo block's
+ * content, so a typed "this row" refers to it only while that block is the screen.
+ */
+let selection: { key: string; value: unknown } | null = null
+const keyOf = (b: Screen | DemoBlock) => JSON.stringify([b.demo, b.variant ?? null, b.props, b.data ?? null])
+
+export function noteSelection(block: DemoBlock, value: unknown): void {
+	selection = { key: keyOf(block), value }
+}
+
+/** The screen, with the user's selection in it when it was made there. */
+function currentScreen(): Screen | null {
+	const screen = screenFrom(conversation.turns)
+	if (!screen || selection?.key !== keyOf(screen)) return screen
+	return { ...screen, selected: selection.value }
 }
 
 /**
@@ -275,6 +293,7 @@ function summariseUpload(source: 'json' | 'csv', text: string, parsed: unknown, 
 
 export function resetConversation(): void {
 	setCurrentId(null)
+	selection = null
 	_thinking = false
 }
 

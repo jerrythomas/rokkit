@@ -68,3 +68,22 @@ export function chipsFor(screen: Screen): SuggestionItem[] {
 	const rest = [...reshapeChips(screen), ...variantChips(screen), ...propChips(screen)]
 	return [...rest.slice(0, MAX_CHIPS - 1), explain]
 }
+
+const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v)
+
+/** What a row or item is called: its label, name or title, else its first text field. */
+export function labelOf(item: unknown): string {
+	if (!isRecord(item)) return String(item)
+	const named = item.label ?? item.name ?? item.title
+	return String(named ?? Object.values(item).find((v) => typeof v === 'string') ?? 'item')
+}
+
+/** Follow-ups for what the user selected: open a group's children, or edit a record. */
+export function selectionChips(screen: Screen): SuggestionItem[] {
+	const item = screen.selected
+	if (!isRecord(item)) return []
+	const name = labelOf(item)
+	if (Array.isArray(item.children) && item.children.length)
+		return [chip(`Open “${name}”`, { intent: 'reshape', view: 'list', data: item.children })]
+	return [chip(`Edit “${name}”`, { intent: 'reshape', view: 'form', data: item })]
+}

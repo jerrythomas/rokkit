@@ -5,7 +5,7 @@
 import type { Block, DemoBlock } from '../types'
 import { inferShape, schemaFromRecord } from '../infer'
 import type { Interpretation, Screen, View } from './types'
-import { chip, chipsFor } from './chips'
+import { chip, chipsFor, labelOf } from './chips'
 import { STARTERS, dataOf, demoById, variantOf } from './demos'
 import { bestSection } from './docs'
 
@@ -87,12 +87,20 @@ function modified(i: Interpretation, now: Screen): Screen {
 	}
 }
 
+/** A reshape of part of the screen — the selected row as a form, a group's children as a list. */
+function part(i: Interpretation): Block[] {
+	const next = reshaped(i.data, i.view as View)
+	if (!next) return [prose(`That can’t be shown as a ${i.view}.`)]
+	return onScreen(`${labelOf(i.data)}, as a ${i.view}.`, next)
+}
+
 type Handler = (i: Interpretation, screen: Screen | null) => Block[]
 
 const INTENTS: Record<Interpretation['intent'], Handler> = {
 	show: (i) => onScreen(`${titleOf(i.demo)} — ${demoById(i.demo)?.description ?? ''}`, shown(i)),
 	modify: (i, screen) => onScreen(describeChange(i, (screen as Screen).demo), modified(i, screen as Screen)),
 	reshape: (i, screen) => {
+		if (i.data !== undefined) return part(i)
 		const data = dataOf(screen as Screen)
 		const next = reshaped(data, i.view as View)
 		if (!next) return [prose(`That data can’t be shown as a ${i.view}.`)]
