@@ -24,6 +24,30 @@ describe('renderPlan', () => {
 		expect(plan).toMatchObject({ kind: 'plot', spec: { data: ROWS, x: 'name', y: 'price', geoms: [{ type: 'line' }] } })
 	})
 
+	it('sums duplicate x per series for a line, so each series has one point per x', () => {
+		const rows = [
+			{ month: 'Jul', product: 'A', sales: 1 },
+			{ month: 'Jul', product: 'A', sales: 2 },
+			{ month: 'Jul', product: 'B', sales: 5 },
+			{ month: 'Aug', product: 'A', sales: 4 }
+		]
+		const plan = renderPlan({ kind: 'demo', demo: 'chart', variant: 'line', props: { x: 'month', y: 'sales', fill: 'product' }, data: rows })
+		expect(plan.kind === 'plot' && plan.spec.data).toEqual([
+			{ month: 'Jul', product: 'A', sales: 3 },
+			{ month: 'Jul', product: 'B', sales: 5 },
+			{ month: 'Aug', product: 'A', sales: 4 }
+		])
+	})
+
+	it('leaves a bar chart’s rows as they are — bars stack duplicates themselves', () => {
+		const rows = [
+			{ month: 'Jul', sales: 1 },
+			{ month: 'Jul', sales: 2 }
+		]
+		const plan = renderPlan({ kind: 'demo', demo: 'chart', variant: 'bar', props: { x: 'month', y: 'sales' }, data: rows })
+		expect(plan.kind === 'plot' && plan.spec.data).toEqual(rows)
+	})
+
 	it('draws a chart variant’s sample when it carries no data', () => {
 		const plan = renderPlan({ kind: 'demo', demo: 'chart', variant: 'pie', props: {} })
 		expect(plan).toMatchObject({ kind: 'plot', spec: { geoms: [{ type: 'arc' }] } })

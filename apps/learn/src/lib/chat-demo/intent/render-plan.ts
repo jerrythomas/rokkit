@@ -20,6 +20,24 @@ function channelsOf(block: DemoBlock): Record<string, unknown> {
 	return channels
 }
 
+/** Kinds that draw one point per x per series: duplicates would zigzag the line between them. */
+const ONE_POINT_PER_X = new Set(['line', 'area'])
+
+/** Rows summed by x and series (fill or colour), first-seen order — one point per x per series. */
+function summed(rows: unknown[], channels: Record<string, unknown>): unknown[] {
+	const { x, y } = channels
+	const series = channels.fill ?? channels.color
+	if (typeof x !== 'string' || typeof y !== 'string') return rows
+	const groups = new Map<string, Record<string, unknown>>()
+	for (const row of rows as Record<string, unknown>[]) {
+		const key = JSON.stringify([row[x], typeof series === 'string' ? row[series] : null])
+		const seen = groups.get(key)
+		if (seen) seen[y] = Number(seen[y]) + Number(row[y])
+		else groups.set(key, { ...row })
+	}
+	return [...groups.values()]
+}
+
 const stacking = (props: Record<string, unknown>) => (props.stack ? { stack: props.stack } : {})
 
 function chartPlan(block: DemoBlock): RenderPlan {
@@ -29,7 +47,7 @@ function chartPlan(block: DemoBlock): RenderPlan {
 	return {
 		kind: 'plot',
 		spec: {
-			data: block.data,
+			data: ONE_POINT_PER_X.has(block.variant ?? '') ? summed(block.data, channels) : block.data,
 			...channels,
 			geoms: kind.geoms,
 			height: 260,
