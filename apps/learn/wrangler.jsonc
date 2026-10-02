@@ -11,7 +11,7 @@
 	// excluding _worker.js/_routes.json from the uploaded assets.
 	//
 	// nodejs_compat is required: the site has a server endpoint
-	// (src/routes/api/llm/openrouter) that runs in the Worker, not prerendered.
+	// (src/routes/api/chat/interpret) that runs in the Worker, not prerendered.
 	//
 	// `name` must match the Cloudflare project's Worker name.
 	"name": "rokkit",

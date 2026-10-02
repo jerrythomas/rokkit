@@ -10,6 +10,8 @@ Last updated: 2026-05-20 (full restructure — pulled completed items out of the
 
 ## Recently Shipped (since 2026-04-01)
 
+- [x] **Ask Rokkit follows up (2026-10-02)** — Every chat mode now runs one loop: interpret → validate → act. The 56-demo Koan catalogue is the action space; replies carry the screen as a `demo` block; chips, selection and live controls come from catalogue data. Interpreters: local (simulated), System One via Ollama (`OLLAMA_URL`), and OpenRouter or Web-LLM as classifiers, combined in a measured hybrid (22-message eval: local 18, System One hybrid 20, OpenRouter hybrid 21). The regex router and the free-form LLM prompt path are gone. Design: `docs/design/26-chat-intents.md`.
+
 Major design-system initiative — phases 3–9, then release 1 of the trimmed token vocabulary, then 1.x theme migrations:
 
 - **Phase 3 (2026-04-28)** — Playwright visual baseline for `demo/`. Chromium snapshots across observatory / sessions / setup-wizard, multi-locale, multi-mode.

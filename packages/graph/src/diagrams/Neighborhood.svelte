@@ -41,6 +41,11 @@
 		 * the root and invisible one click later.
 		 */
 		groupTint?: boolean
+		/**
+		 * What the canvas centres (#170): the drawn cards (default), or the focus card — which
+		 * leaves a blank column when one side of the focus is empty.
+		 */
+		centre?: 'content' | 'focus'
 		controls?: boolean
 		maxDepth?: number
 		legend?: boolean
@@ -66,6 +71,7 @@
 		depth = $bindable(1),
 		edgeStyle = $bindable('curved'),
 		groupTint = true,
+		centre = 'content',
 		controls = false,
 		maxDepth = 3,
 		legend = false,
@@ -91,6 +97,7 @@
 		depth,
 		edgeStyle,
 		groupTint,
+		centre,
 		value,
 		preset,
 		mode,

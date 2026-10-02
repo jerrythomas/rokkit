@@ -124,6 +124,8 @@ export type GraphStateConfig = {
 	above?: string
 	/** `world` / `sunburst` — the measure (a 0..1 share) each box is shaded by (#164). */
 	shadeBy?: string
+	/** `neighborhood` — centre the drawn cards (default) or the focus card (#170). */
+	centre?: 'content' | 'focus'
 }
 
 
@@ -208,6 +210,7 @@ export class GraphState {
 			colorBy: this.config.colorBy,
 			above: this.config.above,
 			shadeBy: this.config.shadeBy,
+			centre: this.config.centre,
 			edgeStyle: this.config.edgeStyle,
 			focus: this.config.focus ?? this.selection.value,
 			expanded: this.selection.expanded
@@ -545,7 +548,7 @@ export class GraphState {
 	 * stay in the component. Keeping this here is what lets it be tested without a renderer.
 	 */
 	get contentSize(): Size {
-		return contentExtent(this.#result.clusters, this.#result.cards, this.#result.size)
+		return contentExtent(this.#result.clusters, this.#result.cards, this.#result.size, this.#result.extent)
 	}
 	get related(): SvelteSet<string> {
 		return this.selection.related

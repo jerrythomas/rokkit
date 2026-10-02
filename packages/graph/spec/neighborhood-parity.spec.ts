@@ -63,3 +63,20 @@ describe('Neighborhood — parity with ErDiagram', () => {
 		expect(nb).toEqual(er)
 	})
 })
+
+describe('Neighborhood — centre (#170)', () => {
+	it('centres the drawn cards unless asked to centre the focus', async () => {
+		const { tick } = await import('svelte')
+		const content = new GraphState({ nodes, edges, layout: 'flow' })
+		render(Neighborhood, { state: content, focus: 'users' })
+		await tick()
+		expect(content.config.centre).toBe('content')
+
+		const focus = new GraphState({ nodes, edges, layout: 'flow' })
+		render(Neighborhood, { state: focus, focus: 'users', centre: 'focus' })
+		await tick()
+		expect(focus.config.centre).toBe('focus')
+		// The canvas frames the reserved width, not just the cards.
+		expect(focus.contentSize.w).toBe(focus.size.w)
+	})
+})

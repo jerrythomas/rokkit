@@ -174,7 +174,7 @@ const SCREENS: Screen[] = [
 	{
 		path: '/chat',
 		marker: 'main',
-		note: 'chat-demo parse.ts / infer.ts / router.ts'
+		note: 'chat-demo intent/ engine + infer.ts'
 	},
 
 	{ path: '/guides/getting-started', marker: 'main' },

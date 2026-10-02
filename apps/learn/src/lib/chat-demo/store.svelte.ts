@@ -8,11 +8,20 @@
  * shape (turns[], thinking) as getters over the shared store so callers
  * don't need to know about the underlying schema.
  */
-import type { ChatTurn, Block, ComponentBlock, SuggestionAction } from './types'
+import type { ChatTurn, Block, DemoBlock, SuggestionAction } from './types'
 import type { ChatMode } from './modes'
-import { routeQuery, routeData } from './router'
 import { tryParse } from './infer'
-import { routeViaLLM, llm, type LLMProvider } from './llm.svelte'
+import { act } from './intent/act'
+import { demoById } from './intent/demos'
+import { interpretLocally } from './intent/local'
+import { interpretWith, type Backend } from './intent/interpret'
+import { MAX_RECENT } from './intent/interpret-request'
+import { pastedBlocks } from './intent/pasted'
+import { screenFrom } from './intent/screen'
+import type { Interpretation, Screen } from './intent/types'
+import { validate } from './intent/validate'
+import { curatedOpenRouterModel } from './models'
+import { completeWithWebLLM, llm, type LLMProvider } from './llm.svelte'
 import {
 	startNew,
 	appendUser as sharedAppendUser,
@@ -21,6 +30,7 @@ import {
 	getCurrentId,
 	setCurrentId,
 	renameConversation,
+	updateLastAssistantBlocks,
 	type ChatProvider,
 	type Turn
 } from '$lib/koan/conversations.svelte'
@@ -82,9 +92,10 @@ const PROVIDER_TO_MODE: Record<LLMProvider, ChatMode> = {
 	webllm: 'webllm'
 }
 
-/** Active route mode from engine state (scripted engine → 'simulated'). */
+/** Active route mode from engine state (no LLM → simulated, or System One on the server). */
 function currentMode(): ChatMode {
-	return llm.enabled ? PROVIDER_TO_MODE[llm.provider] : 'simulated'
+	if (llm.enabled) return PROVIDER_TO_MODE[llm.provider]
+	return llm.interpreter === 'systemone' ? 'systemone' : 'simulated'
 }
 
 /** Create the chat conversation lazily, or append a user turn if one exists. */
@@ -97,14 +108,6 @@ function pushUser(text: string): void {
 	sharedAppendUser(text)
 }
 
-// Known component tools; anything not listed keeps the query-derived title.
-const COMPONENT_TITLES: Record<string, string> = {
-	mount_bar_chart: 'Bar chart',
-	mount_table: 'Products table',
-	mount_form: 'Form',
-	mount_list: 'List'
-}
-
 function pushAssistant(blocks: Block[]): void {
 	const conv = getCurrentConversation()
 	// A ternary, not `x && …`, because the two gates disagree on the guard form:
@@ -114,12 +117,11 @@ function pushAssistant(blocks: Block[]): void {
 	const firstAssistant = conv ? !conv.turns.some((t) => t.kind === 'assistant') : false
 	const stamp = currentProviderStamp()
 	sharedAppendAssistant({ kind: 'blocks', blocks, ...stamp })
-	// A+B titling: if the opening response is exactly one known component, prefer its type.
-	if (firstAssistant && blocks.length === 1 && blocks[0].kind === 'component') {
-		const label = COMPONENT_TITLES[(blocks[0] as ComponentBlock).tool]
-		const id = getCurrentId()
-		if (label && id) renameConversation(id, label)
-	}
+	// If the opening reply puts a demo on screen, title the conversation after it.
+	const shown = blocks.find((b): b is DemoBlock => b.kind === 'demo')
+	const label = shown ? demoById(shown.demo)?.title : undefined
+	const id = getCurrentId()
+	if (firstAssistant && label && id) renameConversation(id, label)
 }
 
 function thinkThenBlocks(blocks: Block[]): void {
@@ -130,22 +132,79 @@ function thinkThenBlocks(blocks: Block[]): void {
 	}, 350)
 }
 
+/** Who interprets now: the LLM provider when one is enabled, else the local or System One reader. */
+const backendNow = (): Backend => (llm.enabled ? llm.provider : llm.interpreter)
+
 export function submitQuery(query: string): void {
 	const text = query.trim()
 	if (!text) return
 	pushUser(text)
-	if (llm.enabled) {
-		_thinking = true
-		routeViaLLM(text)
-			.then((blocks) => {
-				pushAssistant(blocks)
-			})
-			.finally(() => {
-				_thinking = false
-			})
+	const backend = backendNow()
+	if (backend === 'local') {
+		thinkThenBlocks(reply(interpretLocally(text, currentScreen())))
 		return
 	}
-	thinkThenBlocks(routeQuery(text))
+	_thinking = true
+	interpretWith(backend, text, {
+		screen: currentScreen(),
+		recent: recentMessages(),
+		model: llm.openRouterModel,
+		complete: backend === 'webllm' ? completeWithWebLLM : undefined
+	})
+		// A fallback says why it happened, ahead of the reply it stood in for.
+		.then(({ reading, note }) => pushAssistant([...(note ? [{ kind: 'prose' as const, text: note }] : []), ...reply(reading)]))
+		.finally(() => {
+			_thinking = false
+		})
+}
+
+/** What the user said before this message, for the server interpreter's context. */
+function recentMessages(): string[] {
+	const said = conversation.turns.flatMap((t) => (t.role === 'user' ? [t.text] : []))
+	return said.slice(0, -1).slice(-MAX_RECENT)
+}
+
+/** Validate a reading against what is on screen, then act on it. */
+function reply(reading: Interpretation): Block[] {
+	const screen = currentScreen()
+	return act(validate(reading, screen), screen)
+}
+
+/**
+ * What the user last selected in a demo — a row, an item — keyed by that demo block's
+ * content, so a typed "this row" refers to it only while that block is the screen.
+ */
+let selection: { key: string; value: unknown } | null = null
+const keyOf = (b: Screen | DemoBlock) => JSON.stringify([b.demo, b.variant ?? null, b.props, b.data ?? null])
+
+export function noteSelection(block: DemoBlock, value: unknown): void {
+	selection = { key: keyOf(block), value }
+}
+
+/** True for the demo block that is the screen — the one live controls may adjust. */
+export function isScreen(block: DemoBlock): boolean {
+	const screen = screenFrom(conversation.turns)
+	return screen !== null && keyOf(screen) === keyOf(block)
+}
+
+/**
+ * Change the demo on screen in place — from its live controls — without adding a turn. The
+ * change is saved into its block, so the next turn's screen already has it.
+ */
+export function adjustScreen(props: Record<string, unknown>): void {
+	updateLastAssistantBlocks((blocks) => {
+		const at = (blocks as Block[]).findLastIndex((b) => b.kind === 'demo')
+		if (at < 0) return null
+		const block = blocks[at] as DemoBlock
+		return blocks.map((b, i) => (i === at ? { ...block, props: { ...block.props, ...props } } : b))
+	})
+}
+
+/** The screen, with the user's selection in it when it was made there. */
+function currentScreen(): Screen | null {
+	const screen = screenFrom(conversation.turns)
+	if (!screen || selection?.key !== keyOf(screen)) return screen
+	return { ...screen, selected: selection.value }
 }
 
 /**
@@ -162,7 +221,7 @@ export function submitData(args: {
 	const { source, text, parsed, query } = args
 	const summary = summariseUpload(source, text, parsed, query)
 	pushUser(summary)
-	thinkThenBlocks(routeData(source, parsed, query))
+	thinkThenBlocks(pastedBlocks(source, parsed, query))
 }
 
 /**
@@ -210,18 +269,6 @@ function exportBlocks(data: unknown): Block[] {
 	]
 }
 
-/**
- * Dispatch a data-aware suggestion. Reshapes existing data through the
- * inference pipeline with a forced shape, or remounts a component with
- * different props. No re-parsing, no second paste — the user's data lives
- * inside the action.
- */
-/** Re-render the same tool with different props. */
-const propsBlocks = (action: Extract<SuggestionAction, { kind: 'props' }>): Block[] => [
-	{ kind: 'prose', text: `Re-rendered with new props for ${action.tool}.` },
-	{ kind: 'component', tool: action.tool, props: action.props, caption: action.caption }
-]
-
 /** Flip the active provider and say what that means for the user. */
 function switchProviderBlocks(
 	action: Extract<SuggestionAction, { kind: 'switch-provider' }>
@@ -240,23 +287,22 @@ function switchProviderBlocks(
 
 export function submitAction(item: { label?: string; action: SuggestionAction }): void {
 	const { action, label } = item
-	pushUser(label ? `[suggestion] ${label}` : '[suggestion]')
+	// The chip's text reads as what the user said.
+	pushUser(label ?? 'Suggestion')
 
 	// An unrecognised kind is a no-op on purpose: the user turn is already
 	// recorded, so a future action type degrades to "nothing happened" rather
 	// than throwing mid-conversation.
-	if (action.kind === 'reshape') {
-		thinkThenBlocks(routeData(action.source, action.data, label, action.force))
-	} else if (action.kind === 'props') {
-		thinkThenBlocks(propsBlocks(action))
+	if (action.kind === 'intent') {
+		thinkThenBlocks(reply(action.interpretation))
 	} else if (action.kind === 'switch-provider') {
 		thinkThenBlocks(switchProviderBlocks(action))
 	}
 }
 
 /**
- * Try to parse a free-form text submission. If it parses as JSON or CSV,
- * route through the data pipeline; otherwise fall back to keyword routing.
+ * Try to parse a free-form text submission. If it parses as JSON or CSV it is
+ * data; otherwise it is a message for the interpreter.
  */
 export function submitText(text: string): void {
 	const trimmed = text.trim()
@@ -284,6 +330,7 @@ function summariseUpload(source: 'json' | 'csv', text: string, parsed: unknown, 
 
 export function resetConversation(): void {
 	setCurrentId(null)
+	selection = null
 	_thinking = false
 }
 
@@ -306,7 +353,7 @@ function adoptProvider(provider: ChatProvider | undefined, model?: string): void
 	llm.enabled = true
 	llm.provider = provider
 	if (!model) return
-	if (provider === 'openrouter') llm.openRouterModel = model
+	if (provider === 'openrouter') llm.openRouterModel = curatedOpenRouterModel(model)
 	if (provider === 'webllm') llm.webllmModel = model
 }
 

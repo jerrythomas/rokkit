@@ -9,9 +9,11 @@
 		tool: string
 		props: Record<string, unknown>
 		caption?: string
+		/** The row or item the user selected, for the chat to follow up on. */
+		onselect?: (item: unknown) => void
 	}
 
-	const { tool, props, caption }: Props = $props()
+	const { tool, props, caption, onselect }: Props = $props()
 
 	// Form needs a bindable `data` — clone the seed so the user can mutate it
 	// without leaking back into the response block. untrack() because we want
@@ -177,10 +179,10 @@
 				{/each}
 			</div>
 		{:else}
-			<Table {...props} />
+			<Table {...props} onselect={(_value: unknown, row: unknown) => onselect?.(row)} />
 		{/if}
 	{:else if tool === 'mount_list'}
-		<List {...props} />
+		<List {...props} onselect={(value: unknown, proxy?: { original?: unknown }) => onselect?.(proxy?.original ?? value)} />
 	{:else if tool === 'mount_form'}
 		<FormRenderer bind:data={formData} schema={props.schema as Record<string, unknown>} />
 	{:else}
@@ -262,12 +264,14 @@
 </figure>
 
 <style>
+	/* On paper, not paper-soft: a striped table paints its even rows paper-soft, which would
+	   vanish into a paper-soft frame. */
 	.inline-mount {
 		margin: 0;
 		padding: 8px 10px;
 		border: 1px solid var(--paper-edge);
 		border-radius: 8px;
-		background: var(--paper-soft);
+		background: var(--paper);
 	}
 
 	.inline-footer {

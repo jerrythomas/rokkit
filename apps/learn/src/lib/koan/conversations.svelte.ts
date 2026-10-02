@@ -365,6 +365,28 @@ export function updateLastAssistantProps(props: unknown): void {
 	}
 }
 
+/**
+ * Rewrite the blocks of the latest assistant turn that `update` accepts — it returns the new
+ * blocks, or null to look further back. In place, like `updateLastAssistantProps`: a live
+ * adjustment to what is on screen is saved without adding a turn.
+ */
+export function updateLastAssistantBlocks(update: (blocks: unknown[]) => unknown[] | null): void {
+	if (!currentRef.id) return
+	const idx = findIndexById(currentRef.id)
+	if (idx < 0) return
+	const turns = conversations[idx].turns
+	for (let i = turns.length - 1; i >= 0; i--) {
+		const t = turns[i]
+		if (t.kind !== 'assistant' || t.body.kind !== 'blocks') continue
+		const next = update(t.body.blocks)
+		if (!next) continue
+		t.body = { ...t.body, blocks: next }
+		conversations[idx].updatedAt = nowIso()
+		persist()
+		return
+	}
+}
+
 /** Resume an existing conversation by id. */
 export function loadConversation(id: ConversationId): Conversation | null {
 	const conv = conversations.find((c) => c.id === id)

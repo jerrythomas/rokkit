@@ -862,9 +862,14 @@ Built as step 5 of `24-world-view.md`, which also records what building it chang
 
 All three were found migrating dbd's viewer (dbd#25).
 
-- **#170.** `neighborhood` placed the focus by the inbound depth only, and ended the canvas at
-  the deepest outbound column. It now reserves `max(in, out)` columns on both sides and pads
-  both edges equally, so the focus centre is `w / 2`.
+- **#170, corrected 2026-10-02.** The first fix made the focus the centre by default,
+  reserving `max(in, out)` columns on both sides. dbd's owner then found the original report
+  misdiagnosed (a cropped viewport) and wanted the 1.7.0 behaviour: centre the DRAWN cards.
+  - The default `centre: 'content'` restores it: no column is reserved for an empty side.
+  - `centre: 'focus'` is the opt-in. It keeps the symmetric reservation and reports
+    `LayoutResult.extent`, which `contentExtent` returns as-is. A canvas that framed only the
+    cards would centre them and undo the reservation, which is what 1.8.2 did for an
+    inbound-only focus. #171's scroll extent reads the same value.
 - **#172.**
   - `Neighborhood` gains `groupTint`, on by default.
   - In the neighborhood layout, a selection that IS the focus yields no `related` / `dim` /

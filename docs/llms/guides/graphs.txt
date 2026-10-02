@@ -84,9 +84,11 @@ columns ranked by reference direction), `cluster`, `neighborhood`,
   crossings; each cluster's nodes are masonry-packed then flowed
   into wrapping rows. Options: `density`, `arrange`, `edgeStyle`,
   `groupBy`, `nestBy`.
-- `neighborhood` — the focused node centred, nodes that reference
-  it stacked left, nodes it references stacked right. Options:
-  `focus` (defaults to the selection).
+- `neighborhood` — the focused node in the middle column, nodes that
+  reference it stacked left, nodes it references stacked right. The
+  canvas centres the cards drawn, so a focus with one side empty sits
+  at that edge. Options: `focus` (defaults to the selection), `centre`
+  (`'content'` by default; `'focus'` keeps the focus card mid-canvas).
 - `points` — a node becomes a degree-sized rounded rect,
   shelf-packed into its group. For dense graphs: a card stops
   working long before the data does, and at 1000 nodes a 248px

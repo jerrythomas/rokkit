@@ -1,25 +1,25 @@
-# CHECKPOINT
+# Checkpoint
 
-**Released v1.8.2** (2026-10-01): `179cde8c5`, all 15 packages on npm, `main` fast-forwarded,
-CI green, GitHub release created. Shipped-artifact repros pass. Journal 2026-10-01 (1)–(8).
+**Slice:** chat intents. DONE (`docs/design/26-chat-intents.md`).
 
-**v1.8.1 is broken on npm.** ui, graph and app pin their siblings to 1.8.0, so graph crashes
-on labels and List multiselect throws. 1.8.2 fixes it, and the release now guards it (bump
-refreshes bun.lock; lockfile spec in check and publish; check-pins per tarball). Deprecating 1.8.1
-is the user's decision: `npm deprecate @rokkit/<pkg>@1.8.1 "..."` for ui, graph and app (or all
-15).
+**Done:**
+- Intent core, simulated mode, selection and live controls.
+- System One on `/api/chat/interpret`.
+- The OpenRouter and Web-LLM modes as classifiers.
+- The old prompt path is removed.
+- Gates: 8,511 unit tests, 181 e2e, lint 0/0. Eval: local 18/22, System One hybrid 20/22,
+  OpenRouter hybrid 21/22.
 
-**Open issues:** none.
+**Remaining:** none in this slice. The changes are on `develop` and unreleased: the learn site
+gets them on its next deploy, and npm `latest` is 1.8.2.
 
-**Next command:** `gh issue list --state open`.
+**Next command:** re-measure after a model or prompt change, with the dev server running with
+`OLLAMA_URL`:
+`CHAT_EVAL_URL=http://localhost:5199 CHAT_EVAL_OUT=/tmp/eval.txt bunx vitest run --project learn apps/learn/spec/chat-demo/interpreter-eval.spec.ts`
 
-**Open questions:**
-- Deprecate @rokkit/*@1.8.1?
-- Semver: 1.8.2 includes the removal of the `--text-*` scale and the preset's
-  `typography.ratio/base/levels` (marked `refactor!`). The user asked for a patch; nothing
-  consumed them.
-- MultiSelect lacks Select's fixed positioning and `maxRows`. Polymetric's wide strip for big
-  packages. `fill()` could move into `@rokkit/states`. `stash@{0}` (old develop WIP) is intact.
+**Open questions (user):**
+- Revoke `NPM_TOKEN` when done.
+- The brand-colour-as-foreground design.
+- What to do with `stash@{0}`.
 
-**Known broken:** @rokkit/*@1.8.1 on npm (superseded by 1.8.2). The sensei MCP server is
-disconnected, so this file is the only record.
+**Known-broken:** none. The Koan `/app` shell is on the interpreter too.

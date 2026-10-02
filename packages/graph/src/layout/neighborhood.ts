@@ -149,13 +149,11 @@ function buildNeighbourCards(
 function arrange(
 	built: Ring[],
 	cards: Cards,
-	ctx: { focus: GraphNode; hasLoop: boolean; dependency: boolean }
+	ctx: { focus: GraphNode; hasLoop: boolean; dependency: boolean; centre: 'content' | 'focus' }
 ): { columns: Column[]; size: Size } {
 	const occupied = built.filter((r) => r.ids.length > 0)
-	// The same edge room on BOTH sides — a self-loop's bow plus a hairline — so the canvas
-	// stays symmetric about the focus.
-	const edge = (ctx.hasLoop ? LOOP_W : 0) + 2
-	const { focusX, xFor } = geometry(occupied, edge)
+	const loop = ctx.hasLoop ? LOOP_W : 0
+	const { focusX, xFor } = geometry(occupied, ctx.centre, loop)
 	const focusCard = cards[ctx.focus.id]
 
 	const height = placeRings(occupied, cards, { focusCard, focusX, xFor })
@@ -165,9 +163,12 @@ function arrange(
 		xFor,
 		dependency: ctx.dependency
 	})
-	// Symmetric about the focus (#170): as much room right of it as left, so the focus card's
-	// centre IS the canvas's centre whichever side is empty or deeper.
-	const width = focusX * 2 + CARD_W
+	// `focus`: symmetric about the focus, so its centre IS the canvas's centre (#170).
+	// `content`: ends at the deepest column drawn, so the canvas centres the cards themselves.
+	const width =
+		ctx.centre === 'focus'
+			? focusX * 2 + CARD_W
+			: xFor('out', furthest(occupied, 'out')) + CARD_W + loop + 4
 
 	return { columns, size: { w: width, h: height } }
 }
@@ -204,19 +205,26 @@ function drawableIn(model: GraphModel, cards: Cards) {
 
 /**
  * Where each ring sits. Ring d on the `in` side is d steps left of the focus; on the `out`
- * side, d steps right. The focus sits past `edge` and as many columns as the DEEPER side
- * needs, so both sides get the same room and the focus is the centre.
+ * side, d steps right.
+ *
+ * `content` (the default): the focus is pushed right only by how deep the inbound side goes,
+ * so an empty side costs nothing and the canvas centres the cards that are drawn.
+ * `focus`: the focus sits past the DEEPER side's reach, with the same edge room on both sides,
+ * so the focus is the centre (#170). Opt-in — with one side empty it leaves a blank column.
  */
 function geometry(
 	occupied: Ring[],
-	edge: number
+	centre: 'content' | 'focus',
+	loop: number
 ): {
 	focusX: number
 	xFor: (side: Side, depth: number) => number
 } {
 	const columnStep = CARD_W + COL_GAP
-	const reach = Math.max(furthest(occupied, 'in'), furthest(occupied, 'out'))
-	const focusX = edge + reach * columnStep
+	const focusX =
+		centre === 'focus'
+			? loop + 2 + Math.max(furthest(occupied, 'in'), furthest(occupied, 'out')) * columnStep
+			: furthest(occupied, 'in') * columnStep
 
 	return {
 		focusX,
@@ -311,6 +319,15 @@ function buildColumns(occupied: Ring[], ctx: ColumnContext): Column[] {
 }
 
 /**
+ * The size, and — when centring on the focus — the extent the canvas must frame: focus-centring
+ * reserves blank columns the cards do not reach, and a canvas that framed only the cards would
+ * centre them and undo the reservation (#170).
+ */
+function framed(size: Size, centre: 'content' | 'focus'): Pick<LayoutResult, 'size' | 'extent'> {
+	return centre === 'focus' ? { size, extent: { w: size.w, h: size.h } } : { size }
+}
+
+/**
  * Entity-centric layout. `options.focus` names the node to centre; without it, or with
  * an id the model does not know, the result is empty.
  *
@@ -341,11 +358,13 @@ export const neighborhood: LayoutFn = (model, options): LayoutResult => {
 		expanded: options.expanded
 	})
 
+	const centre = options.centre ?? 'content'
 	const { columns, size } = arrange(built, cards, {
 		focus,
 		hasLoop: selfEdges.length > 0,
-		dependency: model.edges.some((e) => e.kind === 'dependency')
+		dependency: model.edges.some((e) => e.kind === 'dependency'),
+		centre
 	})
 
-	return { clusters: [], cards, edges: buildEdges(drawableIn(model, cards), cards), size, columns }
+	return { ...framed(size, centre), clusters: [], cards, edges: buildEdges(drawableIn(model, cards), cards), columns }
 }

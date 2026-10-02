@@ -40,6 +40,7 @@ export type GraphConfigValues = {
 	colorBy: string | undefined
 	above: string | undefined
 	shadeBy: string | undefined
+	centre: 'content' | 'focus' | undefined
 }
 
 type Key = keyof GraphConfigValues
@@ -116,7 +117,8 @@ export const CONFIG_FIELDS: readonly Field[] = Object.freeze([
 	{ key: 'heightBy', raw: true },
 	{ key: 'colorBy', raw: true },
 	{ key: 'above', raw: true },
-	{ key: 'shadeBy', raw: true }
+	{ key: 'shadeBy', raw: true },
+	{ key: 'centre', raw: true }
 ])
 
 function resolve(config: GraphStateConfig): GraphConfigValues {
@@ -316,5 +318,8 @@ export class GraphConfig {
 	}
 	get shadeBy() {
 		return this.#v.shadeBy
+	}
+	get centre() {
+		return this.#v.centre
 	}
 }

@@ -10644,3 +10644,129 @@ with stale sibling pins, verified against the real ui@1.8.1 tarball.
 CI, all 15 published with correct pins, both shipped repros (List multi-select; graph controls)
 pass on 1.8.2, `main` is fast-forwarded with CI green, and the GitHub release was created.
 1.8.1 is still on npm. Deprecating it is the user's call.
+
+## 2026-10-02 (1) — #170 corrected: centre the drawn cards by default
+
+dbd's owner reopened #170, then corrected it. The original "users is not centred" came from a
+cropped viewport, so the 1.8.1/1.8.2 symmetric reservation was the wrong default: with one
+side of the focus empty it pushed the cards off-centre (461 / 41px margins on dbd's sample).
+And for an inbound-only focus the canvas undid it anyway, because `contentExtent` measures
+only the cards.
+
+- `centre: 'content'` (default) restores the 1.7.0 geometry: no column for an empty side.
+- `centre: 'focus'` (opt-in, on `Neighborhood` too) keeps the symmetric reservation and
+  reports a new `LayoutResult.extent`, which `contentExtent` honours, so the canvas (and #171's
+  scroll extent) frames the reserved width.
+- The old "focus at x = 0 when nothing references it" test is restored to its original
+  assertion; the centring specs now run under `centre: 'focus'`.
+
+Gates: 1,219 graph unit, 84 graph e2e, lint 0/0.
+
+## 2026-10-02 (2) — OpenRouter proxy forwards only what the demo sends (PR #158)
+
+PR #158 (automated, OrbisAI) validated the message shape but still forwarded the whole body,
+so the endpoint stayed an open proxy for our key: any paid model, any `max_tokens`. Its
+prototype-pollution premise doesn't hold, because `JSON.parse` makes `__proto__` an own key.
+
+- `$lib/chat-demo/openrouter-request.ts` `upstreamRequest(body)` rebuilds the body from
+  `model` (must be in `OPENROUTER_MODELS`, defaults to the first), `messages` (1–8,
+  system|user|assistant, string content ≤ 16,000 chars), `temperature` (0–2) and
+  `response_format` (json_object only). Everything else is dropped; a bad value is a 400 before
+  OpenRouter is called.
+- `OPENROUTER_MODELS` moved to the plain `models.ts` so the server can import it; `llm.svelte.ts`
+  re-exports it.
+- The root vitest `learn` project gains a `$env/dynamic/private` stub alias, like
+  `$app/environment`.
+- Checked live on a dev server: a paid model and a `tool` role get 400. The demo body goes
+  through, but OpenRouter answered 404: 6 of the 7 curated `:free` models have rotated out
+  (only `google/gemma-4-26b-a4b-it:free` remains). The list needs refreshing.
+
+## 2026-10-02 (3) — OpenRouter free models refreshed
+
+6 of the 7 curated `:free` models had rotated out, so the demo's default answered 404. The
+list is now the five free models whose `supported_parameters` include `response_format`.
+- Nemotron 3 Super is the default. It answered JSON live; both Gemma 4 models were returning
+  429 (rate-limited upstream) on repeated tries.
+- Also in the list: Gemma 4 26B and 31B, Dots3-Note and LFM 2.5.
+- `curatedOpenRouterModel(id)` sends a model off the list to the default, for a stale `?model=`
+  or a saved conversation that the server would now refuse. `setEngine` and the store's
+  `adoptProvider` both use it.
+- The proxy had been echoing up to 400 characters of OpenRouter's raw error body, which
+  included the account's `user_id` and provider metadata. `upstreamProblem(status, text)` now
+  passes on only `error.message` (capped at 200 characters), or just the status.
+
+## 2026-10-02 (4) — Chat that follows up: intent engine, simulated mode, selection
+
+Plan: `docs/plans/2026-10-02-chat-intents.md`. The owner agreed to replace the regex routes, to
+use free models only (System One would be a local Ollama backend), and to drop the LLM's
+free-form compositions.
+
+- **`4fb8a53df` intent core** (`lib/chat-demo/intent/`).
+  - `Interpretation` covers show/modify/reshape/explain/clarify.
+  - `validate` checks demos, variants and props against the Koan catalogue. A failure, or low
+    confidence, becomes a question back.
+  - The `act` intents table returns blocks. Its `demo` block is the next screen, which
+    `screenFrom` reads back, so a resumed chat knows what's showing.
+  - Chips come from catalogue data, and `renderPlan` picks inline / plot / live / card.
+- **`f30b85b5a` simulated mode.**
+  - `interpretLocally` uses generic cue words plus the catalogue search plus the screen demo's
+    prop schema. Confidence is the top search hit's lead over the next, so ties are asked back.
+  - Pasted data becomes the screen (`pastedBlocks`).
+  - `DemoBlock` mounts 44 catalogue demos live.
+  - `router.ts` is deleted: 12 regex routes, their chips, `routeQuery` and `routeData`.
+  - Every starter hint and Simulated example is held to its demo.
+- **`4e16acb7d` selection.**
+  - A clicked row or item gets chips: Edit → form, Open → children.
+  - "edit this row" means the selection, keyed by its demo block, so a selection in an old
+    block is ignored.
+- **Lessons from the e2e and screenshots.**
+  - A variant and the prop it sets made duplicate chips, now deduped.
+  - The reply text said `true`; it now says on/off.
+  - "a form with dropdowns" picked `dropdown` because it was the longest id. The first-named
+    demo now wins.
+- **Gates:** 8,513 unit tests, 180 e2e, lint 0/0, types clean, svelte-check 0 errors.
+- **Next:** inline prop controls, then slice 3 (`/api/chat/interpret` with System One) and
+  slice 4 (the LLM classifier).
+
+## 2026-10-02 (5) — Chat intents finished: controls, System One, LLM classifiers
+
+- **`aab105de6` live controls.** The screen demo's prop schema shows as `Tweaks` under it. A
+  change rewrites the block in place (`updateLastAssistantBlocks`), so it adds no turn and the
+  next turn sees it. Also fixed: the inline frame sat on paper-soft and hid a striped table's
+  rows; it is on paper now.
+- **`803aa5f1a` slice 3, `/api/chat/interpret` + System One.**
+  - The server builds the questions: intent, demo over a search shortlist, and one question per
+    prop of the screen demo. It asks Ollama `/v1/systemone` (`OLLAMA_URL`).
+  - Measured on 22 messages: local 18, System One 16, failing on different ones. So the hybrid
+    answers a direct local reading at once and asks the server about the rest: 20/22.
+  - The prop question was reworded after a measured miss ("smaller" became lineStyle = none).
+  - A sharper intent wording scored 19 and was reverted.
+  - The mode card appears only when the server reports the backend.
+- **`31256d67b` slice 4, LLM classifiers.**
+  - OpenRouter and Web-LLM return a JSON `Interpretation` from a server-owned prompt.
+  - A show may carry bounded generated data, which goes through the pasted-data inference. So
+    an LLM is asked about every show.
+  - A failed backend falls back to the local reading with a note.
+  - OpenRouter hybrid scored 21/22 at about 1.6 s.
+  - Removed: `/api/llm/openrouter`, `upstreamRequest`, `prompt.ts`, `parse.ts`, `scan.ts`,
+    `routeViaLLM` (1,301 lines).
+- **Docs:** `docs/design/26-chat-intents.md` (new); plan DONE; 12-priority; the 2026-05 draft's
+  status.
+- **Gates:** 8,511 unit tests, 181 e2e, lint 0/0, types clean, svelte-check 0 errors. The eval
+  is `spec/chat-demo/interpreter-eval.spec.ts` (opt-in, `CHAT_EVAL_URL`).
+
+## 2026-10-02 (6) — Follow-ups: sawtooth, Koan /app on the interpreter
+
+- **`62b86a984` sawtooth.** Line and area charts sum y by x and series. Generated data had two
+  rows per (month, product).
+- **The `/app` shell.**
+  - `shellAction` replaces `pickDemoKind`, which reached only 14 demos and opened Tabs on any
+    miss. It also replaces `parseTweakIntent`.
+  - A show opens any demo or variant; a modify tweaks in place; a how-to opens Docs (via a
+    pending view, once the demo mounts); anything unplaced goes back to the landing with the
+    message kept.
+  - The parity spec (47 phrasings across the catalogue's enum and boolean props) found that a
+    negated message selected the named variant. That was fixed for `/chat` too.
+  - First e2e that types into the `/app` composer: ⌘/Ctrl+Enter sends there, and plain Enter
+    picks the top landing suggestion, which is how a naive test passed by accident.
+- **Gates:** 8,561 unit tests, 185 e2e, lint 0/0, svelte-check 0 errors.

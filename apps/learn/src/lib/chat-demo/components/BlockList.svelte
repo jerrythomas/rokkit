@@ -1,9 +1,11 @@
 <script lang="ts">
-	import type { Block, SuggestionItem } from '../types'
+	import type { Block, DemoBlock as DemoBlockType, SuggestionItem } from '../types'
 	import { CodeBlock, MarkdownRenderer } from '@rokkit/ui'
 	import { BLOCK_PLUGINS } from '$lib/koan/block-plugins'
 	import InlineComponent from './InlineComponent.svelte'
-	import { submitAction, submitText } from '../store.svelte'
+	import DemoBlock from './DemoBlock.svelte'
+	import { noteSelection, submitAction, submitText } from '../store.svelte'
+	import { selectionChips } from '../intent/chips'
 
 	let root = $state<HTMLElement | null>(null)
 
@@ -36,9 +38,17 @@
 	// always render; keep them visible.
 	const visibleBlocks = $derived(blocks)
 
+	/** What the user selected in each demo block of this reply, by block index. */
+	let selected = $state<Record<number, unknown>>({})
+
+	function select(i: number, block: DemoBlockType, item: unknown) {
+		selected[i] = item
+		noteSelection(block, item)
+	}
+
 	function handleSuggestion(item: SuggestionItem) {
-		// Data-aware action takes precedence; the text query is a fallback for
-		// when there's no action (or for the future LLM path).
+		// A chip's action (an intent, a provider switch) takes precedence; the
+		// text is the fallback for chips without one (the LLM path).
 		if (item.action) {
 			submitAction({ label: item.label, action: item.action })
 			return
@@ -46,6 +56,19 @@
 		onSuggestion?.(item.query)
 	}
 </script>
+
+{#snippet suggestionRow(intro: string | undefined, items: SuggestionItem[])}
+	<div data-block data-block-kind="suggestions">
+		{#if intro}<span data-block-suggestions-intro>{intro}</span>{/if}
+		<div data-block-suggestions-row>
+			{#each items as item (item.query)}
+				<button type="button" data-block-suggestion onclick={() => handleSuggestion(item)}>
+					{item.label}
+				</button>
+			{/each}
+		</div>
+	</div>
+{/snippet}
 
 <div data-block-list bind:this={root}>
 	{#each visibleBlocks as block, i (i)}
@@ -63,6 +86,11 @@
 			/>
 		{:else if block.kind === 'component'}
 			<InlineComponent tool={block.tool} props={block.props} caption={block.caption} />
+		{:else if block.kind === 'demo'}
+			<DemoBlock {block} onselect={(item) => select(i, block, item)} />
+			{#if selected[i] !== undefined}
+				{@render suggestionRow('Selected', selectionChips({ ...block, selected: selected[i] }))}
+			{/if}
 		{:else if block.kind === 'error'}
 			<div data-block data-block-kind="error">
 				<div data-block-error-head>
@@ -100,16 +128,7 @@
 				{/if}
 			</div>
 		{:else if block.kind === 'suggestions'}
-			<div data-block data-block-kind="suggestions">
-				{#if block.intro}<span data-block-suggestions-intro>{block.intro}</span>{/if}
-				<div data-block-suggestions-row>
-					{#each block.items as item (item.query)}
-						<button type="button" data-block-suggestion onclick={() => handleSuggestion(item)}>
-							{item.label}
-						</button>
-					{/each}
-				</div>
-			</div>
+			{@render suggestionRow(block.intro, block.items)}
 		{/if}
 	{/each}
 </div>

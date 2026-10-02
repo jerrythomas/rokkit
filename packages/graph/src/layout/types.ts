@@ -305,6 +305,12 @@ export type LayoutOptions = {
 	 * container takes the size-weighted mean of what it holds unless it declares its own.
 	 */
 	shadeBy?: string
+	/**
+	 * `neighborhood` only — what the canvas centres (#170). `content` (default): the cards that
+	 * are drawn, so an empty side costs nothing. `focus`: the focus card, with the deeper side's
+	 * reach reserved on both sides — a blank column when one side is empty.
+	 */
+	centre?: 'content' | 'focus'
 }
 
 /** Every edge, or only the ones a view is about. */
@@ -317,6 +323,12 @@ export type PolymetricChannel = 'width' | 'height' | 'color'
 export type ChannelScale = { measure: string; cap: number }
 
 export type LayoutResult = {
+	/**
+	 * What the canvas should frame, when it is not the drawn content — a layout that reserves
+	 * blank space on purpose (`neighborhood` with `centre: 'focus'`). Absent: the canvas frames
+	 * the clusters' or cards' extent.
+	 */
+	extent?: Size
 	/** `polymetric` — what each channel encodes, for the legend. */
 	channels?: { width: ChannelScale; height: ChannelScale; color?: ChannelScale }
 	clusters: Cluster[]
