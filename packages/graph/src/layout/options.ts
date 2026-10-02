@@ -27,7 +27,8 @@ export const LAYOUT_OPTION_KEYS = [
 	'heightBy',
 	'colorBy',
 	'above',
-	'shadeBy'
+	'shadeBy',
+	'centre'
 ] as const
 
 /**
@@ -55,7 +56,7 @@ export const LAYOUT_OPTIONS: Record<string, readonly (typeof LAYOUT_OPTION_KEYS)
 	flow: ['density', 'edgeStyle', 'expanded'],
 	// No edgeStyle: a layered edge is always a vertical S, built by the layout itself.
 	layers: ['density', 'expanded', 'showEdges', 'layerLabels'],
-	neighborhood: ['edgeStyle', 'expanded', 'focus', 'depth'],
+	neighborhood: ['edgeStyle', 'expanded', 'focus', 'depth', 'centre'],
 	points: ['edgeStyle', 'sizeBy', 'sizeScale'],
 	// No edgeStyle: the tree's links are elbows the layout draws itself.
 	polymetric: ['widthBy', 'heightBy', 'colorBy'],

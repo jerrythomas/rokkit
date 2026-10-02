@@ -21,7 +21,14 @@ function extentOf(boxes: Box[]): Size {
  * clusters', or — for an ungrouped layout (neighborhood), which reports none — the cards', and
  * the layout size only when both are empty.
  */
-export function contentExtent(clusters: Box[], cards: Record<string, Box>, size: Size): Size {
+export function contentExtent(
+	clusters: Box[],
+	cards: Record<string, Box>,
+	size: Size,
+	declared?: Size
+): Size {
+	// A layout that reserved blank space on purpose says what to frame (#170, `centre: 'focus'`).
+	if (declared) return declared
 	let { w, h } = extentOf(clusters)
 	if (!w || !h) {
 		const fromCards = extentOf(Object.values(cards))

@@ -10644,3 +10644,20 @@ with stale sibling pins, verified against the real ui@1.8.1 tarball.
 CI, all 15 published with correct pins, both shipped repros (List multi-select; graph controls)
 pass on 1.8.2, `main` is fast-forwarded with CI green, and the GitHub release was created.
 1.8.1 is still on npm. Deprecating it is the user's call.
+
+## 2026-10-02 (1) — #170 corrected: centre the drawn cards by default
+
+dbd's owner reopened #170, then corrected it. The original "users is not centred" came from a
+cropped viewport, so the 1.8.1/1.8.2 symmetric reservation was the wrong default: with one
+side of the focus empty it pushed the cards off-centre (461 / 41px margins on dbd's sample).
+And for an inbound-only focus the canvas undid it anyway, because `contentExtent` measures
+only the cards.
+
+- `centre: 'content'` (default) restores the 1.7.0 geometry: no column for an empty side.
+- `centre: 'focus'` (opt-in, on `Neighborhood` too) keeps the symmetric reservation and
+  reports a new `LayoutResult.extent`, which `contentExtent` honours, so the canvas (and #171's
+  scroll extent) frames the reserved width.
+- The old "focus at x = 0 when nothing references it" test is restored to its original
+  assertion; the centring specs now run under `centre: 'focus'`.
+
+Gates: 1,219 graph unit, 84 graph e2e, lint 0/0.

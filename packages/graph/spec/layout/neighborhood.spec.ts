@@ -68,15 +68,12 @@ describe('neighborhood layout', () => {
 		expect(result.cards['p.users'].x).toBeGreaterThan(result.cards['p.orders'].x)
 	})
 
-	it('draws no left column when nothing references the focus — and keeps the focus centred', () => {
-		// #170: the focus used to sit at x=0 here, against the left edge. The empty side now
-		// holds no cards and no heading, but reserves the room that keeps the focus central.
+	it('drops the left column entirely when nothing references the focus', () => {
+		// The focus sits at x=0 rather than being indented past an empty column — the default
+		// centres the drawn cards (#170 as corrected); `centre: 'focus'` is the opt-in.
 		const result = neighborhood(model(), { focus: 'p.orders' })
-		const focus = result.cards['p.orders']
 
-		expect(Object.values(result.cards).filter((c) => c.x < focus.x)).toEqual([])
-		expect(result.columns?.some((c) => c.side === 'in')).toBe(false)
-		expect(Math.abs(focus.x + focus.w / 2 - result.size.w / 2)).toBeLessThanOrEqual(1)
+		expect(result.cards['p.orders'].x).toBe(0)
 	})
 
 	it('stacks two same-side neighbours without overlapping', () => {

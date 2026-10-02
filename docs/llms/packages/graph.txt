@@ -331,11 +331,13 @@ side and none on the other: files that change together with nothing in the code 
 - **Styling hooks:** `data-edge-hidden`, `data-edge-side` (`below` / `above`),
   `data-graph-hidden-only`, `data-legend-side`, `data-legend-hidden`. The layout is `arcs`.
 
-### Neighborhood: centred, tinted, and states that mean something (#170, #172)
+### Neighborhood: what it centres, tint, and states that mean something (#170, #172)
 
-- **The focus is the centre.** The canvas reserves as many columns on the empty or shallower
-  side as the deeper side uses, so a focus with neighbours on one side only still sits in the
-  middle.
+- **What is centred.** By default the drawn cards: an empty side costs no column, so a focus
+  with neighbours on one side only sits at that edge of a centred picture.
+  `<Neighborhood centre="focus">` centres the focus card instead. It reserves the deeper side's
+  columns on both sides, which leaves a blank column when one side is empty, and the canvas
+  frames that reserved width (#170).
 - **`groupTint`** is on by default, as in `ErDiagram`. Neither draws group boxes, so the
   schema colour on each card is what keeps a table's schema visible one click in.
 - **Selection.** With the selection on the focus, which is the default, no card is `related`
