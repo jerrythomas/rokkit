@@ -10694,3 +10694,36 @@ list is now the five free models whose `supported_parameters` include `response_
 - The proxy had been echoing up to 400 characters of OpenRouter's raw error body, which
   included the account's `user_id` and provider metadata. `upstreamProblem(status, text)` now
   passes on only `error.message` (capped at 200 characters), or just the status.
+
+## 2026-10-02 (4) — Chat that follows up: intent engine, simulated mode, selection
+
+Plan: `docs/plans/2026-10-02-chat-intents.md`. The owner agreed to replace the regex routes, to
+use free models only (System One would be a local Ollama backend), and to drop the LLM's
+free-form compositions.
+
+- **`4fb8a53df` intent core** (`lib/chat-demo/intent/`).
+  - `Interpretation` covers show/modify/reshape/explain/clarify.
+  - `validate` checks demos, variants and props against the Koan catalogue. A failure, or low
+    confidence, becomes a question back.
+  - The `act` intents table returns blocks. Its `demo` block is the next screen, which
+    `screenFrom` reads back, so a resumed chat knows what's showing.
+  - Chips come from catalogue data, and `renderPlan` picks inline / plot / live / card.
+- **`f30b85b5a` simulated mode.**
+  - `interpretLocally` uses generic cue words plus the catalogue search plus the screen demo's
+    prop schema. Confidence is the top search hit's lead over the next, so ties are asked back.
+  - Pasted data becomes the screen (`pastedBlocks`).
+  - `DemoBlock` mounts 44 catalogue demos live.
+  - `router.ts` is deleted: 12 regex routes, their chips, `routeQuery` and `routeData`.
+  - Every starter hint and Simulated example is held to its demo.
+- **`4e16acb7d` selection.**
+  - A clicked row or item gets chips: Edit → form, Open → children.
+  - "edit this row" means the selection, keyed by its demo block, so a selection in an old
+    block is ignored.
+- **Lessons from the e2e and screenshots.**
+  - A variant and the prop it sets made duplicate chips, now deduped.
+  - The reply text said `true`; it now says on/off.
+  - "a form with dropdowns" picked `dropdown` because it was the longest id. The first-named
+    demo now wins.
+- **Gates:** 8,513 unit tests, 180 e2e, lint 0/0, types clean, svelte-check 0 errors.
+- **Next:** inline prop controls, then slice 3 (`/api/chat/interpret` with System One) and
+  slice 4 (the LLM classifier).

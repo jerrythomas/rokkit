@@ -1,25 +1,27 @@
 # Checkpoint
 
-**Slice:** OpenRouter demo hardening is complete: proxy allowlist (15897ee70), refreshed free
-models with a stale-model fallback, and no account details in error messages. All on
-`develop`, CI green.
+**Slice:** chat intents (`docs/plans/2026-10-02-chat-intents.md`).
 
 **Done:**
-- The proxy forwards only curated free models, 1–8 string messages, temperature and json_object.
-- Five free JSON-mode models. The default is Nemotron 3 Super (answered live); both Gemma 4
-  models were returning 429. `curatedOpenRouterModel()` maps a stale `?model=` to the default.
-- Upstream errors pass on OpenRouter's one-line message only, never `user_id` or metadata.
-- 8,436 unit tests pass, lint 0/0. #170 closed, PR #158 closed (superseded).
+- Slice 1, intent core (`4fb8a53df`).
+- Slice 2, simulated mode on the local interpreter; regex router removed (`f30b85b5a`).
+- Selection feeds the chat (`4e16acb7d`).
+- Gates: 8,513 unit tests, 180 e2e, lint 0/0.
 
-**Remaining:** none in this slice. The #170 fix and these changes are unreleased (npm `latest`
-= 1.8.2). The learn site picks up the demo fixes on its next deploy.
+**Remaining, in the agreed order:**
+1. Inline prop controls: the demo's prop schema as controls under it.
+2. Slice 3: `POST /api/chat/interpret` with the System One backend (Ollama, enabled by
+   `OLLAMA_URL`; `nimble` is installed locally).
+3. Slice 4: the LLM-classifier backend (OpenRouter free models and WebLLM), then delete
+   `/api/llm/openrouter`, `prompt.ts` and `parse.ts` if nothing else uses them.
+4. Slice 5: docs and close-out.
 
-**Next command:** `bun run bump patch --yes` when a release is wanted.
+**Next command:** `bunx vitest run --project learn apps/learn/spec/chat-demo`
 
 **Open questions (user):**
 - Revoke `NPM_TOKEN` when done.
 - The brand-colour-as-foreground design.
 - What to do with `stash@{0}`.
 
-**Known-broken:** none. The free models rotate, so if the demo 404s again, refresh
-`apps/learn/src/lib/chat-demo/models.ts` from `https://openrouter.ai/api/v1/models`.
+**Known-broken:** none. The OpenRouter and WebLLM modes still use the old prompt path until
+slice 4.

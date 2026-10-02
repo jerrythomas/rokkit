@@ -1,6 +1,13 @@
 # Chat that understands follow-ups: interpret → act → render
 
-**Status:** PROPOSED (2026-10-02). Awaiting agreement before slice 1.
+**Status:** IN PROGRESS. Agreed 2026-10-02. Done so far:
+- slice 1, the intent core (`4fb8a53df`);
+- slice 2, simulated mode on the local interpreter, with the regex routes removed
+  (`f30b85b5a`);
+- selection feeding the chat (`4e16acb7d`).
+
+Order agreed with the owner: slices 1–2, then selection, then inline prop controls, then
+slices 3–4.
 **App:** `apps/learn` (chat demo `/chat/[mode]`, Koan catalogue)
 **Supersedes:** the regex `ROUTES` table in `lib/chat-demo/router.ts`, and the client-built LLM
 prompt (`prompt.ts`) and `/api/llm/openrouter` for chat turns.
@@ -144,6 +151,14 @@ props, validated, so "plot sales by month" can still mount a chart with data.
      `parse.ts` if nothing else uses them.
 5. **Docs and close-out.** The design doc entry, journal, `12-priority.md`, and the chat page's
    mode picker copy.
+
+### Added after agreement
+
+- **Selection feeds the chat (done).** A clicked row or item gives the reply its own chips
+  ("Edit “Phone”", "Open “General”"). A typed reference ("edit this row") means the selection
+  while its demo is on screen.
+- **Inline prop controls (next).** The demo's prop schema rendered as controls under it, so a
+  change can be made directly as well as by typing or a chip.
 
 ## Open questions
 
