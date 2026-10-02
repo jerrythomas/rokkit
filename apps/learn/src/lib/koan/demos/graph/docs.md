@@ -44,8 +44,9 @@ Eight ship today:
   card's right edge and enters the next one's left.
 - **`cluster`** — groups become clusters, clusters are ordered to reduce edge crossings, and
   each cluster's nodes are masonry-packed then flowed into wrapping rows.
-- **`neighborhood`** — the focused node centred, nodes that reference it stacked left, nodes it
-  references stacked right.
+- **`neighborhood`** — the focused node in the middle column, nodes that reference it stacked
+  left, nodes it references stacked right. The canvas centres the cards drawn; `centre: 'focus'`
+  keeps the focus card mid-canvas even when one side is empty.
 - **`points`** — dense graphs: nodes as small rects sized by degree or a measure.
 - **`radial`**, **`structure`**, **`world`**, **`sunburst`** — trees and containment: a radial
   tidy tree, a dendrogram with bundled edges, a treemap, and the treemap asked radially.
