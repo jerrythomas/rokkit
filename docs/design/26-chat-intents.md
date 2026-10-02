@@ -86,8 +86,23 @@ findings were also measured:
   (`upstreamProblem`).
 - A reading is a proposal: the browser validates it against the catalogue before acting.
 
-## Not done
+## The Koan `/app` shell
 
-- Koan's `/app` shell still matches with `runMatch`. It could use the local interpreter.
-- A line chart of generated data with duplicate x per series draws a sawtooth. The chart does
-  not aggregate, and the bar chart stacks the same data correctly.
+The shell renders its own conversation, so a reading becomes a shell action
+(`lib/koan/shell-intent.ts`), not chat blocks:
+- **show** opens any catalogue demo or `?variant=`. Before, it reached 14 and opened Tabs for the
+  rest, including no match.
+- **modify** sets props in place (TweakTurns), or switches to a variant.
+- **explain** opens the Docs view.
+- **anything unplaced** goes back to the landing with the message kept, where its closest demos
+  are suggested.
+
+The old tweak grammar (`tweak-parser.ts`) was removed. A parity spec runs its phrasings over
+every enum and boolean prop in the catalogue.
+
+## Fixed after the first build
+
+- **Duplicate points on line and area charts.** Generated data often has several rows per x per
+  series, which drew a sawtooth. The line and area kinds now sum y by x and series.
+- **Negation.** "remove the stripes" no longer switches on the "Striped rows" variant before
+  turning the prop off.

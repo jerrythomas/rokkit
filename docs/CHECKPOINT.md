@@ -18,10 +18,8 @@ gets them on its next deploy, and npm `latest` is 1.8.2.
 `CHAT_EVAL_URL=http://localhost:5199 CHAT_EVAL_OUT=/tmp/eval.txt bunx vitest run --project learn apps/learn/spec/chat-demo/interpreter-eval.spec.ts`
 
 **Open questions (user):**
-- Koan `/app` could use the local interpreter too.
 - Revoke `NPM_TOKEN` when done.
 - The brand-colour-as-foreground design.
 - What to do with `stash@{0}`.
 
-**Known-broken:** none. Generated line charts with duplicate x per series draw a sawtooth; the
-chart does not aggregate.
+**Known-broken:** none. The Koan `/app` shell is on the interpreter too.

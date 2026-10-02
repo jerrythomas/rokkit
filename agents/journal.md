@@ -10754,3 +10754,19 @@ free-form compositions.
   status.
 - **Gates:** 8,511 unit tests, 181 e2e, lint 0/0, types clean, svelte-check 0 errors. The eval
   is `spec/chat-demo/interpreter-eval.spec.ts` (opt-in, `CHAT_EVAL_URL`).
+
+## 2026-10-02 (6) — Follow-ups: sawtooth, Koan /app on the interpreter
+
+- **`62b86a984` sawtooth.** Line and area charts sum y by x and series. Generated data had two
+  rows per (month, product).
+- **The `/app` shell.**
+  - `shellAction` replaces `pickDemoKind`, which reached only 14 demos and opened Tabs on any
+    miss. It also replaces `parseTweakIntent`.
+  - A show opens any demo or variant; a modify tweaks in place; a how-to opens Docs (via a
+    pending view, once the demo mounts); anything unplaced goes back to the landing with the
+    message kept.
+  - The parity spec (47 phrasings across the catalogue's enum and boolean props) found that a
+    negated message selected the named variant. That was fixed for `/chat` too.
+  - First e2e that types into the `/app` composer: ⌘/Ctrl+Enter sends there, and plain Enter
+    picks the top landing suggestion, which is how a naive test passed by accident.
+- **Gates:** 8,561 unit tests, 185 e2e, lint 0/0, svelte-check 0 errors.

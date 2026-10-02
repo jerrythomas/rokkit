@@ -1,7 +1,7 @@
 # Interactive Koan Mode — LLM-driven query routing
 
 **Date:** 2026-05-23
-**Status:** Built for the `/chat` surface on 2026-10-02: show / how-to (from the docs) / refine are the intents in `docs/design/26-chat-intents.md`. The Koan `/app` shell still uses `runMatch`.
+**Status:** Built for the `/chat` surface on 2026-10-02: show / how-to (from the docs) / refine are the intents in `docs/design/26-chat-intents.md`. The Koan `/app` shell reads messages with the same local interpreter (`lib/koan/shell-intent.ts`).
 **Site Applicability:** Applies to current Koan shell (`apps/learn/src/lib/koan/`) — replaces today's `setTimeout` + lexical `runMatch`.
 **Parent:** Stage D — Koan demo catalog (component-mounting + answering questions)
 
