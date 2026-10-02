@@ -15,7 +15,7 @@
  */
 import type { Block } from './types'
 import { buildSystemPrompt, parseCompletion } from './parse'
-import { DEFAULT_OPENROUTER_MODEL } from './models'
+import { DEFAULT_OPENROUTER_MODEL, curatedOpenRouterModel } from './models'
 
 export type LLMProvider = 'openrouter' | 'webllm'
 export type LLMStatus = 'uninitialized' | 'loading' | 'ready' | 'thinking' | 'error'
@@ -90,7 +90,7 @@ export function setEngine(mode: 'simulated' | 'openrouter' | 'webllm', model?: s
 		llm.webllmModel = model ?? DEFAULT_WEBLLM_MODEL
 	} else {
 		llm.provider = 'openrouter'
-		llm.openRouterModel = model ?? DEFAULT_OPENROUTER_MODEL
+		llm.openRouterModel = curatedOpenRouterModel(model)
 	}
 }
 

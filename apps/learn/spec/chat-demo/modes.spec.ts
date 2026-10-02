@@ -37,8 +37,12 @@ describe('setEngine', () => {
 		expect(llm.enabled).toBe(true)
 		expect(llm.provider).toBe('openrouter')
 		expect(llm.openRouterModel).toBe(DEFAULT_OPENROUTER_MODEL)
-		setEngine('openrouter', 'meta-llama/llama-3.3-70b-instruct:free')
-		expect(llm.openRouterModel).toBe('meta-llama/llama-3.3-70b-instruct:free')
+		setEngine('openrouter', 'google/gemma-4-31b-it:free')
+		expect(llm.openRouterModel).toBe('google/gemma-4-31b-it:free')
+	})
+	it('openrouter falls back to the default for a model off the curated list (a stale ?model=)', () => {
+		setEngine('openrouter', 'openai/gpt-oss-120b:free')
+		expect(llm.openRouterModel).toBe(DEFAULT_OPENROUTER_MODEL)
 	})
 	it('webllm enables + sets provider + model', () => {
 		setEngine('webllm', 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC')

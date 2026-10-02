@@ -6,42 +6,43 @@
  * Curated free OpenRouter models. The :free tier is upstream rate-limited
  * aggressively, so having several to fall back to is the practical fix.
  * The actual list rotates over time — refreshed against
- * https://openrouter.ai/api/v1/models. Quoted sizes are approximate.
+ * https://openrouter.ai/api/v1/models (last 2026-10-02), keeping only free
+ * models whose `supported_parameters` include `response_format`, since the
+ * demo sends json_object. Quoted sizes are approximate.
  */
 export const OPENROUTER_MODELS: Array<{ id: string; label: string; note?: string }> = [
 	{
-		id: 'openai/gpt-oss-20b:free',
-		label: 'gpt-oss · 20B (free)',
-		note: 'default · OpenAI open-weights, reliable JSON'
-	},
-	{
-		id: 'openai/gpt-oss-120b:free',
-		label: 'gpt-oss · 120B (free)',
-		note: 'strongest open OAI · slower'
-	},
-	{
-		id: 'qwen/qwen3-next-80b-a3b-instruct:free',
-		label: 'Qwen3 · 80B (free)',
-		note: 'good at structured output'
-	},
-	{
-		id: 'meta-llama/llama-3.3-70b-instruct:free',
-		label: 'Llama 3.3 · 70B (free)'
-	},
-	{
-		id: 'meta-llama/llama-3.2-3b-instruct:free',
-		label: 'Llama 3.2 · 3B (free)',
-		note: 'fastest if available'
+		id: 'nvidia/nemotron-3-super-120b-a12b:free',
+		label: 'Nemotron 3 Super · 120B (free)',
+		note: 'default · strongest, reliable JSON'
 	},
 	{
 		id: 'google/gemma-4-26b-a4b-it:free',
-		label: 'Gemma 4 · 26B (free)'
+		label: 'Gemma 4 · 26B (free)',
+		note: 'MoE, ~4B active · often rate-limited'
 	},
 	{
-		id: 'deepseek/deepseek-v4-flash:free',
-		label: 'DeepSeek v4 Flash (free)',
-		note: 'fast'
+		id: 'google/gemma-4-31b-it:free',
+		label: 'Gemma 4 · 31B (free)',
+		note: 'dense · steadier answers'
+	},
+	{
+		id: 'dots-studio/dots-3-note-preview:free',
+		label: 'Dots3-Note · 280B (free)',
+		note: 'preview'
+	},
+	{
+		id: 'liquid/lfm-2.5-2.6b:free',
+		label: 'LFM 2.5 · 2.6B (free)',
+		note: 'fastest if available'
 	}
 ]
 
-export const DEFAULT_OPENROUTER_MODEL = OPENROUTER_MODELS[0].id // openai/gpt-oss-20b:free
+export const DEFAULT_OPENROUTER_MODEL = OPENROUTER_MODELS[0].id // nvidia/nemotron-3-super-120b-a12b:free
+
+const CURATED = new Set(OPENROUTER_MODELS.map((m) => m.id))
+
+/** A listed model as-is; anything else (a stale `?model=`, a saved conversation) → the default. */
+export function curatedOpenRouterModel(id: string | undefined): string {
+	return id && CURATED.has(id) ? id : DEFAULT_OPENROUTER_MODEL
+}

@@ -10680,3 +10680,14 @@ prototype-pollution premise doesn't hold, because `JSON.parse` makes `__proto__`
 - Checked live on a dev server: a paid model and a `tool` role get 400. The demo body goes
   through, but OpenRouter answered 404: 6 of the 7 curated `:free` models have rotated out
   (only `google/gemma-4-26b-a4b-it:free` remains). The list needs refreshing.
+
+## 2026-10-02 (3) — OpenRouter free models refreshed
+
+6 of the 7 curated `:free` models had rotated out, so the demo's default answered 404. The
+list is now the five free models whose `supported_parameters` include `response_format`.
+- Nemotron 3 Super is the default. It answered JSON live; both Gemma 4 models were returning
+  429 (rate-limited upstream) on repeated tries.
+- Also in the list: Gemma 4 26B and 31B, Dots3-Note and LFM 2.5.
+- `curatedOpenRouterModel(id)` sends a model off the list to the default, for a stale `?model=`
+  or a saved conversation that the server would now refuse. `setEngine` and the store's
+  `adoptProvider` both use it.

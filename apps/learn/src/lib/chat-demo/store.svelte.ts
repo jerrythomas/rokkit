@@ -12,6 +12,7 @@ import type { ChatTurn, Block, ComponentBlock, SuggestionAction } from './types'
 import type { ChatMode } from './modes'
 import { routeQuery, routeData } from './router'
 import { tryParse } from './infer'
+import { curatedOpenRouterModel } from './models'
 import { routeViaLLM, llm, type LLMProvider } from './llm.svelte'
 import {
 	startNew,
@@ -306,7 +307,7 @@ function adoptProvider(provider: ChatProvider | undefined, model?: string): void
 	llm.enabled = true
 	llm.provider = provider
 	if (!model) return
-	if (provider === 'openrouter') llm.openRouterModel = model
+	if (provider === 'openrouter') llm.openRouterModel = curatedOpenRouterModel(model)
 	if (provider === 'webllm') llm.webllmModel = model
 }
 
