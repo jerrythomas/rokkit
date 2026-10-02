@@ -1,10 +1,14 @@
 # Chat that understands follow-ups: interpret → act → render
 
-**Status:** IN PROGRESS. Agreed 2026-10-02. Done so far:
+**Status:** DONE (2026-10-02). The architecture as built is in `docs/design/26-chat-intents.md`.
+Slices:
 - slice 1, the intent core (`4fb8a53df`);
 - slice 2, simulated mode on the local interpreter, with the regex routes removed
   (`f30b85b5a`);
-- selection feeding the chat (`4e16acb7d`).
+- selection feeding the chat (`4e16acb7d`);
+- live controls (`aab105de6`);
+- slice 3, System One on `/api/chat/interpret` (`803aa5f1a`);
+- slice 4, the LLM modes as classifiers, with the old prompt path removed (`31256d67b`).
 
 Order agreed with the owner: slices 1–2, then selection, then inline prop controls, then
 slices 3–4.
@@ -162,7 +166,7 @@ props, validated, so "plot sales by month" can still mount a chart with data.
 - **Selection feeds the chat (done).** A clicked row or item gives the reply its own chips
   ("Edit “Phone”", "Open “General”"). A typed reference ("edit this row") means the selection
   while its demo is on screen.
-- **Inline prop controls (next).** The demo's prop schema rendered as controls under it, so a
+- **Inline prop controls (done).** The demo's prop schema rendered as controls under it, so a
   change can be made directly as well as by typing or a chip.
 
 ## Open questions

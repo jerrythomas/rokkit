@@ -10727,3 +10727,30 @@ free-form compositions.
 - **Gates:** 8,513 unit tests, 180 e2e, lint 0/0, types clean, svelte-check 0 errors.
 - **Next:** inline prop controls, then slice 3 (`/api/chat/interpret` with System One) and
   slice 4 (the LLM classifier).
+
+## 2026-10-02 (5) — Chat intents finished: controls, System One, LLM classifiers
+
+- **`aab105de6` live controls.** The screen demo's prop schema shows as `Tweaks` under it. A
+  change rewrites the block in place (`updateLastAssistantBlocks`), so it adds no turn and the
+  next turn sees it. Also fixed: the inline frame sat on paper-soft and hid a striped table's
+  rows; it is on paper now.
+- **`803aa5f1a` slice 3, `/api/chat/interpret` + System One.**
+  - The server builds the questions: intent, demo over a search shortlist, and one question per
+    prop of the screen demo. It asks Ollama `/v1/systemone` (`OLLAMA_URL`).
+  - Measured on 22 messages: local 18, System One 16, failing on different ones. So the hybrid
+    answers a direct local reading at once and asks the server about the rest: 20/22.
+  - The prop question was reworded after a measured miss ("smaller" became lineStyle = none).
+  - A sharper intent wording scored 19 and was reverted.
+  - The mode card appears only when the server reports the backend.
+- **`31256d67b` slice 4, LLM classifiers.**
+  - OpenRouter and Web-LLM return a JSON `Interpretation` from a server-owned prompt.
+  - A show may carry bounded generated data, which goes through the pasted-data inference. So
+    an LLM is asked about every show.
+  - A failed backend falls back to the local reading with a note.
+  - OpenRouter hybrid scored 21/22 at about 1.6 s.
+  - Removed: `/api/llm/openrouter`, `upstreamRequest`, `prompt.ts`, `parse.ts`, `scan.ts`,
+    `routeViaLLM` (1,301 lines).
+- **Docs:** `docs/design/26-chat-intents.md` (new); plan DONE; 12-priority; the 2026-05 draft's
+  status.
+- **Gates:** 8,511 unit tests, 181 e2e, lint 0/0, types clean, svelte-check 0 errors. The eval
+  is `spec/chat-demo/interpreter-eval.spec.ts` (opt-in, `CHAT_EVAL_URL`).

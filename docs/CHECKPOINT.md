@@ -1,27 +1,27 @@
 # Checkpoint
 
-**Slice:** chat intents (`docs/plans/2026-10-02-chat-intents.md`).
+**Slice:** chat intents. DONE (`docs/design/26-chat-intents.md`).
 
 **Done:**
-- Slice 1, intent core (`4fb8a53df`).
-- Slice 2, simulated mode on the local interpreter; regex router removed (`f30b85b5a`).
-- Selection feeds the chat (`4e16acb7d`).
-- Gates: 8,513 unit tests, 180 e2e, lint 0/0.
+- Intent core, simulated mode, selection and live controls.
+- System One on `/api/chat/interpret`.
+- The OpenRouter and Web-LLM modes as classifiers.
+- The old prompt path is removed.
+- Gates: 8,511 unit tests, 181 e2e, lint 0/0. Eval: local 18/22, System One hybrid 20/22,
+  OpenRouter hybrid 21/22.
 
-**Remaining, in the agreed order:**
-1. Inline prop controls: the demo's prop schema as controls under it.
-2. Slice 3: `POST /api/chat/interpret` with the System One backend (Ollama, enabled by
-   `OLLAMA_URL`; `nimble` is installed locally).
-3. Slice 4: the LLM-classifier backend (OpenRouter free models and WebLLM), then delete
-   `/api/llm/openrouter`, `prompt.ts` and `parse.ts` if nothing else uses them.
-4. Slice 5: docs and close-out.
+**Remaining:** none in this slice. The changes are on `develop` and unreleased: the learn site
+gets them on its next deploy, and npm `latest` is 1.8.2.
 
-**Next command:** `bunx vitest run --project learn apps/learn/spec/chat-demo`
+**Next command:** re-measure after a model or prompt change, with the dev server running with
+`OLLAMA_URL`:
+`CHAT_EVAL_URL=http://localhost:5199 CHAT_EVAL_OUT=/tmp/eval.txt bunx vitest run --project learn apps/learn/spec/chat-demo/interpreter-eval.spec.ts`
 
 **Open questions (user):**
+- Koan `/app` could use the local interpreter too.
 - Revoke `NPM_TOKEN` when done.
 - The brand-colour-as-foreground design.
 - What to do with `stash@{0}`.
 
-**Known-broken:** none. The OpenRouter and WebLLM modes still use the old prompt path until
-slice 4.
+**Known-broken:** none. Generated line charts with duplicate x per series draw a sawtooth; the
+chart does not aggregate.
