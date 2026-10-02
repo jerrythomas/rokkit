@@ -77,3 +77,44 @@ test('a prop set by message survives a reload', async ({ page }) => {
 	await expect(page.locator('body')).toHaveAttribute('data-hydrated', 'true')
 	await expect(page.locator('[data-tabs][data-align="end"]').first()).toBeVisible()
 })
+
+test('a multi-step conversation in /app: each turn acts on the demo the last one left', async ({ page }) => {
+	const tabs = () => page.locator('[data-tabs]').first()
+	await gotoHydrated(page, '/app')
+
+	// 1. Ask for a demo.
+	await say(page, 'show me tabs')
+	await expect(page).toHaveURL(/\/app\/tabs$/, { timeout: 8000 })
+	await expect(tabs()).toHaveAttribute('data-align', 'start')
+
+	// 2. Change it in place.
+	await say(page, 'align them to the end')
+	await expect(tabs()).toHaveAttribute('data-align', 'end')
+	await expect(page).toHaveURL(/\/app\/tabs$/)
+
+	// 3. Switch to a variant by name; the earlier tweak still applies.
+	await say(page, 'make it vertical')
+	await expect(tabs()).toHaveAttribute('data-orientation', 'vertical')
+	await expect(tabs()).toHaveAttribute('data-align', 'end')
+
+	// 4. A how-to about the demo on screen opens its docs, without leaving it.
+	await say(page, 'how does keyboard navigation work?')
+	await expect(page.getByText('Docs · concepts')).toBeVisible()
+	await expect(page).toHaveURL(/\/app\/tabs/)
+
+	// 5. Move on to another demo, and change that one.
+	await say(page, 'now show me a sortable table')
+	await expect(page).toHaveURL(/\/app\/table$/, { timeout: 8000 })
+	await say(page, 'make the rows striped')
+	await expect(page.locator('table[data-table-striped]').first()).toBeVisible()
+
+	// 6. A how-to about it opens the table's docs.
+	await say(page, 'how do I sort the columns?')
+	await expect(page.getByText('Sortable Table — design intent')).toBeVisible()
+
+	// 7. Something it cannot place is asked back; picking a suggestion carries on.
+	await say(page, 'choose several options')
+	await expect(page).toHaveURL(/\/app$/)
+	await page.locator('[data-composer-suggestion]').filter({ has: page.locator('[data-suggestion-title]', { hasText: /^Select$/ }) }).click()
+	await expect(page).toHaveURL(/\/app\/select$/, { timeout: 8000 })
+})
