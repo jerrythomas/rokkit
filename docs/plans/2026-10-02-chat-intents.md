@@ -94,7 +94,8 @@ All three return an `Interpretation`, and the server checks it against the catal
      word for the screen demo → modify.
    - Prop values come from the demo's `props` schema (enum options and boolean labels).
    - This replaces `ROUTES`.
-2. **System One** (server, `POST /api/chat/interpret`, enabled when `OLLAMA_URL` is set).
+2. **System One** (built on the server, enabled by `OLLAMA_URL`, which worked only in dev;
+   moved to the browser and the visitor's own Ollama on 2026-10-02, see design 26).
    - One `/v1/systemone` request asks several questions at once:
      - `intent` (a choice of 5);
      - `demo` (a choice over the shortlist plus the screen demo, max 26 options);

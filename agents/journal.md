@@ -10790,3 +10790,25 @@ free-form compositions.
   smoke-tested live.
 - **Finding.** The live Worker has no `OPENROUTER_API_KEY`, so OpenRouter mode falls back to the
   local reader with a note. Setting the secret is the owner's call.
+
+## 2026-10-02 (8) — System One moved to the visitor's browser
+
+The owner asked how a local Ollama works on a Cloudflare site. It didn't: the server called
+`OLLAMA_URL`, which only dev could reach. The owner chose option 1: the browser asks the
+visitor's own Ollama.
+
+- `askOllama` in `interpretWith` builds `questionsFor` in the browser and posts to
+  `localhost:11434/v1/systemone`.
+- Removed the server's System One branch, `GET /api/chat/interpret`, `visibleModes` and
+  `needsBackend`. The System One card is always shown, and the picker does not probe localhost on
+  load.
+- **Measured:**
+  - The eval through the browser path scored 20/22, unchanged.
+  - Real Chromium against the real `nimble` from a localhost origin: one POST, the list went to
+    `lg`, no fallback note.
+  - Ollama refuses `https://rokkit.sensei-hq.com` (403) until
+    `OLLAMA_ORIGINS=https://rokkit.sensei-hq.com` is set. Tested on a second instance on port
+    11435, so the user's Ollama was not touched.
+  - Even then, Chromium 147 blocked the fetch from the live origin until the
+    `local-network-access` permission was granted; then it returned 200. The fallback note and
+    the card name both requirements.

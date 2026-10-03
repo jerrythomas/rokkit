@@ -49,7 +49,7 @@ message + screen ──interpret──► Interpretation ──validate──►
 | Backend | Where | Enabled by | Notes |
 | --- | --- | --- | --- |
 | Local | browser | always | cue words, plus catalogue search, plus the screen demo's prop schema. Confidence is the top hit's lead over the next. |
-| System One | server → Ollama `/v1/systemone` | `OLLAMA_URL`, plus `SYSTEMONE_MODEL` (default `nimble`) | local-only in Ollama, no cloud |
+| System One | browser → the visitor's own Ollama `/v1/systemone` | the mode; the visitor runs `OLLAMA_ORIGINS=<site> ollama serve` with `nimble` | local-only in Ollama, no cloud |
 | OpenRouter | server → a curated free model | `OPENROUTER_API_KEY` | server-owned prompt, json_object |
 | Web-LLM | browser (WebGPU) | the mode | the same prompt as OpenRouter |
 
@@ -75,10 +75,29 @@ findings were also measured:
   answer first, and keep only sure answers that change something.
 - **A sharper `show` description** scored lower (19/22) and was reverted.
 
+## System One runs on the visitor's machine
+
+System One is local-only in Ollama, so a deployed server cannot reach it. Its first version
+called `OLLAMA_URL` from the server, which worked only in dev. It now runs in the browser,
+against the visitor's own Ollama, the way Web-LLM runs the visitor's own model.
+
+- `questionsFor` builds the questions in the browser, and `askOllama` posts them to
+  `http://localhost:11434/v1/systemone`. The screen's data stays in the page.
+- **Two gates, both measured 2026-10-02:**
+  - **Ollama** refuses a public origin (403) until `OLLAMA_ORIGINS` names it.
+  - **Chromium 147** blocks a public page from fetching `localhost` until the user grants Local
+    Network Access. It asks on the first request; with the permission granted, the request
+    returned 200.
+- **Failure:** the fallback note gives the exact setup for this origin.
+- **No probe on load:** the picker shows the System One card without contacting `localhost`,
+  so the permission prompt appears only after the visitor sends a message.
+- **Measured:** the browser path scores the same 20/22 as the server path did.
+
 ## Trust boundary
 
-- The browser sends `{ message, screen summary, recent }` and never the screen's data;
-  `interpretRequest` drops it if sent.
+- The browser sends `{ message, screen summary, recent }` and never the screen's data, whether
+  to the server (OpenRouter) or to the visitor's Ollama. `interpretRequest` drops the data if
+  sent.
 - The server builds every prompt and every set of System One questions. Nothing the browser
   sends is a prompt.
 - Models are the curated free list only (owner decision, 2026-10-02).
