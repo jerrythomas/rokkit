@@ -22,8 +22,6 @@ export interface ModeCard {
 	examples: string[]
 	needsModel: boolean
 	defaultModel?: string
-	/** A server backend the mode needs; its card shows only when the server reports it. */
-	needsBackend?: 'systemone'
 }
 
 export const MODES: ModeCard[] = [
@@ -44,12 +42,11 @@ export const MODES: ModeCard[] = [
 		mode: 'systemone',
 		label: 'System One',
 		icon: 'i-mdi:brain',
-		blurb: 'A local classifier reads the follow-ups Simulated would ask back about.',
+		blurb: 'Your own Ollama reads the follow-ups Simulated would ask back about.',
 		capabilities:
-			'Everything Simulated does, plus vague wording — “bigger rows”, “smaller” — read by a System One model on a local Ollama. Shown when the server has OLLAMA_URL.',
+			'Everything Simulated does, plus vague wording — “bigger rows”, “smaller” — read by a System One model on your own Ollama (nimble), asked from your browser. Run OLLAMA_ORIGINS=<this site> ollama serve, and allow local network access when your browser asks.',
 		examples: ['Show me a sortable table', 'Something with nested folders'],
-		needsModel: false,
-		needsBackend: 'systemone'
+		needsModel: false
 	},
 	{
 		mode: 'openrouter',
@@ -78,14 +75,6 @@ export const MODES: ModeCard[] = [
 		defaultModel: DEFAULT_WEBLLM_MODEL
 	}
 ]
-
-/** The server backends `GET /api/chat/interpret` reports. */
-export type Backends = { systemone: boolean }
-
-/** The cards to offer: a mode that needs a backend only when the server has it. */
-export function visibleModes(backends: Backends): ModeCard[] {
-	return MODES.filter((m) => !m.needsBackend || backends[m.needsBackend])
-}
 
 export function cardFor(mode: ChatMode): ModeCard {
 	return MODES.find((c) => c.mode === mode)!

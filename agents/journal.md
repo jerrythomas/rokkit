@@ -10770,3 +10770,56 @@ free-form compositions.
   - First e2e that types into the `/app` composer: ⌘/Ctrl+Enter sends there, and plain Enter
     picks the top landing suggestion, which is how a naive test passed by accident.
 - **Gates:** 8,561 unit tests, 185 e2e, lint 0/0, svelte-check 0 errors.
+
+## 2026-10-02 (7) — v1.9.0 released
+
+- **Checklist.**
+  - Full suite (8,609 unit, 198 e2e), lint and types were green.
+  - Docs synced: the graphs guide and graph demo docs still said "the focused node centred",
+    corrected in fbad9a872. The llms docs, skills and agents copy into the site at build.
+  - Release notes come from changelogithub; there is no CHANGELOG file.
+- **`bun run bump minor --yes`.** `check` passed, then 70730a804 tagged v1.9.0. `bun.lock`
+  moved to 1.9.0 with the versions.
+- **publish.yml.** The lockfile pre-flight passed, all 15 packages published, and the registry
+  served all 15 within ~100 s, with `latest` = 1.9.0.
+- **Shipped artifact.** `/tmp/rokkit-verify-graph` installs @rokkit/graph@1.9.0. The #170 repro
+  (`centre.test.js`) fails on 1.8.2 and passes on 1.9.0. The 1.8.1 label repro still passes,
+  and the sibling pins are 1.9.0.
+- **Merge to main.** 64bfa57db; main CI is green. The learn site redeployed:
+  `/api/chat/interpret` is live, `/api/llm/openrouter` returns 404, and simulated chat was
+  smoke-tested live.
+- **Finding.** The live Worker has no `OPENROUTER_API_KEY`, so OpenRouter mode falls back to the
+  local reader with a note. Setting the secret is the owner's call.
+
+## 2026-10-02 (8) — System One moved to the visitor's browser
+
+The owner asked how a local Ollama works on a Cloudflare site. It didn't: the server called
+`OLLAMA_URL`, which only dev could reach. The owner chose option 1: the browser asks the
+visitor's own Ollama.
+
+- `askOllama` in `interpretWith` builds `questionsFor` in the browser and posts to
+  `localhost:11434/v1/systemone`.
+- Removed the server's System One branch, `GET /api/chat/interpret`, `visibleModes` and
+  `needsBackend`. The System One card is always shown, and the picker does not probe localhost on
+  load.
+- **Measured:**
+  - The eval through the browser path scored 20/22, unchanged.
+  - Real Chromium against the real `nimble` from a localhost origin: one POST, the list went to
+    `lg`, no fallback note.
+  - Ollama refuses `https://rokkit.sensei-hq.com` (403) until
+    `OLLAMA_ORIGINS=https://rokkit.sensei-hq.com` is set. Tested on a second instance on port
+    11435, so the user's Ollama was not touched.
+  - Even then, Chromium 147 blocked the fetch from the live origin until the
+    `local-network-access` permission was granted; then it returned 200. The fallback note and
+    the card name both requirements.
+- **Setup on the site.** The System One page has a setup panel (`OllamaSetup`, `setupSteps` and
+  `checkOllama`):
+  - the per-OS commands for the page's own origin, following Ollama's FAQ;
+  - `ollama pull nimble` (in Ollama's library; needs 0.35+);
+  - the local-network permission step;
+  - a user-initiated "Check connection", which returned `ready` against the real `nimble`.
+  It folds once connected.
+- **Bug caught by the e2e.** Guarding with `typeof localStorage !== 'undefined'` crashed the
+  server render with a 500: Node 25 defines a `localStorage` global whose methods throw. It
+  uses `$app/environment`'s `browser` now.
+- **Gates:** 8,611 unit tests, 201 e2e, lint 0/0.

@@ -1,7 +1,7 @@
-/* `/api/chat/interpret` — the server interpreter. The browser sends the message and a summary
- * of the screen (never its data); the server builds the System One questions, asks Ollama, and
- * returns a proposal the browser validates. Without OLLAMA_URL there is no backend, and the
- * browser stays on the local interpreter.
+/* `/api/chat/interpret` — the server interpreter, for OpenRouter (the key stays server-side).
+ * The browser sends the message and a summary of the screen (never its data); the server builds
+ * the classifier prompt and returns a proposal the browser validates. System One is not here:
+ * it runs on the visitor's own Ollama, asked from the browser.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { interpretRequest } from '../../src/lib/chat-demo/intent/interpret-request'
@@ -19,20 +19,17 @@ const event = (body: unknown, fetch: typeof globalThis.fetch) =>
 		url: new URL('http://localhost/api/chat/interpret')
 	}) as never
 
-const OLLAMA_ANSWERS = {
-	model: 'nimble',
-	answers: {
-		intent: { type: 'choice', choice: 'show', confidence: 0.9, probabilities: { show: 0.95 } },
-		demo: { type: 'choice', choice: 'tree', confidence: 0.9, probabilities: { tree: 0.97 } }
-	},
-	usage: { input_tokens: 900, output_tokens: 2 }
-}
-
 describe('interpretRequest — what the browser may send', () => {
 	it('accepts a message, a screen summary and recent messages', () => {
 		const r = interpretRequest({ message: 'make it vertical', screen: { demo: 'tabs', props: { align: 'end' } }, recent: ['show me tabs'] })
 		expect(r).toEqual({
-			body: { message: 'make it vertical', screen: { demo: 'tabs', props: { align: 'end' } }, recent: ['show me tabs'], backend: 'systemone' }
+			body: {
+				message: 'make it vertical',
+				screen: { demo: 'tabs', props: { align: 'end' } },
+				recent: ['show me tabs'],
+				backend: 'openrouter',
+				model: DEFAULT_OPENROUTER_MODEL
+			}
 		})
 	})
 
@@ -46,13 +43,10 @@ describe('interpretRequest — what the browser may send', () => {
 		expect('problem' in interpretRequest(body)).toBe(true)
 	})
 
-	it('picks System One unless OpenRouter is asked for, with a curated model', () => {
-		expect(interpretRequest({ message: 'hi' })).toMatchObject({ body: { backend: 'systemone' } })
-		expect(interpretRequest({ message: 'hi', backend: 'openrouter' })).toMatchObject({
-			body: { backend: 'openrouter', model: DEFAULT_OPENROUTER_MODEL }
-		})
+	it('asks OpenRouter, with a curated free model only — System One is not a server backend', () => {
+		expect(interpretRequest({ message: 'hi' })).toMatchObject({ body: { backend: 'openrouter', model: DEFAULT_OPENROUTER_MODEL } })
 		expect('problem' in interpretRequest({ message: 'hi', backend: 'openrouter', model: 'openai/gpt-4o' })).toBe(true)
-		expect('problem' in interpretRequest({ message: 'hi', backend: 'anthropic' })).toBe(true)
+		expect('problem' in interpretRequest({ message: 'hi', backend: 'systemone' })).toBe(true)
 	})
 
 	it('drops the screen’s data if a client sends it anyway', () => {
@@ -61,59 +55,8 @@ describe('interpretRequest — what the browser may send', () => {
 	})
 })
 
-describe('GET /api/chat/interpret', () => {
-	beforeEach(() => {
-		delete env.OLLAMA_URL
-	})
-
-	it('reports each backend by whether the server is configured for it', async () => {
-		delete env.OPENROUTER_API_KEY
-		const { GET } = await endpoint()
-		expect(await (await GET({} as never)).json()).toEqual({ systemone: false, openrouter: false })
-		env.OLLAMA_URL = 'http://localhost:11434'
-		env.OPENROUTER_API_KEY = 'k'
-		expect(await (await GET({} as never)).json()).toEqual({ systemone: true, openrouter: true })
-	})
-})
-
-describe('POST /api/chat/interpret', () => {
-	beforeEach(() => {
-		env.OLLAMA_URL = 'http://ollama.test:11434'
-		delete env.SYSTEMONE_MODEL
-	})
-
-	it('asks System One the questions for the message and returns its reading', async () => {
-		const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify(OLLAMA_ANSWERS)))
-		const { POST } = await endpoint()
-		const res = await POST(event({ message: 'something with nested folders' }, fetch))
-		expect(await res.json()).toEqual({ interpretation: { intent: 'show', demo: 'tree', confidence: 0.9 } })
-
-		const [url, init] = fetch.mock.calls[0]
-		expect(url).toBe('http://ollama.test:11434/v1/systemone')
-		const sent = JSON.parse(init.body)
-		expect(sent.model).toBe('nimble')
-		expect(sent.state.message).toBe('something with nested folders')
-		expect(Object.keys(sent.questions)).toEqual(expect.arrayContaining(['intent', 'demo']))
-	})
-
-	it('answers 503 without a backend', async () => {
-		delete env.OLLAMA_URL
-		const { POST } = await endpoint()
-		await expect(POST(event({ message: 'hi' }, vi.fn()))).rejects.toMatchObject({ status: 503 })
-	})
-
-	it('answers 400 for a bad request, without calling Ollama', async () => {
-		const fetch = vi.fn()
-		const { POST } = await endpoint()
-		await expect(POST(event({ message: '' }, fetch))).rejects.toMatchObject({ status: 400 })
-		expect(fetch).not.toHaveBeenCalled()
-	})
-
-	it('answers 502 when Ollama fails, so the browser falls back', async () => {
-		const fetch = vi.fn().mockResolvedValue(new Response('model "nimble" not found', { status: 404 }))
-		const { POST } = await endpoint()
-		await expect(POST(event({ message: 'hi' }, fetch))).rejects.toMatchObject({ status: 502 })
-	})
+it('has no GET: the picker no longer asks which backends the server has', async () => {
+	expect('GET' in (await endpoint())).toBe(false)
 })
 
 const OPENROUTER_404 = JSON.stringify({

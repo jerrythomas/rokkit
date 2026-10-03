@@ -1,7 +1,8 @@
 /* Which interpreter answers. Measured on 22 messages (journal 2026-10-02): the local reading
  * scored 18, System One 16, and they failed on different messages — local wins when a message
- * names things outright, System One when the wording is vague ("bigger rows please"). So the
- * server is asked only when the local interpreter did not recognise the message directly.
+ * names things outright, System One when the wording is vague ("bigger rows please"). So a
+ * backend is asked only when the local interpreter did not recognise the message directly.
+ * System One runs on the visitor's own Ollama, asked from the browser; OpenRouter on the server.
  */
 import { describe, it, expect, vi } from 'vitest'
 import { interpretWith } from '../../../src/lib/chat-demo/intent/interpret'
@@ -9,6 +10,7 @@ import { readDirectly } from '../../../src/lib/chat-demo/intent/local'
 import type { Screen } from '../../../src/lib/chat-demo/intent/types'
 
 const list: Screen = { demo: 'list', props: {} }
+const choice = (c: string) => ({ type: 'choice', choice: c, confidence: 0.9, probabilities: { [c]: 0.9 } })
 const answer = (interpretation: unknown) => vi.fn().mockResolvedValue(new Response(JSON.stringify({ interpretation })))
 
 describe('readDirectly', () => {
@@ -35,20 +37,38 @@ describe('interpretWith', () => {
 		expect(fetch).not.toHaveBeenCalled()
 	})
 
-	it('asks System One about vague wording, sending the screen without its data', async () => {
-		const fetch = answer({ intent: 'modify', demo: 'list', props: { size: 'lg' }, confidence: 0.9 })
+	it('asks the visitor’s own Ollama — from the browser — about vague wording, without the screen’s data', async () => {
+		const fetch = vi.fn().mockResolvedValue(
+			new Response(JSON.stringify({ answers: { intent: choice('modify'), demo: choice('list'), 'prop:size': choice('lg') } }))
+		)
 		const screen = { ...list, data: [{ secret: 1 }] }
 		const { reading, note } = await interpretWith('systemone', 'bigger rows please', { screen, recent: ['show me a list'], fetcher: fetch })
 		expect(reading).toMatchObject({ intent: 'modify', props: { size: 'lg' } })
 		expect(note).toBeUndefined()
-		const sent = JSON.parse(fetch.mock.calls[0][1].body)
-		expect(sent).toEqual({ message: 'bigger rows please', screen: { demo: 'list', props: {} }, recent: ['show me a list'], backend: 'systemone' })
+
+		const [url, init] = fetch.mock.calls[0]
+		expect(url).toBe('http://localhost:11434/v1/systemone')
+		const sent = JSON.parse(init.body)
+		expect(sent).toMatchObject({ model: 'nimble', state: { message: 'bigger rows please', on_screen: { demo: 'list', props: {} }, recent: ['show me a list'] } })
+		expect(Object.keys(sent.questions)).toEqual(expect.arrayContaining(['intent', 'demo', 'prop:size']))
+		expect(JSON.stringify(sent)).not.toMatch(/secret/)
 	})
 
-	it('falls back to the local reading when the server fails', async () => {
-		const fetch = vi.fn().mockResolvedValue(new Response('down', { status: 502 }))
-		const { reading, note } = await interpretWith('systemone', 'something with nested folders', { screen: null, fetcher: fetch })
+	it('uses the Ollama address and model it is given', async () => {
+		const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ answers: { intent: choice('show'), demo: choice('tree') } })))
+		await interpretWith('systemone', 'something with nested folders', { screen: null, fetcher: fetch, ollama: { url: 'http://127.0.0.1:11500/', model: 'nimble:2' } })
+		expect(fetch.mock.calls[0][0]).toBe('http://127.0.0.1:11500/v1/systemone')
+		expect(JSON.parse(fetch.mock.calls[0][1].body).model).toBe('nimble:2')
+	})
+
+	it('when Ollama cannot be reached, says how to let this site use it, and reads locally', async () => {
+		const fetch = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'))
+		const { reading, note } = await interpretWith('systemone', 'something with nested folders', { screen: null, fetcher: fetch, origin: 'https://rokkit.sensei-hq.com' })
 		expect(reading).toMatchObject({ intent: 'show', demo: 'tree' })
+		expect(note).toMatch(/OLLAMA_ORIGINS=https:\/\/rokkit\.sensei-hq\.com ollama serve/)
+		expect(note).toMatch(/nimble/)
+		// A public site reaching localhost also needs the browser's local-network permission.
+		expect(note).toMatch(/allow .*local network/i)
 		expect(note).toMatch(/read here instead/)
 	})
 

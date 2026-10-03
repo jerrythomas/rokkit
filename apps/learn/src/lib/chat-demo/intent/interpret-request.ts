@@ -11,22 +11,18 @@ export const MAX_RECENT = 6
 const MAX_RECENT_LENGTH = 500
 const MAX_PROPS = 20
 
-export type ServerBackend = 'systemone' | 'openrouter'
-export type InterpretBody = { message: string; screen: ScreenSummary | null; recent: string[] } & (
-	| { backend: 'systemone' }
-	| { backend: 'openrouter'; model: string }
-)
+/** The server interprets with OpenRouter only (System One runs on the visitor's own Ollama). */
+export type InterpretBody = { message: string; screen: ScreenSummary | null; recent: string[]; backend: 'openrouter'; model: string }
+export type InterpretRequest = { body: InterpretBody } | { problem: string }
 
 const MODELS = new Set(OPENROUTER_MODELS.map((m) => m.id))
 
-/** The backend to ask: System One unless OpenRouter is named, and then only a curated free model. */
-function backendOf(body: Record<string, unknown>): { backend: 'systemone' } | { backend: 'openrouter'; model: string } | string {
-	if (body.backend === undefined || body.backend === 'systemone') return { backend: 'systemone' }
-	if (body.backend !== 'openrouter') return '"backend" must be systemone or openrouter'
+/** OpenRouter, and only a curated free model. */
+function backendOf(body: Record<string, unknown>): { backend: 'openrouter'; model: string } | string {
+	if (body.backend !== undefined && body.backend !== 'openrouter') return '"backend" must be openrouter'
 	const model = body.model ?? DEFAULT_OPENROUTER_MODEL
 	return typeof model === 'string' && MODELS.has(model) ? { backend: 'openrouter', model } : '"model" must be one of the demo’s free models'
 }
-export type InterpretRequest = { body: InterpretBody } | { problem: string }
 
 const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v)
 
@@ -68,6 +64,6 @@ export function interpretRequest(body: unknown): InterpretRequest {
 	const [screen, recent, backend] = [screenOf(body.screen), recentOf(body.recent), backendOf(body)]
 	for (const field of [screen, recent, backend]) if (failed(field)) return problemOf(field)
 	return {
-		body: { message, screen: screen as ScreenSummary | null, recent: recent as string[], ...(backend as { backend: 'systemone' }) }
+		body: { message, screen: screen as ScreenSummary | null, recent: recent as string[], ...(backend as { backend: 'openrouter'; model: string }) }
 	}
 }
