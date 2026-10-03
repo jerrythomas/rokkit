@@ -10812,3 +10812,14 @@ visitor's own Ollama.
   - Even then, Chromium 147 blocked the fetch from the live origin until the
     `local-network-access` permission was granted; then it returned 200. The fallback note and
     the card name both requirements.
+- **Setup on the site.** The System One page has a setup panel (`OllamaSetup`, `setupSteps` and
+  `checkOllama`):
+  - the per-OS commands for the page's own origin, following Ollama's FAQ;
+  - `ollama pull nimble` (in Ollama's library; needs 0.35+);
+  - the local-network permission step;
+  - a user-initiated "Check connection", which returned `ready` against the real `nimble`.
+  It folds once connected.
+- **Bug caught by the e2e.** Guarding with `typeof localStorage !== 'undefined'` crashed the
+  server render with a 500: Node 25 defines a `localStorage` global whose methods throw. It
+  uses `$app/environment`'s `browser` now.
+- **Gates:** 8,611 unit tests, 201 e2e, lint 0/0.

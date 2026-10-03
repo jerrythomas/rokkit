@@ -88,6 +88,12 @@ against the visitor's own Ollama, the way Web-LLM runs the visitor's own model.
   - **Chromium 147** blocks a public page from fetching `localhost` until the user grants Local
     Network Access. It asks on the first request; with the permission granted, the request
     returned 200.
+- **Setup on the page:** the System One page has a panel (`OllamaSetup`, steps from
+  `setupSteps(origin)`). It covers installing Ollama 0.35+, `ollama pull nimble`, allowing this
+  origin per OS (Ollama's FAQ: `launchctl setenv` on the macOS app, systemd, Windows, or the
+  terminal) and allowing local network access. It has a **Check connection** button that asks
+  `/api/tags` on the visitor's click. Once connected it folds to "connected — nimble ready" and
+  remembers that in localStorage.
 - **Failure:** the fallback note gives the exact setup for this origin.
 - **No probe on load:** the picker shows the System One card without contacting `localhost`,
   so the permission prompt appears only after the visitor sends a message.
