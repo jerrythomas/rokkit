@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import { visibleModes, cardFor, type Backends, type ChatMode } from '$lib/chat-demo/modes'
+	import { MODES, cardFor, type ChatMode } from '$lib/chat-demo/modes'
 	import { setPendingPrompt } from '$lib/chat-demo/store.svelte'
 
 	// Web-LLM needs WebGPU; disable its card when unavailable. (Derived, not
@@ -22,23 +22,10 @@
 		goto(routeFor(mode))
 	}
 	const disabled = (mode: ChatMode) => mode === 'webllm' && !webgpu
-
-	// Which server backends exist (System One needs OLLAMA_URL). None until the server says so,
-	// so a static or offline page simply shows the modes that need nothing.
-	let backends = $state<Backends>({ systemone: false })
-	$effect(() => {
-		fetch('/api/chat/interpret')
-			.then((res) => (res.ok ? res.json() : null))
-			.then((found: Backends | null) => {
-				if (found) backends = found
-			})
-			.catch(() => {})
-	})
-	const cards = $derived(visibleModes(backends))
 </script>
 
 <div data-mode-picker>
-	{#each cards as card (card.mode)}
+	{#each MODES as card (card.mode)}
 		<section data-mode-card class:disabled={disabled(card.mode)}>
 			<header>
 				<span class={card.icon} aria-hidden="true"></span>

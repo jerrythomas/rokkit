@@ -149,7 +149,9 @@ export function submitQuery(query: string): void {
 		screen: currentScreen(),
 		recent: recentMessages(),
 		model: llm.openRouterModel,
-		complete: backend === 'webllm' ? completeWithWebLLM : undefined
+		complete: backend === 'webllm' ? completeWithWebLLM : undefined,
+		// The note for an unreachable Ollama names this origin, for OLLAMA_ORIGINS.
+		origin: typeof location === 'undefined' ? undefined : location.origin
 	})
 		// A fallback says why it happened, ahead of the reply it stood in for.
 		.then(({ reading, note }) => pushAssistant([...(note ? [{ kind: 'prose' as const, text: note }] : []), ...reply(reading)]))
