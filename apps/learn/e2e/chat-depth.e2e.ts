@@ -153,3 +153,36 @@ test('a variant only the full demo builds is linked, not claimed as a change', a
 	await expect(page.locator('[data-block-kind="prose"]').last()).toContainText('built on the full Tabs demo page')
 	await expect(lastDemo(page).locator('[data-demo-open]')).toHaveAttribute('href', '/app/tabs?variant=with-icons')
 })
+
+test('the System One page shows how to set up Ollama for this site, and checks it on request', async ({ page }) => {
+	const probes: string[] = []
+	page.on('request', (r) => {
+		if (r.url().startsWith('http://localhost:11434')) probes.push(r.url())
+	})
+	await gotoHydrated(page, '/chat/systemone')
+	const panel = page.locator('[data-ollama-setup]')
+	await expect(panel).toBeVisible()
+	await expect(panel).toContainText('ollama pull nimble')
+	await expect(panel).toContainText('OLLAMA_ORIGINS=http://localhost:4183 ollama serve')
+	await expect(panel).toContainText('local network')
+	expect(probes).toEqual([]) // nothing contacts localhost until the visitor asks
+
+	await page.route('http://localhost:11434/api/tags', (route) =>
+		route.fulfill({ headers: { 'Access-Control-Allow-Origin': '*' }, json: { models: [{ name: 'nimble:latest' }] } })
+	)
+	await panel.getByRole('button', { name: /check connection/i }).click()
+	// Connected: the panel folds to its summary, which says so, and stays folded next visit.
+	await expect(page.locator('[data-ollama-status="ready"]')).toBeVisible()
+	await expect(panel).not.toHaveAttribute('open')
+	await page.reload()
+	await expect(page.locator('body')).toHaveAttribute('data-hydrated', 'true')
+	await expect(page.locator('[data-ollama-setup]')).not.toHaveAttribute('open')
+	await expect(page.locator('[data-ollama-steps] > li').first()).toHaveCSS('list-style-type', 'decimal')
+})
+
+test('the setup panel says what is wrong when Ollama cannot be reached', async ({ page }) => {
+	await page.route('http://localhost:11434/api/tags', (route) => route.abort('connectionrefused'))
+	await gotoHydrated(page, '/chat/systemone')
+	await page.locator('[data-ollama-setup]').getByRole('button', { name: /check connection/i }).click()
+	await expect(page.locator('[data-ollama-status="unreachable"]')).toContainText('OLLAMA_ORIGINS')
+})
