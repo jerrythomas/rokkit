@@ -4,6 +4,7 @@
 	import { ChatTimeline, ChatComposer, ChatMessage } from '@rokkit/ui'
 	import { conversation, takePendingPrompt } from '$lib/chat-demo/store.svelte'
 	import { pickStarterHints } from '$lib/chat-demo/starter-hints'
+	import OllamaSetup from '$lib/chat-demo/components/OllamaSetup.svelte'
 	import { getCurrentId, getCurrentConversation, setCurrentId } from '$lib/koan/conversations.svelte'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/state'
@@ -276,6 +277,9 @@
 				{/if}
 			</div>
 		</header>
+		{#if data.mode === 'systemone'}
+			<OllamaSetup origin={page.url.origin} />
+		{/if}
 		<div class="chat-stream-wrap" bind:this={streamRef} onscroll={onStreamScroll}>
 			<ChatTimeline messages={messages.current} autoscroll={false}>
 				{#snippet message(msg)}
