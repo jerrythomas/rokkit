@@ -10823,3 +10823,10 @@ visitor's own Ollama.
   server render with a 500: Node 25 defines a `localStorage` global whose methods throw. It
   uses `$app/environment`'s `browser` now.
 - **Gates:** 8,611 unit tests, 201 e2e, lint 0/0.
+- **Deployed** (main 51f37c4e4, CI green). Live check from https://rokkit.sensei-hq.com in
+  Chromium:
+  - The panel showed the `launchctl` command for the live origin.
+  - With Local Network Access granted and the page's localhost:11434 rerouted to a temporary
+    instance with `OLLAMA_ORIGINS=https://rokkit.sensei-hq.com`, "Check connection" returned
+    ready, and "bigger rows please" set the list to `lg` with no fallback.
+  - The user's own Ollama was not touched.
