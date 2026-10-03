@@ -5,7 +5,7 @@ import { gotoHydrated } from './helpers'
  * Deeper checks on the chat: that a change reaches the real component (not just the chat's
  * wrapper), that a reloaded conversation still knows its screen, and the browser side of the
  * server-backed modes — with `/api/chat/interpret` stubbed, since OpenRouter needs a key and
- * System One a local Ollama.
+ * System One the visitor's own Ollama (both stubbed here).
  */
 const say = async (page: Page, text: string) => {
 	const box = page.locator('[data-chat-composer] textarea')
@@ -90,25 +90,44 @@ test('OpenRouter mode: a failure is said, and the local reading answers', async 
 	await expect(lastDemo(page)).toHaveAttribute('data-demo', 'tree')
 })
 
-test('System One mode: only what the local reader cannot place goes to the server, without the screen’s data', async ({ page }) => {
-	const bodies = await stubInterpret(page, () => ({ intent: 'modify', demo: 'list', props: { size: 'lg' }, confidence: 0.9 }))
+test('System One mode: the browser asks the visitor’s own Ollama, only what it cannot place, never the data', async ({ page }) => {
+	const choice = (c: string) => ({ type: 'choice', choice: c, confidence: 0.9, probabilities: { [c]: 0.9 } })
+	const sent: Record<string, unknown>[] = []
+	await page.route('http://localhost:11434/v1/systemone', async (route) => {
+		const cors = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' }
+		if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: cors })
+		sent.push(route.request().postDataJSON())
+		return route.fulfill({ headers: cors, json: { answers: { intent: choice('modify'), demo: choice('list'), 'prop:size': choice('lg') } } })
+	})
 	await gotoHydrated(page, '/chat/systemone')
 	await say(page, 'show me a list')
 	await expect(lastDemo(page)).toHaveAttribute('data-demo', 'list')
 
 	await say(page, 'bigger rows please')
 	await expect(lastDemo(page).locator('[data-size]').first()).toHaveAttribute('data-size', 'lg')
-	expect(bodies).toHaveLength(1)
-	expect(bodies[0]).toMatchObject({ message: 'bigger rows please', backend: 'systemone', recent: ['show me a list'] })
-	expect((bodies[0].screen as Record<string, unknown>).data).toBeUndefined()
+	expect(sent).toHaveLength(1)
+	expect(sent[0]).toMatchObject({ model: 'nimble', state: { message: 'bigger rows please', recent: ['show me a list'] } })
+	expect((sent[0].state as Record<string, Record<string, unknown>>).on_screen.data).toBeUndefined()
+	expect(Object.keys(sent[0].questions as object)).toEqual(expect.arrayContaining(['intent', 'demo', 'prop:size']))
 })
 
-test('the picker shows System One only when the server reports it', async ({ page }) => {
-	await page.route('**/api/chat/interpret', (route) =>
-		route.request().method() === 'GET' ? route.fulfill({ json: { systemone: true, openrouter: true } }) : route.fallback()
-	)
+test('System One mode: an unreachable Ollama is explained, with the command for this site', async ({ page }) => {
+	await page.route('http://localhost:11434/v1/systemone', (route) => route.abort('connectionrefused'))
+	await gotoHydrated(page, '/chat/systemone')
+	await say(page, 'something with nested folders')
+	const note = page.locator('[data-block-kind="prose"]', { hasText: 'System One didn’t answer' })
+	await expect(note).toContainText('OLLAMA_ORIGINS=http://localhost:4183 ollama serve')
+	await expect(lastDemo(page)).toHaveAttribute('data-demo', 'tree')
+})
+
+test('the picker offers System One, without probing the visitor’s localhost on load', async ({ page }) => {
+	const probes: string[] = []
+	page.on('request', (r) => {
+		if (r.url().startsWith('http://localhost:11434')) probes.push(r.url())
+	})
 	await gotoHydrated(page, '/chat')
 	await expect(page.locator('[data-mode-card] h2')).toHaveText(['Simulated', 'System One', 'OpenRouter', 'Web LLM'])
+	expect(probes).toEqual([])
 })
 
 test('a message typed while a reply is pending is kept, then sent once the reply lands', async ({ page }) => {

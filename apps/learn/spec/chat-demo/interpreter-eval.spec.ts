@@ -1,11 +1,11 @@
 /* Measures the interpreters on the same messages, scored after validation — the evidence for
  * how `interpretWith` picks one (journal 2026-10-02: local 18/22, System One 16/22, the hybrid
- * 20/22). It needs a running app with OLLAMA_URL, so it runs only when CHAT_EVAL_URL is set:
+ * 20/22). It needs a live backend, so it runs only when CHAT_EVAL_BACKEND is set:
  *
- *   OLLAMA_URL=http://localhost:11434 bunx vite dev --port 5199   (in apps/learn)
- *   CHAT_EVAL_URL=http://localhost:5199 CHAT_EVAL_OUT=/tmp/eval.txt bunx vitest run --project learn apps/learn/spec/chat-demo/interpreter-eval.spec.ts
- *
- * CHAT_EVAL_BACKEND=openrouter measures OpenRouter instead (needs OPENROUTER_API_KEY).
+ *   System One, on a local Ollama with nimble (asked directly, as the browser does):
+ *     CHAT_EVAL_BACKEND=systemone CHAT_EVAL_OUT=/tmp/eval.txt bunx vitest run --project learn apps/learn/spec/chat-demo/interpreter-eval.spec.ts
+ *   OpenRouter, through a running app with OPENROUTER_API_KEY (bunx vite dev --port 5199 in apps/learn):
+ *     CHAT_EVAL_BACKEND=openrouter CHAT_EVAL_URL=http://localhost:5199 CHAT_EVAL_OUT=/tmp/eval.txt bunx vitest run …
  */
 import { it, expect } from 'vitest'
 import { appendFileSync } from 'node:fs'
@@ -44,17 +44,18 @@ const cases: [string, Screen | null, Want][] = [
 	['hmm', null, (i) => i.intent === 'clarify']
 ]
 const summary = (s: Screen | null) => (s ? { demo: s.demo, variant: s.variant, props: s.props } : null)
-const BASE = process.env.CHAT_EVAL_URL
-/** Which server backend to measure: systemone (default) or openrouter. */
-const BACKEND = (process.env.CHAT_EVAL_BACKEND ?? 'systemone') as 'systemone' | 'openrouter'
+/** Which backend to measure: systemone (the visitor's Ollama, asked directly) or openrouter (the app's server). */
+const BACKEND = process.env.CHAT_EVAL_BACKEND as 'systemone' | 'openrouter' | undefined
+/** The running app, for openrouter's /api/chat/interpret. */
+const BASE = process.env.CHAT_EVAL_URL ?? ''
 
-it.skipIf(!BASE)('the hybrid scores at least the local interpreter', async () => {
+it.skipIf(!BACKEND || (BACKEND === 'openrouter' && !BASE))('the hybrid scores at least the local interpreter', async () => {
 	const rows: string[] = []
 	let local = 0, s1 = 0, ms = 0
 	for (const [m, screen, want] of cases) {
 		const l = validate(interpretLocally(m, screen), screen)
 		const t = Date.now()
-		const r = validate((await interpretWith(BACKEND, m, { screen, fetcher: ((u: string, init: RequestInit) => fetch(BASE + u, init)) as typeof fetch })).reading, screen)
+		const r = validate((await interpretWith(BACKEND as 'systemone' | 'openrouter', m, { screen, fetcher: ((u: string, init: RequestInit) => fetch(u.startsWith('http') ? u : BASE + u, init)) as typeof fetch })).reading, screen)
 		ms += Date.now() - t
 		const [lo, so] = [want(l), want(r)]
 		local += Number(lo)

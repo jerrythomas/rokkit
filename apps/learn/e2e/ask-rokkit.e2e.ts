@@ -8,15 +8,15 @@ test('nav says Ask Rokkit, not Chat demo', async ({ page }) => {
 	await expect(nav.getByText('Chat demo', { exact: true })).toHaveCount(0)
 })
 
-test('/chat shows the three engine cards', async ({ page }) => {
+test('/chat shows the four engine cards', async ({ page }) => {
 	await page.goto('/chat')
-	await expect(page.locator('[data-mode-card]')).toHaveCount(3)
+	await expect(page.locator('[data-mode-card]')).toHaveCount(4)
 })
 
 test('an unknown mode redirects to the picker', async ({ page }) => {
 	await page.goto('/chat/bogus')
 	await expect(page).toHaveURL(/\/chat$/)
-	await expect(page.locator('[data-mode-card]')).toHaveCount(3)
+	await expect(page.locator('[data-mode-card]')).toHaveCount(4)
 })
 
 test('entering Simulated via an example chip yields a response', async ({ page }) => {

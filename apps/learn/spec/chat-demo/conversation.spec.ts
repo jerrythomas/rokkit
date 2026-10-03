@@ -33,9 +33,10 @@ describe('a System One conversation', () => {
 		await vi.runAllTimersAsync()
 	}
 
-	it('asks the server only about what the local interpreter does not recognise', async () => {
+	it('asks the visitor’s Ollama only about what the local interpreter does not recognise', async () => {
+		const choice = (c: string) => ({ type: 'choice', choice: c, confidence: 0.9, probabilities: { [c]: 0.9 } })
 		const fetch = vi.fn().mockResolvedValue(
-			new Response(JSON.stringify({ interpretation: { intent: 'modify', demo: 'list', props: { size: 'lg' }, confidence: 0.9 } }))
+			new Response(JSON.stringify({ answers: { intent: choice('modify'), demo: choice('list'), 'prop:size': choice('lg') } }))
 		)
 		vi.stubGlobal('fetch', fetch)
 		llm.interpreter = 'systemone'
@@ -48,7 +49,8 @@ describe('a System One conversation', () => {
 			submitText('bigger rows please')
 			await flush()
 			expect(fetch).toHaveBeenCalledTimes(1)
-			expect(JSON.parse(fetch.mock.calls[0][1].body).recent).toEqual(['show me a list'])
+			expect(fetch.mock.calls[0][0]).toBe('http://localhost:11434/v1/systemone')
+			expect(JSON.parse(fetch.mock.calls[0][1].body).state.recent).toEqual(['show me a list'])
 			expect(screen()).toMatchObject({ demo: 'list', props: { size: 'lg' } })
 		} finally {
 			llm.interpreter = 'local'
