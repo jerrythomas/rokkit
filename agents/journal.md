@@ -10830,3 +10830,37 @@ visitor's own Ollama.
     instance with `OLLAMA_ORIGINS=https://rokkit.sensei-hq.com`, "Check connection" returned
     ready, and "bigger rows please" set the list to `lg` with no fallback.
   - The user's own Ollama was not touched.
+
+## 2026-10-27 — Switch: zen-sumi off state visible (#173), thumb travel per size (#174)
+
+- **#173.** The zen-sumi off track was `paper-mute` under a `paper` thumb on a `paper` page:
+  L 0.955 / 0.985 / 0.985, a contrast of ~1.07:1 in light and ~1.15:1 in dark. It is
+  `paper-edge` now, as in the minimal theme. Measured on the local learn app with the zen-sumi
+  skin: 1.51:1 against both the page and the thumb in light (L 0.85 vs 0.985), and 1.50:1 in
+  dark (sumi.300, L 0.32 vs 0.17). The on state is unchanged: a primary (shu) track with a paper
+  thumb.
+  - That is still below the WCAG 1.4.11 3:1 for UI components. Reaching 3:1 with a core token
+    in light needs L ≤ ~0.66, which is an ink tone (`ink-mute`). That would make the off track
+    darker than the vermillion on track, so it is left as the owner's design call.
+  - Test: `packages/themes/spec/switch-css.spec.js`. The off track is not a near-page tone and
+    differs from the thumb. Red on the old rule (2 of 4 failed).
+- **#174.** Base sets the thumb travel per size (sm 0.75, md 1.25, lg 1.5rem). zen-sumi,
+  minimal and rokkit each restated ONE travel at the same specificity, loaded later, so it won
+  for every size. On the demo the sm thumb overshot its track by 6px, and the lg stopped 8px
+  short.
+  - No style states a travel now.
+  - Found while testing: rokkit and frosted border their track (1px). The thumb's `left` is
+    measured from the padding box, so every size sat 1px off-centre. rokkit's 1.125rem was
+    compensating for this at md only.
+  - Fix: the style declares `--switch-track-border` on the track, and base insets the thumb by
+    `calc(gap − var(--switch-track-border, 0px))`. Every size, under every style, sits the same
+    gap from the track edge, off and on: 2/3/4px. This was measured in the real app for all
+    five styles.
+  - Test: `packages/themes/browser/switch.browser.spec.ts` (real Chromium, over the BUILT
+    `dist/` css). For each style, sm/md/lg resolve to 0.75/1.25/1.5rem, and the thumb sits its
+    gap inside the track off and on. Red on the old css (17 of 30 failed: rokkit's travels,
+    minimal and zen-sumi sm/lg, rokkit and frosted's 1px offset).
+  - CI: the `browser` job builds theme CSS first, since `--ignore-scripts` skips the themes
+    `prepare`.
+- **Commits:** 22307a080 (#173), c1aa9202f (#174).
+- **Gates:** test:ci 8,615, test:browser 64, e2e 201, lint 0/0.
