@@ -12,7 +12,6 @@
 }
 
 [data-style='zen-sumi'] [data-switch] [data-switch-thumb] {
-  --switch-thumb-travel: 1.25rem;
   @apply bg-paper;
 }
 
