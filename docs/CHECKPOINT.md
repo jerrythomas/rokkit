@@ -1,27 +1,27 @@
 # Checkpoint
 
-**Slice:** chat intents. DONE (`docs/design/26-chat-intents.md`).
+**Slice:** Switch fixes (#173, #174). DONE, released as v1.9.1 (npm `latest`, all 15 packages).
 
 **Done:**
-- Intent core, simulated mode, selection and live controls.
-- System One on `/api/chat/interpret`.
-- The OpenRouter and Web-LLM modes as classifiers.
-- The old prompt path is removed.
-- Gates: 8,511 unit tests, 181 e2e, lint 0/0. Eval: local 18/22, System One hybrid 20/22,
-  OpenRouter hybrid 21/22.
+- #173: the zen-sumi off track is `paper-edge` (was `paper-mute`). It stands 1.5:1 off the page
+  and the thumb in light and dark. The on state is unchanged.
+- #174: no style restates `--switch-thumb-travel`, so each size keeps its own (0.75, 1.25 and
+  1.5rem). Bordered tracks (rokkit, frosted) declare `--switch-track-border`, and base insets
+  the thumb by it.
+- Tests: `packages/themes/spec/switch-css.spec.js` and
+  `packages/themes/browser/switch.browser.spec.ts` (over the built css). The CI browser job
+  builds the theme css.
+- main 0da38cd24 is green; the live site is verified.
 
-**Remaining:** none. Released as v1.9.0 (npm `latest`). System One now runs on the visitor's own
-Ollama with a setup panel on the page; deployed from main 51f37c4e4 and verified live.
+**Remaining:** none.
 
-**Next command:** re-measure after a model or prompt change, with the dev server running with
-`OLLAMA_URL`:
-`CHAT_EVAL_URL=http://localhost:5199 CHAT_EVAL_OUT=/tmp/eval.txt bunx vitest run --project learn apps/learn/spec/chat-demo/interpreter-eval.spec.ts`
+**Next command:** `bun run test:browser` after any switch css change. It needs
+`cd packages/themes && bun run build` first.
 
 **Open questions (user):**
-- The live site has no `OPENROUTER_API_KEY`, so OpenRouter mode falls back to the local reader.
-  Set it with `wrangler secret put OPENROUTER_API_KEY` if that mode should reach a model.
-- Revoke `NPM_TOKEN` when done.
-- The brand-colour-as-foreground design.
-- What to do with `stash@{0}`.
+- Zen-sumi's off track is 1.5:1, below WCAG 1.4.11's 3:1. Reaching 3:1 needs an ink-tone track
+  (`ink-mute`), which reads heavier than the vermillion on state. This is a design call.
+- Carried over: `OPENROUTER_API_KEY` on the live Worker; revoke `NPM_TOKEN`; the
+  brand-colour-as-foreground design; `stash@{0}`.
 
-**Known-broken:** none. The Koan `/app` shell is on the interpreter too.
+**Known-broken:** none.

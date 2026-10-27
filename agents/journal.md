@@ -10864,3 +10864,19 @@ visitor's own Ollama.
     `prepare`.
 - **Commits:** 22307a080 (#173), c1aa9202f (#174).
 - **Gates:** test:ci 8,615, test:browser 64, e2e 201, lint 0/0.
+
+## 2026-10-27 (2) — v1.9.1 released (#173, #174)
+
+- **Checklist.** Before the bump: full suite (8,615 unit, 64 browser, 201 e2e) and lint were
+  green, and develop CI (Check, including the browser job, and Coverage) was green. No docs
+  describe the switch travel or the off-track tone. Release notes come from changelogithub.
+- **`bun run bump patch --yes`.** `check` passed, then 9ff494155 tagged v1.9.1, with `bun.lock`
+  at 1.9.1.
+- **publish.yml.** All 15 packages published at 1.9.1, and npm `latest` is 1.9.1 for all 15.
+- **Shipped artifact.** The npm tarball of @rokkit/themes@1.9.1 has a dist/ that is
+  byte-identical to the dist/ the browser spec passed on, for base and all five styles:
+  - zen-sumi's off track is `var(--paper-edge)`;
+  - no style declares a `--switch-thumb-travel`;
+  - base insets the thumb by `--switch-track-border`.
+- **Merge to main.** 0da38cd24; main Check, Coverage and CodeQL are green. The live site
+  redeployed: the zen-sumi off track reads oklch(0.85 0.01 70), and the sm thumb travels .75rem.
