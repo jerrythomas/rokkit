@@ -10,7 +10,8 @@
 - Gates: 8,511 unit tests, 181 e2e, lint 0/0. Eval: local 18/22, System One hybrid 20/22,
   OpenRouter hybrid 21/22.
 
-**Remaining:** none. Released as v1.9.0 (npm `latest`); the learn site is redeployed from main.
+**Remaining:** none. Released as v1.9.0 (npm `latest`). System One now runs on the visitor's own
+Ollama with a setup panel on the page; deployed from main 51f37c4e4 and verified live.
 
 **Next command:** re-measure after a model or prompt change, with the dev server running with
 `OLLAMA_URL`:

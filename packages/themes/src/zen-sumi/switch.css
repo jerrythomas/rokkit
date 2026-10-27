@@ -1,17 +1,17 @@
 /**
  * Switch - Zen-Sumi Theme Styles
  *
- * Flat pill. Off: paper-mute track. On: primary (shu vermillion) track.
+ * Flat pill. Off: paper-edge track, so the off state stands off the page and the
+ * thumb in both modes (#173). On: primary (shu vermillion) track.
  * Thumb: paper white. No shadows.
  */
 
 [data-style='zen-sumi'] [data-switch-track] {
-  @apply bg-paper-mute border-0;
+  @apply bg-paper-edge border-0;
   background-image: none;
 }
 
 [data-style='zen-sumi'] [data-switch] [data-switch-thumb] {
-  --switch-thumb-travel: 1.25rem;
   @apply bg-paper;
 }
 

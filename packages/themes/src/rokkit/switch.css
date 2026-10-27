@@ -3,11 +3,12 @@
  */
 
 [data-style='rokkit'] [data-switch-track] {
-  @apply from-paper-mute to-paper-mute border-paper-edge border bg-gradient-to-b;
+  --switch-track-border: 1px;
+  border-width: var(--switch-track-border);
+  @apply from-paper-mute to-paper-mute border-paper-edge bg-gradient-to-b;
 }
 
 [data-style='rokkit'] [data-switch] [data-switch-thumb] {
-  --switch-thumb-travel: 1.125rem;
   @apply bg-ink-soft shadow-sm;
 }
 

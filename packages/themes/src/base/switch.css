@@ -81,6 +81,12 @@
 
 /* =============================================================================
    Size Variants
+
+   Each size owns its thumb geometry: the thumb is inset by one gap on every
+   side of the track, so it travels `track width − thumb − 2 × gap`. A style
+   never restates the travel (#174). A style that borders its track declares
+   the width as `--switch-track-border` on the track, and the inset is taken
+   from the border box, so the thumb lands in the same place either way.
    ============================================================================= */
 
 /* Small: track 28×16, thumb 12px */
@@ -92,7 +98,7 @@
 [data-switch][data-switch-size='sm'] [data-switch-thumb] {
   width: 0.75rem;
   height: 0.75rem;
-  left: 0.125rem;
+  left: calc(0.125rem - var(--switch-track-border, 0px));
   --switch-thumb-travel: 0.75rem;
 }
 
@@ -115,7 +121,7 @@
 [data-switch]:not([data-switch-size]) [data-switch-thumb] {
   width: 1.125rem;
   height: 1.125rem;
-  left: 0.1875rem;
+  left: calc(0.1875rem - var(--switch-track-border, 0px));
   --switch-thumb-travel: 1.25rem;
 }
 
@@ -138,7 +144,7 @@
 [data-switch][data-switch-size='lg'] [data-switch-thumb] {
   width: 1.5rem;
   height: 1.5rem;
-  left: 0.25rem;
+  left: calc(0.25rem - var(--switch-track-border, 0px));
   --switch-thumb-travel: 1.5rem;
 }
 
