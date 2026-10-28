@@ -1,8 +1,9 @@
 /**
  * List - Zen-Sumi Theme Styles
  *
- * Transparent default. Paper-2 on hover. Ink bg + paper text on active.
- * Primary (shu) accent on active icon.
+ * The guides rail's look: items read as body text (the UI face, 13px, ink), group
+ * headings are mono micro-labels (10px, 500, 0.12em tracking, uppercase, ink-mute).
+ * Transparent default. Paper-mute on hover. Ink fill + paper text on active.
  * No shadows. Clean state transitions through background tone only.
  */
 
@@ -19,12 +20,21 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list] [data-list-item] {
-  @apply text-ink-mute border-0 border-solid border-transparent bg-transparent;
+  @apply text-ink border-0 border-solid border-transparent bg-transparent;
+  border-radius: var(--radius-sm, 0.25rem);
+  font-family: var(--font-ui);
+  font-weight: 400;
 }
 
 [data-style='zen-sumi'] [data-list] a[data-list-item],
 [data-style='zen-sumi'] [data-list] button[data-list-item] {
-  @apply text-ink-mute;
+  @apply text-ink;
+}
+
+/* Default (md) metrics — the guides rail's link: 13px, padded 6px 8px */
+[data-style='zen-sumi'] [data-list]:is([data-size='md'], :not([data-size])) [data-list-item] {
+  font-size: 0.8125rem;
+  padding: 0.375rem 0.5rem;
 }
 
 /* Hover and focus — subtle paper wash */
@@ -37,20 +47,12 @@
   @apply bg-paper-mute text-ink bg-none outline-none;
 }
 
-/* Active state — ink wash background */
-[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] {
-  @apply bg-paper-soft text-ink-mute bg-none;
-}
-
-/* Active state — richer ink when list has focus */
-[data-style='zen-sumi'] [data-list]:focus-within [data-list-item][data-active='true'] {
-  @apply bg-paper-mute text-ink bg-none;
-}
-
-/* Active + hover/focus */
+/* Active state — ink fill, paper text; the same with or without focus, and under hover */
+[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'],
+[data-style='zen-sumi'] [data-list]:focus-within [data-list-item][data-active='true'],
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled),
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true']:focus:not(:disabled) {
-  @apply bg-paper-mute bg-none;
+  @apply bg-ink text-paper bg-none;
 }
 
 /* =============================================================================
@@ -66,8 +68,10 @@
   @apply text-ink-mute;
 }
 
-[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
-  @apply text-primary;
+[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-icon],
+[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled) [data-item-icon],
+[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true']:focus:not(:disabled) [data-item-icon] {
+  @apply text-paper;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-description] {
@@ -75,7 +79,7 @@
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
-  @apply text-ink-mute;
+  @apply text-paper;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-badge] {
@@ -83,7 +87,7 @@
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
-  @apply text-ink-mute border-paper-edge bg-none;
+  @apply text-paper border-paper-edge bg-none;
 }
 
 /* =============================================================================
@@ -92,6 +96,17 @@
 
 [data-style='zen-sumi'] [data-list] [data-list-group] {
   @apply text-ink-mute;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Default (md) metrics — set off from the items above and below it */
+[data-style='zen-sumi'] [data-list]:is([data-size='md'], :not([data-size])) [data-list-group] {
+  margin: 0.875rem 0.5rem 0.375rem;
+  padding: 0;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-group]:hover:not(:disabled):not([data-disabled='true']),
