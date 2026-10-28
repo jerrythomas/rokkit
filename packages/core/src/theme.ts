@@ -107,8 +107,12 @@ export function themeRules(
  */
 export function contrastShortcuts(name: string, onColor = '#fafafa') {
 	const color = `var(--on-${name},${onColor})`
+	// An app's UnoCSS scans this file; without the skip it extracts the template below as a
+	// class and emits its placeholder text as CSS, which postcss rejects (scanned-sources.spec).
+	// @unocss-skip-start
 	const text = ([, end]: string[]) =>
 		end ? `text-[color-mix(in_srgb,${color}_${end.slice(1)}%,transparent)]` : `text-[${color}]`
+	// @unocss-skip-end
 	return [
 		[new RegExp(`^text-on-${name}(\\/\\d+)?$`), text],
 		[new RegExp(`^text-on-${name}-muted(\\/\\d+)?$`), text]
