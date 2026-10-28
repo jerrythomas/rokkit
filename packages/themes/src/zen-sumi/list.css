@@ -37,6 +37,13 @@
   padding: 0.375rem 0.5rem;
 }
 
+/* Dark mode — resting items a step quieter (ink-mute): full ink on sumi glares as a rail of
+   near-white labels. Hover, focus and the current item (below) keep their own colours. */
+[data-mode='dark'] [data-style='zen-sumi'] [data-list] [data-list-item],
+[data-style='zen-sumi'][data-mode='dark'] [data-list] [data-list-item] {
+  @apply text-ink-mute;
+}
+
 /* Hover and focus — subtle paper wash */
 [data-style='zen-sumi']
   [data-list]

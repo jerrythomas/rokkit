@@ -10941,3 +10941,6 @@ visitor's own Ollama.
 - Spec: family primary/accent text ≥ 4.5 on paper and paper-soft, on-primary measured on the
   painted fill, both modes; on-colour follows a moved primary; an explicit on-primary wins
   (mutation-probed).
+- zen-sumi List: resting items take ink-mute in dark mode (sumi 800, L 0.78, was ink 0.94) — a
+  near-white rail glared on sumi. Hover/focus/current keep their colours (the rule precedes them
+  at equal or lower specificity). Spec `list-css.spec.js`; measured on learn /guides in both modes.
