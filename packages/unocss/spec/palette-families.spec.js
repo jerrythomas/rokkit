@@ -63,10 +63,19 @@ describe.each(Object.entries(PALETTE_FAMILIES))('palette family %s', (name, fami
 				expect(deltaE(fills[i][1], fills[j][1]), `${fills[i][0]} vs ${fills[j][0]}`).toBeGreaterThanOrEqual(0.07)
 	})
 
-	it('puts a readable on-colour on its primary fill', () => {
-		const fill = family.palettes[family.skin.primary][500]
+	it.each(MODES)('puts a readable on-colour on the primary fill it paints in %s', (mode) => {
+		const fill = value('primary', mode)
 		const on = oklch.fromHex(pickOnColor(Y(fill)))
 		expect(ratio(fill, on)).toBeGreaterThanOrEqual(AA)
+	})
+
+	it.each(MODES)('reads primary and accent text at AA on paper and paper-soft in %s', (mode) => {
+		const problems = ['primary', 'accent'].flatMap((role) =>
+			['paper', 'paper-soft']
+				.filter((bg) => ratio(value(role, mode), value(bg, mode)) < AA)
+				.map((bg) => `${role} on ${bg}: ${ratio(value(role, mode), value(bg, mode)).toFixed(2)}`)
+		)
+		expect(problems).toEqual([])
 	})
 
 	it.each(MODES)('reads status text at AA on paper and paper-soft in %s', (mode) => {

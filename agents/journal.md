@@ -10927,3 +10927,17 @@ visitor's own Ollama.
 - Spec `palette-families.spec.js`: ink ramp AA, distinct primary/status (OKLab ΔE ≥ 0.07),
   on-primary ≥ 4.5, status text ≥ 4.5 on paper and paper-soft, both modes.
 - Commits: 2f4287ccc, da5519a48, 03596079c, 17f4e0d9a, e79235a78, f189d4fa8, + docs.
+
+## 2026-10-28 — primary and accent read as text by day; on-primary follows the painted fill
+
+- Found by sensei's axe run: `text-primary`/`text-accent` in shu 500 on kami paper read 3.38:1
+  (AA is 4.5), and vermillion buttons carried near-black labels. Every family failed the same way
+  in light mode (2.3–3.5:1); dark mode passed.
+- Families now override primary and accent per mode: zen-sumi shu 600 by day (4.79:1 on paper,
+  near-white label 4.94:1), the other four at 700; 500 by night, unchanged.
+- `--on-primary` is now derived like every `--on-{role}`: from the fill the skin paints in that
+  mode (it used to measure the 500 even when a skin moved primary). A skin's own `on-{role}`
+  override is kept.
+- Spec: family primary/accent text ≥ 4.5 on paper and paper-soft, on-primary measured on the
+  painted fill, both modes; on-colour follows a moved primary; an explicit on-primary wins
+  (mutation-probed).

@@ -193,12 +193,14 @@ const wakaba = {
 }
 
 /**
- * The skin `overrides` for status roles: each token reads `palette.<light>` on light paper and
- * `palette.<dark>` on dark paper. The `-soft` tints keep rokkit's light 100 in both modes,
+ * The skin `overrides` for a family's roles: each token reads `palette.<light>` on light paper
+ * and `palette.<dark>` on dark paper. Status roles take them, and primary and accent too: their
+ * 500 is too bright to read as text on light paper, so by day they paint a deeper shade, which
+ * also takes near-white text as a fill. The `-soft` tints keep rokkit's light 100 in both modes,
  * which the themes darken their status copy against.
  * @param {Record<string, [string, number, number]>} roles - role → [palette, light shade, dark shade]
  */
-function statusOverrides(roles) {
+function roleOverrides(roles) {
 	return Object.fromEntries(
 		Object.entries(roles).map(([role, [palette, light, dark]]) => [
 			role,
@@ -245,7 +247,11 @@ export const zenSumi = {
 		tertiary: 'kohaku',
 		accent: 'shu',
 		...TRADITIONAL_STATUS,
-		overrides: statusOverrides(TRADITIONAL_OVERRIDES)
+		overrides: roleOverrides({
+			...TRADITIONAL_OVERRIDES,
+			primary: ['shu', 600, 500],
+			accent: ['shu', 600, 500]
+		})
 	}
 }
 
@@ -262,7 +268,12 @@ export const seaGlass = {
 		accent: 'sora',
 		...TRADITIONAL_STATUS,
 		success: 'take',
-		overrides: statusOverrides({ ...TRADITIONAL_OVERRIDES, success: ['take', 800, 400] })
+		overrides: roleOverrides({
+			...TRADITIONAL_OVERRIDES,
+			success: ['take', 800, 400],
+			primary: ['umi', 700, 500],
+			accent: ['sora', 700, 500]
+		})
 	}
 }
 
@@ -278,7 +289,11 @@ export const sakuraEmber = {
 		tertiary: 'momo',
 		accent: 'momo',
 		...TRADITIONAL_STATUS,
-		overrides: statusOverrides(TRADITIONAL_OVERRIDES)
+		overrides: roleOverrides({
+			...TRADITIONAL_OVERRIDES,
+			primary: ['daidai', 700, 500],
+			accent: ['momo', 700, 500]
+		})
 	}
 }
 
@@ -294,7 +309,11 @@ export const fujiDusk = {
 		tertiary: 'kikyo',
 		accent: 'kikyo',
 		...TRADITIONAL_STATUS,
-		overrides: statusOverrides(TRADITIONAL_OVERRIDES)
+		overrides: roleOverrides({
+			...TRADITIONAL_OVERRIDES,
+			primary: ['fuji', 700, 500],
+			accent: ['kikyo', 700, 500]
+		})
 	}
 }
 
@@ -311,7 +330,12 @@ export const mossGarden = {
 		accent: 'mizu',
 		...TRADITIONAL_STATUS,
 		success: 'wakaba',
-		overrides: statusOverrides({ ...TRADITIONAL_OVERRIDES, success: ['wakaba', 800, 400] })
+		overrides: roleOverrides({
+			...TRADITIONAL_OVERRIDES,
+			success: ['wakaba', 800, 400],
+			primary: ['koke', 700, 500],
+			accent: ['mizu', 700, 500]
+		})
 	}
 }
 

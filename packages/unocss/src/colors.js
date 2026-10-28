@@ -86,20 +86,21 @@ export function tokenValue(config, mapping, token, mode) {
 	return palettes[resolveMappingForMode(roles, mode)[role]]?.[NAMED_TOKEN_SHADE_MAP[token] ?? 500]
 }
 
-/** Roles that are not fills: the paper and the text drawn on it. `primary` has `on-primary`. */
-const NOT_FILLS = new Set(['surface', 'ink', 'primary'])
+/** Roles that are not fills: the paper and the text drawn on it. */
+const NOT_FILLS = new Set(['surface', 'ink'])
 
 /**
- * `--on-{role}` for every fill role: near-black or near-white, picked from the fill this skin
- * paints in this mode (its override when it has one), so `text-on-{role}` stays readable
- * when a skin moves a role to another shade per mode.
+ * `--on-{role}` for every fill role, primary included: near-black or near-white, picked from
+ * the fill this skin paints in this mode (its override when it has one), so `text-on-{role}`
+ * stays readable when a skin moves a role to another shade per mode. A skin that sets its own
+ * `on-{role}` keeps it.
  */
 function onColorVars(config, roles, overrides, mode) {
 	const adapter = ColorSpace.create(config.colorSpace)
 	const mapping = { ...roles, overrides }
 	return Object.fromEntries(
 		Object.keys(roles)
-			.filter((role) => !NOT_FILLS.has(role) && !isAlias(roles[role]))
+			.filter((role) => !NOT_FILLS.has(role) && !isAlias(roles[role]) && !overrides?.[`on-${role}`])
 			.map((role) => {
 				const fill = tokenValue(config, mapping, role, mode)
 				return [`--on-${role}`, adapter.wrap(pickOnColor(relativeLuminance(fill, config.colorSpace)))]

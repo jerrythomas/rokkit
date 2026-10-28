@@ -85,6 +85,23 @@ describe('on-colour variables', () => {
 		expect(last(out.match(/\[data-mode='dark'\]\[data-skin='ember'\]\{([^}]*)\}/)[1], 'on-danger')).toBe(NEAR_BLACK)
 	})
 
+	it('put on-primary on the primary fill the skin paints, per mode', () => {
+		const moved = {
+			...skin,
+			primary: 'red',
+			overrides: { ...skin.overrides, primary: { light: 'red.600', dark: 'red.400' } }
+		}
+		const [light, dark] = css({ palettes, skin: moved }).split('[data-mode="dark"]')
+		expect(last(light, 'on-primary')).toBe(NEAR_WHITE)
+		expect(last(dark, 'on-primary')).toBe(NEAR_BLACK)
+	})
+
+	it('keep the on-primary a skin sets', () => {
+		const pinned = { ...skin, primary: 'red', overrides: { ...skin.overrides, 'on-primary': 'day.50' } }
+		const [light] = css({ palettes, skin: pinned }).split('[data-mode="dark"]')
+		expect(last(light, 'on-primary')).toBe('rgb(255, 255, 255)')
+	})
+
 	it('are set for every fill role but primary, which has on-primary', () => {
 		const [light] = css({ palettes, skin }).split('[data-mode="dark"]')
 		for (const role of ['secondary', 'tertiary', 'accent', 'success', 'warning', 'danger', 'error', 'info'])
