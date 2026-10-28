@@ -27,6 +27,7 @@
     "vitest": "^4.1.11"
   },
   "dependencies": {
+    "@rokkit/core": "workspace:*",
     "@mdi/svg": "^7.4.47",
     "@rokkit/unocss": "workspace:*",
     "sade": "^1.8.1",

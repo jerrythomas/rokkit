@@ -3,7 +3,8 @@
  *
  * Computes real WCAG contrast (not just OKLCH lightness diff) from the project's
  * configured palettes, in BOTH light and dark modes, and verifies:
- *   - `ink` and `ink-mute` (primary + secondary text) clear AA 4.5 on `paper`,
+ *   - every ink tone (`ink`, `ink-mute`, `ink-soft`, `ink-faint`) clears AA 4.5 on `paper`
+ *     — all four are text tones,
  *   - the text ramp is monotonic: ink > ink-mute > ink-soft > ink-faint,
  *   - `paper-edge` (the hairline border tone) is actually visible against `paper`
  *     (catches the "near-black etched edge invisible in dark" class of bug).
@@ -11,6 +12,8 @@
  * All findings are advisory (`warn`) — a project's palette is the author's call;
  * the doctor surfaces problems, it doesn't block.
  */
+
+import { NAMED_TOKEN_SHADE_MAP } from '@rokkit/core'
 
 const PALETTE_REF = /^([a-z][\w-]*)\.(\d{2,3})$/i
 
@@ -137,15 +140,8 @@ const AA = 4.5
 const EDGE_MIN = 1.18
 /** Float slack, so noise in the ramp doesn't read as a real inversion. */
 const RAMP_SLACK = 0.01
-/** The ink ramp, darkest first — the order the monotonic check asserts. */
-const INK_RAMP = [
-	['ink', 900],
-	['ink-mute', 700],
-	['ink-soft', 500],
-	['ink-faint', 300]
-]
-/** The two ink tones that carry readable text, and so must clear AA. */
-const READABLE = new Set(['ink', 'ink-mute'])
+/** The ink ramp, strongest first — the order the monotonic check asserts — at the preset's shades. */
+const INK_RAMP = ['ink', 'ink-mute', 'ink-soft', 'ink-faint'].map((name) => [name, NAMED_TOKEN_SHADE_MAP[name]])
 
 /** The skin block, under whichever of the three accepted config keys holds it. */
 function skinOf(config) {
@@ -160,16 +156,24 @@ function inkRamp(config, skin, paper, mode) {
 	})
 }
 
-/** AA gate on the tones that actually carry text. */
+/** The kind of text each ink tone carries, for the finding. */
+const ROLE_OF = {
+	ink: 'primary',
+	'ink-mute': 'secondary',
+	'ink-soft': 'tertiary',
+	'ink-faint': 'quietest'
+}
+
+/** AA gate on the ink tones. */
 function checkReadableText(ramp, mode) {
 	return ramp
-		.filter(({ name, c }) => READABLE.has(name) && c !== null && c < AA)
+		.filter(({ c }) => c !== null && c < AA)
 		.map(({ name, c }) => ({
 			id: `contrast-${name}-${mode}`,
 			label: `${name} on paper clears AA in ${mode}`,
 			status: 'warn',
 			fixable: false,
-			fix: `${name} vs paper is ${c.toFixed(2)}:1 in ${mode} (need ≥ ${AA}). It backs ${name === 'ink' ? 'primary' : 'secondary'} text — darken ${name} (or lighten paper) in this mode.`
+			fix: `${name} vs paper is ${c.toFixed(2)}:1 in ${mode} (need ≥ ${AA}). It backs ${ROLE_OF[name]} text — darken ${name} (or lighten paper) in this mode.`
 		}))
 }
 
@@ -195,7 +199,7 @@ function checkRampMonotonic(ramp, mode) {
 
 /** paper-edge must be distinguishable from paper, or the hairline border vanishes. */
 function checkEdgeVisible(config, skin, paper, mode) {
-	const edge = resolveToken({ config, skin, role: 'surface', shade: 400, name: 'paper-edge', mode })
+	const edge = resolveToken({ config, skin, role: 'surface', shade: NAMED_TOKEN_SHADE_MAP['paper-edge'], name: 'paper-edge', mode })
 	if (!edge) return []
 	const ratio = contrastRatio(edge, paper)
 	if (ratio >= EDGE_MIN) return []
@@ -212,7 +216,7 @@ function checkEdgeVisible(config, skin, paper, mode) {
 
 /** All three checks for one mode. */
 function checksForMode(config, skin, mode) {
-	const paper = resolveToken({ config, skin, role: 'surface', shade: 50, name: 'paper', mode })
+	const paper = resolveToken({ config, skin, role: 'surface', shade: NAMED_TOKEN_SHADE_MAP.paper, name: 'paper', mode })
 	if (!paper) return []
 	const ramp = inkRamp(config, skin, paper, mode)
 	return [
