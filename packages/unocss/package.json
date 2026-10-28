@@ -38,6 +38,10 @@
       "types": "./dist/hooks.d.ts",
       "import": "./src/hooks.js"
     },
+    "./palettes": {
+      "types": "./dist/palette-families.d.ts",
+      "import": "./src/palette-families.js"
+    },
     "./patterns.css": "./src/patterns.css"
   },
   "dependencies": {

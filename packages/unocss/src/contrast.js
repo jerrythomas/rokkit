@@ -2,7 +2,7 @@
  * Ink-on-paper contrast: a build-time warning when the skin's ink palette lacks the tonal
  * range to read on its surface, and the WCAG measure every ink tone is held to.
  */
-import { defaultColors, relativeLuminance, NAMED_TOKEN_SHADE_MAP } from '@rokkit/core'
+import { defaultColors, relativeLuminance, NAMED_TOKEN_SHADE_MAP, NAMED_TOKEN_ROLE_MAP } from '@rokkit/core'
 import { isAlias } from './config.js'
 import { isDualPalette, resolveMappingForMode } from './colors.js'
 
@@ -16,6 +16,33 @@ const MIN_STEP = 0.25
 /** WCAG contrast ratio between two relative luminances. */
 const ratio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
 
+/** A `{ light, dark }` pair's side for the mode, falling back to the other side. */
+const sideFor = (value, mode) =>
+	isDualPalette(value) ? (mode === 'dark' ? (value.dark ?? value.light) : (value.light ?? value.dark)) : value
+
+/**
+ * The raw palette value (bare channels or hex, as the palette stores it) behind a named token
+ * for one skin in one mode: the skin's own `overrides` entry when it has one (a `palette.shade`
+ * ref), else the role's palette at the token's shade — the value the preset emits.
+ *
+ * @param {Record<string, any>} config - a loaded config
+ * @param {Record<string, unknown>} mapping - a skin, optionally with its `overrides` block
+ * @param {string} token - a named token (`paper`, `ink-soft`, `danger`, `danger-soft`…)
+ * @param {'light' | 'dark'} mode
+ * @returns {string | undefined}
+ */
+export function tokenValue(config, mapping, token, mode) {
+	const palettes = { ...defaultColors, ...config.palettes }
+	const ref = sideFor(mapping.overrides?.[token], mode)
+	if (typeof ref === 'string') {
+		const [palette, shade] = ref.split('.')
+		return palettes[palette]?.[shade]
+	}
+	const { overrides: _overrides, ...roles } = mapping
+	const role = NAMED_TOKEN_ROLE_MAP[token]
+	return palettes[resolveMappingForMode(roles, mode)[role]]?.[NAMED_TOKEN_SHADE_MAP[token]]
+}
+
 /**
  * Each ink tone's WCAG contrast against `paper` and `paper-soft` for one skin mapping in one
  * mode, read from the palettes at the named-token shades — the same values the preset emits.
@@ -26,13 +53,7 @@ const ratio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
  * @returns {{ token: string, paper: number, paperSoft: number }[]}
  */
 export function inkContrast(config, mapping, mode) {
-	const roles = resolveMappingForMode(mapping, mode)
-	const palettes = { ...defaultColors, ...config.palettes }
-	const luminance = (token) => {
-		const role = token.startsWith('ink') ? 'ink' : 'surface'
-		const value = palettes[roles[role]]?.[NAMED_TOKEN_SHADE_MAP[token]]
-		return relativeLuminance(value, config.colorSpace)
-	}
+	const luminance = (token) => relativeLuminance(tokenValue(config, mapping, token, mode), config.colorSpace)
 	const paper = luminance('paper')
 	const paperSoft = luminance('paper-soft')
 	return INK_TONES.map((token) => {
