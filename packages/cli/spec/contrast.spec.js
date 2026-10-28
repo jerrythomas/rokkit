@@ -13,7 +13,9 @@ const PALETTES = {
 		300: '0.920 0.012 85',
 		400: '0.850 0.010 70',
 		500: '0.750 0.008 50',
-		700: '0.380 0.012 50',
+		600: '0.510 0.010 50',
+		700: '0.470 0.012 50',
+		800: '0.380 0.012 50',
 		900: '0.220 0.012 50'
 	},
 	sumi: {
@@ -21,7 +23,9 @@ const PALETTES = {
 		300: '0.320 0.012 50',
 		400: '0.420 0.010 50',
 		500: '0.570 0.010 50',
-		700: '0.600 0.010 85',
+		600: '0.660 0.009 85',
+		700: '0.720 0.009 85',
+		800: '0.780 0.008 85',
 		900: '0.940 0.008 85'
 	}
 }
@@ -89,18 +93,29 @@ describe('checkContrastTokens', () => {
 	it('flags ink-mute below AA', () => {
 		const cfg = {
 			...healthy,
-			palettes: { ...PALETTES, kami: { ...PALETTES.kami, 700: '0.800 0.012 50' } } // ink-mute too light in light
+			palettes: { ...PALETTES, kami: { ...PALETTES.kami, 800: '0.800 0.012 50' } } // ink-mute too light in light
 		}
 		const out = checkContrastTokens(cfg)
 		expect(out.some((f) => f.id === 'contrast-ink-mute-light')).toBe(true)
 		expect(out.every((f) => f.status === 'warn' && f.fixable === false)).toBe(true)
 	})
 
-	it('flags an inverted ink ramp', () => {
-		// Make ink-soft (500) DARKER (more contrast) than ink-mute (700) in light.
+	it('flags ink-soft and ink-faint below AA — every ink tone is a text tone', () => {
 		const cfg = {
 			...healthy,
-			palettes: { ...PALETTES, kami: { ...PALETTES.kami, 700: '0.800 0.012 50', 500: '0.300 0.008 50' } }
+			// ink-soft (700) and ink-faint (600) at the old placeholder / disabled lightness
+			palettes: { ...PALETTES, kami: { ...PALETTES.kami, 700: '0.750 0.008 50', 600: '0.920 0.012 85' } }
+		}
+		const ids = checkContrastTokens(cfg).map((f) => f.id)
+		expect(ids).toContain('contrast-ink-soft-light')
+		expect(ids).toContain('contrast-ink-faint-light')
+	})
+
+	it('flags an inverted ink ramp', () => {
+		// Make ink-soft (700) DARKER (more contrast) than ink-mute (800) in light.
+		const cfg = {
+			...healthy,
+			palettes: { ...PALETTES, kami: { ...PALETTES.kami, 800: '0.450 0.012 50', 700: '0.300 0.008 50' } }
 		}
 		const out = checkContrastTokens(cfg)
 		expect(out.some((f) => f.id === 'contrast-ramp-light')).toBe(true)
@@ -115,7 +130,7 @@ describe('checkContrastTokens', () => {
 	it('resolves a single-palette (non-dual) skin and skips unparseable paper', () => {
 		// surface points at a palette whose shade-50 is a raw hex → parseColor null → mode skipped.
 		const cfg = {
-			palettes: { mono: { 50: '#ffffff', 300: '0.9 0 0', 500: '0.7 0 0', 700: '0.4 0 0', 900: '0.2 0 0' } },
+			palettes: { mono: { 50: '#ffffff', 600: '0.5 0 0', 700: '0.4 0 0', 800: '0.3 0 0', 900: '0.2 0 0' } },
 			skins: { default: { surface: 'mono', ink: 'mono' } }
 		}
 		expect(checkContrastTokens(cfg)).toEqual([]) // both modes resolve same palette; paper unparseable → skipped

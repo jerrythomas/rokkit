@@ -187,7 +187,7 @@ const SCREENS: Screen[] = [
 	{ path: '/guides/theming', marker: 'main' },
 
 	{ path: '/embed/gallery?style=rokkit&mode=light&skin=default', marker: '.gallery' },
-	{ path: '/embed/states?style=minimal&mode=dark&skin=ocean', marker: '[data-state-harness]' }
+	{ path: '/embed/states?style=minimal&mode=dark&skin=sea-glass', marker: '[data-state-harness]' }
 ]
 
 for (const screen of SCREENS) {

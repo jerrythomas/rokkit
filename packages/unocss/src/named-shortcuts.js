@@ -56,7 +56,9 @@ export function buildNamedShortcuts() {
 			shortcuts.push([`${prefix}-${name}`, { [prop]: `var(--${name})` }])
 		}
 		if (shouldEmitShortcut(name, 'divide')) {
+			// @unocss-skip-start — an app scanning this file would extract the template as a class
 			shortcuts.push([`divide-${name}`, `divide-[var(--${name})]`])
+			// @unocss-skip-end
 		}
 	}
 	return shortcuts

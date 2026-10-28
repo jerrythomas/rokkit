@@ -2,8 +2,16 @@
  * The colour side of the preset: CSS-var preflight blocks (`:root` light, `[data-mode="dark"]`,
  * one per named skin) and the theme's colour rules. Pure over a loaded config and its colormap.
  */
-import { Theme, defaultColors } from '@rokkit/core'
-import { isAlias, resolveTokenMode } from './config.js'
+import {
+	Theme,
+	ColorSpace,
+	defaultColors,
+	pickOnColor,
+	relativeLuminance,
+	NAMED_TOKEN_SHADE_MAP,
+	NAMED_TOKEN_ROLE_MAP
+} from '@rokkit/core'
+import { isAlias, resolveTokenMode, defaultSkinOverrides } from './config.js'
 import { resolveTokens } from './custom-tokens.js'
 
 /**
@@ -48,6 +56,57 @@ export function resolveMappingForMode(colormap, mode) {
 	)
 }
 
+/** A `{ light, dark }` pair's side for the mode, falling back to the other side. */
+function sideFor(value, mode) {
+	if (!isDualPalette(value)) return value
+	return mode === 'dark' ? (value.dark ?? value.light) : (value.light ?? value.dark)
+}
+
+/**
+ * The raw palette value (bare channels or hex, as the palette stores it) behind a named token
+ * — or a role's own fill, its 500 — for one skin in one mode: the skin's own `overrides`
+ * entry when it has one (a `palette.shade` ref), else the role's palette at the token's
+ * shade. The value the preset emits, before colour-space wrapping.
+ *
+ * @param {Record<string, any>} config - a loaded config
+ * @param {Record<string, unknown>} mapping - a skin, optionally with its `overrides` block
+ * @param {string} token - a named token (`paper`, `ink-soft`, `danger-soft`…) or a role
+ * @param {'light' | 'dark'} mode
+ * @returns {string | undefined}
+ */
+export function tokenValue(config, mapping, token, mode) {
+	const palettes = { ...defaultColors, ...config.palettes }
+	const ref = sideFor(mapping.overrides?.[token], mode)
+	if (typeof ref === 'string') {
+		const [palette, shade] = ref.split('.')
+		return palettes[palette]?.[shade]
+	}
+	const { overrides: _overrides, ...roles } = mapping
+	const role = NAMED_TOKEN_ROLE_MAP[token] ?? token
+	return palettes[resolveMappingForMode(roles, mode)[role]]?.[NAMED_TOKEN_SHADE_MAP[token] ?? 500]
+}
+
+/** Roles that are not fills: the paper and the text drawn on it. `primary` has `on-primary`. */
+const NOT_FILLS = new Set(['surface', 'ink', 'primary'])
+
+/**
+ * `--on-{role}` for every fill role: near-black or near-white, picked from the fill this skin
+ * paints in this mode (its override when it has one), so `text-on-{role}` stays readable
+ * when a skin moves a role to another shade per mode.
+ */
+function onColorVars(config, roles, overrides, mode) {
+	const adapter = ColorSpace.create(config.colorSpace)
+	const mapping = { ...roles, overrides }
+	return Object.fromEntries(
+		Object.keys(roles)
+			.filter((role) => !NOT_FILLS.has(role) && !isAlias(roles[role]))
+			.map((role) => {
+				const fill = tokenValue(config, mapping, role, mode)
+				return [`--on-${role}`, adapter.wrap(pickOnColor(relativeLuminance(fill, config.colorSpace)))]
+			})
+	)
+}
+
 /**
  * The Theme for one mode of a mapping: the default colours plus the config's palettes, the
  * mapping's non-alias roles resolved to that mode's palette names.
@@ -89,24 +148,33 @@ function varsForMode(theme, colormap, config) {
 	return result
 }
 
-/** The config's override tokens for one mode. */
-function overrideVars(config, mode) {
-	return resolveTokens(
-		/* v8 ignore next — loadConfig always ensures overrides is {} */
-		config.overrides ?? {},
-		/* v8 ignore next — loadConfig always ensures palettes is {} */
-		config.palettes ?? {},
-		config.colorSpace,
-		mode
-	)
+/** An override block's tokens for one mode, palette refs resolved through the config. */
+function tokenVars(overrides, config, mode) {
+	/* v8 ignore next — loadConfig always ensures palettes is {} */
+	return resolveTokens(overrides, config.palettes ?? {}, config.colorSpace, mode)
 }
 
-/** True when any override declares a dark value, as `{ light, dark }` or dark-only. */
-function hasDarkOverride(config) {
+/**
+ * The `:root` override tokens for one mode: the default skin's own overrides, then the app
+ * config's — the app's explicit choice wins.
+ */
+function overrideVars(config, mode) {
+	return tokenVars(rootOverrides(config), config, mode)
+}
+
+/** The overrides that apply at `:root`: the default skin's own, then the app config's. */
+function rootOverrides(config) {
 	/* v8 ignore next — loadConfig always ensures overrides is {} */
-	return Object.values(config.overrides ?? {}).some(
-		(v) => v && typeof v === 'object' && !Array.isArray(v) && 'dark' in v
-	)
+	return { ...defaultSkinOverrides(config), ...(config.overrides ?? {}) }
+}
+
+/** True when an override block declares a dark value, as `{ light, dark }` or dark-only. */
+const declaresDark = (overrides) =>
+	Object.values(overrides).some((v) => v && typeof v === 'object' && !Array.isArray(v) && 'dark' in v)
+
+/** True when any `:root` override declares a dark value. */
+function hasDarkOverride(config) {
+	return declaresDark(rootOverrides(config))
 }
 
 /**
@@ -118,7 +186,8 @@ function hasDarkOverride(config) {
 function darkBlock(colormap, config) {
 	if (!hasDualPaletteMapping(withoutAliases(colormap)) && !hasDarkOverride(config)) return ''
 	const darkVars = varsForMode(themeFor(colormap, config, 'dark'), colormap, config)
-	return `[data-mode="dark"]{${toCssBlock({ ...darkVars, ...overrideVars(config, 'dark') })}}`
+	const onColors = onColorVars(config, withoutAliases(colormap), rootOverrides(config), 'dark')
+	return `[data-mode="dark"]{${toCssBlock({ ...darkVars, ...overrideVars(config, 'dark'), ...onColors })}}`
 }
 
 /**
@@ -132,7 +201,11 @@ function darkBlock(colormap, config) {
  * @param {string[]} extraVars - non-colour `name:value` vars (typography.js)
  */
 export function rootPreflights(theme, colormap, config, extraVars) {
-	const lightVars = { ...varsForMode(theme, colormap, config), ...overrideVars(config, 'light') }
+	const lightVars = {
+		...varsForMode(theme, colormap, config),
+		...overrideVars(config, 'light'),
+		...onColorVars(config, withoutAliases(colormap), rootOverrides(config), 'light')
+	}
 	const lightBlock = `:root, [data-mode="light"]{${toCssBlock(lightVars)}}${
 		extraVars.length ? `:root{${extraVars.join(';')}}` : ''
 	}`
@@ -143,16 +216,22 @@ export function rootPreflights(theme, colormap, config, extraVars) {
  * One skin's named-token vars in one mode — the same builder `:root` uses, so the blocks are
  * identical in form; only the selector differs. Aliases get no vars.
  */
-function skinVars(mapping, config, mode) {
+function skinVars(name, mapping, config, mode) {
 	const roles = withoutAliases(mapping)
-	return varsForMode(themeFor(mapping, config, mode), roles, config)
+	/* v8 ignore next — loadConfig gives every user skin an overrides block; built-ins have none */
+	const overrides = config.skinOverrides?.[name] ?? {}
+	return {
+		...varsForMode(themeFor(mapping, config, mode), roles, config),
+		...tokenVars(overrides, config, mode),
+		...onColorVars(config, roles, overrides, mode)
+	}
 }
 
 /**
  * `[data-skin='name']` preflight blocks for every configured skin EXCEPT the default (whose
  * vars live in `:root`):
- *  - light block: `[data-skin='name']{…light vars…}`
- *  - dark block (only when the skin has a dual-palette role):
+ *  - light block: `[data-skin='name']{…light vars…, …the skin's own overrides…}`
+ *  - dark block (only when the skin has a dual-palette role or a dark override):
  *      `[data-mode='dark'][data-skin='name']{…dark vars…}`
  * The dark selector uses single-quoted attributes; the test contract accepts
  * either quoting, and single quotes match the `data-skin` quoting used here.
@@ -161,9 +240,11 @@ export function skinPreflights(config) {
 	return Object.entries(config.skins)
 		.filter(([name]) => name !== DEFAULT_SKIN_NAME)
 		.map(([name, mapping]) => {
-			const lightBlock = `[data-skin='${name}']{${toCssBlock(skinVars(mapping, config, 'light'))}}`
-			const dark = hasDualPaletteMapping(withoutAliases(mapping))
-				? `[data-mode='dark'][data-skin='${name}']{${toCssBlock(skinVars(mapping, config, 'dark'))}}`
+			const lightBlock = `[data-skin='${name}']{${toCssBlock(skinVars(name, mapping, config, 'light'))}}`
+			/* v8 ignore next — loadConfig gives every user skin an overrides block; built-ins have none */
+			const needsDark = hasDualPaletteMapping(withoutAliases(mapping)) || declaresDark(config.skinOverrides?.[name] ?? {})
+			const dark = needsDark
+				? `[data-mode='dark'][data-skin='${name}']{${toCssBlock(skinVars(name, mapping, config, 'dark'))}}`
 				: ''
 			return { getCSS: () => `${lightBlock}${dark}` }
 		})

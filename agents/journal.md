@@ -10864,3 +10864,66 @@ visitor's own Ollama.
     `prepare`.
 - **Commits:** 22307a080 (#173), c1aa9202f (#174).
 - **Gates:** test:ci 8,615, test:browser 64, e2e 201, lint 0/0.
+
+## 2026-10-27 (2) — v1.9.1 released (#173, #174)
+
+- **Checklist.** Before the bump: full suite (8,615 unit, 64 browser, 201 e2e) and lint were
+  green, and develop CI (Check, including the browser job, and Coverage) was green. No docs
+  describe the switch travel or the off-track tone. Release notes come from changelogithub.
+- **`bun run bump patch --yes`.** `check` passed, then 9ff494155 tagged v1.9.1, with `bun.lock`
+  at 1.9.1.
+- **publish.yml.** All 15 packages published at 1.9.1, and npm `latest` is 1.9.1 for all 15.
+- **Shipped artifact.** The npm tarball of @rokkit/themes@1.9.1 has a dist/ that is
+  byte-identical to the dist/ the browser spec passed on, for base and all five styles:
+  - zen-sumi's off track is `var(--paper-edge)`;
+  - no style declares a `--switch-thumb-travel`;
+  - base insets the thumb by `--switch-track-border`.
+- **Merge to main.** 0da38cd24; main Check, Coverage and CodeQL are green. The live site
+  redeployed: the zen-sumi off track reads oklch(0.85 0.01 70), and the sm thumb travels .75rem.
+
+## 2026-10-27 (3) — zen-sumi List takes the guides look; every ink tone reads at AA
+
+- **Fix 1 — guides rail is the rokkit List.** `apps/learn/src/routes/guides/+layout.svelte` renders a
+  grouped, non-collapsible `List` (links by href, value = slug), keeping the search box; the rail's
+  bespoke cat-label/ul/li/a css is gone. zen-sumi `list.css` carries the look for any zen-sumi List:
+  group = font-mono 10px/500, 0.12em (1.2px), uppercase, ink-mute, margin 14px 8px 6px; item = font-ui
+  13px/400, ink, padding 6px 8px; active = ink fill + paper text (as the file header always said).
+  - Tests: `packages/themes/browser/list.browser.spec.ts` (built css, red 3/3 before); `guides.e2e.ts`
+    (grouping, aria-current, navigation, computed styles light + dark; red 5/5 before).
+  - Commits 9b05269ce (themes; state-snapshot rebased, 312 zen-sumi keys only), 9def4a9e2 (learn).
+- **Fix 2 — ink ramp 900/800/700/600.** Every ink tone clears 4.5:1 on paper and paper-soft for every
+  built-in skin (slate/zinc/stone: faint ≥ 6.92, soft ≥ 9.42), the learn zen-sumi skins (light
+  9.35/6.37/5.37, dark 8.87/7.16/5.71 on paper-soft for mute/soft/faint) and the `rokkit init` starter.
+  soft→600/faint→500 was rejected: Tailwind 500 on 100 is 4.34–4.40. kami 600/700/800 → .51/.47/.38,
+  sumi 600/700/800 → .66/.72/.78.
+  - `inkContrast` / `inkRampProblems` in @rokkit/unocss; specs in unocss, cli, learn (red 12+2 before).
+  - Doctor (cli contrast.js) reads the shade map from core and gates all four tones.
+  - Header pill / footer link hover borders: ink-faint → paper-edge-hover.
+  - Non-text ink-soft uses (focus/open rings, focus borders, rokkit/material switch off-track, some
+    rokkit/minimal/material borders) were left on ink-soft: they get stronger, which helps 1.4.11.
+  - Commits 38d54805e (core/unocss/palettes/docs; state-snapshot 724 keys; interaction-contrast −4
+    debt keys), 7fa37f7d8 (doctor), 2eca59232 (learn hover borders).
+
+## 2026-10-28 — palette families exported; skin overrides; on-colour variables
+
+- **`@rokkit/unocss/palettes`** (also the package root) exports `zenSumi`, `seaGlass`,
+  `sakuraEmber`, `fujiDusk`, `mossGarden` and `PALETTE_FAMILIES` — each
+  `{ name, description, palettes, skin }`, bare OKLCH, every role mapped.
+  - zen-sumi = the learn copy (shu 500 0.641 0.190 36, kami/sumi 600–800 retuned) + beni
+    (danger/error), ai (info), murasaki (secondary — hisui is success).
+  - The four others replace the learn site's ocean/violet/rose/emerald example skins; cool pair
+    kiri/yoru (kami/sumi lightness ladder at hue 250) for sea-glass and fuji-dusk.
+- **Skin `overrides`** (2f4287ccc): a skin may carry token → `palette.shade` / `{ light, dark }`;
+  split off in `loadConfig`, applied in `:root` (default skin; the app's overrides win) and
+  `[data-skin]` blocks. Needed because no single shade reads 4.5:1 on both kami 50 and sumi 50
+  (their ratio is 18.7; it needs 20.25) — status text is 600–800 in light, 400 in dark.
+- **`--on-{role}` variables** (17f4e0d9a): `text-on-{role}` was a build-time hex for the default
+  skin's 500; a dark danger fill kept near-black text (2.74:1). Now `var(--on-x, <hex>)`, with the
+  preset deriving `--on-x` per skin/mode from the painted fill.
+- Families keep rokkit's light `-soft` tints (base message.css darkens status copy against them);
+  sea-glass umi 500 → 0.660 so light ink reads on frosted's 60% umi hover (was 4.45).
+- `rokkit init`'s zen-sumi starter writes `import { zenSumi } from '@rokkit/unocss/palettes'`;
+  learn's rokkit.config.js and skins.ts (a third, stale copy) import the families.
+- Spec `palette-families.spec.js`: ink ramp AA, distinct primary/status (OKLab ΔE ≥ 0.07),
+  on-primary ≥ 4.5, status text ≥ 4.5 on paper and paper-soft, both modes.
+- Commits: 2f4287ccc, da5519a48, 03596079c, 17f4e0d9a, e79235a78, f189d4fa8, + docs.

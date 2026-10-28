@@ -52,6 +52,18 @@ The preset wraps values into complete colors when it emits CSS vars (see Layer 3
 
 ---
 
+## Layer 1a — Palette families (prefer these to hand-copied palettes)
+
+Before writing palette literals, check whether a rokkit family fits: `zen-sumi`, `sea-glass`,
+`sakura-ember`, `fuji-dusk`, `moss-garden`, from `@rokkit/unocss/palettes`. Each is
+`{ name, description, palettes, skin }` and passes AA for every ink tone and status text in both
+modes. Use `palettes: { ...zenSumi.palettes }, colorSpace: 'oklch', skin: zenSumi.skin` (or
+`skins: { default: zenSumi.skin, 'sea-glass': seaGlass.skin }`). A copied family drifts; an
+imported one follows rokkit's tuning on upgrade. A skin may carry its own `overrides` block
+(token → `palette.shade` or `{ light, dark }`), which is how the families put status text on a
+mode-appropriate shade.
+
+
 ## Layer 2 — Skin and skins
 
 **What:** A skin maps semantic role names to palette names. The core roles that back the
@@ -198,7 +210,7 @@ The 24-token core vocabulary, all flipping automatically under `[data-mode="dark
 | Group   | Tokens                                                  | Use                                              |
 |---------|---------------------------------------------------------|--------------------------------------------------|
 | Surface | `paper` · `paper-soft` · `paper-mute` · `paper-edge`    | canvas · card · subdued panel · hairline border  |
-| Text    | `ink` · `ink-mute` · `ink-soft` · `ink-faint`           | body · secondary · placeholder · disabled        |
+| Text    | `ink` · `ink-mute` · `ink-soft` · `ink-faint`           | body · secondary · tertiary · quietest (all AA)  |
 | Primary | `primary` · `on-primary`                                | CTA fill · text/icon on a primary fill           |
 | Accent  | `accent` · `accent-soft`                                | accent fill · tinted accent background           |
 | Status  | `success`/`-soft`, `warning`/`-soft`, `danger`/`-soft`, `error`/`-soft`, `info`/`-soft` | solid status · tinted callout bg |
@@ -312,7 +324,7 @@ Default stays `'core'`.
 documents the vocabulary). Two starters via the palette prompt:
 
 - **Tailwind (rgb)** — `skin` of Tailwind palette names, `colorSpace: 'rgb'`, `tokens: 'core'`. Single-palette → light-leaning (see Layer 2b).
-- **Zen-Sumi (OKLCH)** — ships `palettes` (kami/sumi/shu/…), `colorSpace: 'oklch'`, dual-palette `surface`/`ink` → full dark mode out of the box.
+- **Zen-Sumi (OKLCH)** — writes `import { zenSumi } from '@rokkit/unocss/palettes'` with `palettes: zenSumi.palettes`, `skin: zenSumi.skin`, `colorSpace: 'oklch'` → full dark mode out of the box, and the family's tuning follows rokkit upgrades.
 
 **`rokkit doctor`** validates an existing setup. Beyond file checks (config exists,
 `uno.config.js` uses `presetRokkit(config)`, `app.css` imports a theme, `app.html` has the

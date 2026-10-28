@@ -1,3 +1,4 @@
+import { zenSumi } from '@rokkit/unocss/palettes'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mkdtempSync, rmSync, writeFileSync, readFileSync, existsSync, mkdirSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -26,11 +27,9 @@ describe('generateConfig', () => {
 		})
 		expect(config.colorSpace).toBe('oklch')
 		expect(config.tokens).toBe('core')
-		expect(config.palettes.kami).toBeDefined()
-		expect(config.palettes.shu['500']).toBe('0.580 0.150 35')
-		expect(config.skin.surface).toEqual({ light: 'kami', dark: 'sumi' })
-		expect(config.skin.ink).toEqual({ light: 'kami', dark: 'sumi' })
-		expect(config.skin.primary).toBe('shu')
+		// The starter IS @rokkit/unocss's zen-sumi family — no copy of its values.
+		expect(config.palettes).toBe(zenSumi.palettes)
+		expect(config.skin).toBe(zenSumi.skin)
 		expect(config.shape.radius).toBe('soft')
 		expect(config.colors).toBeUndefined()
 	})
@@ -244,10 +243,25 @@ describe('serializeRokkitConfig', () => {
 		expect(JSON.parse(json).skin.primary).toBe('orange')
 	})
 
-	it('includes a palettes note for the OKLCH starter', () => {
+	it('writes the zen-sumi starter as an import of the family, not a copy', async () => {
 		const src = serializeRokkitConfig(generateZenSumiConfig({}))
-		expect(src).toContain('palettes')
-		expect(src).toContain('oklch')
+		expect(src).toContain("import { zenSumi } from '@rokkit/unocss/palettes'")
+		expect(src).toMatch(/"palettes": zenSumi\.palettes/)
+		expect(src).toMatch(/"skin": zenSumi\.skin/)
+		expect(src).not.toContain('0.641 0.190 36')
+
+		// Inside the repo, so the generated import resolves @rokkit/unocss like a consumer's would.
+		const dir = mkdtempSync(join(import.meta.dirname, '.starter-'))
+		try {
+			const file = join(dir, 'rokkit.config.mjs')
+			writeFileSync(file, src)
+			const { default: loaded } = await import(file)
+			expect(loaded.palettes).toEqual(zenSumi.palettes)
+			expect(loaded.skin).toEqual(zenSumi.skin)
+			expect(loaded.colorSpace).toBe('oklch')
+		} finally {
+			rmSync(dir, { recursive: true, force: true })
+		}
 	})
 })
 

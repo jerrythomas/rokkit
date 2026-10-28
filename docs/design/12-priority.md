@@ -10,6 +10,8 @@ Last updated: 2026-05-20 (full restructure — pulled completed items out of the
 
 ## Recently Shipped (since 2026-04-01)
 
+- [x] **Palette families (2026-10-28)** — `@rokkit/unocss/palettes`: zen-sumi, sea-glass, sakura-ember, fuji-dusk, moss-garden, each AA-checked; skins may carry `overrides`; `text-on-{role}` reads a per-skin `--on-{role}`. init starter and the learn site import them. See journal 2026-10-28.
+- [x] **zen-sumi List = guides look; readable ink ramp (2026-10-27)** — guides rail is the rokkit List; zen-sumi List group headings are mono micro-labels and items 13px ink. ink-mute/soft/faint on shades 800/700/600 — all four ≥ 4.5:1 on paper and paper-soft for every built-in skin and zen-sumi. See journal 2026-10-27 (3).
 - [x] **Switch fixes (#173, #174, 2026-10-27)** — zen-sumi off track `paper-mute` → `paper-edge` (~1.07:1 → 1.5:1 against the page and the thumb, in both modes). The thumb travel is per size under every style; no style restates it. A bordered track (rokkit, frosted) declares `--switch-track-border`, so the thumb is inset evenly. A browser spec over the built CSS pins both. See journal 2026-10-27.
 - [x] **Ask Rokkit follows up (2026-10-02)** — Every chat mode now runs one loop: interpret → validate → act. The 56-demo Koan catalogue is the action space; replies carry the screen as a `demo` block; chips, selection and live controls come from catalogue data. Interpreters: local (simulated), System One via Ollama (`OLLAMA_URL`), and OpenRouter or Web-LLM as classifiers, combined in a measured hybrid (22-message eval: local 18, System One hybrid 20, OpenRouter hybrid 21). The regex router and the free-form LLM prompt path are gone. Design: `docs/design/26-chat-intents.md`.
 

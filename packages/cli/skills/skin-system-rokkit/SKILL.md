@@ -70,6 +70,45 @@ Consumer `skins:` in `rokkit.config.js` merge on top and can override or extend 
 
 ---
 
+## Palette families — import, don't copy
+
+rokkit exports ready-made colour systems, so an app imports a family instead of copying its
+values. Each family is `{ name, description, palettes, skin }`: `palettes` are bare OKLCH
+components (`colorSpace: 'oklch'`), and `skin` maps every role — surface and ink as a light/dark
+pair, primary, secondary, tertiary, accent and the five status roles.
+
+| Family | Mood | Primary | Paper |
+| --- | --- | --- | --- |
+| `zen-sumi` | Sumi ink on washi paper with a vermillion seal — quiet, warm, deliberate | shu (vermillion) | kami / sumi |
+| `sea-glass` | Sea teal and open sky over cool mist — calm, clear, airy | umi (teal) | kiri / yoru |
+| `sakura-ember` | Bitter-orange embers and cherry blossom on warm paper — lively, friendly | daidai (orange) | kami / sumi |
+| `fuji-dusk` | Wisteria and bellflower at dusk over cool mist — dreamy, focused | fuji (violet) | kiri / yoru |
+| `moss-garden` | Moss and running water on warm stone paper — grounded, fresh | koke (emerald) | kami / sumi |
+
+```js
+// rokkit.config.js
+import { zenSumi, seaGlass } from '@rokkit/unocss/palettes'
+
+export default {
+  palettes: { ...zenSumi.palettes, ...seaGlass.palettes },
+  colorSpace: 'oklch',
+  skins: { default: zenSumi.skin, 'sea-glass': seaGlass.skin }
+}
+```
+
+`PALETTE_FAMILIES` maps every family by name. Families share a palette name only where the
+values are identical, so several can be spread into one `palettes` block.
+
+Every family is held to the same bar in both modes: all four ink tones read at AA (4.5:1) on
+`paper` and `paper-soft`; primary and the status roles are distinct palettes; the primary fill
+takes a readable on-colour; and status text (`text-danger`, `-success`, `-warning`, `-info`)
+reads at AA on paper. No single shade does that on both light and dark paper, so each family
+skin carries its own `overrides` — status text uses a darker shade on light paper and a lighter
+one on dark paper (zen-sumi: `danger` is `beni.600` in light, `beni.400` in dark). A skin
+`overrides` block takes the same shape as the config's, and applies wherever that skin
+applies. `text-on-{role}` reads `--on-{role}`, which the preset derives per skin and mode from
+the fill actually painted.
+
 ## Switching at runtime
 
 Three moving parts: **`vibe.skin`** (reactive state), **`themable`** (writes `data-skin` to

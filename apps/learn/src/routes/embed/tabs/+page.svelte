@@ -2,7 +2,7 @@
 	/**
 	 * Embedded Tabs preview, themed via URL params:
 	 *   ?theme={style}  e.g. zen-sumi | rokkit | minimal | material | frosted
-	 *   ?skin={name}    e.g. default | ocean | violet | rose | emerald
+	 *   ?skin={name}    e.g. default | sea-glass | sakura-ember | fuji-dusk | moss-garden
 	 *   ?mode=light|dark|system
 	 *
 	 * All three drive `data-*` attributes on the wrapper div declaratively

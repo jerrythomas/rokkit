@@ -113,7 +113,7 @@ bg-paper-mute   → subdued, inset panel
 border-paper-edge → hairline border tone
 text-ink        → primary body text
 text-ink-mute   → secondary text
-text-ink-soft   → placeholder text
+text-ink-soft   → tertiary text (captions, placeholders; AA on paper)
 bg-primary      → CTA / interactive fill
 text-on-primary → legible text on a primary fill
 ```

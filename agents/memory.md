@@ -93,16 +93,20 @@ Three gates, and they see different things — a change usually has to satisfy a
 
 Rules that fall out of this, learned the hard way:
 
-- **`ink-soft` is the placeholder tone** (ink.500 — 1.95–2.13:1 on paper). It cannot carry an
-  interactive control's label or icon. `ink-mute` is the readable-secondary token.
+- **Every ink tone is a text tone** (since 2026-10-27). `ink`/`ink-mute`/`ink-soft`/`ink-faint`
+  sit on shades 900/800/700/600 and each clears 4.5:1 on paper AND paper-soft in both modes,
+  strongest first — pinned for the built-in skins, the zen-sumi starter and the learn config by
+  `inkRampProblems` (@rokkit/unocss). 600 is the lightest Tailwind-neutral stop that passes on
+  100 (slate-500 on slate-100 is 4.34:1). A hairline or divider takes `paper-edge`, not an ink tone.
+  Before this, `ink-soft` was ink.500 (~2:1, placeholder) and `ink-faint` ink.300 (near-paper).
 - **On a `paper-mute` fill the text is `ink`, never `ink-mute`** — that pairing is 4.07:1 in
   dark mode. It passes at rest only because resting items sit on `paper`.
 - **A hover rule out-specifies a `[data-selected]` rule** ((0,5,0) vs (0,3,0)) unless the
   selected state is restated with the pseudo-class. This applies again one level deeper for
   the item's icon ((0,5,0) vs (0,4,0)).
-- **A filled element's label takes the fill's on-color.** Only `on-primary` is a real CSS
-  variable; `text-on-accent`/`text-on-danger` compile to a **build-time-baked hex** and cannot
-  react to a skin.
+- **A filled element's label takes the fill's on-color.** `text-on-{role}` reads
+  `var(--on-{role}, <build-time hex>)`; the preset sets `--on-{role}` per skin and mode from the
+  painted fill (since 2026-10-28). Stylesheets compiled without the preset fall back to the hex.
 - **Hover must move a fill AWAY from its label**, and the safe direction depends on which side
   of the y=0.19 crossover the fill sits. Use `oklch(from … calc(l + (l - 0.566) * 0.3) …)`;
   never a fixed darken or lighten.
@@ -112,6 +116,12 @@ Rules that fall out of this, learned the hard way:
   against neither near-black nor near-white. `violet-500` and `indigo-500` are the only two
   built-in palettes in it.
 - Freeze transitions before measuring a state, or you read the idle colour at t=0.
+
+## Palette families
+
+- `@rokkit/unocss/palettes` is the one source of zen-sumi and the other families — never copy
+  values into an app or the cli. Status text needs a per-mode shade (skin `overrides`): no colour
+  reads 4.5:1 on both kami 50 and sumi 50.
 
 ## @rokkit/graph
 

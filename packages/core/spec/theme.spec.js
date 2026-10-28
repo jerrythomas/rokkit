@@ -579,9 +579,9 @@ describe('Theme.getZAliasesForExtended (named-as-aliases-of-palette)', () => {
     expect(aliases['--paper-mute']).toBe('var(--color-surface-200)')
     expect(aliases['--paper-edge']).toBe('var(--color-surface-400)')
     expect(aliases['--ink']).toBe('var(--color-ink-900)')
-    expect(aliases['--ink-mute']).toBe('var(--color-ink-700)')
-    expect(aliases['--ink-soft']).toBe('var(--color-ink-500)')
-    expect(aliases['--ink-faint']).toBe('var(--color-ink-300)')
+    expect(aliases['--ink-mute']).toBe('var(--color-ink-800)')
+    expect(aliases['--ink-soft']).toBe('var(--color-ink-700)')
+    expect(aliases['--ink-faint']).toBe('var(--color-ink-600)')
     expect(aliases['--primary']).toBe('var(--color-primary-500)')
     expect(aliases['--accent']).toBe('var(--color-accent-500)')
     expect(aliases['--accent-soft']).toBe('var(--color-accent-100)')
@@ -719,21 +719,27 @@ describe('contrastShortcuts', () => {
 		return null
 	}
 
-	it('resolves text-on-<role> to the supplied on-color', () => {
-		expect(ruleFor('primary', '#101010', 'text-on-primary')).toBe('text-[#101010]')
+	// The on-color is the skin's `--on-<role>` variable, so it follows the fill a skin (or a
+	// skin's per-mode override) actually paints; the build-time hex is only the fallback.
+	it('resolves text-on-<role> to the role on-color variable, the supplied hex as fallback', () => {
+		expect(ruleFor('primary', '#101010', 'text-on-primary')).toBe('text-[var(--on-primary,#101010)]')
 	})
 
 	it('resolves the muted variant to the same on-color', () => {
-		expect(ruleFor('primary', '#101010', 'text-on-primary-muted')).toBe('text-[#101010]')
+		expect(ruleFor('primary', '#101010', 'text-on-primary-muted')).toBe('text-[var(--on-primary,#101010)]')
 	})
 
-	it('preserves an opacity suffix', () => {
-		expect(ruleFor('accent', '#fff', 'text-on-accent/50')).toBe('text-[#fff]/50')
-		expect(ruleFor('accent', '#fff', 'text-on-accent-muted/25')).toBe('text-[#fff]/25')
+	it('applies an opacity suffix by mixing toward transparent', () => {
+		expect(ruleFor('accent', '#fff', 'text-on-accent/50')).toBe(
+			'text-[color-mix(in_srgb,var(--on-accent,#fff)_50%,transparent)]'
+		)
+		expect(ruleFor('accent', '#fff', 'text-on-accent-muted/25')).toBe(
+			'text-[color-mix(in_srgb,var(--on-accent,#fff)_25%,transparent)]'
+		)
 	})
 
 	it('defaults the on-color when none is given', () => {
-		expect(ruleFor('danger', undefined, 'text-on-danger')).toBe('text-[#fafafa]')
+		expect(ruleFor('danger', undefined, 'text-on-danger')).toBe('text-[var(--on-danger,#fafafa)]')
 	})
 
 	it('does not match an unrelated role', () => {

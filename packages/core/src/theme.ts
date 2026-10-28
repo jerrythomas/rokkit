@@ -91,10 +91,12 @@ export function themeRules(
  * Generates "on-color" text shortcuts for readable text on colored backgrounds.
  *
  * The on-color is whichever of near-black / near-white best contrasts with the
- * role's z5 fill (the principle: a 500-shade fill takes black OR white text —
- * never a mid tint, which fails AA on bright fills like vermillion). The caller
- * passes the resolved on-color hex (see `Theme.#onColorHex`); we emit it as an
- * arbitrary-value utility so it stays a single CSS color, opacity-composable.
+ * role's fill (the principle: a fill takes black OR white text — never a mid
+ * tint, which fails AA on bright fills like vermillion). The utility reads the
+ * skin's `--on-{name}` variable, which the preset derives per skin and mode from
+ * the fill that skin actually paints; `onColor` (the build-time pick for the
+ * role's 500, see `Theme.#onColorHex`) is the fallback where no variable is set,
+ * e.g. a stylesheet compiled ahead of the app.
  *
  * - `text-on-{name}` → readable text on a z5+ fill
  * - `text-on-{name}-muted` → same on-color (kept for back-compat callers)
@@ -104,12 +106,16 @@ export function themeRules(
  * @returns {Array} Array of shortcut definitions
  */
 export function contrastShortcuts(name: string, onColor = '#fafafa') {
+	const color = `var(--on-${name},${onColor})`
+	// An app's UnoCSS scans this file; without the skip it extracts the template below as a
+	// class and emits its placeholder text as CSS, which postcss rejects (scanned-sources.spec).
+	// @unocss-skip-start
+	const text = ([, end]: string[]) =>
+		end ? `text-[color-mix(in_srgb,${color}_${end.slice(1)}%,transparent)]` : `text-[${color}]`
+	// @unocss-skip-end
 	return [
-		[new RegExp(`^text-on-${name}(\\/\\d+)?$`), ([, end]: string[]) => `text-[${onColor}]${end || ''}`],
-		[
-			new RegExp(`^text-on-${name}-muted(\\/\\d+)?$`),
-			([, end]: string[]) => `text-[${onColor}]${end || ''}`
-		]
+		[new RegExp(`^text-on-${name}(\\/\\d+)?$`), text],
+		[new RegExp(`^text-on-${name}-muted(\\/\\d+)?$`), text]
 	]
 }
 

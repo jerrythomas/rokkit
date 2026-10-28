@@ -47,7 +47,7 @@
 
 	[data-site-footer-credits] a:hover {
 		color: var(--ink);
-		border-bottom-color: var(--ink-faint);
+		border-bottom-color: var(--paper-edge-hover);
 	}
 
 	[data-site-footer-llms] {

@@ -38,10 +38,10 @@
 	// data flow but four different visual styles AND four different brand
 	// palettes — making the orthogonal nature of style vs skin explicit.
 	const themedTabs = [
-		{ id: 'zen-sumi', skin: 'default', label: 'zen-sumi', desc: 'ink fill · saffron brand' },
-		{ id: 'rokkit',   skin: 'ocean',   label: 'rokkit',   desc: 'gradient · ocean brand' },
-		{ id: 'minimal',  skin: 'violet',  label: 'minimal',  desc: 'underline · violet brand' },
-		{ id: 'material', skin: 'rose',    label: 'material', desc: 'pill · rose brand' }
+		{ id: 'zen-sumi', skin: 'default',      label: 'zen-sumi', desc: 'ink fill · zen-sumi palette' },
+		{ id: 'rokkit',   skin: 'sea-glass',    label: 'rokkit',   desc: 'gradient · sea-glass palette' },
+		{ id: 'minimal',  skin: 'fuji-dusk',    label: 'minimal',  desc: 'underline · fuji-dusk palette' },
+		{ id: 'material', skin: 'sakura-ember', label: 'material', desc: 'pill · sakura-ember palette' }
 	]
 
 
