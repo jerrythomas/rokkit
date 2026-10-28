@@ -10880,3 +10880,26 @@ visitor's own Ollama.
   - base insets the thumb by `--switch-track-border`.
 - **Merge to main.** 0da38cd24; main Check, Coverage and CodeQL are green. The live site
   redeployed: the zen-sumi off track reads oklch(0.85 0.01 70), and the sm thumb travels .75rem.
+
+## 2026-10-27 (3) — zen-sumi List takes the guides look; every ink tone reads at AA
+
+- **Fix 1 — guides rail is the rokkit List.** `apps/learn/src/routes/guides/+layout.svelte` renders a
+  grouped, non-collapsible `List` (links by href, value = slug), keeping the search box; the rail's
+  bespoke cat-label/ul/li/a css is gone. zen-sumi `list.css` carries the look for any zen-sumi List:
+  group = font-mono 10px/500, 0.12em (1.2px), uppercase, ink-mute, margin 14px 8px 6px; item = font-ui
+  13px/400, ink, padding 6px 8px; active = ink fill + paper text (as the file header always said).
+  - Tests: `packages/themes/browser/list.browser.spec.ts` (built css, red 3/3 before); `guides.e2e.ts`
+    (grouping, aria-current, navigation, computed styles light + dark; red 5/5 before).
+  - Commits 9b05269ce (themes; state-snapshot rebased, 312 zen-sumi keys only), 9def4a9e2 (learn).
+- **Fix 2 — ink ramp 900/800/700/600.** Every ink tone clears 4.5:1 on paper and paper-soft for every
+  built-in skin (slate/zinc/stone: faint ≥ 6.92, soft ≥ 9.42), the learn zen-sumi skins (light
+  9.35/6.37/5.37, dark 8.87/7.16/5.71 on paper-soft for mute/soft/faint) and the `rokkit init` starter.
+  soft→600/faint→500 was rejected: Tailwind 500 on 100 is 4.34–4.40. kami 600/700/800 → .51/.47/.38,
+  sumi 600/700/800 → .66/.72/.78.
+  - `inkContrast` / `inkRampProblems` in @rokkit/unocss; specs in unocss, cli, learn (red 12+2 before).
+  - Doctor (cli contrast.js) reads the shade map from core and gates all four tones.
+  - Header pill / footer link hover borders: ink-faint → paper-edge-hover.
+  - Non-text ink-soft uses (focus/open rings, focus borders, rokkit/material switch off-track, some
+    rokkit/minimal/material borders) were left on ink-soft: they get stronger, which helps 1.4.11.
+  - Commits 38d54805e (core/unocss/palettes/docs; state-snapshot 724 keys; interaction-contrast −4
+    debt keys), 7fa37f7d8 (doctor), 2eca59232 (learn hover borders).
