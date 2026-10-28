@@ -10903,3 +10903,27 @@ visitor's own Ollama.
     rokkit/minimal/material borders) were left on ink-soft: they get stronger, which helps 1.4.11.
   - Commits 38d54805e (core/unocss/palettes/docs; state-snapshot 724 keys; interaction-contrast −4
     debt keys), 7fa37f7d8 (doctor), 2eca59232 (learn hover borders).
+
+## 2026-10-28 — palette families exported; skin overrides; on-colour variables
+
+- **`@rokkit/unocss/palettes`** (also the package root) exports `zenSumi`, `seaGlass`,
+  `sakuraEmber`, `fujiDusk`, `mossGarden` and `PALETTE_FAMILIES` — each
+  `{ name, description, palettes, skin }`, bare OKLCH, every role mapped.
+  - zen-sumi = the learn copy (shu 500 0.641 0.190 36, kami/sumi 600–800 retuned) + beni
+    (danger/error), ai (info), murasaki (secondary — hisui is success).
+  - The four others replace the learn site's ocean/violet/rose/emerald example skins; cool pair
+    kiri/yoru (kami/sumi lightness ladder at hue 250) for sea-glass and fuji-dusk.
+- **Skin `overrides`** (2f4287ccc): a skin may carry token → `palette.shade` / `{ light, dark }`;
+  split off in `loadConfig`, applied in `:root` (default skin; the app's overrides win) and
+  `[data-skin]` blocks. Needed because no single shade reads 4.5:1 on both kami 50 and sumi 50
+  (their ratio is 18.7; it needs 20.25) — status text is 600–800 in light, 400 in dark.
+- **`--on-{role}` variables** (17f4e0d9a): `text-on-{role}` was a build-time hex for the default
+  skin's 500; a dark danger fill kept near-black text (2.74:1). Now `var(--on-x, <hex>)`, with the
+  preset deriving `--on-x` per skin/mode from the painted fill.
+- Families keep rokkit's light `-soft` tints (base message.css darkens status copy against them);
+  sea-glass umi 500 → 0.660 so light ink reads on frosted's 60% umi hover (was 4.45).
+- `rokkit init`'s zen-sumi starter writes `import { zenSumi } from '@rokkit/unocss/palettes'`;
+  learn's rokkit.config.js and skins.ts (a third, stale copy) import the families.
+- Spec `palette-families.spec.js`: ink ramp AA, distinct primary/status (OKLab ΔE ≥ 0.07),
+  on-primary ≥ 4.5, status text ≥ 4.5 on paper and paper-soft, both modes.
+- Commits: 2f4287ccc, da5519a48, 03596079c, 17f4e0d9a, e79235a78, f189d4fa8, + docs.

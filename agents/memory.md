@@ -104,9 +104,9 @@ Rules that fall out of this, learned the hard way:
 - **A hover rule out-specifies a `[data-selected]` rule** ((0,5,0) vs (0,3,0)) unless the
   selected state is restated with the pseudo-class. This applies again one level deeper for
   the item's icon ((0,5,0) vs (0,4,0)).
-- **A filled element's label takes the fill's on-color.** Only `on-primary` is a real CSS
-  variable; `text-on-accent`/`text-on-danger` compile to a **build-time-baked hex** and cannot
-  react to a skin.
+- **A filled element's label takes the fill's on-color.** `text-on-{role}` reads
+  `var(--on-{role}, <build-time hex>)`; the preset sets `--on-{role}` per skin and mode from the
+  painted fill (since 2026-10-28). Stylesheets compiled without the preset fall back to the hex.
 - **Hover must move a fill AWAY from its label**, and the safe direction depends on which side
   of the y=0.19 crossover the fill sits. Use `oklch(from … calc(l + (l - 0.566) * 0.3) …)`;
   never a fixed darken or lighten.
@@ -116,6 +116,12 @@ Rules that fall out of this, learned the hard way:
   against neither near-black nor near-white. `violet-500` and `indigo-500` are the only two
   built-in palettes in it.
 - Freeze transitions before measuring a state, or you read the idle colour at t=0.
+
+## Palette families
+
+- `@rokkit/unocss/palettes` is the one source of zen-sumi and the other families — never copy
+  values into an app or the cli. Status text needs a per-mode shade (skin `overrides`): no colour
+  reads 4.5:1 on both kami 50 and sumi 50.
 
 ## @rokkit/graph
 
