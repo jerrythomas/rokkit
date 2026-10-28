@@ -61,13 +61,22 @@ export function loadConfig(userConfig) {
 	const cfg = userConfig ?? {}
 	// Built-in skins are always available as `[data-skin]` blocks. User skins
 	// merge ON TOP, so a user's `default` / named skin overrides the built-in.
-	const userSkins = cfg.skins ?? {}
+	// A skin's own `overrides` block is split off here, so every consumer of a
+	// skin sees roles only; the blocks live in `skinOverrides`.
+	// 'colors' is a backward-compatible alias for 'skin'
+	const single = splitSkin(cfg.skin ?? cfg.colors ?? {})
+	const named = Object.fromEntries(Object.entries(cfg.skins ?? {}).map(([name, s]) => [name, splitSkin(s)]))
+	const userSkins = Object.fromEntries(Object.entries(named).map(([name, s]) => [name, s.roles]))
 	return {
 		palettes:   pick(cfg.palettes, DEFAULT_CONFIG.palettes),
 		colorSpace: pick(cfg.colorSpace, DEFAULT_CONFIG.colorSpace),
-		// 'colors' is a backward-compatible alias for 'skin'
-		skin:       { ...DEFAULT_SKIN, ...(cfg.skin ?? cfg.colors ?? {}) },
+		skin:       { ...DEFAULT_SKIN, ...single.roles },
 		skins:      { ...BUILTIN_SKINS, ...userSkins },
+		// Per-skin token overrides: `skin` for the single skin, then each named skin.
+		skinOverrides: {
+			skin: single.overrides,
+			...Object.fromEntries(Object.entries(named).map(([name, s]) => [name, s.overrides]))
+		},
 		// Whether the consumer explicitly opted into multi-skin mode. Built-in
 		// skins alone do NOT flip the preset into multi-skin mode — single-skin
 		// `skin` behavior is preserved unless the user supplies their own skins.
@@ -85,6 +94,29 @@ export function loadConfig(userConfig) {
 		switcher:   pick(cfg.switcher, DEFAULT_CONFIG.switcher),
 		storageKey: pick(cfg.storageKey, DEFAULT_CONFIG.storageKey)
 	}
+}
+
+/**
+ * Separates a skin's roles from its own `overrides` block (named token → palette ref or
+ * `{ light, dark }`), which is not a role.
+ * @param {Record<string, unknown>} skin
+ * @returns {{ roles: Record<string, unknown>, overrides: Record<string, unknown> }}
+ */
+function splitSkin(skin) {
+	const { overrides = {}, ...roles } = skin
+	return { roles, overrides }
+}
+
+/**
+ * The token overrides of the skin `resolveColormap` picks as the default: the user's own
+ * `default` skin in multi-skin mode, else the single `skin`.
+ * @param {ReturnType<typeof loadConfig>} config
+ * @returns {Record<string, unknown>}
+ */
+export function defaultSkinOverrides(config) {
+	const overrides = config.skinOverrides ?? {}
+	if (config.hasUserSkins && config.userDefaultSkin) return overrides.default ?? {}
+	return overrides.skin ?? {}
 }
 
 /**
