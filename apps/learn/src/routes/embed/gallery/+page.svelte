@@ -5,7 +5,7 @@
 	 * Renders one representative instance of each component on a plain bg-paper
 	 * surface — NO app shell — themeable via URL params:
 	 *   ?style=<rokkit|minimal|material|frosted|zen-sumi>
-	 *   ?skin=<default|ocean|violet|rose|emerald>
+	 *   ?skin=<default|sea-glass|sakura-ember|fuji-dusk|moss-garden>
 	 *   ?mode=<light|dark|system>
 	 *
 	 * The audit (e2e/theme-contrast.e2e.ts) loads this page per style×mode×skin

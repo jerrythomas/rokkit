@@ -34,13 +34,13 @@ export const MODES = ['light', 'dark']
  * first break-it check made exactly that edit to minimal/list.css and the
  * default-only gate passed.
  *
- * `ocean` maps primary/secondary/accent to three distinct palettes
- * (teal/emerald/sky), so a token swap moves a real value. Two skins is the
+ * `sea-glass` maps primary/secondary/accent to three distinct palettes
+ * (umi/koke/sora — teal/emerald/sky), so a token swap moves a real value. Two skins is the
  * minimum that pins both the shipped appearance and token IDENTITY.
  *
  * Density stays default — it drives spacing, and spacing is not measured here.
  */
-export const SKINS = ['default', 'ocean']
+export const SKINS = ['default', 'sea-glass']
 
 /** Single-value properties read verbatim off the computed style. */
 const SIMPLE_PROPS = [

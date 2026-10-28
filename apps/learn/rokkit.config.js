@@ -1,167 +1,12 @@
+import { PALETTE_FAMILIES, zenSumi, seaGlass, sakuraEmber, fujiDusk, mossGarden } from '@rokkit/unocss/palettes'
+
 export default {
 	/**
-	 * Zen-Sumi OKLCH palettes — baked in as the base token system.
-	 * Values are stored as bare OKLCH components (L C H) so that colorSpace: 'oklch'
-	 * can wrap them as oklch(var(--color-x) / alpha) for opacity utility support.
+	 * rokkit's palette families (@rokkit/unocss/palettes) — imported, never copied. Every
+	 * family's palettes are bare OKLCH components (colorSpace: 'oklch'); palettes shared between
+	 * families (kami/sumi, the status colours) are identical, so spreading them all is safe.
 	 */
-	palettes: {
-		/** kami — warm neutral, from washi paper (z0) to sumi ink (z9/z10) */
-		kami: {
-			50:  '0.985 0.005 85',
-			100: '0.975 0.008 85',
-			200: '0.955 0.010 85',
-			300: '0.920 0.012 85',
-			400: '0.850 0.010 70',
-			500: '0.750 0.008 50',
-			// 600–900 back the four text tones (ink-faint, ink-soft, ink-mute, ink),
-			// each ≥ 4.5:1 on kami 50 and 100 (5.4 / 6.4 / 9.3 / 16.1 on 100).
-			600: '0.510 0.010 50',
-			700: '0.470 0.012 50',
-			800: '0.380 0.012 50',
-			900: '0.220 0.012 50',
-			950: '0.170 0.010 50',
-		},
-		/** shu — vermillion, primary accent */
-		shu: {
-			// Vermillion brand. 500 = #e8552b (oklch 0.641 0.190 36); a bright,
-			// saturated base where black text reads (~5.8:1) — the fill stays the
-			// brand color, contrast comes from the on-color, not from darkening it.
-			50:  '0.970 0.022 38',
-			100: '0.938 0.052 38',
-			200: '0.880 0.092 37',
-			300: '0.805 0.130 37',
-			400: '0.725 0.165 37',
-			500: '0.641 0.190 36',
-			600: '0.555 0.175 35',
-			700: '0.470 0.150 34',
-			800: '0.390 0.122 33',
-			900: '0.315 0.092 33',
-			950: '0.245 0.066 33',
-		},
-		/** hisui — jade green, secondary / success */
-		hisui: {
-			50:  '0.970 0.015 160',
-			100: '0.940 0.030 160',
-			200: '0.880 0.050 160',
-			300: '0.800 0.065 160',
-			400: '0.720 0.075 160',
-			500: '0.620 0.080 160',
-			600: '0.540 0.075 160',
-			700: '0.460 0.065 160',
-			800: '0.380 0.055 160',
-			900: '0.300 0.045 160',
-			950: '0.240 0.035 160',
-		},
-		/** kohaku — amber, tertiary / warning */
-		kohaku: {
-			50:  '0.980 0.020 75',
-			100: '0.950 0.040 75',
-			200: '0.900 0.070 75',
-			300: '0.850 0.095 75',
-			400: '0.790 0.110 75',
-			500: '0.720 0.120 75',
-			600: '0.640 0.110 75',
-			700: '0.560 0.095 75',
-			800: '0.470 0.080 75',
-			900: '0.380 0.065 75',
-			950: '0.300 0.050 75',
-		},
-
-		/**
-		 * sumi — dark-mode surface scale (ink tones + warm paper whites).
-		 *
-		 * Designed as a two-pole scale: the "light" end (50–400) holds warm paper whites
-		 * for dark-mode text, and the "dark" end (500–950) holds sumi-ink tones for
-		 * dark-mode backgrounds. The z-flip in base.css then maps z0→950 (ink bg) and
-		 * z9→100 (primary text) automatically.
-		 *
-		 *   z0 dark (bg)    ← sumi-950: 0.170 0.010 50  (sumi ink)
-		 *   z1 dark (card)  ← sumi-900: 0.210 0.012 50
-		 *   z6 dark (faint) ← sumi-400: 0.420 0.012 85  (warm paper white)
-		 *   z9 dark (text)  ← sumi-100: 0.940 0.008 85  (primary text)
-		 */
-		/**
-		 * sumi — the dark-mode counterpart for the kami surface/ink axes.
-		 *
-		 * Convention matches kami: shade 50 = lightest, shade 950 = darkest.
-		 * The named-token shade map (`paper → 50`, `ink → 900`, etc.) reads
-		 * the same index in light and dark, so each side gets:
-		 *   - paper (bg)  = shade 50   = lightest sumi-ink in dark
-		 *   - ink (text)  = shade 900  = warm paper white in dark
-		 *
-		 * Wait — that's NOT what we want. For dark mode the page background
-		 * needs to be DARK and the text LIGHT. So sumi is INVERTED relative
-		 * to kami: index 50 holds the darkest sumi-ink (canvas), index 900
-		 * holds the lightest warm-paper (text). Same shade key, opposite
-		 * lightness scale.
-		 *
-		 * The dark end (50–400) holds sumi-ink tones (hue ~50, warm-shadow
-		 * chroma); 600–950 hold warm-paper whites (hue ~85), rising in
-		 * lightness so the four text tones read at AA on the canvas. 500
-		 * sits between (the hover hairline).
-		 */
-		sumi: {
-			50:  '0.170 0.010 50',
-			100: '0.210 0.012 50',
-			200: '0.250 0.012 50',
-			300: '0.320 0.012 50',
-			400: '0.420 0.010 50',
-			500: '0.570 0.010 50',
-			// 600–900 back the four text tones (ink-faint, ink-soft, ink-mute, ink),
-			// each ≥ 4.5:1 on sumi 50 and 100 (5.7 / 7.1 / 8.9 / 14.9 on 100).
-			600: '0.660 0.009 85',
-			700: '0.720 0.009 85',
-			800: '0.780 0.008 85',
-			900: '0.940 0.008 85',
-			950: '0.975 0.008 85',
-		},
-
-		/**
-		 * violet / indigo — shifted one stop LIGHTER than Tailwind's ramps.
-		 *
-		 * These two back the `violet` skin's primary and accent, and Tailwind's
-		 * 500s are the ONLY two of the 21 built-in palettes that land in the
-		 * "on-color dead zone". The auto on-color is near-black above a fill
-		 * luminance of 0.19 and near-white below it, so a fill whose luminance
-		 * sits between 0.1735 and 0.2111 cannot reach 4.5:1 against EITHER:
-		 *
-		 *   violet-500 #8b5cf6  y=0.1980 → near-black → 4.27:1  (AA fail)
-		 *   indigo-500 #6366f1  y=0.1851 → near-white → 4.28:1  (AA fail)
-		 *
-		 * Escaping upward keeps the on-color near-black, which is what every
-		 * other skin resolves to and — critically — what the baked `text-on-*`
-		 * utilities already assume (see below):
-		 *
-		 *   violet-500 #a78bfa  y=0.3358 → near-black → 6.65:1
-		 *   indigo-500 #818cf8  y=0.3020 → near-black → 6.07:1
-		 *
-		 * Escaping DOWNWARD (to the 600 stops) also clears AA on paper, but it
-		 * flips the on-color to near-white — and only `on-primary` is a real CSS
-		 * variable. `text-on-accent` / `text-on-danger` compile to a build-time
-		 * hex (there is no `--on-accent` token), so they would have kept
-		 * painting near-black on a now-dark fill: measured 2.67:1 on the
-		 * secondary button. Lighter perturbs nothing.
-		 *
-		 * Overriding here rather than Tailwind's own violet/indigo keeps
-		 * `bg-violet-500` meaning what it means everywhere else. The whole ramp
-		 * shifts to stay monotonic; 50 is extrapolated since the shift consumes
-		 * Tailwind's lightest stop.
-		 *
-		 * NOTE: BUILTIN_SKINS.violet in @rokkit/unocss maps to the unshifted
-		 * Tailwind palettes, so any consumer using the built-in `violet` skin
-		 * still hits the dead zone. Tracked separately in the backlog.
-		 */
-		violet: {
-			50:  '#faf9ff', 100: '#f5f3ff', 200: '#ede9fe', 300: '#ddd6fe',
-			400: '#c4b5fd', 500: '#a78bfa', 600: '#8b5cf6', 700: '#7c3aed',
-			800: '#6d28d9', 900: '#5b21b6', 950: '#4c1d95',
-		},
-		indigo: {
-			50:  '#f5f8ff', 100: '#eef2ff', 200: '#e0e7ff', 300: '#c7d2fe',
-			400: '#a5b4fc', 500: '#818cf8', 600: '#6366f1', 700: '#4f46e5',
-			800: '#4338ca', 900: '#3730a3', 950: '#312e81',
-		}
-	},
+	palettes: Object.assign({}, ...Object.values(PALETTE_FAMILIES).map((family) => family.palettes)),
 
 	colorSpace: 'oklch',
 
@@ -208,30 +53,15 @@ export default {
 
 	/**
 	 * Multi-skin mode — the app supports programmatic / user-driven skin switching.
-	 * `default` is the active colormap on first load (zen-sumi OKLCH palette).
-	 * Other skins reference Tailwind named colors available via defaultColors merge.
+	 * `default` is the active colormap on first load (the zen-sumi family); the
+	 * others are the remaining palette families, by their family names.
 	 */
 	skins: {
-		default:  {
-			surface:   { light: 'kami', dark: 'sumi' },
-			ink:       { light: 'kami', dark: 'sumi' },
-			primary:   'shu',
-			secondary: 'hisui',
-			tertiary:  'kohaku',
-			accent:    'shu',
-			success:   'hisui',
-			warning:   'kohaku',
-			danger:    'shu',
-			error:     'shu',
-			info:      'kohaku'
-		},
-		// Brand skins reuse the dual-palette kami/sumi neutral for surface+ink so
-		// named tokens flip in dark mode (a single Tailwind palette emits no
-		// [data-mode='dark'] block). Only primary/secondary/accent carry the brand.
-		ocean:    { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'teal',    secondary: 'emerald', accent: 'sky' },
-		violet:   { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'violet',  secondary: 'purple', accent: 'indigo' },
-		rose:     { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'rose',    secondary: 'pink',   accent: 'orange' },
-		emerald:  { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'emerald', secondary: 'teal',   accent: 'cyan' }
+		default: zenSumi.skin,
+		'sea-glass': seaGlass.skin,
+		'sakura-ember': sakuraEmber.skin,
+		'fuji-dusk': fujiDusk.skin,
+		'moss-garden': mossGarden.skin
 	},
 
 	themes: ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi'],

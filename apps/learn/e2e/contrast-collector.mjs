@@ -11,7 +11,7 @@
 
 export const STYLES = ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']
 export const MODES = ['light', 'dark']
-export const SKINS = ['default', 'ocean', 'violet', 'rose', 'emerald']
+export const SKINS = ['default', 'sea-glass', 'sakura-ember', 'fuji-dusk', 'moss-garden']
 
 /**
  * Known-and-accepted exceptions (intentionally muted text that still reads).
