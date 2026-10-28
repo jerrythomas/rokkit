@@ -157,7 +157,7 @@
 
 	[data-site-header-style-pill]:hover {
 		background: var(--paper-mute);
-		border-color: var(--ink-faint);
+		border-color: var(--paper-edge-hover);
 	}
 
 	[data-site-header-swatch] {
