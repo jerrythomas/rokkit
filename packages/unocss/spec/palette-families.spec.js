@@ -91,6 +91,19 @@ describe.each(Object.entries(PALETTE_FAMILIES))('palette family %s', (name, fami
 		expect(problems).toEqual([])
 	})
 
+	it.each(MODES)('reads text-on-<role>-soft at AA on each role tint in %s', (mode) => {
+		// color-mix(in oklch, role 55%, black): black is L 0 with no chroma, so L and C scale.
+		const darken = (v) => {
+			const [L, C, H] = v.split(/\s+/).map(Number)
+			return `${L * 0.55} ${C * 0.55} ${H}`
+		}
+		const problems = ['accent', ...STATUS]
+			.map((role) => [role, ratio(darken(value(role, mode)), value(`${role}-soft`, mode))])
+			.filter(([, r]) => r < AA)
+			.map(([role, r]) => `${role}: ${r.toFixed(2)}`)
+		expect(problems).toEqual([])
+	})
+
 	it('builds a preset', () => {
 		const css = presetRokkit({ palettes: family.palettes, colorSpace: 'oklch', skin: family.skin })
 			.preflights.map((p) => p.getCSS())

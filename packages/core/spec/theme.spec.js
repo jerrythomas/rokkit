@@ -39,7 +39,7 @@ describe('Theme class', () => {
 	it('should generate tertiary contrast shortcuts', () => {
 		const theme = new Theme()
 		const shortcuts = theme.getShortcuts('tertiary')
-		expect(shortcuts.length).toBe(2)
+		expect(shortcuts.length).toBe(3)
 		expect(shortcuts[0][0]).toBeInstanceOf(RegExp)
 		expect(shortcuts[0][0].source).toContain('text-on-tertiary')
 		expect(shortcuts[1][0].source).toContain('text-on-tertiary-muted')
@@ -78,7 +78,7 @@ describe('Theme class', () => {
 		const theme = new Theme()
 		const shortcuts = theme.getShortcuts('secondary')
 		expect(Array.isArray(shortcuts)).toBe(true)
-		expect(shortcuts.length).toBe(2)
+		expect(shortcuts.length).toBe(3)
 		expect(shortcuts[0][0].source).toContain('text-on-secondary')
 		expect(shortcuts[1][0].source).toContain('text-on-secondary-muted')
 	})
@@ -744,5 +744,13 @@ describe('contrastShortcuts', () => {
 
 	it('does not match an unrelated role', () => {
 		expect(ruleFor('primary', '#000', 'text-on-accent')).toBeNull()
+	})
+
+	// A role's -soft tint stays light in both modes, so text on it is the role darkened toward
+	// black — the tone base/message.css gives status copy — not the bright role itself.
+	it('resolves text-on-<role>-soft to the role darkened for its light tint', () => {
+		expect(ruleFor('accent', '#fff', 'text-on-accent-soft')).toBe(
+			'text-[color-mix(in_oklch,var(--accent)_55%,black)]'
+		)
 	})
 })

@@ -133,7 +133,10 @@ skin carries its own `overrides` — status text uses a darker shade on light pa
 one on dark paper (zen-sumi: `danger` is `beni.600` in light, `beni.400` in dark). A skin
 `overrides` block takes the same shape as the config's, and applies wherever that skin
 applies. `text-on-{role}` reads `--on-{role}`, which the preset derives per skin and mode from
-the fill actually painted.
+the fill actually painted (`on-primary` included). The palette families paint primary and accent a
+shade deeper by day (zen-sumi `shu.600`), so they read as text on paper and take near-white labels.
+`text-on-{role}-soft` is the text for a role's `-soft` tint: the tint stays light in both modes, so
+the text is the role darkened toward black (`color-mix(in oklch, var(--role) 55%, black)`).
 
 ### Icons
 

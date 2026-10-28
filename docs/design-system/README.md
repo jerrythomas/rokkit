@@ -210,9 +210,9 @@ functions for UnoCSS utilities.
 For text on colored backgrounds:
 
 ```text
-text-on-{variant}        → High contrast (always light text on z5+ bg)
-text-on-{variant}-muted  → Slightly subdued but readable
-text-on-surface          → Inverts for dark mode surface backgrounds
+text-on-{variant}        → Near-black or near-white, whichever reads on the fill the skin paints
+text-on-{variant}-muted  → Same on-color (kept for back-compat)
+text-on-{variant}-soft   → On the variant's -soft tint: the variant darkened (the tint stays light)
 ```
 
 ---

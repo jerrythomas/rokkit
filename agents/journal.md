@@ -10944,3 +10944,8 @@ visitor's own Ollama.
 - zen-sumi List: resting items take ink-mute in dark mode (sumi 800, L 0.78, was ink 0.94) — a
   near-white rail glared on sumi. Hover/focus/current keep their colours (the rule precedes them
   at equal or lower specificity). Spec `list-css.spec.js`; measured on learn /guides in both modes.
+- `text-on-{role}-soft` (core `contrastShortcuts`): text for a role's `-soft` tint, which stays
+  light in both modes — `color-mix(in oklch, var(--role) 55%, black)`, base/message.css's status
+  copy tone. Family spec: ≥ 4.5 on accent and every status tint, both modes, all five families.
+  Apps had been writing `bg-accent-soft text-accent` (2.9:1); docs/llms recommended
+  `bg-success-soft text-success` — corrected.

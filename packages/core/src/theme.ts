@@ -100,6 +100,8 @@ export function themeRules(
  *
  * - `text-on-{name}` → readable text on a z5+ fill
  * - `text-on-{name}-muted` → same on-color (kept for back-compat callers)
+ * - `text-on-{name}-soft` → readable text on the role's `-soft` tint: the role darkened toward
+ *   black (base/message.css's status copy), since the tint stays light in both modes
  *
  * @param {string} name - Color name (e.g., 'primary', 'accent', 'danger')
  * @param {string} [onColor='#fafafa'] - resolved on-color hex for this role
@@ -112,10 +114,12 @@ export function contrastShortcuts(name: string, onColor = '#fafafa') {
 	// @unocss-skip-start
 	const text = ([, end]: string[]) =>
 		end ? `text-[color-mix(in_srgb,${color}_${end.slice(1)}%,transparent)]` : `text-[${color}]`
+	const onSoft = () => `text-[color-mix(in_oklch,var(--${name})_55%,black)]`
 	// @unocss-skip-end
 	return [
 		[new RegExp(`^text-on-${name}(\\/\\d+)?$`), text],
-		[new RegExp(`^text-on-${name}-muted(\\/\\d+)?$`), text]
+		[new RegExp(`^text-on-${name}-muted(\\/\\d+)?$`), text],
+		[new RegExp(`^text-on-${name}-soft$`), onSoft]
 	]
 }
 

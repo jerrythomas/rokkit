@@ -276,7 +276,8 @@ The core vocabulary (`tokens: 'core'`):
 
 Prefixes: `bg-`, `text-`, `border-` (+ `-t/-b/-l/-r`), `fill-`, `stroke-`, `ring-`,
 `outline-`, `divide-`. Example: `bg-paper`, `text-ink-mute`, `border-paper-edge`,
-`text-on-primary`, `bg-success-soft text-success`.
+`text-on-primary`, `bg-success-soft text-on-success-soft` (a `-soft` tint stays light in both
+modes, so text on it is `text-on-{role}-soft`, the role darkened; bare `text-success` fails AA there).
 
 Opt into the full 11-shade palette ladder per role with `tokens: 'extended'` (for charts / data-viz).
 
