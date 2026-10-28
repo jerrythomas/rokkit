@@ -5,6 +5,7 @@ import { resolve } from 'path'
 import { execFileSync } from 'child_process'
 import { detectPackageManager, buildInstallCommand } from './upgrade.js'
 import { themeInitScript } from '@rokkit/unocss/hooks'
+import { PALETTE_FAMILIES, zenSumi } from '@rokkit/unocss/palettes'
 
 const ROKKIT_PACKAGES = ['@rokkit/ui', '@rokkit/unocss', '@rokkit/themes', '@rokkit/icons']
 const LOCKFILES = ['bun.lock', 'bun.lockb', 'pnpm-lock.yaml', 'yarn.lock', 'package-lock.json']
@@ -37,6 +38,41 @@ const OKLCH_PALETTES_NOTE = `/**
 `
 
 /**
+ * Exported palette families, by the binding a config imports them under. A family's
+ * `palettes` or `skin` in a config serializes as a reference to the import, not a copy.
+ */
+const FAMILY_BINDINGS = Object.values(PALETTE_FAMILIES).map((family) => ({
+	family,
+	binding: family.name.replace(/-(\w)/g, (_, c) => c.toUpperCase())
+}))
+
+/**
+ * The families a config uses by reference, and the JSON with each reference written as an
+ * expression (`zenSumi.palettes`) instead of its values.
+ * @param {Record<string, unknown>} config
+ * @returns {{ imports: string[], json: string }}
+ */
+function serializeFamilies(config) {
+	const used = new Set()
+	const json = JSON.stringify(
+		config,
+		(_key, value) => {
+			for (const { family, binding } of FAMILY_BINDINGS) {
+				for (const part of ['palettes', 'skin']) {
+					if (value === family[part]) {
+						used.add(binding)
+						return `@@${binding}.${part}@@`
+					}
+				}
+			}
+			return value
+		},
+		2
+	).replace(/"@@([\w.]+)@@"/g, '$1')
+	return { imports: [...used], json }
+}
+
+/**
  * Derive a safe localStorage key from an npm package name.
  * Strips the scope, keeps case, maps unsafe chars to '-'. Returns '' when there
  * is no usable name — the caller then omits `storageKey` rather than baking in a
@@ -58,7 +94,9 @@ export function storageKeyFromName(name) {
  */
 export function serializeRokkitConfig(config) {
 	const palettesNote = config.palettes ? OKLCH_PALETTES_NOTE : ''
-	return `${NAMED_TOKEN_HEADER}${palettesNote}export default ${JSON.stringify(config, null, 2)}\n`
+	const { imports, json } = serializeFamilies(config)
+	const importLine = imports.length ? `import { ${imports.join(', ')} } from '@rokkit/unocss/palettes'\n\n` : ''
+	return `${importLine}${NAMED_TOKEN_HEADER}${palettesNote}export default ${json}\n`
 }
 
 /**
@@ -169,40 +207,6 @@ function resolveSkin(palette, customColors) {
 	}
 }
 
-// Zen-Sumi OKLCH palettes — bare "L C H" components (colorSpace: 'oklch').
-const ZEN_SUMI_PALETTES = {
-	kami: {
-		50: '0.985 0.005 85', 100: '0.975 0.008 85', 200: '0.955 0.010 85',
-		300: '0.920 0.012 85', 400: '0.850 0.010 70', 500: '0.750 0.008 50',
-		600: '0.510 0.010 50', 700: '0.470 0.012 50', 800: '0.380 0.012 50',
-		900: '0.220 0.012 50', 950: '0.170 0.010 50'
-	},
-	sumi: {
-		50: '0.170 0.010 50', 100: '0.210 0.012 50', 200: '0.250 0.012 50',
-		300: '0.320 0.012 50', 400: '0.420 0.010 50', 500: '0.570 0.010 50',
-		600: '0.660 0.009 85', 700: '0.720 0.009 85', 800: '0.780 0.008 85',
-		900: '0.940 0.008 85', 950: '0.975 0.008 85'
-	},
-	shu: {
-		50: '0.970 0.020 35', 100: '0.940 0.040 35', 200: '0.880 0.070 35',
-		300: '0.800 0.100 35', 400: '0.700 0.130 35', 500: '0.580 0.150 35',
-		600: '0.500 0.140 35', 700: '0.420 0.120 35', 800: '0.350 0.100 35',
-		900: '0.280 0.080 35', 950: '0.220 0.060 35'
-	},
-	hisui: {
-		50: '0.970 0.015 160', 100: '0.940 0.030 160', 200: '0.880 0.050 160',
-		300: '0.800 0.065 160', 400: '0.720 0.075 160', 500: '0.620 0.080 160',
-		600: '0.540 0.075 160', 700: '0.460 0.065 160', 800: '0.380 0.055 160',
-		900: '0.300 0.045 160', 950: '0.240 0.035 160'
-	},
-	kohaku: {
-		50: '0.980 0.020 75', 100: '0.950 0.040 75', 200: '0.900 0.070 75',
-		300: '0.850 0.095 75', 400: '0.790 0.110 75', 500: '0.720 0.120 75',
-		600: '0.640 0.110 75', 700: '0.560 0.095 75', 800: '0.470 0.080 75',
-		900: '0.380 0.065 75', 950: '0.300 0.050 75'
-	}
-}
-
 /**
  * Build the chart config section from user prompt answers.
  * @param {{ chartColors: string, chartShades: string }} opts
@@ -227,20 +231,10 @@ export function generateChartConfig({ chartColors, chartShades }) {
  * function rather than being rebuilt per call alongside the user's answers.
  */
 const ZEN_SUMI_BASE = {
-	palettes: ZEN_SUMI_PALETTES,
+	palettes: zenSumi.palettes,
 	colorSpace: 'oklch',
 	tokens: 'core',
-	skin: {
-		surface: { light: 'kami', dark: 'sumi' },
-		ink: { light: 'kami', dark: 'sumi' },
-		primary: 'shu',
-		accent: 'shu',
-		success: 'hisui',
-		warning: 'kohaku',
-		danger: 'shu',
-		error: 'shu',
-		info: 'kohaku'
-	},
+	skin: zenSumi.skin,
 	shape: { radius: 'soft' },
 	typography: {
 		display: "'Fraunces', 'Iowan Old Style', Georgia, serif",
