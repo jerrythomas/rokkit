@@ -62,3 +62,35 @@ describe('skin overrides', () => {
 		expect(values.at(-1)).toBe('rgb(255, 0, 0)')
 	})
 })
+
+/**
+ * Every fill role's on-colour is a variable (`--on-danger`…), derived per skin and per mode from
+ * the fill that skin actually paints — so a skin that moves `danger` to a darker shade on light
+ * paper gets near-white text on it, and near-black on the lighter dark-mode fill.
+ */
+describe('on-colour variables', () => {
+	const NEAR_WHITE = 'rgb(250, 250, 250)'
+	const NEAR_BLACK = 'rgb(22, 22, 22)'
+	const last = (block, name) => [...block.matchAll(new RegExp(`--${name}:([^;}]*)`, 'g'))].map((m) => m[1]).at(-1)
+
+	it('follow the default skin fill per mode', () => {
+		const [light, dark] = css({ palettes, skin }).split('[data-mode="dark"]')
+		expect(last(light, 'on-danger')).toBe(NEAR_WHITE)
+		expect(last(dark, 'on-danger')).toBe(NEAR_BLACK)
+	})
+
+	it('follow a named skin fill per mode', () => {
+		const out = css({ palettes, skins: { default: { ...skin, overrides: {} }, ember: skin } })
+		expect(last(out.match(/\[data-skin='ember'\]\{([^}]*)\}/)[1], 'on-danger')).toBe(NEAR_WHITE)
+		expect(last(out.match(/\[data-mode='dark'\]\[data-skin='ember'\]\{([^}]*)\}/)[1], 'on-danger')).toBe(NEAR_BLACK)
+	})
+
+	it('are set for every fill role but primary, which has on-primary', () => {
+		const [light] = css({ palettes, skin }).split('[data-mode="dark"]')
+		for (const role of ['secondary', 'tertiary', 'accent', 'success', 'warning', 'danger', 'error', 'info'])
+			expect(light, role).toContain(`--on-${role}:`)
+		expect(light.match(/--on-primary:/g)).toHaveLength(1)
+		expect(light).not.toContain('--on-surface')
+		expect(light).not.toContain('--on-ink')
+	})
+})
