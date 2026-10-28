@@ -55,7 +55,10 @@ export interface ButtonProps extends Omit<HTMLButtonAttributes, 'style' | 'type'
 	/** Navigates as link instead of button */
 	href?: string
 
-	/** Link target (when href is set) */
+	/**
+	 * Link target (when href is set). Omitted unless given: SvelteKit treats any `target`,
+	 * even `_self`, as an external link and does a full page load.
+	 */
 	target?: string
 
 	/** Native tooltip shown on hover */

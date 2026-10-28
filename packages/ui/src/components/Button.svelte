@@ -13,7 +13,7 @@
 		icon,
 		iconRight,
 		href,
-		target = '_self',
+		target,
 		title,
 		disabled = false,
 		loading = false,

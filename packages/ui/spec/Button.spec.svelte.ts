@@ -25,7 +25,9 @@ describe('Button — element variant', () => {
 		const el = container.querySelector('[data-button]')
 		expect(el?.tagName).toBe('A')
 		expect(el?.getAttribute('href')).toBe('/docs')
-		expect(el?.getAttribute('target')).toBe('_self')
+		// No target unless asked: SvelteKit treats ANY target attribute (even _self) as an
+		// external link and reloads the page, wiping app state.
+		expect(el?.hasAttribute('target')).toBe(false)
 	})
 
 	it('honours an explicit target on the link variant', () => {
