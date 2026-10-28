@@ -13,9 +13,11 @@ export default {
 			300: '0.920 0.012 85',
 			400: '0.850 0.010 70',
 			500: '0.750 0.008 50',
-			600: '0.580 0.010 50',
-			700: '0.380 0.012 50',
-			800: '0.280 0.012 50',
+			// 600–900 back the four text tones (ink-faint, ink-soft, ink-mute, ink),
+			// each ≥ 4.5:1 on kami 50 and 100 (5.4 / 6.4 / 9.3 / 16.1 on 100).
+			600: '0.510 0.010 50',
+			700: '0.470 0.012 50',
+			800: '0.380 0.012 50',
 			900: '0.220 0.012 50',
 			950: '0.170 0.010 50',
 		},
@@ -93,9 +95,10 @@ export default {
 		 * holds the lightest warm-paper (text). Same shade key, opposite
 		 * lightness scale.
 		 *
-		 * The palette is intentionally two-pole — the dark end (50–400)
-		 * holds sumi-ink tones (hue ~50, warm-shadow chroma); the light end
-		 * (700–950) holds warm-paper whites (hue ~85). 500 sits between.
+		 * The dark end (50–400) holds sumi-ink tones (hue ~50, warm-shadow
+		 * chroma); 600–950 hold warm-paper whites (hue ~85), rising in
+		 * lightness so the four text tones read at AA on the canvas. 500
+		 * sits between (the hover hairline).
 		 */
 		sumi: {
 			50:  '0.170 0.010 50',
@@ -104,8 +107,10 @@ export default {
 			300: '0.320 0.012 50',
 			400: '0.420 0.010 50',
 			500: '0.570 0.010 50',
-			600: '0.420 0.012 85',
-			700: '0.600 0.010 85',
+			// 600–900 back the four text tones (ink-faint, ink-soft, ink-mute, ink),
+			// each ≥ 4.5:1 on sumi 50 and 100 (5.7 / 7.1 / 8.9 / 14.9 on 100).
+			600: '0.660 0.009 85',
+			700: '0.720 0.009 85',
 			800: '0.780 0.008 85',
 			900: '0.940 0.008 85',
 			950: '0.975 0.008 85',

@@ -93,8 +93,12 @@ Three gates, and they see different things — a change usually has to satisfy a
 
 Rules that fall out of this, learned the hard way:
 
-- **`ink-soft` is the placeholder tone** (ink.500 — 1.95–2.13:1 on paper). It cannot carry an
-  interactive control's label or icon. `ink-mute` is the readable-secondary token.
+- **Every ink tone is a text tone** (since 2026-10-27). `ink`/`ink-mute`/`ink-soft`/`ink-faint`
+  sit on shades 900/800/700/600 and each clears 4.5:1 on paper AND paper-soft in both modes,
+  strongest first — pinned for the built-in skins, the zen-sumi starter and the learn config by
+  `inkRampProblems` (@rokkit/unocss). 600 is the lightest Tailwind-neutral stop that passes on
+  100 (slate-500 on slate-100 is 4.34:1). A hairline or divider takes `paper-edge`, not an ink tone.
+  Before this, `ink-soft` was ink.500 (~2:1, placeholder) and `ink-faint` ink.300 (near-paper).
 - **On a `paper-mute` fill the text is `ink`, never `ink-mute`** — that pairing is 4.07:1 in
   dark mode. It passes at rest only because resting items sit on `paper`.
 - **A hover rule out-specifies a `[data-selected]` rule** ((0,5,0) vs (0,3,0)) unless the

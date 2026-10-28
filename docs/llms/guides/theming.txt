@@ -71,7 +71,7 @@ Themes resolve to a small vocabulary of named tokens used by
 components:
 
 - `--paper` / `--paper-soft` / `--paper-mute` / `--paper-edge` — surfaces.
-- `--ink` / `--ink-mute` / `--ink-soft` / `--ink-faint` — text + lines.
+- `--ink` / `--ink-mute` / `--ink-soft` / `--ink-faint` — text, strongest first; all four read at AA on paper.
 - `--primary` / `--on-primary` — brand.
 - `--accent` / `--accent-soft` — highlight.
 - `--success` / `--warning` / `--danger` / `--info` (+ `*-soft`) — state.

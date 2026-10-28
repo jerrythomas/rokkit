@@ -198,7 +198,7 @@ The 24-token core vocabulary, all flipping automatically under `[data-mode="dark
 | Group   | Tokens                                                  | Use                                              |
 |---------|---------------------------------------------------------|--------------------------------------------------|
 | Surface | `paper` · `paper-soft` · `paper-mute` · `paper-edge`    | canvas · card · subdued panel · hairline border  |
-| Text    | `ink` · `ink-mute` · `ink-soft` · `ink-faint`           | body · secondary · placeholder · disabled        |
+| Text    | `ink` · `ink-mute` · `ink-soft` · `ink-faint`           | body · secondary · tertiary · quietest (all AA)  |
 | Primary | `primary` · `on-primary`                                | CTA fill · text/icon on a primary fill           |
 | Accent  | `accent` · `accent-soft`                                | accent fill · tinted accent background           |
 | Status  | `success`/`-soft`, `warning`/`-soft`, `danger`/`-soft`, `error`/`-soft`, `info`/`-soft` | solid status · tinted callout bg |

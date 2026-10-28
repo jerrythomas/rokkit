@@ -51,11 +51,11 @@ describe('NAMED_TOKEN_SHADE_MAP', () => {
     expect(NAMED_TOKEN_SHADE_MAP['paper-edge']).toBe(400)
   })
 
-  it('maps ink ladder to shades 900/700/500/300', () => {
+  it('maps ink ladder to shades 900/800/700/600 — every ink tone is a text tone', () => {
     expect(NAMED_TOKEN_SHADE_MAP['ink']).toBe(900)
-    expect(NAMED_TOKEN_SHADE_MAP['ink-mute']).toBe(700)
-    expect(NAMED_TOKEN_SHADE_MAP['ink-soft']).toBe(500)
-    expect(NAMED_TOKEN_SHADE_MAP['ink-faint']).toBe(300)
+    expect(NAMED_TOKEN_SHADE_MAP['ink-mute']).toBe(800)
+    expect(NAMED_TOKEN_SHADE_MAP['ink-soft']).toBe(700)
+    expect(NAMED_TOKEN_SHADE_MAP['ink-faint']).toBe(600)
   })
 
   it('maps primary/accent/status to shade 500', () => {

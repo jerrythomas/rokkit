@@ -7,3 +7,4 @@ export {
 	shouldEmitShortcut
 } from './named-shortcuts.js'
 export { BUILTIN_SKINS } from './builtin-skins.js'
+export { inkContrast, inkRampProblems } from './contrast.js'

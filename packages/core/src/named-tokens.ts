@@ -31,9 +31,14 @@ export type SkinRole =
  *   paper-mute:   200 (subdued panel)
  *   paper-edge:   400 (hairline border tone)
  *   ink:          900 (primary text)
- *   ink-mute:     700 (secondary text)
- *   ink-soft:     500 (placeholder)
- *   ink-faint:    300 (disabled)
+ *   ink-mute:     800 (secondary text)
+ *   ink-soft:     700 (tertiary text — captions, meta, placeholders)
+ *   ink-faint:    600 (quietest text — hints, disabled labels)
+ *
+ *   All four ink tones are TEXT tones: each must clear WCAG AA (4.5:1) on paper
+ *   and paper-soft. 600 is the lightest stop of a Tailwind neutral that does
+ *   (slate-500 on slate-100 is 4.34:1), so the ramp sits on 900/800/700/600.
+ *   A hairline or divider takes `paper-edge`, not an ink tone.
  *   primary:      500 (CTA fill)
  *   on-primary:   derived — auto on-color (near-black/white) for primary fill
  *   accent / status: 500 (solid)
@@ -47,9 +52,9 @@ export const NAMED_TOKEN_SHADE_MAP: Record<NamedToken, number | 'derived'> = {
   'paper-mute': 200,
   'paper-edge': 400,
   ink: 900,
-  'ink-mute': 700,
-  'ink-soft': 500,
-  'ink-faint': 300,
+  'ink-mute': 800,
+  'ink-soft': 700,
+  'ink-faint': 600,
   primary: 500,
   'on-primary': 'derived',
   accent: 500,

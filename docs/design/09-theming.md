@@ -52,7 +52,7 @@ classes use semantic named tokens that flip automatically between light and dark
 | Group   | Tokens                                              | Semantic meaning                         |
 | ------- | --------------------------------------------------- | ---------------------------------------- |
 | Surface | `paper` · `paper-soft` · `paper-mute` · `paper-edge` | canvas · card bg · subdued panel · border |
-| Text    | `ink` · `ink-mute` · `ink-soft` · `ink-faint`      | body · secondary · placeholder · disabled |
+| Text    | `ink` · `ink-mute` · `ink-soft` · `ink-faint`      | body · secondary · tertiary · quietest (all AA) |
 | Primary | `primary` · `on-primary`                            | CTA fill · text on a primary fill        |
 | Accent  | `accent` · `accent-soft`                            | accent fill · tinted accent bg           |
 | Status  | `success`/`-soft`, `warning`/`-soft`, `danger`/`-soft`, `error`/`-soft`, `info`/`-soft` | solid / tinted callout |

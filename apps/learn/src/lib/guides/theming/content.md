@@ -42,7 +42,7 @@ components. These are the CSS custom properties emitted by
 **Surface**
 `--paper` / `--paper-soft` / `--paper-mute` / `--paper-edge`
 
-**Text + lines**
+**Text** (strongest first; all four read at AA on paper)
 `--ink` / `--ink-mute` / `--ink-soft` / `--ink-faint`
 
 **Brand**

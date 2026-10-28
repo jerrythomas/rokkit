@@ -33,9 +33,9 @@ The design language values:
 | `paper-mute` (shade 200) | | `oklch(0.920 0.012 85)` | #ddd9d0 | Inset areas, inputs |
 | `paper-edge` (shade 300) | Paper edge | `oklch(0.22 0.012 50 / 0.08)` | — | Borders (8% ink opacity) |
 | `ink` (shade 900) | Sumi (ink) | `oklch(0.220 0.012 50)` | #2c2926 | Primary text |
-| `ink-mute` (shade 700) | | `oklch(0.380 0.012 50)` | #524e49 | Secondary text |
-| `ink-soft` (shade 500) | | `oklch(0.580 0.010 50)` | #8a867f | Tertiary/labels |
-| `ink-faint` (shade 300) | | `oklch(0.750 0.008 50)` | #b8b4ad | Disabled/faint |
+| `ink-mute` (shade 800) | | `oklch(0.380 0.012 50)` | #48413d | Secondary text |
+| `ink-soft` (shade 700) | | `oklch(0.470 0.012 50)` | #615955 | Tertiary text, captions, placeholders (AA) |
+| `ink-faint` (shade 600) | | `oklch(0.510 0.010 50)` | #6b6561 | Quietest text, hints, disabled labels (AA) |
 | primary | Shu (朱) | `oklch(0.580 0.150 35)` | #c44d2a | Primary accent |
 | success | Hisui (翡翠) | `oklch(0.620 0.080 160)` | #3d8c6e | Positive states |
 | warning | Kohaku (琥珀) | `oklch(0.720 0.120 75)` | #c09030 | Warning/caution |

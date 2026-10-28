@@ -190,8 +190,11 @@ By default, the preset emits a trimmed 24-name token vocabulary:
 | Status       | `--success` / `-soft`, `--warning` / `-soft`, `--danger` / `-soft`, `--error` / `-soft`, `--info` / `-soft` |
 | Misc         | `--focus-ring`, `--shadow-tint`                                     |
 
-Ink ladder semantics: `ink` = primary text, `ink-mute` = secondary,
-`ink-soft` = placeholder, `ink-faint` = disabled. Paper ladder:
+Ink ladder semantics — all four are text tones, each ≥ 4.5:1 on `paper` and
+`paper-soft`, strongest first: `ink` = primary text (shade 900), `ink-mute` =
+secondary (800), `ink-soft` = tertiary — captions, meta, placeholders (700),
+`ink-faint` = quietest — hints, disabled labels (600). A hairline or divider
+takes `paper-edge`, never an ink tone. Paper ladder:
 `paper` = canvas, `paper-soft` = card bg, `paper-mute` = subdued panel,
 `paper-edge` = hairline border tone. `*-soft` companions are the tinted-
 bg variant for status callouts and accent chips.
