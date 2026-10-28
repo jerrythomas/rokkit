@@ -6,7 +6,8 @@
  *   - `skin` — every role (surface and ink as a light/dark pair, primary, secondary,
  *     tertiary, accent and the five status roles) plus the skin's own token `overrides`,
  *     which put status text on a darker shade over light paper and a lighter one over dark
- *     paper, with a tint to match (no single shade reads at AA on both papers).
+ *     paper (no single shade reads at AA on both papers). Fills follow: `--on-{role}` is
+ *     derived from the shade a mode paints.
  *
  * Palette names are shared across families only where the values are identical, so several
  * families can be spread into one `palettes` block.
@@ -20,7 +21,7 @@
  *
  * Every family is held to the same bar (spec/palette-families.spec.js): the ink ramp reads at
  * AA, primary and the status colours are distinct, the primary fill takes a readable
- * on-colour, and status text reads at AA on paper, paper-soft and its own tint, in both modes.
+ * on-colour, and status text reads at AA on paper and paper-soft, in both modes.
  */
 
 /** kami (紙) — washi paper: the warm light surface, with its sumi text stops (600–900) */
@@ -103,10 +104,10 @@ const murasaki = {
 	900: '0.225 0.105 305', 950: '0.180 0.085 305'
 }
 
-/** umi (海) — sea teal */
+/** umi (海) — sea teal; its 500 sits between Tailwind teal 500 and 600, so light text reads on its translucent fills */
 const umi = {
 	50: '0.984 0.014 181', 100: '0.953 0.050 181', 200: '0.910 0.093 180',
-	300: '0.855 0.125 181', 400: '0.785 0.133 182', 500: '0.704 0.123 183',
+	300: '0.855 0.125 181', 400: '0.785 0.133 182', 500: '0.660 0.118 184',
 	600: '0.600 0.104 185', 700: '0.511 0.086 186', 800: '0.437 0.071 188',
 	900: '0.386 0.059 188', 950: '0.277 0.045 193'
 }
@@ -193,15 +194,15 @@ const wakaba = {
 
 /**
  * The skin `overrides` for status roles: each token reads `palette.<light>` on light paper and
- * `palette.<dark>` on dark paper, and its `-soft` tint is the palette's 100 in light and 900 in
- * dark, so the text reads on its own tint too.
+ * `palette.<dark>` on dark paper. The `-soft` tints keep rokkit's light 100 in both modes,
+ * which the themes darken their status copy against.
  * @param {Record<string, [string, number, number]>} roles - role → [palette, light shade, dark shade]
  */
 function statusOverrides(roles) {
 	return Object.fromEntries(
-		Object.entries(roles).flatMap(([role, [palette, light, dark]]) => [
-			[role, { light: `${palette}.${light}`, dark: `${palette}.${dark}` }],
-			[`${role}-soft`, { light: `${palette}.100`, dark: `${palette}.900` }]
+		Object.entries(roles).map(([role, [palette, light, dark]]) => [
+			role,
+			{ light: `${palette}.${light}`, dark: `${palette}.${dark}` }
 		])
 	)
 }

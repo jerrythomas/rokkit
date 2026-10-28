@@ -8,7 +8,7 @@ import { presetRokkit } from '../src/preset.js'
 /**
  * Every exported palette family is a ready skin: its text ramp reads at AA, its status colours
  * are distinct from each other and from primary, its primary fill takes a readable on-colour,
- * and its status text reads at AA on paper and on its own tinted companion, in both modes.
+ * and its status text reads at AA on paper and paper-soft, in both modes.
  */
 const AA = 4.5
 const ROLES = ['surface', 'ink', 'primary', 'secondary', 'tertiary', 'accent', 'success', 'warning', 'danger', 'error', 'info']
@@ -69,13 +69,12 @@ describe.each(Object.entries(PALETTE_FAMILIES))('palette family %s', (name, fami
 		expect(ratio(fill, on)).toBeGreaterThanOrEqual(AA)
 	})
 
-	it.each(MODES)('reads status text at AA on paper, paper-soft and its own tint in %s', (mode) => {
+	it.each(MODES)('reads status text at AA on paper and paper-soft in %s', (mode) => {
 		const problems = STATUS.flatMap((role) => {
 			const text = value(role, mode)
 			return [
 				['paper', value('paper', mode)],
-				['paper-soft', value('paper-soft', mode)],
-				[`${role}-soft`, value(`${role}-soft`, mode)]
+				['paper-soft', value('paper-soft', mode)]
 			]
 				.filter(([, bg]) => ratio(text, bg) < AA)
 				.map(([bg, v]) => `${role} on ${bg}: ${ratio(text, v).toFixed(2)}`)
