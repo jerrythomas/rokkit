@@ -10960,3 +10960,7 @@ visitor's own Ollama.
   2^(−px × 0.01), lines/pages as pixels, capped at one ZOOM_STEP per event; `zoomBy`). Each
   wheel event was a full 1.25× notch, so a trackpad pinch — dozens of small events — leapt
   several steps (sensei layers, 2026-10-28). `canvasNavigation`'s onzoom now reports a factor.
+- cli: `bundleFolders`/`convertFolders` return `Promise.all` and the `bundle`/`build` commands
+  return it. They fired each folder's work and forgot it, so the specs slept 200 ms; under a full
+  `test:ci` a conversion outlived the sleep, its write landed after the cleanup, and the unhandled
+  rejection failed `bun run bump` (2026-10-28). A failing folder now rejects (spec).

@@ -202,13 +202,11 @@ describe('convert module', () => {
 
 	describe('bundleFolders', () => {
 		it('calls bundle for each folder in the list', async () => {
-			// bundleFolders fires bundle() for each folder (not awaited internally)
-			// We just verify it runs without throwing and invokes processing.
+			// Resolves once every bundle is written: an un-awaited bundle outlived the test, its
+			// write landed after the cleanup and failed the release run (2026-10-28).
 			const config = { bundles: { app: { color: false } }, package: {} }
 			const opts = { input: srcDir, output: outputDir }
-			bundleFolders(['app'], config, opts)
-			// Give the unwaited async bundle call time to settle
-			await new Promise((r) => setTimeout(r, 200))
+			await bundleFolders(['app'], config, opts)
 			expect(fs.existsSync(path.join(outputDir, 'app.json'))).toBe(true)
 		})
 
@@ -223,9 +221,14 @@ describe('convert module', () => {
 		it('calls convert for each folder in the list', async () => {
 			const config = { bundles: { app: { color: false } }, package: { namespace: '@rokkit', version: '1.0.0-test' } }
 			const opts = { input: srcDir, output: outputDir }
-			convertFolders(['app'], config, opts)
-			await new Promise((r) => setTimeout(r, 200))
-			expect(fs.existsSync(path.join(outputDir, 'app'))).toBe(true)
+			await convertFolders(['app'], config, opts)
+			expect(fs.existsSync(path.join(outputDir, 'app', 'package.json'))).toBe(true)
+		})
+
+		it('rejects when a folder cannot be converted, rather than failing unseen', async () => {
+			const config = { bundles: {}, package: {} }
+			const opts = { input: srcDir, output: outputDir }
+			await expect(convertFolders(['no-such-folder'], config, opts)).rejects.toThrow()
 		})
 
 		it('handles an empty folders list without error', () => {

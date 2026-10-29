@@ -30,8 +30,8 @@ prog
 		}
 
 		console.info(`> Found folders: ${folders.join(', ')}`)
-		bundleFolders(folders, config, opts)
-		// Process each folder as an icon bundle
+		// Process each folder as an icon bundle; the command ends when they are written.
+		return bundleFolders(folders, config, opts)
 	})
 
 prog
@@ -49,8 +49,8 @@ prog
 		}
 
 		console.info(`> Found folders: ${folders.join(', ')}`)
-		// Process each folder as an icon set
-		convertFolders(folders, config, opts)
+		// Process each folder as an icon set; the command ends when they are written.
+		return convertFolders(folders, config, opts)
 	})
 
 prog

@@ -191,9 +191,11 @@ function folderOpts(folder, config, opts, extra) {
  * @param {{ fn: Function, extra?: Record<string, unknown> }} processor
  */
 function processFolders(folders, config, opts, { fn, extra = {} }) {
-	for (const folder of folders) {
-		fn(path.join(opts.input, folder), folderOpts(folder, config, opts, extra))
-	}
+	// Awaited together: one that was fired and forgotten outlived its caller, and a failure
+	// surfaced (if at all) as an unhandled rejection after the command had returned.
+	return Promise.all(
+		folders.map((folder) => fn(path.join(opts.input, folder), folderOpts(folder, config, opts, extra)))
+	)
 }
 
 /**
@@ -203,7 +205,7 @@ function processFolders(folders, config, opts, { fn, extra = {} }) {
  * @param {import('./types').FolderOptions}      opts
  */
 export function bundleFolders(folders, config, opts) {
-	processFolders(folders, config, opts, { fn: bundle })
+	return processFolders(folders, config, opts, { fn: bundle })
 }
 
 /**
@@ -213,5 +215,5 @@ export function bundleFolders(folders, config, opts) {
  * @param {import('./types').FolderOptions}      opts
  */
 export function convertFolders(folders, config, opts) {
-	processFolders(folders, config, opts, { fn: convert, extra: { package: config.package || {} } })
+	return processFolders(folders, config, opts, { fn: convert, extra: { package: config.package || {} } })
 }
