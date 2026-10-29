@@ -104,6 +104,16 @@ describe.each(Object.entries(PALETTE_FAMILIES))('palette family %s', (name, fami
 		expect(problems).toEqual([])
 	})
 
+	// A divider is a hairline etched into the paper, not a lifted rule: by night the edge is
+	// the step just above paper-mute (300), not the surface's 400, which drew every divider
+	// ten lightness points brighter than sensei's own palette had (2026-10-28).
+	it('etches its dark-mode edge one step above paper-mute; light is unchanged', () => {
+		const surface = (mode) => family.palettes[family.skin.surface[mode]]
+		expect(value('paper-edge', 'dark')).toBe(surface('dark')[300])
+		expect(value('paper-edge', 'dark')).not.toBe(value('paper-mute', 'dark'))
+		expect(value('paper-edge', 'light')).toBe(surface('light')[400])
+	})
+
 	it('builds a preset', () => {
 		const css = presetRokkit({ palettes: family.palettes, colorSpace: 'oklch', skin: family.skin })
 			.preflights.map((p) => p.getCSS())

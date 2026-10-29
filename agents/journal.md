@@ -10949,3 +10949,10 @@ visitor's own Ollama.
   copy tone. Family spec: ≥ 4.5 on accent and every status tint, both modes, all five families.
   Apps had been writing `bg-accent-soft text-accent` (2.9:1); docs/llms recommended
   `bg-success-soft text-success` — corrected.
+
+## 2026-10-28 — palette families etch their dark-mode edge
+
+- sensei (dark mode): dividers were ten lightness points brighter after adopting zen-sumi. Its own
+  palette had pinned `paper-edge` dark to `sumi.300` ("etched, not lifted"); the family left it
+  at the surface's 400 (L 0.42 vs 0.32). Every family now overrides `paper-edge` to the dark
+  surface's 300 (warm sumi, cool yoru); light stays 400. Spec in palette-families.spec.js.
