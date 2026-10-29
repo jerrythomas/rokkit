@@ -216,10 +216,10 @@ const COOL = { surface: { light: 'kiri', dark: 'yoru' }, ink: { light: 'kiri', d
 
 /**
  * A divider is a hairline etched into the paper: by night the edge is the step just above
- * paper-mute (300), not the surface's 400, which reads as a lifted rule. By day the 400 is
+ * paper-soft (200) — the surface's 400, and even 300, read as a lifted rule. By day the 400 is
  * already etched.
  */
-const edge = (light, dark) => ({ 'paper-edge': { light: `${light}.400`, dark: `${dark}.300` } })
+const edge = (light, dark) => ({ 'paper-edge': { light: `${light}.400`, dark: `${dark}.200` } })
 const WARM_EDGE = edge('kami', 'sumi')
 const COOL_EDGE = edge('kiri', 'yoru')
 

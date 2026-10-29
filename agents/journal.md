@@ -10964,3 +10964,5 @@ visitor's own Ollama.
   return it. They fired each folder's work and forgot it, so the specs slept 200 ms; under a full
   `test:ci` a conversion outlived the sleep, its write landed after the cleanup, and the unhandled
   rejection failed `bun run bump` (2026-10-28). A failing folder now rejects (spec).
+- (2026-10-29) Families' dark `paper-edge` → the surface's 200 (L 0.25 on warm sumi), one step above
+  paper-soft: at 300 sensei still read every divider as prominent. Light stays 400.
