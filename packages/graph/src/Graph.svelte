@@ -4,7 +4,7 @@
 	import type { GraphStateConfig } from './GraphState.svelte.js'
 	import type { GraphProps } from './types.js'
 	import { DEFAULT_ICONS } from './icons.js'
-	import { nextZoom } from './controls/zoom.js'
+	import { zoomBy } from './controls/zoom.js'
 	import { anchoredScroll, frameOf } from './canvas/frame.js'
 	import type { Frame } from './canvas/frame.js'
 	import { interactions } from './actions/interactions.js'
@@ -124,9 +124,9 @@
 	let anchor: { x: number; y: number } | null = null
 	let previous: Frame | null = null
 
-	const onzoom = (direction: 'in' | 'out', at: { x: number; y: number }) => {
+	const onzoom = (factor: number, at: { x: number; y: number }) => {
 		anchor = at
-		zoom = nextZoom(zoom, direction)
+		zoom = zoomBy(zoom, factor)
 	}
 
 	// After a change of scale, scroll so the anchored content point is where it was. Runs after

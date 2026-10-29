@@ -21,3 +21,22 @@ export function nextZoom(zoom: number, move: ZoomMove): number {
 	if (move === 'reset') return 1
 	return clampZoom(zoom * (move === 'in' ? ZOOM_STEP : 1 / ZOOM_STEP))
 }
+
+/** Pixels per wheel unit, by `WheelEvent.deltaMode`: pixels, lines, pages. */
+const WHEEL_PIXELS = [1, 16, 800]
+/** Zoom per pixel of wheel travel: 2^(−px × rate). */
+const WHEEL_RATE = 0.01
+
+/**
+ * The zoom factor for one ctrl/⌘-wheel event, in proportion to how far it moved. A trackpad
+ * pinch sends many small events, each a small factor, so it zooms smoothly; no single event
+ * moves further than one notch, so a mouse wheel steps as the +/- buttons do.
+ */
+export function wheelFactor(deltaY: number, deltaMode = 0): number {
+	const px = deltaY * (WHEEL_PIXELS[deltaMode] ?? 1)
+	const factor = 2 ** (-px * WHEEL_RATE)
+	return Math.min(ZOOM_STEP, Math.max(1 / ZOOM_STEP, factor))
+}
+
+/** `zoom` scaled by `factor`, kept inside the range. */
+export const zoomBy = (zoom: number, factor: number): number => clampZoom(zoom * factor)

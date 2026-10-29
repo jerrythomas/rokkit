@@ -8,11 +8,13 @@
  */
 import type { ActionReturn } from 'svelte/action'
 import { listen } from './listen.js'
+import { wheelFactor } from '../controls/zoom.js'
 
 export type CanvasParams = {
 	zoomable?: boolean
 	/** A pinch: which way, and where — relative to the paper — so the zoom can keep that point still. */
-	onzoom?: (direction: 'in' | 'out', at: { x: number; y: number }) => void
+	/** A ctrl/⌘-wheel or pinch: the factor to scale the zoom by, and where it happened. */
+	onzoom?: (factor: number, at: { x: number; y: number }) => void
 }
 
 /**
@@ -52,7 +54,7 @@ function zoomHandler(params: () => CanvasParams) {
 		if (!params().zoomable || !(event.ctrlKey || event.metaKey)) return
 		event.preventDefault()
 		const box = (event.currentTarget as HTMLElement).getBoundingClientRect()
-		params().onzoom?.(event.deltaY < 0 ? 'in' : 'out', { x: event.clientX - box.left, y: event.clientY - box.top })
+		params().onzoom?.(wheelFactor(event.deltaY, event.deltaMode), { x: event.clientX - box.left, y: event.clientY - box.top })
 	}
 }
 

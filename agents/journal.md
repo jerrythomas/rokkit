@@ -10956,3 +10956,7 @@ visitor's own Ollama.
   palette had pinned `paper-edge` dark to `sumi.300` ("etched, not lifted"); the family left it
   at the surface's 400 (L 0.42 vs 0.32). Every family now overrides `paper-edge` to the dark
   surface's 300 (warm sumi, cool yoru); light stays 400. Spec in palette-families.spec.js.
+- graph: ctrl/⌘-wheel and pinch zoom in proportion to the wheel travel (`wheelFactor`:
+  2^(−px × 0.01), lines/pages as pixels, capped at one ZOOM_STEP per event; `zoomBy`). Each
+  wheel event was a full 1.25× notch, so a trackpad pinch — dozens of small events — leapt
+  several steps (sensei layers, 2026-10-28). `canvasNavigation`'s onzoom now reports a factor.
