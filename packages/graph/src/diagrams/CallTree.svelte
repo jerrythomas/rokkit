@@ -40,6 +40,8 @@
 		sizeBy?: string
 		sizeScale?: 'linear' | 'log'
 		controls?: boolean
+		/** The canvas corner the zoom sits in (top left by default). */
+		zoomPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 		/** Deepest level the depth control offers. */
 		maxLevels?: number
 		legend?: boolean
@@ -67,6 +69,7 @@
 		sizeBy = 'degree',
 		sizeScale = 'linear',
 		controls = false,
+		zoomPosition = 'top-left',
 		maxLevels = 4,
 		legend = false,
 		value = $bindable(undefined),
@@ -128,8 +131,11 @@
 	<DrillBar state={graph} />
 	{#if controls}
 		<DepthControl levels={levels ?? maxLevels} max={maxLevels} onchange={(v) => (levels = v)} />
-		<ZoomControl {zoom} onchange={(v) => (zoom = v)} />
 	{/if}
+{/snippet}
+
+{#snippet zoomBar()}
+	<ZoomControl {zoom} position={zoomPosition} onchange={(v) => (zoom = v)} />
 {/snippet}
 
 {#snippet legendBar()}
@@ -139,6 +145,7 @@
 <DiagramFrame
 	class={className}
 	overlay={controls || graph.showsDrillBar ? controlBar : undefined}
+	zoom={controls ? zoomBar : undefined}
 	footer={legend ? legendBar : undefined}
 >
 	{#snippet canvas()}

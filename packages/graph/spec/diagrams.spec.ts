@@ -461,3 +461,15 @@ describe('every diagram survives its own controls and legend', () => {
 		expect(container.querySelector('[data-graph-legend]')).toBeNull()
 	})
 })
+
+describe('zoom placement', () => {
+	// The zoom is the canvas's own, in its corner — not in the control strip along the
+	// bottom, where a "top left" would still sit at the bottom.
+	it("a diagram's zoom sits on its canvas, top left, outside the control strip", () => {
+		const { container } = render(ErDiagram, { nodes: TABLES, edges: REFS, controls: true })
+		const zoom = container.querySelector('[data-graph-zoom-controls]')
+		expect(zoom?.closest('[data-graph-diagram-overlay]')).toBeNull()
+		expect(zoom?.parentElement?.hasAttribute('data-graph-diagram-canvas')).toBe(true)
+		expect(zoom?.getAttribute('data-graph-zoom-position')).toBe('top-left')
+	})
+})

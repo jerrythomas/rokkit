@@ -77,6 +77,17 @@ describe('EdgeStyleControl', () => {
 })
 
 describe('ZoomControl', () => {
+	// Top left by default: a large or clipped drawing hides a bottom-right corner, never
+	// the top-left one. A consumer may put it in another corner.
+	it('sits at the top left unless told otherwise', () => {
+		const top = render(ZoomControl, { zoom: 1 }).container.querySelector('[data-graph-zoom-controls]')
+		expect(top?.getAttribute('data-graph-zoom-position')).toBe('top-left')
+		const other = render(ZoomControl, { zoom: 1, position: 'bottom-right' }).container.querySelector(
+			'[data-graph-zoom-controls]'
+		)
+		expect(other?.getAttribute('data-graph-zoom-position')).toBe('bottom-right')
+	})
+
 	it('shows the current zoom as a percentage a reader can act on', () => {
 		const { container } = render(ZoomControl, { zoom: 1.5 })
 

@@ -39,6 +39,8 @@
 		/** The subtree to render as the whole canvas. `[]` is the root. Drilling, not zooming. */
 		focusPath?: string[]
 		controls?: boolean
+		/** The canvas corner the zoom sits in (top left by default). */
+		zoomPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 		maxLevels?: number
 		legend?: boolean
 		value?: string | null
@@ -67,6 +69,7 @@
 		levels = $bindable(2),
 		focusPath = $bindable([]),
 		controls = false,
+		zoomPosition = 'top-left',
 		maxLevels = 4,
 		legend = false,
 		value = $bindable(undefined),
@@ -141,8 +144,11 @@
 	{#if controls}
 		<DepthControl {levels} max={maxLevels} onchange={(v) => (levels = v)} />
 		<MeasureControl channel="color" value={shadeBy} options={graph.measureKeys} allowNone onchange={(v) => (shadeBy = v)} />
-		<ZoomControl {zoom} onchange={(v) => (zoom = v)} />
 	{/if}
+{/snippet}
+
+{#snippet zoomBar()}
+	<ZoomControl {zoom} position={zoomPosition} onchange={(v) => (zoom = v)} />
 {/snippet}
 
 {#snippet legendBar()}
@@ -152,6 +158,7 @@
 <DiagramFrame
 	class={className}
 	overlay={controls || graph.showsDrillBar ? controlBar : undefined}
+	zoom={controls ? zoomBar : undefined}
 	footer={legend ? legendBar : undefined}
 >
 	{#snippet canvas()}

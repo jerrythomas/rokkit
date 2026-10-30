@@ -19,7 +19,7 @@ export const DEFAULT_ICONS: Record<string, string> = {
 	// ─── node kinds ───────────────────────────────────────────────────────────
 	table: 'i-glyph:table',
 	/** A view is a lens over other data, not storage of its own. */
-	view: 'i-glyph:eye',
+	view: 'i-glyph:split-view',
 	/** dbd v2's wire string. Materialized = the query is stored, hence layers. */
 	materialized_view: 'i-glyph:layers',
 	/** Alias: rokkit's themes and demos have said `matview` since slice 1. */

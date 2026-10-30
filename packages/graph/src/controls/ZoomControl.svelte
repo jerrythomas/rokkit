@@ -11,12 +11,17 @@
 	import { ZOOM_MAX, ZOOM_MIN, nextZoom } from './zoom.js'
 	import type { ZoomMove } from './zoom.js'
 
+	/** The canvas corner it sits in. Top left by default: a large or clipped drawing
+	 *  can hide a bottom-right corner, never the top-left one. */
+	type Position = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+
 	type Props = {
 		zoom?: number
 		onchange?: (value: number) => void
+		position?: Position
 	}
 
-	let { zoom = 1, onchange }: Props = $props()
+	let { zoom = 1, onchange, position = 'top-left' }: Props = $props()
 
 	const percent = $derived(Math.round(zoom * 100))
 </script>
@@ -26,6 +31,7 @@
      would push the canvas past a limit it has already agreed to. -->
 <div
 	data-graph-zoom-controls
+	data-graph-zoom-position={position}
 	role="group"
 	aria-label={say('zoom')}
 	use:choices={{ onchoose: (move) => onchange?.(nextZoom(zoom, move as ZoomMove)) }}

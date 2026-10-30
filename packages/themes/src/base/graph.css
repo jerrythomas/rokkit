@@ -72,17 +72,36 @@
   display: none;
 }
 
+/* The zoom sits in the canvas corner it names; top left unless placed elsewhere, as a
+   large or clipped drawing can hide a bottom-right corner, never the top-left one. */
 [data-graph-zoom-controls] {
   position: absolute;
-  right: 0.75rem;
-  bottom: 0.75rem;
-  z-index: 1;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 3;
   display: flex;
   align-items: stretch;
   border-width: 1px;
   border-style: solid;
   border-radius: 0.375rem;
   overflow: hidden;
+}
+
+[data-graph-zoom-controls][data-graph-zoom-position='top-right'] {
+  left: auto;
+  right: 0.75rem;
+}
+
+[data-graph-zoom-controls][data-graph-zoom-position='bottom-left'] {
+  top: auto;
+  bottom: 0.75rem;
+}
+
+[data-graph-zoom-controls][data-graph-zoom-position='bottom-right'] {
+  top: auto;
+  left: auto;
+  right: 0.75rem;
+  bottom: 0.75rem;
 }
 
 [data-graph-zoom-controls] button {

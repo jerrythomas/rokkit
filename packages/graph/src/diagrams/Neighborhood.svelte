@@ -47,6 +47,8 @@
 		 */
 		centre?: 'content' | 'focus'
 		controls?: boolean
+		/** The canvas corner the zoom sits in (top left by default). */
+		zoomPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 		maxDepth?: number
 		legend?: boolean
 		value?: string | null
@@ -73,6 +75,7 @@
 		groupTint = true,
 		centre = 'content',
 		controls = false,
+		zoomPosition = 'top-left',
 		maxDepth = 3,
 		legend = false,
 		value = $bindable(undefined),
@@ -135,8 +138,11 @@
 	{#if controls}
 		<DepthControl levels={depth} max={maxDepth} onchange={(v) => (depth = v)} />
 		<EdgeStyleControl {edgeStyle} onchange={(v) => (edgeStyle = v)} />
-		<ZoomControl {zoom} onchange={(v) => (zoom = v)} />
 	{/if}
+{/snippet}
+
+{#snippet zoomBar()}
+	<ZoomControl {zoom} position={zoomPosition} onchange={(v) => (zoom = v)} />
 {/snippet}
 
 {#snippet legendBar()}
@@ -146,6 +152,7 @@
 <DiagramFrame
 	class={className}
 	overlay={controls || graph.showsDrillBar ? controlBar : undefined}
+	zoom={controls ? zoomBar : undefined}
 	footer={legend ? legendBar : undefined}
 >
 	{#snippet canvas()}

@@ -11,14 +11,16 @@
 
 	type Props = {
 		canvas: Snippet
-		/** Controls drawn OVER the canvas, anchored to its corners. */
+		/** Controls drawn OVER the canvas, in the strip along its bottom. */
 		overlay?: Snippet
+		/** The zoom, in its own corner of the canvas (the control places itself). */
+		zoom?: Snippet
 		/** A legend or caption under the canvas, in the layout flow rather than over it. */
 		footer?: Snippet
 		class?: string
 	}
 
-	let { canvas, overlay, footer, class: className = '' }: Props = $props()
+	let { canvas, overlay, zoom, footer, class: className = '' }: Props = $props()
 </script>
 
 <div data-graph-diagram class={className}>
@@ -29,6 +31,7 @@
 		{#if overlay}
 			<div data-graph-diagram-overlay>{@render overlay()}</div>
 		{/if}
+		{@render zoom?.()}
 	</div>
 	{#if footer}
 		<div data-graph-diagram-footer>{@render footer()}</div>
