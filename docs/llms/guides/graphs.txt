@@ -237,8 +237,9 @@ frosted, zen-sumi.
 `data-graph-row-name` `data-graph-row-type` `data-row-badge`
 (pk|fk|uq|nn) `data-graph-more` `data-graph-edge` `data-edge-kind`
 (reference|dependency) `data-edge-state` (highlight|dim)
-`data-graph-edge-dot` `data-graph-zoom-controls` plus the schema-view
-hooks (`data-graph-entity`, `data-graph-column`,
+`data-graph-edge-dot` `data-graph-zoom-controls`
+`data-graph-zoom-position` (top-left|top-right|bottom-left|bottom-right)
+plus the schema-view hooks (`data-graph-entity`, `data-graph-column`,
 `data-graph-relationship`, `data-graph-note`, …).
 
 ## Using it with dbd

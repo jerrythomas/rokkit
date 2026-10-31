@@ -380,6 +380,10 @@ const meta: DemoMeta = {
 				desc: 'On-canvas zoom cluster; buttons carry data-graph-zoom="in|out|reset"'
 			},
 			{
+				selector: '[data-graph-zoom-position]',
+				desc: 'Canvas corner the zoom cluster sits in (top-left|top-right|bottom-left|bottom-right), from the zoomPosition prop; top-left by default'
+			},
+			{
 				selector: '[data-graph-world]',
 				desc: 'Scaled/translated world; declares --graph-head-h, --graph-row-h, --graph-more-h'
 			},
